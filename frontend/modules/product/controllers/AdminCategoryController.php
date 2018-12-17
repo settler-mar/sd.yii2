@@ -2,6 +2,7 @@
 
 namespace frontend\modules\product\controllers;
 
+use frontend\modules\stores\models\Stores;
 use shop\modules\category\models\ProductsCategory;
 use shop\modules\category\models\LgProductsCategory;
 use shop\modules\category\models\ProductsCategorySearch;
@@ -72,9 +73,24 @@ class AdminCategoryController extends Controller
     $parentsFilter = ProductsCategory::forFilter(['where' => ['in', 'id', $childs]]);
     asort($parentsFilter);
 
+
+    $storeFilter = ArrayHelper::map(
+        Stores::find()
+            ->from(Stores::tableName().' s')
+            ->innerJoin(ProductsCategory::tableName(). ' cs', 'cs.store_id = s.uid')
+            ->select(['s.uid', 's.name'])
+            ->groupBy(['s.uid', 's.name'])
+            ->orderBy(['s.name' => SORT_ASC])
+            ->asArray()
+            ->all(),
+        'uid', 'name'
+    );
+
+
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
+        'storeFilter' => $storeFilter,
         'tableData' => [
             'parents' => function ($model) {
               //return $model->parent;

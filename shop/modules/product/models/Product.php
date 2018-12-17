@@ -11,7 +11,6 @@ use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
 use shop\modules\category\models\ProductsCategory;
 use Yii;
-use yii\db\Query;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -239,8 +238,8 @@ class Product extends \yii\db\ActiveRecord
         ])->one()
         : false;
     //if ($productDb) {
-        //сделать заполнение кода категорий  todo потом убрать
-        //self::writeCategoriesCode($productDb->id, $product['categoryId']);
+    //сделать заполнение кода категорий  todo потом убрать
+    //self::writeCategoriesCode($productDb->id, $product['categoryId']);
     //}
 
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
@@ -268,7 +267,7 @@ class Product extends \yii\db\ActiveRecord
         $new = 1;
       }
 
-      $categories = $productDb->makeCategories($product['categoryId']);//массив ид категорий из строки с разделителямиы '/'
+      $categories = $productDb->makeCategories($product['categoryId'], $product);//массив ид категорий из строки с разделителямиы '/'
 
       $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
           $product['params'];
@@ -293,8 +292,8 @@ class Product extends \yii\db\ActiveRecord
       $productDb->url = isset($product['url']) ? (string)$product['url'] : null;
       $productDb->vendor = isset($product['vendor']) ? (string)$product['vendor'] : null;
 
-      $productHash = $productModifiedTime?
-          $productModifiedTime:
+      $productHash = $productModifiedTime ?
+          $productModifiedTime :
           hash('sha256', json_encode($productDb->params) . $productDb->name . $productDb->image);
 
       $consoleApp = Yii::$app instanceof Yii\console\Application;
@@ -318,15 +317,15 @@ class Product extends \yii\db\ActiveRecord
       }
     }
     foreach (array_keys(get_defined_vars()) as $key) {
-        if (!in_array($key, ['new', 'error', 'productDb'])) {
-            unset(${"$key"});
-        }
+      if (!in_array($key, ['new', 'error', 'productDb'])) {
+        unset(${"$key"});
+      }
     }
     unset($key);
     return [
-      'insert' => $new,
-      'error' => $error,
-      'product' => $productDb,
+        'insert' => $new,
+        'error' => $error,
+        'product' => $productDb,
     ];
   }
 
@@ -390,19 +389,63 @@ class Product extends \yii\db\ActiveRecord
     return $result;
   }
 
-  protected function makeCategories($categories)
+  protected function makeCategories($categories, $product)
   {
-    $path = 'categories_'.$categories;
+    $path = 'categories_' . $categories;
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
-    $out = $cache->getOrSet($path, function () use ($categories, $path) {
+    $out = $cache->getOrSet($path, function () use ($categories, $path, $product) {
       //пробуем найти категорию по коду
-      $category = ProductsCategory::findOne(['code' => $categories]);
+      $category = ProductsCategory::find()
+          ->andWhere([
+              'and',
+              ['code' => $categories],
+              [
+                  'or',
+                  ['cpa_id' => $product['cpa_id']],
+                  ['cpa_id' => null],//временно для определения тех категорий что есть. убрать null
+              ],
+              [
+                  'or',
+                  ['store_id' => $product['store_id']],
+                  ['store_id' => null],//временно для определения тех категорий что есть. убрать null
+              ],
+          ]);
+      $category = $category->one();
+
       if ($category) {
-          //нашли
-          $catsParents = ProductsCategory::parents([$category]);
-          return(array_reverse(array_column($catsParents, 'id')));
+        //нашли
+        $category->cpa_id = $product['cpa_id']; //временно для определения тех категорий что есть. Убрать
+        $category->store_id = $product['store_id'];//временно для определения тех категорий что есть. Убрать
+        $category->save();//временно для определения тех категорий что есть. Убрать
+
+        //временно для определения тех категорий что есть. Убрать начало
+        $categories_arr = explode('/', $categories);
+        array_pop($categories_arr);
+        $categories_par = '';
+        if(count($categories_arr)>0) {
+          foreach ($categories_arr as &$item) {
+            $item = $categories_par . $item;
+            $categories_par = $item . '/';
+          }
+          ProductsCategory::updateAll([
+              'cpa_id' => $product['cpa_id'],
+              'store_id' => $product['store_id'],
+          ], [
+              'code' => $categories_arr,
+              'cpa_id' => null,
+              'store_id' => null,
+          ]);
+        }
+        //временно для определения тех категорий что есть. Убрать конец
+        $category=$category->attributes();
+ddd($category);
+        $catsParents = ProductsCategory::parents([$category]);
+        $result = (array_reverse(array_column($catsParents, 'id')));
+        ddd($result);
+        return $result;
       }
+
       $categoryArr = explode('/', $categories);
       $result = [];
       $parent = null;
@@ -416,10 +459,12 @@ class Product extends \yii\db\ActiveRecord
           $result[] = $cat;
           $parent = $cat;
         } else {
+          ddd($result);
           return $result;
         }
         $category = null;
       }
+      ddd($result);
       return $result;
     });
     unset($path);
@@ -486,36 +531,36 @@ class Product extends \yii\db\ActiveRecord
    */
   protected function productCategory($name, $parent, $code)
   {
-      $path= 'category_with_parent_' . $name . '_parent_' . $parent.'_code_'.$code;
-      $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
+    $path = 'category_with_parent_' . $name . '_parent_' . $parent . '_code_' . $code;
+    $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
-      $out =  $cache->getOrSet($path, function () use ($name, $parent, $code) {
-          $categoryDb = null;
-          $categoryDb = ProductsCategory::findOne(['code' => $code]);
-          if (!$categoryDb) {
-              $categoryDb = new ProductsCategory();
-              $categoryDb->name = $name;
-              $categoryDb->parent = $parent;
-              $categoryDb->code = $code;
-              $categoryDb->active = ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING;
-              if (!$categoryDb->save()) {
-                  if (Yii::$app instanceof Yii\console\Application) {
-                      d($categoryDb->errors);
-                  }
-              }
+    $out = $cache->getOrSet($path, function () use ($name, $parent, $code) {
+      $categoryDb = null;
+      $categoryDb = ProductsCategory::findOne(['code' => $code]);
+      if (!$categoryDb) {
+        $categoryDb = new ProductsCategory();
+        $categoryDb->name = $name;
+        $categoryDb->parent = $parent;
+        $categoryDb->code = $code;
+        $categoryDb->active = ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING;
+        if (!$categoryDb->save()) {
+          if (Yii::$app instanceof Yii\console\Application) {
+            d($categoryDb->errors);
           }
-          if ($categoryDb) {
-              $out = $categoryDb->synonym ? $categoryDb->synonym : $categoryDb->id;
-          } else {
-              $out = null;
-          }
+        }
+      }
+      if ($categoryDb) {
+        $out = $categoryDb->synonym ? $categoryDb->synonym : $categoryDb->id;
+      } else {
+        $out = null;
+      }
 
-          unset($categoryDb);
-          return $out;
-      });
-      unset($path);
-      unset($cache);
+      unset($categoryDb);
       return $out;
+    });
+    unset($path);
+    unset($cache);
+    return $out;
   }
 
   public function afterSave($insert, $changedAttributes)
@@ -649,60 +694,60 @@ class Product extends \yii\db\ActiveRecord
     return $products;
   }
 
-    public static function activeClass($active)
-    {
-        switch ($active) {
-            case (Product::PRODUCT_AVAILABLE_NOT):
-                return 'status_1';
-            case (Product::PRODUCT_AVAILABLE_YES):
-                return 'status_2';
-            default:
-                return 'status_0';
-        }
+  public static function activeClass($active)
+  {
+    switch ($active) {
+      case (Product::PRODUCT_AVAILABLE_NOT):
+        return 'status_1';
+      case (Product::PRODUCT_AVAILABLE_YES):
+        return 'status_2';
+      default:
+        return 'status_0';
     }
+  }
 
-    /**
-     * заполнение поля code категорий для категорий, загруженных без code
-     * @param $productId
-     * @param $categoryString
-     */
-    public static function writeCategoriesCode($productId, $categoryString)
-    {
-        Yii::$app->cache->getOrSet('wriete_category_code_'.$categoryString, function () use ($productId, $categoryString) {
-            $category = ProductsCategory::find()->from(ProductsCategory::tableName().' pc')
-                ->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.category_id = pc.id')
-                ->where(['ptc.product_id' => $productId])
-                ->one();
-            if ($category) {
-                if (!$category->code) {
-                    $category->code = $categoryString;
-                    if (!$category->save()) {
-                        d($category->errors);
-                    }
-                 //заполнили категорию что делать с родительскими ?
-                } else {
-                    //в первый проход записали категории, связанные с товарами
-                    //во второй пишем родительские, для которых нет товаров
-                    ///$categoryArray  = explode('/', $categoryString);
-                    $catsParents = array_reverse(ProductsCategory::parents([$category]));
-                    $codes = '';
-                    for ($i = 0; $i < count($catsParents) - 1; $i++) {
-                            //c корня до последней родительской
-                        $cat = ProductsCategory::findOne($catsParents[$i]['id']);
-                        if ($cat && !$cat->code) {
-                            $codes .= (($codes == ''? '':'/') .   $catsParents[$i]['route']);
-                            $cat->code=$codes;
-                            if (!$cat->save()) {
-                                d($cat->errors);
-                            }
-
-                        }
-                    }
-                }
+  /**
+   * заполнение поля code категорий для категорий, загруженных без code
+   * @param $productId
+   * @param $categoryString
+   */
+  public static function writeCategoriesCode($productId, $categoryString)
+  {
+    Yii::$app->cache->getOrSet('wriete_category_code_' . $categoryString, function () use ($productId, $categoryString) {
+      $category = ProductsCategory::find()->from(ProductsCategory::tableName() . ' pc')
+          ->innerJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.category_id = pc.id')
+          ->where(['ptc.product_id' => $productId])
+          ->one();
+      if ($category) {
+        if (!$category->code) {
+          $category->code = $categoryString;
+          if (!$category->save()) {
+            d($category->errors);
+          }
+          //заполнили категорию что делать с родительскими ?
+        } else {
+          //в первый проход записали категории, связанные с товарами
+          //во второй пишем родительские, для которых нет товаров
+          ///$categoryArray  = explode('/', $categoryString);
+          $catsParents = array_reverse(ProductsCategory::parents([$category]));
+          $codes = '';
+          for ($i = 0; $i < count($catsParents) - 1; $i++) {
+            //c корня до последней родительской
+            $cat = ProductsCategory::findOne($catsParents[$i]['id']);
+            if ($cat && !$cat->code) {
+              $codes .= (($codes == '' ? '' : '/') . $catsParents[$i]['route']);
+              $cat->code = $codes;
+              if (!$cat->save()) {
+                d($cat->errors);
+              }
 
             }
-        });
+          }
+        }
 
-    }
+      }
+    });
+
+  }
 
 }

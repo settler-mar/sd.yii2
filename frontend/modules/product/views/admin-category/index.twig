@@ -37,6 +37,12 @@
               {'attribute':'parent','format':'raw','value':tableData.parents,'filter':parents, 'label': 'Родительские категории'},
               {'attribute':'name', 'format':'raw', 'value':tableData.name},
               'route',
+              {
+                'attribute':'store_id',
+                'format':'raw',
+                'filter':storeFilter,
+                'value': 'store.name'
+              },
               {'attribute':'active','format':'raw','value':tableData.active,'filter':activeFilter},
               {'attribute':'synonyms','format':'raw','value':tableData.synonyms,'label': 'Синонимы'},
               {'attribute':'synonym','format':'raw','value':tableData.synonym,'filter':synonymFilter},

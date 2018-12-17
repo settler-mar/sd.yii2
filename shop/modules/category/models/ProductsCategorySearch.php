@@ -18,7 +18,7 @@ class ProductsCategorySearch extends ProductsCategory
     public function rules()
     {
         return [
-            [['id', 'parent', 'active','synonym'], 'integer'],
+            [['id', 'parent', 'active','synonym','store_id'], 'integer'],
             [['name', 'crated_at', 'route'], 'safe'],
         ];
     }
@@ -67,6 +67,7 @@ class ProductsCategorySearch extends ProductsCategory
             'id' => $this->id,
             'crated_at' => $this->crated_at,
             'active' => $this->active,
+          'store_id' =>$this->store_id
          ]);
         if ($this->parent === '0') {
             $query->andWhere(['parent' => null]);
