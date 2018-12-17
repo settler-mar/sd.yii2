@@ -48,7 +48,7 @@ class AdminCategoryController extends Controller
    */
   public function actionIndex()
   {
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductView')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductCategoryView')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -165,7 +165,7 @@ class AdminCategoryController extends Controller
    */
   public function actionUpdate($id)
   {
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductCategoryEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -238,7 +238,7 @@ class AdminCategoryController extends Controller
    */
   public function actionUpdateAll()
   {
-    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductCategoryEdit')) {
       throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
       return false;
     }
@@ -281,7 +281,7 @@ class AdminCategoryController extends Controller
    */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductCategoryDelete')) {
             throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
             return false;
         }
