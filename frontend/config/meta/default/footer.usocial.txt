@@ -1,5 +1,0 @@
-<!-- uSocial -->
-<script async src="https://usocial.pro/usocial/usocial.pp.js?v=6.1.4" data-script="usocial" charset="utf-8"></script>
-<div class="uSocial-PP"  data-action="timeout"  data-delay="20" data-pid="4128134c3c568b3286b9b15101c08e5e" data-type="publicpopup" data-options="skin_dark,showWithoutNames_1" data-social="vk,fb,ok,instagram,youtube,telegram,twi"></div>
-<!-- /uSocial -->
-
