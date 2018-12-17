@@ -238,10 +238,10 @@ class Product extends \yii\db\ActiveRecord
             'article' => $article
         ])->one()
         : false;
-    if ($productDb) {
+    //if ($productDb) {
         //сделать заполнение кода категорий  todo потом убрать
-        self::writeCategoriesCode($productDb->id, $product['categoryId']);
-    }
+        //self::writeCategoriesCode($productDb->id, $product['categoryId']);
+    //}
 
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
     if (!$productDb || !$productDb->modified_time ||
@@ -497,6 +497,7 @@ class Product extends \yii\db\ActiveRecord
               $categoryDb->name = $name;
               $categoryDb->parent = $parent;
               $categoryDb->code = $code;
+              $categoryDb->active = ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING;
               if (!$categoryDb->save()) {
                   if (Yii::$app instanceof Yii\console\Application) {
                       d($categoryDb->errors);
