@@ -44,9 +44,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
             [['parent'], 'exist', 'targetAttribute' => 'id'],
             [['active', 'synonym'], 'integer'],
             ['route', 'unique', 'targetAttribute' => ['route', 'parent']],
-            [['name', 'route'], 'filter', 'filter' => function ($value) {
-                return $this->synonym ? null : $value;
-            }],
+//            [['name', 'route'], 'filter', 'filter' => function ($value) {
+//                return $this->synonym ? null : $value;
+//            }],
             ['active', 'filter', 'filter' => function ($value) {
                 return $this->synonym ? self::PRODUCT_CATEGORY_ACTIVE_NOT : $value;
             }],
@@ -319,6 +319,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
         if ($this->synonym) {
             //если выставлен синоним, то убираем перeводы
             LgProductsCategory::deleteAll(['category_id' => $this->id]);
+            //перенос категорий товаров в категорию - синоним
+            //ProductsToCategory::updateAll(['category_id' => $this->synonym], ['category_id' => $this->id]);
         }
         $this->clearCache();
         parent::afterSave($insert, $changedAttributes);
