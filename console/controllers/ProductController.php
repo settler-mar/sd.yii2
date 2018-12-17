@@ -41,11 +41,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Очистка продуктов, категорий  Каталога
+     * Очистка категорий  Каталога
      */
-    public function actionClear()
+    public function actionClearCategory()
     {
-        echo "Будет выполнена очистка продуктов, фото, категорий Каталога\n";
+        echo "Будет выполнена очистка категорий Каталога\n";
         $continue = $this->prompt('Действительно хотите продолжить? No/Yes', ['required' => true]);
         if ($continue != 'Yes') {
             echo "Прервано\n";
@@ -62,6 +62,24 @@ class ProductController extends Controller
         $db->createCommand('delete  from ' . ProductsCategory::tableName())->execute();
         $db->createCommand('alter table ' . ProductsCategory::tableName() . ' AUTO_INCREMENT = 1')->execute();
 
+        CatalogStores::updateAll(['date_import'=>null, 'product_count'=> null]);
+    }
+
+    /**
+     * Очистка продуктов
+     */
+    public function actionClear() {
+        echo "Будет выполнена очистка продуктов, фото\n";
+        $continue = $this->prompt('Действительно хотите продолжить? No/Yes', ['required' => true]);
+        if ($continue != 'Yes') {
+            echo "Прервано\n";
+            return ;
+        }
+
+        $db = Yii::$app->db;
+        $db->createCommand('delete from  ' . ProductsToCategory::tableName())->execute();
+        $db->createCommand('alter table ' . ProductsToCategory::tableName() . ' AUTO_INCREMENT = 1')->execute();
+
         $db->createCommand('delete from  ' . Product::tableName())->execute();
         $db->createCommand('alter table ' . Product::tableName() . ' AUTO_INCREMENT = 1')->execute();
 
@@ -70,6 +88,7 @@ class ProductController extends Controller
         $path = Yii::getAlias('@shop/web/images/product');
         $this->deletePath($path);
     }
+
 
     /**
      * Очистка параметров, значений параметров продуктов Каталога
@@ -83,7 +102,7 @@ class ProductController extends Controller
         }
         $db = Yii::$app->db;
 
-        $db->createCommand('delete from  ' . ProductParametersProcessing::tableName())->execute();
+        $db->createCommand('delete from ' . ProductParametersProcessing::tableName())->execute();
         $db->createCommand('alter table ' . ProductParametersProcessing::tableName() . ' AUTO_INCREMENT = 1')->execute();
 
         $db->createCommand('delete from ' . LgProductParametersValues::tableName())->execute();
@@ -97,6 +116,8 @@ class ProductController extends Controller
 
         $db->createCommand('delete from ' . ProductParameters::tableName())->execute();
         $db->createCommand('alter table ' . ProductParameters::tableName() . ' AUTO_INCREMENT = 1')->execute();
+
+        CatalogStores::updateAll(['date_import'=>null, 'product_count'=> null]);
     }
 
     /**
