@@ -438,8 +438,8 @@ class Product extends \yii\db\ActiveRecord
           ]);
         }
         //временно для определения тех категорий что есть. Убрать конец
-        $category=$category->attributes();
-ddd($category);
+        $category=$category->toArray();
+
         $catsParents = ProductsCategory::parents([$category]);
         $result = (array_reverse(array_column($catsParents, 'id')));
         ddd($result);
