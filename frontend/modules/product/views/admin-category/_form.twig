@@ -6,7 +6,15 @@
       <div class="col-sm-12">
 
         <div class="product-parameters-form">
-          {% set form = active_form_begin() %}
+          {% set form = active_form_begin({
+            'enableClientValidation' : false,
+            'enableAjaxValidation'   : false,
+            'enableClientValidation' : false,
+            'validateOnBlur'         : false,
+            'validateOnType'         : false,
+            'validateOnChange'       : false,
+            'validateOnSubmit'       : false,
+          }) %}
 
           {{ form.field(model, 'code').textInput({'disabled':true})|raw }}
 
