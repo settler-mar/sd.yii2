@@ -284,15 +284,15 @@ class AdminController extends Controller
             //для товаров в т.ч. дочерние категории ??
             $categoriesTree = ProductsCategory::tree();
             $childsId = ProductsCategory::getCategoryChilds($categoriesTree, $model->category_id);
-
+            $productLimit = 20;
             $products = Product::find()
                 ->from(Product::tableName() . ' p')
                 ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
                 ->where('JSON_KEYS(params) LIKE \'%"' . $model->code . '"%\'')
                 ->andWhere(['ptc.category_id' => $childsId])
-                ->limit(5)->all();
+                ->limit($productLimit)->all();
 
-            if (count($products)<5)  {
+            if (count($products)<$productLimit)  {
                 $products = array_merge($products, Product::find()
                     ->from(Product::tableName() . ' p')
                     ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
@@ -303,7 +303,7 @@ class AdminController extends Controller
                         'params_original LIKE \'%|' . $model->code . ':%\''
                     ])
                     ->andWhere(['not in' ,'p.id', array_column($products, 'id')])
-                    ->limit(5 - count($products))->all()
+                    ->limit($productLimit - count($products))->all()
                 );
             }
 

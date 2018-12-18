@@ -219,7 +219,7 @@ class AdminCategoryController extends Controller
         ->from(Product::tableName() . ' p')
         ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
         ->andWhere(['ptc.category_id' => $model->id])
-        ->limit(5)->all();
+        ->limit(20)->all();
 
       return $this->render('update.twig', [
           'model' => $model,
