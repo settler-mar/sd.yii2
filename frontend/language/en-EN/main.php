@@ -75,6 +75,7 @@ return [
     'our_friends' => 'Our friends',
     'posts_about_us' => 'Look who\'s talking about us',
     'sort_by' => 'Sort by',
+    'sort_by_price' => 'By price',
     'sort_by_rating' => 'Popularity',
     'sort_by_rating_mobile' => 'Popularity',
     'sort_by_abc' => 'Alphabet',

@@ -3,8 +3,8 @@
 {% endif %}
 
 <div class="catalog_products_item shop hover-box ">
-    {% set url=product.url %}
-    {% set product_url='/category/product/'~product.id %}
+    {% set url=_href(product.url) %}
+    {% set product_url=_href('/category/product/'~product.id) %}
     {% set href_class = user_id ? '' : 'catalog_product_link' %}
 
     {% set old_price = product.old_price  %}
@@ -31,12 +31,12 @@
             </div>
             <div class="catalog_products_item_text">
                 <div class="catalog_products_item_text_brand">
-                    <a href="/category?shop={{ product.store_route }}" target="_blank" class="">
+                    <a href="{{ _href('/category?shop='~product.store_route)|raw }}" target="_blank" class="">
                         {{ product.store_name }}
                     </a>
                 </div>
                 <div class="catalog_products_item_text_brand">
-                    <a href="/category?vendor={{ product.vendor }}" target="_blank" class="">
+                    <a href="{{ _href('/category?vendor='~product.vendor)|raw }}" target="_blank" class="">
                         {{ product.vendor }}
                     </a>
                 </div>

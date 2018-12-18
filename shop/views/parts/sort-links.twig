@@ -2,7 +2,7 @@
     <span class="catalog-stores_sort-desctop-title">{{ t('main', 'sort_by')|raw }}:</span>
     <ul >
         {% for sortLink in sortlinks %}
-            <li><a href="{{sortLink.link}}" class="blue{% if sortLink.active == 1 %} active{% endif %}" >{{sortLink.title}}</a></li>
+            <li><a href="{{ _href(sortLink.link) }}" class="blue{% if sortLink.active == 1 %} active{% endif %}" >{{sortLink.title}}</a></li>
         {% endfor %}
     </ul>
 </div>
@@ -24,7 +24,7 @@
                     {% if sortLink.active == 1 %}
                         <span>{{sortLink.title_mobile}}</span>
                     {% else %}
-                        <a href="{{sortLink.link}}">{{sortLink.title_mobile}}</a>
+                        <a href="{{ _href(sortLink.link) }}">{{sortLink.title_mobile}}</a>
                     {% endif %}
                 </li>
             {% endfor %}

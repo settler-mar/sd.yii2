@@ -8,7 +8,7 @@
         <div class="header-upline_in-left">
 
           <div class="menu-toggle">
-            <a href="/">
+            <a href="{{ _href('/') }}">
               {{ svg('bars-slim', 'menu-toggle_button open', '@frontend')|raw }}
               {{ svg('close', 'menu-toggle_button close', '@frontend')|raw }}
             </a>
@@ -16,7 +16,7 @@
           </div>
 
           <div class="search-toggle  btn-header mobile">
-            <a href="/">{{ svg('search', 'search-toggle_button btn-header_button', '@frontend')|raw }}</a>
+            <a href="{{ _href('/') }}">{{ svg('search', 'search-toggle_button btn-header_button', '@frontend')|raw }}</a>
           </div>
         </div>
 
@@ -259,7 +259,7 @@
         <li>
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
-              'href':'https://secretdiscounter.com/account/webmaster',
+              'gi':'https://secretdiscounter.com/account/webmaster',
               'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
             } %}
           {% else %}

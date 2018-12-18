@@ -256,7 +256,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
           };
           if (isset($params['counts'])) {
               $categoryArr->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-                  ->groupBy($categoryArr->select);
+                  ->groupBy(['id', 'name', 'parent', 'active', 'route']);
               $categoryArr->addSelect(['count(ptc.id) as count']);
               if (isset($params['empty']) && $params['empty'] === false) {
                   $categoryArr->andWhere(['is not', 'ptc.id', null]);
