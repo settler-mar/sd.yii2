@@ -83,7 +83,9 @@ class DefaultController extends SdController
             //категории товара в т.ч. дочерние
             //$allCategories = ProductsCategory::childsId($this->category->id);
             //так оптимальнее все дочерние
-            $categoryTree = ProductsCategory::tree();
+            $categoryTree = ProductsCategory::tree([
+                'where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
+            ]);
             $allCategories =  ProductsCategory::getCategoryChilds($categoryTree, $this->category->id);
             $this->params['breadcrumbs'][] = [
                 'label' => $this->category->name,
