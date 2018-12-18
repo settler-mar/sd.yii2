@@ -7,6 +7,7 @@ use shop\modules\product\models\Product;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
+use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
 use frontend\components\SdController;
 use yii;
@@ -27,6 +28,14 @@ class DefaultController extends SdController
 
     public function actionIndex()
     {
+//        $categoryTree = ProductsCategory::tree([
+//            'counts' => true,
+//            'current' => false,
+//            'empty' => false,
+//            'where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
+//        ]);
+//        ddd($categoryTree);
+
         $request = Yii::$app->request;
 
         $page = $request->get('page');
@@ -54,8 +63,9 @@ class DefaultController extends SdController
         $storesData = [];
         $dataBaseData = Product::find()
             ->from(Product::tableName() . ' prod')
+            ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
             ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
-            ->select(['prod.*'])
+            ->select(['prod.*', 's.name as store_name', 's.route as store_route'])
             ->orderBy($sort . ' ' . $order);
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
@@ -113,7 +123,7 @@ class DefaultController extends SdController
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
-            ['limit' => $limit, 'page' => $page]
+            ['limit' => $limit, 'page' => $page, 'asArray'=> true]
         );
 
         $storesData['category'] = $this->category;

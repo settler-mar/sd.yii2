@@ -254,18 +254,27 @@ class ProductsCategory extends \yii\db\ActiveRecord
           if (isset($params['where'])) {
             $categoryArr->where($params['where']);
           };
+          if (isset($params['counts'])) {
+              $categoryArr->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
+                  ->groupBy($categoryArr->select);
+              $categoryArr->addSelect(['count(ptc.id) as count']);
+              if (isset($params['empty']) && $params['empty'] === false) {
+                  $categoryArr->andWhere(['is not', 'ptc.id', null]);
+              }
+          }
           $categoryArr = $categoryArr->all();
+          //d($categoryArr);
           $current = isset($params['current']) ? $params['current'] : false;
           $categories = static::childsCategories($categoryArr, false, $current);
 
-          if ($categories && !empty($params['counts'])) {
-            foreach ($categories as &$rootCategory) {
-              //пока количество для корневых категорий
-              $rootCategory['count'] = ProductsToCategory::find()
-                  ->where(['category_id' => $rootCategory['childs_ids']])
-                  ->count();
-            }
-          }
+//          if ($categories && !empty($params['counts'])) {
+//            foreach ($categories as &$rootCategory) {
+//              //пока количество для корневых категорий
+//              $rootCategory['count'] = ProductsToCategory::find()
+//                  ->where(['category_id' => $rootCategory['childs_ids']])
+//                  ->count();
+//            }
+//          }
           return $categories;
         },
         $cache->defaultDuration,
@@ -283,6 +292,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $cat['current'] = $cat['id'] == $current;
         $cat['childs'] = static::childsCategories($arr, $cat, $current);
         $cat['childs_ids'] = [$cat['id']];//в дочерние ид впишем свой ид
+        $cat['count_all'] = isset($cat['count']) ? $cat['count'] : 0;//количество всего
         if ($cat['childs']) {
           foreach ($cat['childs'] as $child) {
             if ($child['childs_ids']) {
@@ -292,6 +302,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
               //если дочерняя текущая, то сама тоже текущая
               $cat['current'] = true;
             }
+            $cat['count_all'] = $cat['count_all'] + $child['count_all'];//сумма количества товаров
           }
         }
         $out[] = $cat;
