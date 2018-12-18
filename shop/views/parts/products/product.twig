@@ -52,22 +52,15 @@
             <div class="catalog_products_item_price">
                 {% if product.price < old_price %}
                     <div class="catalog_products_item_price-old">
-                        {{ old_price }}<span class="catalog_products_item_price_currency">{{ t('main', product.currency) }}</span>
+                        {{ old_price }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
                     </div>
                 {% endif %}
-                {{ product.price }}<span class="catalog_products_item_price_currency">{{ t('main', product.currency) }}</span>
+                {{ product.price }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
             </div>
             <div class="catalog_products_item_cashback">
-                {% if product.store.displayed_cashback %}
-                    <span class="catalog_products_item_cashback-title">+ {{ t('main', 'cashback') }} </span>
-                    <span classs="catalog_products_item_cashback-value">{{ product.store.displayed_cashback }}
-                        <a class="catalog_products_item_cashback-question" href="#" data-toggle="tooltip" data-placement="top"
-                           data-original-title="{{ t('shop', 'product_cashback_question')|raw }}">
-                         {{ svg('question-circle-o', '', '@frontend')|raw }}
-                        </a>
-                    </span>
+                {% if product.displayed_cashback %}
+                    {{ cashback(product, 'product_catalog')|raw }}
                 {% endif %}
-
             </div>
             <div class="catalog_products_item_prices-vaforite">
                 {#{% if product.favorite %}#}

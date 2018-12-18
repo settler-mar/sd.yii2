@@ -129,6 +129,7 @@ $media2: $tablets;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
 
       &-title {
         text-transform: uppercase;
@@ -148,6 +149,13 @@ $media2: $tablets;
           width: 18px;
           height: 18px;
         }
+      }
+
+      .shop-cashback_old {
+        color: #aaa;
+      }
+      .shop-cashback-link_cashback.is_not_old {
+        font-size: 16px;
       }
 
     }

@@ -26,7 +26,8 @@ class Constants extends \yii\db\ActiveRecord
         5 => 'Списки',
         6 => 'Ссылки',
         7 => 'Системные',
-        8 => 'Региональные'
+        8 => 'Региональные',
+        9 => 'Каталог'
     ];
 
   protected static $translated_attributes = ['text'];

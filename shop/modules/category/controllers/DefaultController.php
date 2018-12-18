@@ -65,7 +65,9 @@ class DefaultController extends SdController
             ->from(Product::tableName() . ' prod')
             ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
             ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
-            ->select(['prod.*', 's.name as store_name', 's.route as store_route'])
+            ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
+                's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
+                's.currency as currency', 's.action_end_date as action_end_date'])
             ->orderBy($sort . ' ' . $order);
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
