@@ -14,7 +14,7 @@
         {% for sortLink in sortlinks %}
              {% if sortLink.active == 1 %}
                  <span class="sd-select-selected">{{ sortLink.title_mobile }}
-                    {{ svg('angle-down')|raw }}
+                    {{ svg('angle-down','','@frontend')|raw }}
                  </span>
              {% endif %}
         {% endfor %}

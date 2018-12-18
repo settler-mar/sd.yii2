@@ -77,6 +77,8 @@ return [
     'sort_by' => 'Сортировать по',
     'sort_by_rating' => 'Популярности',
     'sort_by_rating_mobile' => 'Популярности',
+    'sort_by_price' => 'Цене',
+    'sort_by_price_mobile' => 'Цене',
     'sort_by_abc' => 'Алфавиту',
     'sort_by_abc_mobile' => 'Алфавиту',
     'sort_by_date' => 'Новизне',

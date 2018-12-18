@@ -49,7 +49,7 @@ class DefaultController extends SdController
         $limit = (!empty($limit)) ? $limit : Product::$defaultLimit;
         $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
-        $this->params['breadcrumbs'][] = ['label' => Yii::t('main', 'category_product'), 'url' => ('/category')];
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => ('/category')];
 
         $storesData = [];
         $dataBaseData = Product::find()

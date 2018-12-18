@@ -107,7 +107,7 @@ class Product extends \yii\db\ActiveRecord
             'order' => 'ASC'
         ],
         'price' => [
-            "title" => Yii::t('main', 'by_price'),
+            "title" => Yii::t('main', 'sort_by_price'),
             "title_mobile" => Yii::t('main', 'sort_by_price_mobile'),
             'order' => 'ASC'
         ],

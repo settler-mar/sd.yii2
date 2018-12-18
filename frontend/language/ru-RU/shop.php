@@ -17,5 +17,10 @@ return [
     'popular_brands' => 'Популярные бренды',
     'all_categories_with_cashback' => 'Другие категории товаров с кэшбэком',
     'all_products_with_cashback' => 'Другие товары с кэшбэком',
+    'product_vaforite_remove' => 'Убрать продукт из Избранных',
+    'product_vaforite_add' => 'Добавить продукт в Избранные',
+    'product_cashback_question' => 'Кэшбэк магазина',
+    'image_empty' => 'Нет<br>фото',
+    'category_product' => 'Товары',
 
 ];

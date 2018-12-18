@@ -9,32 +9,44 @@
 
     {% set old_price = product.old_price  %}
     <div class="catalog_products_item_in">
-        <div class="catalog_products_item_image">
-            <a href="{{ product_url }}" target="_blank" class="">
-             <div class="catalog_products_item_image-wrap">
-                 {% if product.price < old_price %}
-                     <span class="catalog_products_item_image-discount">
-                         {% set discount = (old_price - product.price / (old_price * 100))|round(0, 'floor') %}
-                         -{{ discount }}%
-                     </span>
-                 {% endif %}
-                 <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
-             </div>
 
-            </a>
-        </div>
-        <div class="catalog_products_item_text">
-            <div class="catalog_products_item_text_brand">
-                <a href="/category?vendor={{ product.vendor }}" target="_blank" class="">
-                    {{ product.vendor }}
-                </a>
-            </div>
-            <div class="catalog_products_item_text_title">
+        <div class="catalog_products_item_content">
+            <div class="catalog_products_item_image">
                 <a href="{{ product_url }}" target="_blank" class="">
-                    {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name }} {% endif %}
+                 <div class="catalog_products_item_image-wrap">
+                     {% if product.price < old_price %}
+                         <span class="catalog_products_item_image-discount">
+                             {% set discount = (((old_price - product.price) / old_price) * 100)|round(0, 'floor') %}
+                             -{{ discount }}%
+                         </span>
+                     {% endif %}
+                     {% if product.image %}
+                        <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+                     {% else %}
+                        <span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>
+                     {% endif %}
+                 </div>
+
                 </a>
             </div>
+            <div class="catalog_products_item_text">
+                <div class="catalog_products_item_text_brand">
+                    <a href="/category?shop={{ product.store.name }}" target="_blank" class="">
+                        {{ product.store.name }}
+                    </a>
+                </div>
+                <div class="catalog_products_item_text_brand">
+                    <a href="/category?vendor={{ product.vendor }}" target="_blank" class="">
+                        {{ product.vendor }}
+                    </a>
+                </div>
+                <div class="catalog_products_item_text_title">
+                    <a href="{{ product_url }}" target="_blank" class="">
+                        {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name }} {% endif %}
+                    </a>
+                </div>
 
+            </div>
         </div>
         <div class="catalog_products_item_prices">
             <div class="catalog_products_item_price">
@@ -47,7 +59,28 @@
             </div>
             <div class="catalog_products_item_cashback">
                 {% if product.store.displayed_cashback %}
-                    <span class="catalog_products_item_cashback-title">+ {{ t('main', 'cashback') }} </span>{{ product.store.displayed_cashback }}
+                    <span class="catalog_products_item_cashback-title">+ {{ t('main', 'cashback') }} </span>
+                    <span classs="catalog_products_item_cashback-value">{{ product.store.displayed_cashback }}
+                        <a class="catalog_products_item_cashback-question" href="#" data-toggle="tooltip" data-placement="top"
+                           data-original-title="{{ t('shop', 'product_cashback_question')|raw }}">
+                         {{ svg('question-circle-o', '', '@frontend')|raw }}
+                        </a>
+                    </span>
+                {% endif %}
+
+            </div>
+            <div class="catalog_products_item_prices-vaforite">
+                {#{% if product.favorite %}#}
+                {% if false %}
+                <a class="catalog_products_item_cashback-favorite product-favorite-remove" href="#" data-toggle="tooltip" data-placement="top"
+                   data-original-title="{{ t('shop', 'product_vaforite_remove')|raw }}">
+                    {{ svg('heart', '', '@frontend')|raw }}
+                </a>
+                {% else %}
+                    <a class="catalog_products_item_cashback-favorite product-favorite-add" href="#" data-toggle="tooltip" data-placement="top"
+                       data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                        {{ svg('heart-o', '', '@frontend')|raw }}
+                    </a>
                 {% endif %}
             </div>
 
