@@ -42,6 +42,8 @@
   "hide_details": "Скрыть",
   "favorites_shop_add": "Добавить магазин в Избранное",
   "favorites_shop_remove": "Удалить магазин из Избранного",
+  "favorites_shop_add_product": "Добавить продукт в Избранное",
+  "favorites_shop_remove_product": "Удалить продукт из Избранного",
   "error_querying_data": "Ошибка обращения к серверу",
   "product_use_without_cashback_or_register": "Если вы хотите получать КЭШБЭК (возврат денег), вам необходимо зарегистрироваться на нашем сайте. Но можете и просто купить товар, без кэшбэка.",
   "product_use": "Перейти к покупкам",

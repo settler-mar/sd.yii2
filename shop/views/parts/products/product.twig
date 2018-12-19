@@ -62,17 +62,26 @@
                     {{ cashback(product, 'product_catalog')|raw }}
                 {% endif %}
             </div>
-            <div class="catalog_products_item_prices-vaforite">
-                {#{% if product.favorite %}#}
-                {% if false %}
-                <a class="catalog_products_item_cashback-favorite product-favorite-remove" href="#" data-toggle="tooltip" data-placement="top"
-                   data-original-title="{{ t('shop', 'product_vaforite_remove')|raw }}">
-                    {{ svg('heart', '', '@frontend')|raw }}
-                </a>
+            <div class="catalog_products_item_prices-vaforite ">
+                {#{% if user_id %}#}
+                {% if true %}
+                    {% if product.id in favorites_ids %}
+                        <a class="catalog_products_item_cashback-favorite shop_panel-item product-favorite-remove favorite-link"
+                           href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-toggle="tooltip" data-state="delete"
+                           data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_remove')|raw }}">
+                            {{ svg('heart','shop_panel-item_icon in_fav_on','@frontend')|raw }}
+                        </a>
+                    {% else %}
+                        <a class="catalog_products_item_cashback-favorite shop_panel-item product-favorite-add favorite-link"
+                           href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-toggle="tooltip" data-state="add"
+                           data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                            {{ svg('heart','shop_panel-item_icon in_fav_off','@frontend')|raw }}
+                        </a>
+                    {% endif %}
                 {% else %}
-                    <a class="catalog_products_item_cashback-favorite product-favorite-add" href="#" data-toggle="tooltip" data-placement="top"
-                       data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
-                        {{ svg('heart-o', '', '@frontend')|raw }}
+                    <a class="catalog_products_item_cashback-favorite shop_panel-item favorite-link" href="#"
+                       data-toggle="tooltip" data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                        {{ svg('heart-o','shop_panel-item_icon in_fav_off','@frontend')|raw }}
                     </a>
                 {% endif %}
             </div>

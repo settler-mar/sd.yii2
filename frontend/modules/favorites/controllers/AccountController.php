@@ -54,6 +54,7 @@ class AccountController extends Controller
         }else{
           $fav=new UsersFavorites();
           $fav->store_id=$affiliate_id;
+          $fav->product_id = null;
           $fav->save();
 
           return json_encode([

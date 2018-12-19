@@ -31,7 +31,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'added'], 'required'],
-            [['user_id', 'store_id'], 'integer'],
+            [['user_id', 'store_id', 'product_id'], 'integer'],
             [['added'], 'safe'],
         ];
     }
@@ -65,23 +65,37 @@ class UsersFavorites extends \yii\db\ActiveRecord
     return true;
   }
 
-  public static function getUserFav($user_id=false){
-    if(!$user_id){
-      $user_id=Yii::$app->user->id;
+    /**
+     * список ид шопов или продуктов
+     * @param bool $user_id
+     * @return mixed
+     */
+    public static function getUserFav($user_id = false, $product = false)
+    {
+        if (!$user_id) {
+            $user_id = Yii::$app->user->id;
+        }
+        $cache = Yii::$app->cache;
+        $cacheName = 'account_favorite_' . ($product ? 'products' : 'stores') . '_' . $user_id;
+        return $cache->getOrSet($cacheName, function () use ($user_id, $product) {
+            $fav = self::find()
+                ->select([$product ? 'product_id' : 'store_id'])
+                ->where(['user_id' => $user_id])
+                ->asArray();
+            if ($product) {
+                $fav->andWhere(['is not', 'product_id', null]);
+            } else {
+                $fav->andWhere(['product_id' => null]);
+            }
+            $fav = $fav->all();
+//      $out=[];
+            $out = array_column($fav, $product ? 'product_id' : 'store_id');
+//      foreach ($fav as $item){
+//        $out[]=$product ? $item['product_id'] : $item['store_id'];
+//      }
+            return $out;
+        });
     }
-    $cache = Yii::$app->cache;
-    return $cache->getOrSet('account_favorite_stores_'.$user_id, function () use ($user_id){
-      $fav = self::find()
-        ->where(['user_id'=>$user_id])
-        ->asArray()
-        ->all();
-      $out=[];
-      foreach ($fav as $item){
-        $out[]=$item['store_id'];
-      }
-      return $out;
-    });
-  }
 
   /**
    * количество шопов у юсера
@@ -112,7 +126,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
         $count = Stores::find()
           ->from(Stores::tableName() . ' cws')
           ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
-          ->where(["cuf.user_id" => $userId, 'cws.is_active' => [0, 1]]);
+          ->where(["cuf.user_id" => $userId, 'cws.is_active' => [0, 1], 'product_id' => null]);
 
         if($offline!==null){
           $count->andWhere(['cws.is_offline' => $offline?1:0]);
@@ -138,7 +152,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
       return \Yii::$app->cache->getOrSet($cacheName, function () {
           return Stores::items()
               ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
-              ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
+              ->andWhere(["cuf.user_id" => \Yii::$app->user->id, 'product_id' => null])
               ->orderBy('cuf.added DESC')
               ->all();
       }, \Yii::$app->cache->defaultDuration, $dependency);

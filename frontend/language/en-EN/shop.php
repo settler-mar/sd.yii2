@@ -22,4 +22,11 @@ return [
     'product_cashback_modal_title' => 'How to get cash back?',
     'image_empty' => 'Photo<br>is empty',
     'category_product' => 'Products',
+    'favorites_product_allready' => 'This product is already in your Favorites.',
+    'favorites_shop_removed_allready' => 'This prduct is not in your Favorites.',
+    'favorites_add_noshop_or_product' => 'Unable to find the chosen product.',
+    'favorites_add_no_register' => 'You need to register to add product to your Favorites.',
+    'favorites_product_add' => 'The product was successfully added to Favorites.',
+    'favorites_shop_removed' => 'The product was successfully removed from Favorites.',
+    'favorites_product_add_error' => 'An error occured while doing operation',
 ];

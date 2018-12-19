@@ -22,5 +22,12 @@ return [
     'product_cashback_modal_title' => 'Как получить кэшбэк?',
     'image_empty' => 'Нет<br>фото',
     'category_product' => 'Товары',
+    'favorites_product_allready' => 'Данный продукт уже находится у вас в Избранном.',
+    'favorites_shop_removed_allready' => 'Данного продуктa нет у вас в Избранном.',
+    'favorites_add_noshop_or_product' => 'Невозможно найти выбранный товар.',
+    'favorites_add_no_register' => 'Необходимо зарегистрироваться, чтобы добавить товар в Избранное.',
+    'favorites_product_add' => 'Товар добавлен в Избранное.',
+    'favorites_shop_removed' => 'Товар удалён из Избранных.',
+    'favorites_product_add_error' => 'Произошла ошибка при выполнении операции.',
 
 ];

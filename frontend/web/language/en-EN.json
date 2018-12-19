@@ -42,6 +42,8 @@
   "hide_details": "Less",
   "favorites_shop_add": "Add to My Favorites",
   "favorites_shop_remove": "Delete from My Favorites",
+  "favorites_shop_add_product": "Add to My Favorites",
+  "favorites_shop_remove_product": "Delete from My Favorites",
   "error_querying_data": "Server Error Request",
   "product_use_without_cashback_or_register": "If you want to get a CASH BACK, you need to sign up on our website. But you can just buy a product without cash back.",
   "product_use": "Buy with cash back",
@@ -50,4 +52,5 @@
   "msg_new_cashback_title":"New Cash Back",
   "store_input_placeholder":"Find a store",
   "coupon_input_placeholder":"Find a coupon"
+
 }

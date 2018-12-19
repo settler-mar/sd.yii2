@@ -5,7 +5,8 @@ $(document).ready(function () {
 
     var self = $(this);
     var type = self.attr("data-state"),
-      affiliate_id = self.attr("data-affiliate-id");
+      affiliate_id = self.attr("data-affiliate-id"),
+      product_id = self.attr("data-product-id");
 
     if (!affiliate_id) {
       notification.notifi({
@@ -28,7 +29,8 @@ $(document).ready(function () {
 
     $.post("/account/favorites", {
       "type": type,
-      "affiliate_id": affiliate_id
+      "affiliate_id": affiliate_id,
+      "product_id": product_id
     }, function (data) {
       self.removeClass('disabled');
       if (data.error) {
@@ -50,10 +52,10 @@ $(document).ready(function () {
 
       if (type == "add") {
         self.find("svg").removeClass("spin in_fav_off").addClass("in_fav_on");
-        self.data('original-title', lg("favorites_shop_remove"));
+        //self.data('original-title', lg("favorites_shop_remove"+(product_id ? '_product' : '')));
       } else if (type == "delete") {
         self.find("svg").removeClass("spin in_fav_on").addClass("in_fav_off");
-        self.data('original-title', lg("favorites_shop_add"));
+        //self.data('original-title', lg("favorites_shop_add"+(product_id ? '_product' : '')));
       }
 
     }, 'json').fail(function () {
@@ -65,10 +67,10 @@ $(document).ready(function () {
 
       if (type == "add") {
         self.find("svg").removeClass("spin in_fav_off").addClass("in_fav_on");
-        self.data('original-title', lg("favorites_shop_remove"));
+        self.data('original-title', lg("favorites_shop_remove"+(product_id ? '_product' : '')));
       } else if (type == "delete") {
         self.find("svg").removeClass("spin in_fav_on").addClass("in_fav_off");
-        self.data('original-title', lg("favorites_shop_add"));
+        self.data('original-title', lg("favorites_shop_add"+(product_id ? '_product' : '')));
       }
 
     })

@@ -2,6 +2,7 @@
 
 namespace shop\modules\category\controllers;
 
+use frontend\modules\favorites\models\UsersFavorites;
 use yii\web\Controller;
 use shop\modules\product\models\Product;
 use shop\modules\category\models\ProductsCategory;
@@ -66,7 +67,7 @@ class DefaultController extends SdController
             ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
             ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
-                's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
+                's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
                 's.currency as currency', 's.action_end_date as action_end_date'])
             ->orderBy($sort . ' ' . $order);
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
@@ -162,6 +163,7 @@ class DefaultController extends SdController
             $this->getSortLinks($paginatePath, $sortvars, $defaultSort, $paginateParams);
 //        $storesData['limitlinks'] =
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
+        $storesData['favorites_ids'] = UsersFavorites::getUserFav(8, true);
 
         return $this->render('index', $storesData);
     }
