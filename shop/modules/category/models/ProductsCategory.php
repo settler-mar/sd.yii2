@@ -258,23 +258,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
               $categoryArr->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
                   ->groupBy(['id', 'name', 'parent', 'active', 'route']);
               $categoryArr->addSelect(['count(ptc.id) as count']);
-              if (isset($params['empty']) && $params['empty'] === false) {
-                  $categoryArr->andWhere(['is not', 'ptc.id', null]);
-              }
           }
           $categoryArr = $categoryArr->all();
           //d($categoryArr);
-          $current = isset($params['current']) ? $params['current'] : false;
-          $categories = static::childsCategories($categoryArr, false, $current);
+          $categories = static::childsCategories($categoryArr, false, $params);
 
-//          if ($categories && !empty($params['counts'])) {
-//            foreach ($categories as &$rootCategory) {
-//              //пока количество для корневых категорий
-//              $rootCategory['count'] = ProductsToCategory::find()
-//                  ->where(['category_id' => $rootCategory['childs_ids']])
-//                  ->count();
-//            }
-//          }
           return $categories;
         },
         $cache->defaultDuration,
@@ -283,19 +271,22 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  protected static function childsCategories($arr, $parent, $current = false)
+  protected static function childsCategories($arr, $parent, $params = [])
   {
+    $current = isset($params['current']) ? $params['current'] : false;
+    $removeEmpty = isset($params['empty']) && $params['empty'] === false;
     $out = [];
     foreach ($arr as $cat) {
       if ($cat['parent'] == ($parent ? $parent['id'] : null)) {
         $cat['full_route'] = $parent ? $parent['full_route'] . '/' . $cat['route'] : $cat['route'];
         $cat['current'] = $cat['id'] == $current;
-        $cat['childs'] = static::childsCategories($arr, $cat, $current);
+        $cat['childs'] = static::childsCategories($arr, $cat, $params);
         $cat['childs_ids'] = [$cat['id']];//в дочерние ид впишем свой ид
         $cat['count_all'] = isset($cat['count']) ? $cat['count'] : 0;//количество всего
+
         if ($cat['childs']) {
           foreach ($cat['childs'] as $child) {
-            if ($child['childs_ids']) {
+            if (!empty($child['childs_ids'])) {
               $cat['childs_ids'] = array_merge($cat['childs_ids'], $child['childs_ids']);
             }
             if ($child['current']) {
@@ -305,7 +296,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
             $cat['count_all'] = $cat['count_all'] + $child['count_all'];//сумма количества товаров
           }
         }
-        $out[] = $cat;
+        if (!$removeEmpty || $cat['count_all']) {
+            //если задано, то с пустым количеством товаров не выводим
+            $out[] = $cat;
+        }
       }
     }
     return empty($out) ? null : $out;
