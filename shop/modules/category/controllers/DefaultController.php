@@ -41,7 +41,7 @@ class DefaultController extends SdController
 
         $page = $request->get('page');
         $limit = $request->get('limit');
-        $sort = $request->get('sort');
+        $sort_request = $request->get('sort');
 
         $sortvars = Product::sortvars();
         $defaultSort = Product::$defaultSort;
@@ -50,14 +50,18 @@ class DefaultController extends SdController
         $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
-            !empty($sort) && !$validatorIn->validate($sort)
+            !empty($sort_request) && !$validatorIn->validate($sort_request)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
 
-        $sort = (!empty($sort)) ? $sort : Product::$defaultSort;
+        if (!empty($sort_request)) {
+            $sort = isset($sortvars[$sort_request]['name']) ? $sortvars[$sort_request]['name'] : $sort_request;
+        } else {
+            $sort = Product::$defaultSort;
+        }
         $limit = (!empty($limit)) ? $limit : Product::$defaultLimit;
-        $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
+        $order = !empty($sortvars[$sort_request]['order']) ? $sortvars[$sort_request]['order'] : 'DESC';
 
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => ('/category')];
 
@@ -68,7 +72,8 @@ class DefaultController extends SdController
             ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
                 's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
-                's.currency as currency', 's.action_end_date as action_end_date'])
+                's.currency as currency', 's.action_end_date as action_end_date',
+                'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
             ->orderBy($sort . ' ' . $order);
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];

@@ -102,13 +102,26 @@ class Product extends \yii\db\ActiveRecord
   {
     return [
         'name' => [
-            "title" => Yii::t('main', 'sort_by_abc'),
-            "title_mobile" => Yii::t('main', 'sort_by_abc_mobile'),
+            "title" => Yii::t('main', 'sort_by_name'),
+            "title_mobile" => Yii::t('main', 'sort_by_name_mobile'),
             'order' => 'ASC'
+        ],
+        'modified_time' => [
+            "title" => Yii::t('main', 'sort_by_time'),
+            "title_mobile" => Yii::t('main', 'sort_by_time_mobile'),
+        ],
+        'discount' => [
+            "title" => Yii::t('main', 'sort_by_discount'),
+            "title_mobile" => Yii::t('main', 'sort_by_discount_mobile'),
         ],
         'price' => [
             "title" => Yii::t('main', 'sort_by_price'),
             "title_mobile" => Yii::t('main', 'sort_by_price_mobile'),
+        ],
+        'price_asc' => [
+            "name" => 'price',
+            "title" => Yii::t('main', 'sort_by_price_asc'),
+            "title_mobile" => Yii::t('main', 'sort_by_price_asc_mobile'),
             'order' => 'ASC'
         ],
     ];
