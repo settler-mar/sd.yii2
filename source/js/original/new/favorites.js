@@ -4,9 +4,9 @@ $(document).ready(function () {
     e.preventDefault();
 
     var self = $(this);
-    var type = self.attr("data-state"),
-      affiliate_id = self.attr("data-affiliate-id"),
-      product_id = self.attr("data-product-id");
+    var type = self.data("state"),
+      affiliate_id = self.data("affiliate-id"),
+      product_id = self.data("product-id");
 
     if (!affiliate_id) {
       notification.notifi({
@@ -45,17 +45,13 @@ $(document).ready(function () {
         'title': (data.title ? data.title : false)
       });
 
-      self.attr({
-        "data-state": data["data-state"],
-        "data-original-title": data['data-original-title']
-      });
+      self.data("state", data["data-state"]);
+      self.data("original-title", data["data-original-title"]);
 
       if (type == "add") {
         self.find("svg").removeClass("spin in_fav_off").addClass("in_fav_on");
-        //self.data('original-title', lg("favorites_shop_remove"+(product_id ? '_product' : '')));
       } else if (type == "delete") {
         self.find("svg").removeClass("spin in_fav_on").addClass("in_fav_off");
-        //self.data('original-title', lg("favorites_shop_add"+(product_id ? '_product' : '')));
       }
 
     }, 'json').fail(function () {
