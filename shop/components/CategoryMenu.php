@@ -9,34 +9,42 @@ use shop\modules\category\models\ProductsCategory;
 
 class CategoryMenu extends Widget
 {
-  public $show_hidden = true;//показывать ли в меню скрытые категории
-  public $where = false; //Where для запроса. Если задан то выборка только исходя их него
+    public $show_hidden = true;//показывать ли в меню скрытые категории
+    public $where = false; //Where для запроса. Если задан то выборка только исходя их него
 
-  public function init()
-  {
-    parent::init();
-  }
+    public function init()
+    {
+        parent::init();
+    }
 
-  public function getViewPath()
-  {
-    return \Yii::getAlias('@shop/views/components');
-  }
+    public function getViewPath()
+    {
+        return \Yii::getAlias('@shop/views/components');
+    }
 
-  public function run()
-  {
-    $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
-        Yii::$app->controller->category->id : false;
+    public function run()
+    {
+        $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
+            Yii::$app->controller->category->id : false;
+        $cacheName = 'product_category_menu' . ($current ? '_' . $current->route : '');
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $categoryTree = ProductsCategory::tree([
-        'counts' => true,
-        'current' => $current,
-        'empty' => false,
-        'where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
-    ]);
-    return $this->render('category_menu.twig', [
-        'categories' => $categoryTree,
-        'current' => $current,
-    ]);
+        $cache = Yii::$app->cache;
+        $out = $cache->getOrSet($cacheName, function () use ($current) {
+            $categoryTree = ProductsCategory::tree([
+                'counts' => true,
+                'current' => $current,
+                'empty' => false,
+                'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
+            ]);
+            return $this->render('category_menu.twig', [
+                'categories' => $categoryTree,
+                'current' => $current,
+            ]);
+        }, $cache->defaultDuration, $dependency);
 
-  }
+        return $out;
+    }
 }
