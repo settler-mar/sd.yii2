@@ -230,6 +230,7 @@ class Product extends \yii\db\ActiveRecord
     $error = 0;
     $article = (string)$product['id'];
     $productDb = null;
+    $product['check_unique'] = true;//todo потом убрать после записи полей категорий и ниже по коду
     $productDb = $product['check_unique'] ?
         self::find()->where([
             'cpa_id' => $product['cpa_id'],
@@ -243,7 +244,8 @@ class Product extends \yii\db\ActiveRecord
     //}
 
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
-    if (!$productDb || !$productDb->modified_time ||
+    //todo убрать отсюда true после заполнения полей категорий
+    if (true || !$productDb || !$productDb->modified_time ||
         ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
       //всё остальное, если продукта нет или дата модификации продукта больше
 
