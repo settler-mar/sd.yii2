@@ -1,0 +1,9 @@
+<p>
+  {{ t('main', 'goto_to_{store}', {'store': store.name})|raw }}
+</p>
+<p class="phrase_cashback">
+
+  {{ t('main', 'goto_you_ll_get_{cashback}', {
+    'cashback': _if(has_up_to,t('main', 'up_to')~" ")~value_new
+  }) |raw }}
+</p>

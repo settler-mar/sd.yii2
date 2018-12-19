@@ -25,6 +25,7 @@ class UsersVisits extends \yii\db\ActiveRecord
    const TRANSITION_TYPE_PARTHNER = 2;
    const TRANSITION_TYPE_PARTHNER_CHECK_COOKIE = 3;
    const TRANSITION_TYPE_PRODUCTS = 4;
+   const TRANSITION_TYPE_PRODUCTS_CATALOG = 5;
 
     /**
    * @inheritdoc

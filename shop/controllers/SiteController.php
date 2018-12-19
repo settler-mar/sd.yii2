@@ -8,6 +8,8 @@ use shop\modules\category\models\ProductsCategory;
 use shop\modules\product\models\Product;
 use Yii;
 use yii\web\Controller;
+use frontend\modules\transitions\models\UsersVisits;
+use common\components\Help;
 
 
 /**
@@ -84,6 +86,37 @@ class SiteController extends Controller
 
     return $this->render('index', $data);
   }
+
+    /**
+     * Displays goto
+     *
+     * @return mixed
+     */
+    public function actionGoto($product = 0)
+    {
+        //todo if (Yii::$app->user->isGuest || $product == 0) {
+        if ($product == 0) {
+            return $this->redirect(Help::href('/category'));
+        }
+
+        $productDb = Product::findOne($product);
+        if (!$productDb) {
+            return $this->redirect(Help::href('/category'));
+        }
+
+        $visit = new UsersVisits();
+        $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS_CATALOG;
+        $visit->store_id = $productDb->store_id;
+        $visit->cpa_link_id = $productDb->catalog->cpa_link_id;
+        $visit->save();
+
+        $data['link'] = $productDb->url;
+        $data['store'] = $productDb->store;
+        $data['store_route'] = $productDb->store->route;
+
+        $this->layout = '@app/views/layouts/blank.twig';
+        return $this->render('@frontend/views/site/goto', $data);
+    }
 
 
 }

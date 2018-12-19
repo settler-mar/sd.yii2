@@ -1,0 +1,76 @@
+{{ use('yii/bootstrap') }}
+{{ use('yii\bootstrap\ActiveForm') }}
+
+{{ register_asset_bundle('shop/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:og="http://ogp.me/ns#"
+      lang="{{ app.language }}">
+
+<head>
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-90471086-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <title>{{ html.encode(this.title) }}</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    {% if pagination_tags.prev_page is not null %}
+        <link rel="prev" href="{{site_url}}{{pagination_tags.prev_page}}">
+    {% endif %}
+    {% if pagination_tags.next_page is not null %}
+        <link rel="next" href="{{site_url}}{{pagination_tags.next_page}}">
+    {% endif %}
+
+
+    {% for style in exclusionCSSheader %}
+        <link rel="stylesheet" href="{{style}}">
+    {% endfor %}
+    {% for css_link in minifyCSS %}
+        <link rel="stylesheet" href="{{css_link}}">
+    {% endfor %}
+
+    {% for scriptH in exclusionJSheader %}
+        <script src="{{scriptH}}"></script>
+    {% endfor %}
+
+
+    {{ html.csrfMetaTags | raw }}
+    {{   void(this.head) }}
+</head>
+<body class=blank>
+    {{ content|raw }}
+
+    {% for script in minifyJS %}
+        <script src="{{script}}"></script>
+    {% endfor %}
+    {% for scriptF in exclusionJSfooter %}
+    <script src="{{scriptF}}"></script>
+    {% endfor %}
+
+    {{   void(this.endBody()) }}
+
+    {{ Notification() | raw}}
+</body>
+</html>
+{{   void(this.endPage()) }}

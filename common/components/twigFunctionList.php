@@ -594,6 +594,9 @@ $functionsList = [
   'str_replace' => 'str_replace',
   'in_array' => 'in_array',
   '_php_date' => 'date',
+  '_file_get_contents' => function($path){
+       return file_get_contents(Yii::getAlias($path));
+  },
   'exchange' => function ($val,$on,$to){
       $kurs = Yii::$app->conversion->getCurs($to,$on);
       return ($kurs*$val);
