@@ -25,6 +25,7 @@ class SdViewBASE extends View
   public $type = 'frontend';
   public $counters_header = [];
   public $counters_footer = [];
+  public $metaArr = false;
 
   protected $metaClass = 'frontend\modules\meta\models\Meta';
 
@@ -62,7 +63,10 @@ class SdViewBASE extends View
     if (in_array($this->type, ['frontend', 'shop'])) {
       $request = Yii::$app->request;
       $metaClass = $this->metaClass;
-      $arr = $metaClass::findByUrl($this->commonMetaUrl($request->pathInfo));
+      if ($this->metaArr == false) {
+          $this->metaArr = $metaClass::findByUrl($this->commonMetaUrl($request->pathInfo));
+      }
+      $arr = $this->metaArr;
 
       //ddd($request->pathInfo, $arr);
       if ($arr && is_array($arr)) {
@@ -198,6 +202,17 @@ class SdViewBASE extends View
           $this->all_params
       );
     }
+  }
+
+    /**более простой, без метатегов и прочего
+     * @param $view
+     * @param $params
+     * @param $context
+     * @return string
+     */
+  public function renderPlain($view, $params = [], $context = null)
+  {
+      return parent::render($view, $params, $context);
   }
 
     /**

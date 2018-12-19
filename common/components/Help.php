@@ -289,7 +289,7 @@ class Help extends Component
       }
     }
 
-    return Yii::$app->view->render('@app/views/parts/cashback/' . $params['view'], [
+    return Yii::$app->view->renderPlain('@app/views/parts/cashback/' . $params['view'], [
         'store' => $store,
         'value' => $value,
         'value_new' => $value_n,
