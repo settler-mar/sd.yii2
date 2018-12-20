@@ -43,7 +43,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
       //[['name'], 'required'],
         [['name', 'route'], 'string', 'max' => 255],
         [['parent'], 'exist', 'targetAttribute' => 'id'],
-        [['active', 'synonym'], 'integer'],
+        [['active', 'synonym', 'store_id', 'cpa_id'], 'integer'],
         ['route', 'unique', 'targetAttribute' => ['route', 'parent']],
         [['route'], 'filter', 'filter' => function ($value) {
           $value = $value === '' ? null : $value;

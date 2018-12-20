@@ -599,7 +599,9 @@ class AdmitadController extends Controller
       $cpaLink->product_count = $this->writeProducts($csv, $cpaLink);
       $cpaLink->date_import = date('Y-m-d H:i:s', $dateUpdate);//$cpaLink->date_download;;
       $cpaLink->save();
-      $admitad->unlinkFile($cpaLink->id);
+      if ($config['refresh_csv']) {
+          $admitad->unlinkFile($cpaLink->id);
+      }
     }
   }
 
@@ -627,6 +629,9 @@ class AdmitadController extends Controller
           $product = array_combine($headers, $row);
 
           $count++;
+          $product['categoryId'] =  isset($product['market_category']) &&
+              strlen($product['market_category']) > strlen($product['categoryId']) ?
+              $product['market_category'] : $product['categoryId'];
           $product['available'] = (string)$product['available'] = 'true' ? 1 : ((string)$product['available'] = 'false' ? 0 : 2);
           $product['params_original'] = isset($product['param']) ? $product['param'] : null;
           $product['cpa_id'] = $this->cpa_id;

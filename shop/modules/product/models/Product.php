@@ -442,15 +442,15 @@ class Product extends \yii\db\ActiveRecord
           foreach ($categories_arr as &$item) {
             $item = $categories_par . $item;
             $categories_par = $item . '/';
-          }
-          ProductsCategory::updateAll([
+            ProductsCategory::updateAll([
               'cpa_id' => $product['cpa_id'],
               'store_id' => $product['store_id'],
-          ], [
+            ], [
               'code' => $categories_arr,
               'cpa_id' => null,
               'store_id' => null,
-          ]);
+            ]);
+          }
         }
         //временно для определения тех категорий что есть. Убрать конец
         $category=$category->toArray();
@@ -473,7 +473,7 @@ class Product extends \yii\db\ActiveRecord
         $code = implode('/', array_slice($categoryArr, 0, $index + 1));
         $cat = null;
         $category = trim($category);
-        $cat = $this->productCategory($category, $parent, $code);
+        $cat = $this->productCategory($category, $parent, $code, $product);
         if ($cat) {
           $result[] = $cat;
           $parent = $cat;
@@ -546,12 +546,12 @@ class Product extends \yii\db\ActiveRecord
    * @param null $parent - если задано, то категория должна быть дочерней к parent
    * @return mixed
    */
-  protected function productCategory($name, $parent, $code)
+  protected function productCategory($name, $parent, $code, $product)
   {
     $path = 'category_with_parent_' . $name . '_parent_' . $parent . '_code_' . $code;
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
 
-    $out = $cache->getOrSet($path, function () use ($name, $parent, $code) {
+    $out = $cache->getOrSet($path, function () use ($name, $parent, $code, $product) {
       $categoryDb = null;
       $categoryDb = ProductsCategory::findOne(['code' => $code]);
       if (!$categoryDb) {
@@ -559,6 +559,8 @@ class Product extends \yii\db\ActiveRecord
         $categoryDb->name = $name;
         $categoryDb->parent = $parent;
         $categoryDb->code = $code;
+        $categoryDb->store_id = $product['store_id'];
+        $categoryDb->cpa_id = $product['cpa_id'];
         $categoryDb->active = ProductsCategory::PRODUCT_CATEGORY_ACTIVE_WAITING;
         if (!$categoryDb->save()) {
           if (Yii::$app instanceof Yii\console\Application) {
