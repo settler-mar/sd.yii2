@@ -180,8 +180,11 @@ class DefaultController extends SdController
             throw new yii\web\NotFoundHttpException();
         }
         Yii::$app->params['url_mask'] = 'category/product/*';
+
+
         return $this->render('product', [
             'product' => $product,
+            'favorites_ids' => UsersFavorites::getUserFav(8, true),
         ]);
 
     }

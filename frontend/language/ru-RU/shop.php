@@ -29,5 +29,9 @@ return [
     'favorites_product_add' => 'Товар добавлен в Избранное.',
     'favorites_shop_removed' => 'Товар удалён из Избранных.',
     'favorites_product_add_error' => 'Произошла ошибка при выполнении операции.',
+    'buy_the_product' => 'Купить',
+    'all_favorites_{count}' => 'Все избранные ({count})',
+    'all_products_of_{vendor}' => 'Все товары производителя {vendor}',
+    'all_products_of_{store}' => 'Все товары магазина {store}',
 
 ];

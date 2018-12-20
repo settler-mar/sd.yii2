@@ -12,7 +12,7 @@
 
         <div class="catalog_products_item_content">
             <div class="catalog_products_item_image">
-                <a href="{{ product_url }}" target="_blank" class="">
+                <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
                  <div class="catalog_products_item_image-wrap">
                      {% if product.price < old_price %}
                          <span class="catalog_products_item_image-discount">
@@ -31,12 +31,12 @@
             </div>
             <div class="catalog_products_item_text">
                 <div class="catalog_products_item_text_brand">
-                    <a href="{{ _href('/category?shop='~product.store_route)|raw }}" target="_blank" class="">
+                    <a href="{{ _href('/category?shop='~product.store_route)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="">
                         {{ product.store_name }}
                     </a>
                 </div>
                 <div class="catalog_products_item_text_brand">
-                    <a href="{{ _href('/category?vendor='~product.vendor)|raw }}" target="_blank" class="">
+                    <a href="{{ _href('/category?vendor='~product.vendor)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="">
                         {{ product.vendor }}
                     </a>
                 </div>

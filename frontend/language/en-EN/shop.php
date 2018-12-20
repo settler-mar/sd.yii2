@@ -29,4 +29,5 @@ return [
     'favorites_product_add' => 'The product was successfully added to Favorites.',
     'favorites_shop_removed' => 'The product was successfully removed from Favorites.',
     'favorites_product_add_error' => 'An error occured while doing operation',
+    'buy_the_product' => 'Buy',
 ];

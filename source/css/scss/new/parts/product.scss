@@ -1,0 +1,65 @@
+.catalog_product {
+
+  &-image {
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &-store {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    a:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+
+  &_prices {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &-left,
+    &-right {
+      display: flex;
+      flex-direction: row;
+    }
+    &-price {
+      margin-right: 20px;
+    }
+    &-vaforite-all {
+      margin-left: 20px;
+    }
+  }
+  &_cashback {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: red;
+
+    &-favorite {
+      svg {
+        vertical-align: middle;
+      }
+    }
+
+    &-cashback {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    &-question {
+      svg {
+        width: 20px;
+        height: 20px;
+        color: red;
+        fill: red;
+        stroke: red;
+        vertical-align: text-bottom;
+      }
+    }
+  }
+}
