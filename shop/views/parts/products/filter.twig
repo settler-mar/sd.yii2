@@ -1,21 +1,30 @@
 {% if filter %}
 <div class="catalog-categories_filter">
     <form class="catalog-categories_filter-form" method="get">
-        <div class="catalog-categories_filter-price slider-price">
-                <label for="slider-price-start" class="slider-price_label label-start">{{ t('shop', 'filter_price_from') }}</label>
-                <input type="text" id="slider-price-start" name="price-start"
-                       placeholder="{{ t('shop', 'filter_price_from-placeholder') }}"
-                       data-range="{{ filter.price_start }}" data-user="{{ filter.price_start_user }}"
-                       class="catalog-categories_filter-price-imput price_start"
-                        value="{{ filter.price_start_current }}">
-                <label for="slider-price-end" class="slider-price_label label-end">{{ t('shop', 'filter_price_end') }}</label>
-                <input type="text" id="slider-price-end" name="price-end"
-                       placeholder="{{ t('shop', 'filter_price_end-placeholder') }}"
-                       data-range="{{ filter.price_end }}" data-user="{{ filter.price_end_user }}"
-                       class="catalog-categories_filter-price-imput price_end"
-                       value="{{ filter.price_end_current }}">
-                <div id="filter-slider-price" class=" slider-price_element"></div>
+        <div class="catalog-categories_filter-items">
+            <div class="catalog-categories_filter-items-item">
+                <div class="catalog-categories_filter-header">
+                    {{ t('shop','filter_price') }}
+                </div>
+                <div class="catalog-categories_filter-price slider-price">
+                    <label for="slider-price-start" class="slider-price_label label-start">{{ t('shop', 'filter_price_from') }}</label>
+                    <input type="text" id="slider-price-start" name="price-start"
+                           placeholder="{{ t('shop', 'filter_price_from-placeholder') }}"
+                           data-range="{{ filter.price_start }}" data-user="{{ filter.price_start_user }}"
+                           class="catalog-categories_filter-price-imput price_start"
+                           value="{{ filter.price_start_user }}">
+                    <label for="slider-price-end" class="slider-price_label label-end">{{ t('shop', 'filter_price_end') }}</label>
+                    <input type="text" id="slider-price-end" name="price-end"
+                           placeholder="{{ t('shop', 'filter_price_end-placeholder') }}"
+                           data-range="{{ filter.price_end }}" data-user="{{ filter.price_end_user }}"
+                           class="catalog-categories_filter-price-imput price_end"
+                           value="{{ filter.price_end_user }}">
+                    <div id="filter-slider-price" class=" slider-price_element"></div>
+                </div>
+
+            </div>
         </div>
+
         <div class="catalog-categories_filter-form-submit">
             <input type="submit" class="btn" value="{{ t('shop', 'filter_start') }}">
         </div>

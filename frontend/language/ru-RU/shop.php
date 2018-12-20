@@ -33,5 +33,11 @@ return [
     'all_favorites_{count}' => 'Все избранные ({count})',
     'all_products_of_{vendor}' => 'Все товары производителя {vendor}',
     'all_products_of_{store}' => 'Все товары магазина {store}',
+    'filter_price_from' => 'От',
+    'filter_price_end' => 'До',
+    'filter_price_from-placeholder' => 'От',
+    'filter_price_end-placeholder' => 'До',
+    'filter_start' => 'Поиск',
+    'filter_price' => 'Цена',
 
 ];

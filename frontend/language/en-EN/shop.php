@@ -30,4 +30,13 @@ return [
     'favorites_shop_removed' => 'The product was successfully removed from Favorites.',
     'favorites_product_add_error' => 'An error occured while doing operation',
     'buy_the_product' => 'Buy',
+    'all_favorites_{count}' => 'All favorites ({count})',
+    'all_products_of_{vendor}' => 'All products by manufacturer {vendor}',
+    'all_products_of_{store}' => 'All products by store {store}',
+    'filter_price_from' => 'From',
+    'filter_price_end' => 'To',
+    'filter_price_from-placeholder' => 'From',
+    'filter_price_end-placeholder' => 'To',
+    'filter_start' => 'Search',
+    'filter_price' => 'Price',
 ];

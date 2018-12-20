@@ -10,7 +10,7 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
 use shop\modules\category\models\ProductsCategory;
-use Yii;
+use yii;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -600,6 +600,25 @@ class Product extends \yii\db\ActiveRecord
           ->count();
     });
   }
+
+    public static function agregate($field, $func)
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'products_agregate_' . $field . '_'.$func . ($language ? '_' . $language : '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $out = $cache->getOrSet($casheName, function () use ($field, $func) {
+            $product = self::find()
+                ->select([$func.'('.$field.') as '.$field])
+                ->asArray()
+                ->all();
+            return isset($product[0][$field]) ? $product[0][$field] : 0;
+        }, $cache->defaultDuration, $dependency);
+        return $out;
+    }
 
   protected function clearCache()
   {

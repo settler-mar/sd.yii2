@@ -80,11 +80,28 @@ class DefaultController extends SdController
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sort . '_' . $order .
             ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
+        $filter = [];
+        $filterPriceStartMin = (int)Product::agregate('price', 'min');
+        $filterPriceEndMax = (int)Product::agregate('price', 'max');
 
-        $filters = ProductParameters::find()
-            ->where(['active' => ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES])
-            ->select(['id', 'name'])
-            ->asArray();
+        $filterPriceStart = (int) $request->get('price-start') > 0 ? (int) $request->get('price-start') : 0;
+        $filterPriceEnd = (int) $request->get('price-end') > 0 ? (int) $request->get('price-end') : 0;
+        if ($filterPriceStart) {
+            $filter[] = ['>=', 'price', $filterPriceStart];
+        }
+        if ($filterPriceEnd) {
+            $filter[] = ['<=', 'price', $filterPriceEnd];
+        }
+        if (!empty($filter)) {
+            $dataBaseData->andWhere(array_merge(['and'], $filter));
+        }
+        //ddd($filterPriceStartMin, $filterPriceEndMax, $filter, $dataBaseData->where);
+
+
+//        $filters = ProductParameters::find()
+//            ->where(['active' => ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES])
+//            ->select(['id', 'name'])
+//            ->asArray();
 
         if ($this->category) {
             //есть категория
@@ -127,7 +144,7 @@ class DefaultController extends SdController
 //            }
 //            $filter['values'] = $values->all();
 //        }
-        $storeData['filter'] = $filters;
+        //$storeData['filter'] = $filters;
         //ddd($filters);
 
         $pagination = new Pagination(
@@ -168,14 +185,14 @@ class DefaultController extends SdController
             $this->getSortLinks($paginatePath, $sortvars, $defaultSort, $paginateParams);
 //        $storesData['limitlinks'] =
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
+
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(8, true);
         $storesData['filter'] = [
-            'price_start' => 100,
-            'price_end' => 900000,
-            'price_start_user' => 200,
-            'price_end_user' => 800000,
-            'price_start_current' => $request->get('price-start'),
-            'price_end_current' => $request->get('price-end'),
+            'price_start' => $filterPriceStartMin,
+            'price_end' => $filterPriceEndMax,
+            'price_start_user' => $filterPriceStart ? $filterPriceStart : $filterPriceStartMin,
+            'price_end_user' => $filterPriceEnd ? $filterPriceEnd : $filterPriceEndMax,
+           // 'vendors' => []
         ];
 
         return $this->render('index', $storesData);
