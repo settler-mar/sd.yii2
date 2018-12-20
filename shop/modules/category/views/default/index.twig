@@ -26,6 +26,8 @@
         {#справа продукты#}
         <div class="catalog-stores ">
 
+            {% include('parts/products/filter.twig') %}
+
             <div class="catalog-categories_tree-toggle">
                 {{ svg('bars-slim', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-close','@frontend')|raw }}
                 {{ svg('close', 'catalog-categories_tree-toggle-icon catalog-categories_tree-toggle-icon-open', '@frontend')|raw }}

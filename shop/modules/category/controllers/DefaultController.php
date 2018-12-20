@@ -169,6 +169,14 @@ class DefaultController extends SdController
 //        $storesData['limitlinks'] =
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(8, true);
+        $storesData['filter'] = [
+            'price_start' => 100,
+            'price_end' => 900000,
+            'price_start_user' => 200,
+            'price_end_user' => 800000,
+            'price_start_current' => $request->get('price-start'),
+            'price_end_current' => $request->get('price-end'),
+        ];
 
         return $this->render('index', $storesData);
     }

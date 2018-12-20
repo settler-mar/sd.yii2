@@ -97,7 +97,7 @@ gulp.task('shop',['clear_shop', 'css_shop', 'js_shop']);
 gulp.task('default',['server']);
 //let default_ = gulp.series(server);
 
-gulp.task('js',['jsadmin', 'js_new']);
+gulp.task('js',['jsadmin', 'js_new', 'js_shop']);
 //let default_ = gulp.series(server);
 
 gulp.task('css', ['cssadmin', 'css_new', 'css_go', 'css_shop', 'cssb2b']);
@@ -227,6 +227,7 @@ gulp.task('js_shop', compileJs([
         paths.source.js+'/original/new/accordion.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
         //paths.source.js+'/external/jquery.flexslider-min.js',
+        paths.source.js+'/original/admin/jquery-ui.min.js',
         paths.source.js+'/original/new/tooltip.js',
         paths.source.js+'/original/new/account_notification.js',
         paths.source.js+'/original/new/slider.js',
@@ -249,6 +250,7 @@ gulp.task('js_shop', compileJs([
         paths.source.js+'/original/new/ajax-load.js',
         paths.source.js+'/original/new/banner.js',
         paths.source.js+'/original/new/country_select.js',
+        paths.source.js+'/original/new/product_filter.js',
 
         //for_all
         paths.source.js+'/original/notification.js',

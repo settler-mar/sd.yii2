@@ -13,6 +13,7 @@
 @import "base/socials";
 @import "base/print";
 @import "external/flexslider";
+@import "../../external/admin/jquery-ui.min";
 
 html {
   @include media($desktop) {
