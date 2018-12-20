@@ -39,4 +39,6 @@ return [
     'filter_price_end-placeholder' => 'To',
     'filter_start' => 'Search',
     'filter_price' => 'Price',
+    'filter_vendor' => 'Manufacturer',
+
 ];

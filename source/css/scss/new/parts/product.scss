@@ -62,4 +62,16 @@
       }
     }
   }
+  &_filter{
+
+    &-items{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+    &-vendor {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }

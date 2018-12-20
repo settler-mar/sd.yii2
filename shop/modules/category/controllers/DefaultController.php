@@ -29,28 +29,32 @@ class DefaultController extends SdController
 
     public function actionIndex()
     {
-//        $categoryTree = ProductsCategory::tree([
-//            'counts' => true,
-//            'current' => false,
-//            'empty' => false,
-//            'where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
-//        ]);
-//        ddd($categoryTree);
-
         $request = Yii::$app->request;
+
+        $vendors = Product::conditionValues('vendor', 'distinct');
 
         $page = $request->get('page');
         $limit = $request->get('limit');
         $sort_request = $request->get('sort');
+        $priceStart = $request->get('price-start');
+        $priceEnd = $request->get('price-end');
+        $vendorRequest = $request->get('vendor');
 
         $sortvars = Product::sortvars();
         $defaultSort = Product::$defaultSort;
 
         $validator = new \yii\validators\NumberValidator();
         $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
+        $vendorValidator = new \yii\validators\RangeValidator([
+            'range' => array_column($vendors, 'vendor'),
+            'allowArray' => true
+        ]);
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
-            !empty($sort_request) && !$validatorIn->validate($sort_request)
+            !empty($sort_request) && !$validatorIn->validate($sort_request) ||
+            !empty($priceStart) && !$validator->validate($priceStart) ||
+            !empty($priceEnd) && !$validator->validate($priceEnd) ||
+            !empty($vendorRequest) && !$vendorValidator->validate($vendorRequest)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
@@ -81,16 +85,17 @@ class DefaultController extends SdController
             ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
         $filter = [];
-        $filterPriceStartMin = (int)Product::agregate('price', 'min');
-        $filterPriceEndMax = (int)Product::agregate('price', 'max');
+        $filterPriceStartMin = (int)Product::conditionValues('price', 'min');
+        $filterPriceEndMax = (int)Product::conditionValues('price', 'max');
 
-        $filterPriceStart = (int) $request->get('price-start') > 0 ? (int) $request->get('price-start') : 0;
-        $filterPriceEnd = (int) $request->get('price-end') > 0 ? (int) $request->get('price-end') : 0;
-        if ($filterPriceStart) {
-            $filter[] = ['>=', 'price', $filterPriceStart];
+        if ($priceStart) {
+            $filter[] = ['>=', 'price', $priceStart];
         }
-        if ($filterPriceEnd) {
-            $filter[] = ['<=', 'price', $filterPriceEnd];
+        if ($priceEnd) {
+            $filter[] = ['<=', 'price', $priceEnd];
+        }
+        if ($vendorRequest) {
+            $filter[] = ['vendor' => $vendorRequest];
         }
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
@@ -190,9 +195,10 @@ class DefaultController extends SdController
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
             'price_end' => $filterPriceEndMax,
-            'price_start_user' => $filterPriceStart ? $filterPriceStart : $filterPriceStartMin,
-            'price_end_user' => $filterPriceEnd ? $filterPriceEnd : $filterPriceEndMax,
-           // 'vendors' => []
+            'price_start_user' => $priceStart ? $priceStart : $filterPriceStartMin,
+            'price_end_user' => $priceEnd ? $priceEnd : $filterPriceEndMax,
+            'vendors' => $vendors,
+            'vendors_user' => $vendorRequest ? $vendorRequest : [],
         ];
 
         return $this->render('index', $storesData);

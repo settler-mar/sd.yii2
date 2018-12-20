@@ -601,7 +601,7 @@ class Product extends \yii\db\ActiveRecord
     });
   }
 
-    public static function agregate($field, $func)
+    public static function conditionValues($field, $func)
     {
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
@@ -611,6 +611,14 @@ class Product extends \yii\db\ActiveRecord
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $out = $cache->getOrSet($casheName, function () use ($field, $func) {
+            if ($func=='distinct') {
+                return self::find()->select([$field, 'count(*) as count'])
+                    ->groupBy($field)
+                    ->orderBy(['count' => SORT_DESC])
+                    ->where(['and', ['<>', $field, ""], ['is not', $field, null]])
+                    ->limit(20)
+                    ->asArray()->all();
+            }
             $product = self::find()
                 ->select([$func.'('.$field.') as '.$field])
                 ->asArray()

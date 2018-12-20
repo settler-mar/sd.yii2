@@ -39,5 +39,6 @@ return [
     'filter_price_end-placeholder' => 'До',
     'filter_start' => 'Поиск',
     'filter_price' => 'Цена',
+    'filter_vendor' => 'Производитель',
 
 ];
