@@ -26,7 +26,7 @@ class CategoryMenu extends Widget
     {
         $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
             Yii::$app->controller->category->id : false;
-        $cacheName = 'product_category_menu' . ($current ? '_' . $current->route : '');
+        $cacheName = 'product_category_menu' . ($current ? '_' . $current : '');
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
