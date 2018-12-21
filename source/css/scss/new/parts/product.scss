@@ -1,10 +1,6 @@
 .catalog_product {
 
-  &-image {
-    img {
-      max-width: 100%;
-    }
-  }
+
 
   &-store {
     display: flex;
@@ -101,6 +97,26 @@
       flex-direction: column;
     }
   }
+  &-main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    @include media($tablets) {
+      flex-direction: column;
+    }
+
+    &-image {
+      width: 40%;
+      img {
+        max-width: 100%;
+      }
+    }
+    &-info h1 {
+      font-size: 20px;
+    }
+  }
+
 }
 
 //ползунок

@@ -95,17 +95,28 @@ class DefaultController extends SdController
         $filterPriceStartMin = (int)Product::conditionValues('price', 'min');
         $filterPriceEndMax = (int)Product::conditionValues('price', 'max');
 
+        $paginateParams = [
+            'limit' => $limit,
+            'sort' => $sort,
+            'page' => $page,
+        ];
+
         if ($priceStart) {
             $filter[] = ['>=', 'price', $priceStart];
+            $paginateParams['price-start'] = $priceStart;
         }
         if ($priceEnd) {
             $filter[] = ['<=', 'price', $priceEnd];
+            $paginateParams['price-end'] = $priceEnd;
         }
         if ($vendorRequest) {
             $filter[] = ['vendor' => $vendorRequest];
+            $paginateParams['vendor'] = $vendorRequest;
         }
         if ($storeRequest) {
             $filter[] = ['store_id' => $storeRequest];
+            $paginateParams['store'] = $storeRequest;
+
         }
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
@@ -176,15 +187,6 @@ class DefaultController extends SdController
         $storesData["show_products"] = count($storesData['products']);
         $storesData["offset_products"] = $pagination->offset();
         $storesData["limit"] = empty($limit) ? Product::$defaultLimit : $limit;
-
-        $paginateParams = [
-            //'limit' => $this->defaultLimit == $limit ? null : $limit,
-            'limit' => $limit,
-            //'sort' => $defaultSort == $sort ? null : $sort,
-            'sort' => $sort,
-            'page' => $page,
-
-        ];
 
         $paginatePath = '/' . 'category'. ($this->category ? '/' . ProductsCategory::parentsTree($this->category->toArray(), true) : '');
 
