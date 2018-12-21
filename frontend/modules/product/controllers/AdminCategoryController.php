@@ -265,6 +265,22 @@ class AdminCategoryController extends Controller
       $data['synonym'] = (int)$synonym > 0 ? (int)$synonym : null;
       if((int)$synonym > 0) {
          ProductsToCategory::updateAll(['category_id' =>(int)$synonym],['category_id' => $ids]);
+
+        $synonym_route = ProductsCategory::find()
+            ->select('route')
+            ->where(['parent' => (int)$synonym])
+            ->asArray()
+            ->all();
+        foreach ($synonym_route as &$item){
+          $item='\''.$item['route'].'\'';
+        }
+        $synonym_route = implode(',',$synonym_route);
+        //ddd($synonym_route);
+        $sql = 'UPDATE `cw_products_category` SET `route`=CONCAT(`route`,\'_\',`id`) WHERE 
+        `route` IN ('.$synonym_route.') AND
+        `parent` in ('.implode(',',$ids).')';
+        Yii::$app->db->createCommand($sql)->execute();
+
          ProductsCategory::updateAll(['parent' =>(int)$synonym],['parent' => $ids]);
       }
     }
