@@ -274,13 +274,14 @@ class AdminCategoryController extends Controller
         foreach ($synonym_route as &$item){
           $item='\''.$item['route'].'\'';
         }
-        $synonym_route = implode(',',$synonym_route);
-        //ddd($synonym_route);
-        $sql = 'UPDATE `cw_products_category` SET `route`=CONCAT(`route`,\'_\',`id`) WHERE 
-        `route` IN ('.$synonym_route.') AND
-        `parent` in ('.implode(',',$ids).')';
-        Yii::$app->db->createCommand($sql)->execute();
-
+        if(count($synonym_route)>0) {
+          $synonym_route = implode(',', $synonym_route);
+          //ddd($synonym_route);
+          $sql = 'UPDATE `cw_products_category` SET `route`=CONCAT(`route`,\'_\',`id`) WHERE 
+          `route` IN (' . $synonym_route . ') AND
+          `parent` in (' . implode(',', $ids) . ')';
+          Yii::$app->db->createCommand($sql)->execute();
+        }
          ProductsCategory::updateAll(['parent' =>(int)$synonym],['parent' => $ids]);
       }
     }
