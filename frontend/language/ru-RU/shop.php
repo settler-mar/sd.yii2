@@ -40,5 +40,6 @@ return [
     'filter_start' => 'Поиск',
     'filter_price' => 'Цена',
     'filter_vendor' => 'Производитель',
+    'filter_stores' => 'Магазин',
 
 ];

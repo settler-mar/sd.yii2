@@ -40,5 +40,6 @@ return [
     'filter_start' => 'Search',
     'filter_price' => 'Price',
     'filter_vendor' => 'Manufacturer',
+    'filter_stores' => 'Store',
 
 ];

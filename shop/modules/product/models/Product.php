@@ -628,6 +628,29 @@ class Product extends \yii\db\ActiveRecord
         return $out;
     }
 
+    public static function usedStores()
+    {
+        $cache = \Yii::$app->cache;
+        $dependency = new yii\caching\DbDependency;
+        $dependencyName = 'catalog_product';
+        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $casheName = 'product_used_stores_'.($language ? '_' . $language : '');
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+        $out = $cache->getOrSet($casheName, function () {
+            $stores = self::find()
+                ->from(self::tableName().' p')
+                ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
+                ->select(['s.name', 's.uid'])
+                ->groupBy(['s.name', 's.uid'])
+                ->orderBy(['s.name' => SORT_ASC])
+                ->asArray()
+                ->all();
+            return $stores;
+        }, $cache->defaultDuration, $dependency);
+        return $out;
+    }
+
   protected function clearCache()
   {
     if (isset(Yii::$app->params['cash']) && Yii::$app->params['cash'] == false) return;

@@ -32,6 +32,7 @@ class DefaultController extends SdController
         $request = Yii::$app->request;
 
         $vendors = Product::conditionValues('vendor', 'distinct');
+        $stores = Product::usedStores();
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -39,6 +40,7 @@ class DefaultController extends SdController
         $priceStart = $request->get('price-start');
         $priceEnd = $request->get('price-end');
         $vendorRequest = $request->get('vendor');
+        $storeRequest = $request->get('store');
 
         $sortvars = Product::sortvars();
         $defaultSort = Product::$defaultSort;
@@ -49,12 +51,17 @@ class DefaultController extends SdController
             'range' => array_column($vendors, 'vendor'),
             'allowArray' => true
         ]);
+        $storeValidator = new \yii\validators\RangeValidator([
+            'range' => array_column($stores, 'uid'),
+            'allowArray' => true
+        ]);
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
             !empty($sort_request) && !$validatorIn->validate($sort_request) ||
             !empty($priceStart) && !$validator->validate($priceStart) ||
             !empty($priceEnd) && !$validator->validate($priceEnd) ||
-            !empty($vendorRequest) && !$vendorValidator->validate($vendorRequest)
+            !empty($vendorRequest) && !$vendorValidator->validate($vendorRequest) ||
+            !empty($storeRequest) && !$storeValidator->validate($storeRequest)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
@@ -96,6 +103,9 @@ class DefaultController extends SdController
         }
         if ($vendorRequest) {
             $filter[] = ['vendor' => $vendorRequest];
+        }
+        if ($storeRequest) {
+            $filter[] = ['store_id' => $storeRequest];
         }
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
@@ -199,8 +209,9 @@ class DefaultController extends SdController
             'price_end_user' => $priceEnd ? $priceEnd : $filterPriceEndMax,
             'vendors' => $vendors,
             'vendors_user' => $vendorRequest ? $vendorRequest : [],
+            'stores' => $stores,
+            'store_user' => $storeRequest ? $storeRequest : [],
         ];
-
         return $this->render('index', $storesData);
     }
 
