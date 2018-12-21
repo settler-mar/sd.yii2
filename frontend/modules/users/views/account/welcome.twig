@@ -132,7 +132,7 @@
     {% endfor %}
   </div>
   <div class="align-center">
-    <input type="checkbox" class="checkbox" {% if user.notice_email_status %} checked {% endif %}>
+    <input type="checkbox" class="checkbox account" {% if user.notice_email_status %} checked {% endif %}>
     <label for="checkbox-2">{{ t('account','notify_settings_email_status')|raw }} <a class="blue" href="{{ _href('/account/settings')|raw }}">{{ t('common', 'update') }}</a></label>
   </div>
 

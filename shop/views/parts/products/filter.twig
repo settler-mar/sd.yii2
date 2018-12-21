@@ -1,29 +1,33 @@
 {% if filter %}
 <div class="catalog_product_filter">
     <form class="catalog_product_filter-form" method="get">
-        <div class="catalog_product_filter-items">
-            <div class="catalog_product_filter-items-item">
+        <div class="catalog_product_filter-items margin-half">
+            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-price">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_price') }}
                 </div>
                 <div class="catalog_product_filter-price slider-price">
-                    <label for="slider-price-start" class="slider-price_label label-start">{{ t('shop', 'filter_price_from') }}</label>
-                    <input type="text" id="slider-price-start" name="price-start"
-                           placeholder="{{ t('shop', 'filter_price_from-placeholder') }}"
-                           data-range="{{ filter.price_start }}" data-user="{{ filter.price_start_user }}"
-                           class="catalog_product_filter-price-imput price_start"
-                           value="{{ filter.price_start_user }}">
-                    <label for="slider-price-end" class="slider-price_label label-end">{{ t('shop', 'filter_price_end') }}</label>
-                    <input type="text" id="slider-price-end" name="price-end"
-                           placeholder="{{ t('shop', 'filter_price_end-placeholder') }}"
-                           data-range="{{ filter.price_end }}" data-user="{{ filter.price_end_user }}"
-                           class="catalog_product_filter-price-imput price_end"
-                           value="{{ filter.price_end_user }}">
+                    <div class="catalog_product_filter-items-item-price-inputs">
+
+                        <label for="slider-price-start" class="slider-price_label label-start">{{ t('shop', 'filter_price_from') }}</label>
+                        <input type="text" id="slider-price-start" name="price-start"
+                               placeholder="{{ t('shop', 'filter_price_from-placeholder') }}"
+                               data-range="{{ filter.price_start }}" data-user="{{ filter.price_start_user }}"
+                               class="catalog_product_filter-price-imput price_start"
+                               value="{{ filter.price_start_user }}">
+                        <label for="slider-price-end" class="slider-price_label label-end">{{ t('shop', 'filter_price_end') }}</label>
+                        <input type="text" id="slider-price-end" name="price-end"
+                               placeholder="{{ t('shop', 'filter_price_end-placeholder') }}"
+                               data-range="{{ filter.price_end }}" data-user="{{ filter.price_end_user }}"
+                               class="catalog_product_filter-price-imput price_end"
+                               value="{{ filter.price_end_user }}">
+                        руб.
+                    </div>
                     <div id="filter-slider-price" class=" slider-price_element"></div>
                 </div>
 
             </div>
-            <div class="catalog_product_filter-items-item">
+            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_vendor') }}
                 </div>
@@ -35,7 +39,7 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="catalog_product_filter-items-item">
+            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_stores') }}
                 </div>
@@ -49,7 +53,7 @@
             </div>
         </div>
 
-        <div class="catalog_product_filter-form-submit">
+        <div class="catalog_product_filter-form-submit align-center">
             <input type="submit" class="btn" value="{{ t('shop', 'filter_start') }}">
         </div>
     </form>

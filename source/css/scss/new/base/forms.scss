@@ -507,13 +507,13 @@ input[type=checkbox] {
   + label {
     position: relative;
     padding-left: 38px;
-   // line-height: 40px;
     line-height: 1.8;
-    @include media($laptop-min) {
-      padding-left: 0;
-      margin-top: 10px;
-      display: block;
-    }
+    cursor: pointer;
+    //@include media($laptop-min) {
+    //  padding-left: 0;
+    //  margin-top: 10px;
+    //  display: block;
+    //}
 
 
     &:before {
@@ -540,35 +540,78 @@ input[type=checkbox] {
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       transition: all .2s;
     }
-    &:after {
-      @include media($laptop-min) {
-        display:block;
-        top: -18PX;
-        left: calc(50% + 1PX);
-      }
-    }
-    &:before {
-      @include media($laptop-min) {
-        display:block;
-        top: -20PX;
-        left: calc(50% - 16PX);
-      }
-
-    }
+    //&:after {
+    //  @include media($laptop-min) {
+    //    display:block;
+    //    top: -18PX;
+    //    left: calc(50% + 1PX);
+    //  }
+    //}
+    //&:before {
+    //  @include media($laptop-min) {
+    //    display:block;
+    //    top: -20PX;
+    //    left: calc(50% - 16PX);
+    //  }
+    //
+    //}
 
   }
 
   &:checked + label {
+
+    //@include media($laptop-min) {
+    //  padding-left: 0;
+    //  margin-top: 10px;
+    //  display: block;
+    //}
+
     &:before {
       background: $btn_base_bg;
     }
     &:after {
       left: 7PX;
+      //@include media($laptop-min) {
+      //  left: calc(50% - 14PX);
+      //}
+    }
+  }
+}
+
+input[type=checkbox].account {
+
+ +label {
+   &:after {
+     @include media($laptop-min) {
+       display:block;
+       top: -18PX;
+       left: calc(50% + 1PX);
+     }
+   }
+   &:before {
+     @include media($laptop-min) {
+       display:block;
+       top: -20PX;
+       left: calc(50% - 16PX);
+     }
+
+   }
+ }
+  &:checked + label {
+
+    @include media($laptop-min) {
+      padding-left: 0;
+      margin-top: 10px;
+      display: block;
+    }
+
+    &:after {
       @include media($laptop-min) {
         left: calc(50% - 14PX);
       }
     }
   }
+
 }
 
 input, textarea {

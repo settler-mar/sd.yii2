@@ -68,10 +68,69 @@
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
+
+      &-item {
+        box-sizing: border-box;
+        width: 33%;
+
+        &-price {
+          //width: 33%;
+          margin: 0 10px;
+
+          &-inputs {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+
+            input {
+              width: 25%;
+              margin: 0 5px;
+            }
+          }
+
+        }
+        &-checkbox {
+          margin: 0 5px 0 15px;
+        }
+      }
     }
     &-checkbox {
       display: flex;
       flex-direction: column;
     }
   }
+}
+
+//ползунок
+.ui-slider-horizontal {
+  margin: 5px 0 10px;
+  height: 3PX;
+  border: none;
+  background: #dee1e4;
+  * {
+    outline: none !important;
+  }
+}
+.ui-slider-range {
+  height: 3PX;
+  background: $btn_base_bg;
+  border: none;
+}
+.ui-slider .ui-slider-handle {
+  cursor: pointer;
+  top: 4PX;
+  margin-left: -6PX;
+  border: none;
+  width: 16PX;
+  height: 16PX;
+  background-color: #fff;
+  background-image: url(../images/svg/pointer.svg);
+  background-size: 16PX;
+
+  &:hover {
+     background-color: #fff;
+  }
+
 }

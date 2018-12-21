@@ -66,10 +66,10 @@
 
         <div class="form-group-s">
           <span for="" class="form-title">{{ t('account','notify_settings') }}:</span>
-          <input type="checkbox" class="checkbox" id="checkbox-1" name="UserSetting[notice_email]"
+          <input type="checkbox" class="checkbox account" id="checkbox-1" name="UserSetting[notice_email]"
                  value="1" {% if this.user.notice_email == '1' %} checked {% endif %}>
           <label for="checkbox-1">{{ t('account','notify_settings_email')|raw }}</label>
-          <input type="checkbox" class="checkbox" id="checkbox-2" name="UserSetting[notice_email_status]"
+          <input type="checkbox" class="checkbox account" id="checkbox-2" name="UserSetting[notice_email_status]"
                  value="1" {% if this.user.notice_email_status == '1' %} checked {% endif %}>
           <label for="checkbox-2">{{ t('account','notify_settings_email_status')|raw }}</label>
         </div>

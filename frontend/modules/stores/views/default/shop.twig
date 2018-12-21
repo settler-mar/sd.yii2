@@ -121,7 +121,7 @@
         <a href="{{ _href('/goto/store:'~current_store.uid)|raw }}" target="_blank" rel="nofollow noopener"
            class="btn btn-round tablets-btn-red tablets-btn-big shop_header-goto-button">{{ btn_text }}</a>
         <div class="shop_header-goto-agree">
-          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">{{ t('main', 'agree_with_<a href="{href}">terms</a>', {'href':_href('/recommendations')})|raw }}</label>
+          <input id="shop_header-goto-checkbox" class="checkbox shop_header-goto-checkbox account" type="checkbox" checked><label class="shop_header-goto-agree-label" for="shop_header-goto-checkbox">{{ t('main', 'agree_with_<a href="{href}">terms</a>', {'href':_href('/recommendations')})|raw }}</label>
         </div>
       {% else %}
         <a href="#shop_not_active" ref="confirm" class="btn btn-round tablets-btn-red tablets-btn-big">{{ btn_text }}</a>
