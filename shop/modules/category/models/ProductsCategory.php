@@ -25,6 +25,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public $languagesArray;
 
+  protected $childCategoriesId = false;
+
   /**
    * @inheritdoc
    */
@@ -106,6 +108,15 @@ class ProductsCategory extends \yii\db\ActiveRecord
       $this->route = Yii::$app->help->str2url($this->name);
     }
     return parent::beforeValidate();
+  }
+
+  public function childCategoriesId()
+  {
+      if ($this->childCategoriesId === false) {
+          $tree = self::tree();
+          $this->childCategoriesId = self::getCategoryChilds($tree, $this->id, 'childs_ids');
+      }
+      return $this->childCategoriesId;
   }
 
   public function beforeSave($insert)

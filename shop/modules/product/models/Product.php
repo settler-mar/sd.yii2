@@ -601,52 +601,67 @@ class Product extends \yii\db\ActiveRecord
     });
   }
 
-    public static function conditionValues($field, $func)
+    public static function conditionValues($field, $func, $category = false)
     {
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $casheName = 'products_agregate_' . $field . '_'.$func . ($language ? '_' . $language : '');
+        $casheName = 'products_agregate_' . $field . '_' . $func . ($category ? '_'.$category->id : '') .
+            ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $out = $cache->getOrSet($casheName, function () use ($field, $func) {
+        $out = $cache->getOrSet($casheName, function () use ($field, $func, $category) {
             if ($func=='distinct') {
-                return self::find()->select([$field, 'count(*) as count'])
+                $product = self::find()->select([$field, 'count(*) as count'])
+                    ->from(self::tableName(). ' p')
                     ->groupBy($field)
                     ->orderBy(['count' => SORT_DESC])
                     ->where(['and', ['<>', $field, ""], ['is not', $field, null]])
                     ->limit(20)
-                    ->asArray()->all();
+                    ->asArray();
+                if ($category) {
+                    $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
+                        ->where(['ptc.category_id' => $category->childCategoriesId()]);
+                }
+                return $product->all();
             }
             $product = self::find()
+                ->from(self::tableName(). ' p')
                 ->select([$func.'('.$field.') as '.$field])
-                ->asArray()
-                ->all();
+                ->asArray();
+            if ($category) {
+                $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
+                    ->where(['ptc.category_id' => $category->childCategoriesId()]);
+            }
+            $product = $product->all();
             return isset($product[0][$field]) ? $product[0][$field] : 0;
         }, $cache->defaultDuration, $dependency);
         return $out;
     }
 
-    public static function usedStores()
+    public static function usedStores($category = false)
     {
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $casheName = 'product_used_stores_'.($language ? '_' . $language : '');
+        $casheName = 'product_used_stores_' . ($category ? '_'.$category->id : '') . ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $out = $cache->getOrSet($casheName, function () {
+        $out = $cache->getOrSet($casheName, function () use ($category) {
             $stores = self::find()
                 ->from(self::tableName().' p')
                 ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
                 ->select(['s.name', 's.uid'])
                 ->groupBy(['s.name', 's.uid'])
-                ->orderBy(['s.name' => SORT_ASC])
-                ->asArray()
-                ->all();
-            return $stores;
+                ->orderBy(['s.rating' => SORT_DESC])
+                ->asArray();
+            if ($category) {
+                $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
+                    ->where(['ptc.category_id' => $category->childCategoriesId()]);
+            }
+            return $stores->all();
         }, $cache->defaultDuration, $dependency);
         return $out;
     }

@@ -31,8 +31,8 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
 
-        $vendors = Product::conditionValues('vendor', 'distinct');
-        $stores = Product::usedStores();
+        $vendors = Product::conditionValues('vendor', 'distinct', $this->category);
+        $stores = Product::usedStores($this->category);
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -92,8 +92,8 @@ class DefaultController extends SdController
             ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
         $filter = [];
-        $filterPriceStartMin = (int)Product::conditionValues('price', 'min');
-        $filterPriceEndMax = (int)Product::conditionValues('price', 'max');
+        $filterPriceStartMin = (int)Product::conditionValues('price', 'min', $this->category);
+        $filterPriceEndMax = (int)Product::conditionValues('price', 'max', $this->category);
 
         $paginateParams = [
             'limit' => $limit,
