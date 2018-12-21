@@ -25,7 +25,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public $languagesArray;
 
+  protected $activeTree = false;
   protected $childCategoriesId = false;
+  protected $parentTree = false;
 
   /**
    * @inheritdoc
@@ -113,10 +115,51 @@ class ProductsCategory extends \yii\db\ActiveRecord
   public function childCategoriesId()
   {
       if ($this->childCategoriesId === false) {
-          $tree = self::tree();
-          $this->childCategoriesId = self::getCategoryChilds($tree, $this->id, 'childs_ids');
+          if (!$this->activeTree) {
+              $this->activeTree = self::tree(['where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
+          }
+          $this->childCategoriesId = self::getCategoryChilds($this->activeTree, $this->id, 'childs_ids');
+          $out = [];
+          self::getParentsArr($this->activeTree, $this->id, $out);
+
       }
       return $this->childCategoriesId;
+  }
+
+    /**
+     * @param bool $mode
+     * @return array|bool|string
+     */
+  public function parentTree($mode = false)
+  {
+      if ($this->parentTree === false) {
+          if (!$this->activeTree) {
+              $this->activeTree = self::tree(['where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
+          }
+          $parents = [];
+          self::getParentsArr($this->activeTree, $this->id, $parents);
+          $this->parentTree = array_reverse($parents);
+      }
+      if (!$mode || !$this->parentTree) {
+          return $this->parentTree;
+      }
+      foreach ($this->parentTree as $category) {
+          if (empty($category)) continue;
+          switch ($mode) {
+              case 0:
+                  $out[] = $category['name'];
+                  break;
+              case 1:
+                  $out[] = $category['route'];
+                  break;
+              case 2:
+                  $out[] = '<a href="/admin-category/product/update/id:' . $category['id'] . '">' .
+                      '<span class="' . self::activeClass($category['active']) . '">' .
+                      $category['name'] . '</span></a>';
+                  break;
+          }
+      }
+      return implode($mode == 1 ? '/' : ' / ', $out);
   }
 
   public function beforeSave($insert)
@@ -500,6 +543,23 @@ class ProductsCategory extends \yii\db\ActiveRecord
         }
       }
     }
+  }
+
+  public static function getParentsArr($categories, $id, &$out)
+  {
+      foreach ($categories as $category) {
+          if ($category['id'] == $id) {
+              $out[] = $category;
+              return $category['id'];
+          }
+          if (isset($category['childs'])) {
+              $childs = self::getParentsArr($category['childs'], $id, $out);
+              if ($childs) {
+                  $out[] = $category;
+                  return $childs;
+              }
+          }
+      }
   }
 
   /**

@@ -11,6 +11,7 @@ use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
 use frontend\components\SdController;
+use common\components\Help;
 use yii;
 
 class DefaultController extends SdController
@@ -74,7 +75,7 @@ class DefaultController extends SdController
         $limit = (!empty($limit)) ? $limit : Product::$defaultLimit;
         $order = !empty($sortvars[$sort_request]['order']) ? $sortvars[$sort_request]['order'] : 'DESC';
 
-        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => ('/category')];
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/category')];
 
         $storesData = [];
         $dataBaseData = Product::find()
@@ -121,38 +122,25 @@ class DefaultController extends SdController
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
         }
-        //ddd($filterPriceStartMin, $filterPriceEndMax, $filter, $dataBaseData->where);
 
-
-//        $filters = ProductParameters::find()
-//            ->where(['active' => ProductParameters::PRODUCT_PARAMETER_ACTIVE_YES])
-//            ->select(['id', 'name'])
-//            ->asArray();
+        $paginatePath = '/' . 'category';
 
         if ($this->category) {
             //есть категория
-            //категории товара в т.ч. дочерние
-            //$allCategories = ProductsCategory::childsId($this->category->id);
-            //так оптимальнее все дочерние
-            $categoryTree = ProductsCategory::tree([
-                'where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
-            ]);
-            $allCategories =  ProductsCategory::getCategoryChilds($categoryTree, $this->category->id);
-            $this->params['breadcrumbs'][] = [
-                'label' => $this->category->name,
-                'url' => ('/category/' . $this->category->route),
-            ];
+            $parents = $this->category->parentTree();
+            foreach ($parents as $parent) {
+                $paginatePath .= '/'.$parent['route'];
+                $this->params['breadcrumbs'][] = [
+                    'label' => $parent['name'],
+                    'url' => Help::href($paginatePath),
+                ];
+            }
             //получить в т.ч. по дочерним категориям
             $dataBaseData->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
-                ->andWhere(['pc.category_id' => $allCategories]);
+                ->andWhere(['pc.category_id' => $this->category->childCategoriesId()]);
 
             $cacheName .= '_category_' . $this->category->route;
-//            $filterParamCategory = [];
-//            //параметры в т.ч. по дочерним категориям ??
-//            foreach($allCategories as $cat) {
-//                $filterParamCategory[] = 'JSON_CONTAINS('.ProductParameters::tableName().'.categories,\'"'.$cat.'"\',"$")';
-//            }
-            //$filters->andWhere(array_merge(['or', ['categories' => null]], $filterParamCategory));
+
         }
 //        $filters = $filters->all();
 //        foreach ($filters as &$filter) {
@@ -188,8 +176,6 @@ class DefaultController extends SdController
         $storesData["offset_products"] = $pagination->offset();
         $storesData["limit"] = empty($limit) ? Product::$defaultLimit : $limit;
 
-        $paginatePath = '/' . 'category'. ($this->category ? '/' . ProductsCategory::parentsTree($this->category->toArray(), true) : '');
-
         if ($pagination->pages() > 1) {
             $storesData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
             //$this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
@@ -224,7 +210,20 @@ class DefaultController extends SdController
             throw new yii\web\NotFoundHttpException();
         }
         Yii::$app->params['url_mask'] = 'category/product/*';
-
+        $path = '/category';
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/category')];
+        $parents = isset($product->categories[0]) ? $product->categories[0]->parentTree() : [];
+        foreach ($parents as $parent) {
+            $path .= '/'.$parent['route'];
+            $this->params['breadcrumbs'][] = [
+                'label' => $parent['name'],
+                'url' => Help::href($path),
+            ];
+        }
+        $this->params['breadcrumbs'][] = [
+            'label' => $product->name,
+            'url' => Help::href('/category/product/id:'.$product->id),
+        ];
 
         return $this->render('product', [
             'product' => $product,
