@@ -175,12 +175,15 @@ class ProductsCategory extends \yii\db\ActiveRecord
       foreach ($synonym_route as &$item){
         $item='\''.$item['route'].'\'';
       }
-      $synonym_route = implode(',',$synonym_route);
-      //ddd($synonym_route);
-      $sql = 'UPDATE `cw_products_category` SET `route`=CONCAT(`route`,\'_\',`id`) WHERE 
-        `route` IN ('.$synonym_route.') AND
-        `parent` ='.$this->id;
-      Yii::$app->db->createCommand($sql)->execute();
+
+      if(count($synonym_route)>0) {
+        $synonym_route = implode(',', $synonym_route);
+        //ddd($synonym_route);
+        $sql = 'UPDATE `cw_products_category` SET `route`=CONCAT(`route`,\'_\',`id`) WHERE 
+          `route` IN (' . $synonym_route . ') AND
+          `parent` =' . $this->id;
+        Yii::$app->db->createCommand($sql)->execute();
+      }
       //::updateAll(["route" => "CONCAT(`route`,'_',`id`)"], ['route' => $synonym_route]);
       ProductsCategory::updateAll(['parent' => $this->synonym], ['parent' => $this->id]);
     }
