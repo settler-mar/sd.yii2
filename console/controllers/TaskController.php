@@ -39,7 +39,7 @@ class TaskController extends Controller
     $sql = "SELECT param as cpa_id,MIN(add_time) as start_date,MAX(add_time) as end_date FROM cw_task WHERE task=1 AND add_time<" . (time() - 60).' GROUP BY param';
     $period = \Yii::$app->db->createCommand($sql)->queryOne();
 
-    while ($period['end_date'] > 0) {
+    /*while ($period['end_date'] > 0) {
       if ($period['end_date'] - $period['start_date'] > 2592000) {
         $period['end_date'] = $period['start_date'] + 2592000;
       }
@@ -71,7 +71,7 @@ class TaskController extends Controller
       \Yii::$app->db->createCommand($sql2)->execute();
 
       $period = \Yii::$app->db->createCommand($sql)->queryOne();
-    }
+    }*/
 
 
     //Отключение премиум аккаунта
