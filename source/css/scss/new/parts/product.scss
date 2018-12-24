@@ -62,12 +62,12 @@
 
     &-items{
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: nowrap;
 
       &-item {
         box-sizing: border-box;
-        width: 33%;
+        //width: 33%;
 
         &-price {
           //width: 33%;

@@ -618,7 +618,7 @@ class Product extends \yii\db\ActiveRecord
                     ->from(self::tableName(). ' p')
                     ->groupBy($field)
                     ->orderBy(['count' => SORT_DESC])
-                    ->where(['and', ['<>', $field, ""], ['is not', $field, null]])
+                    ->andWhere(['and', ['<>', $field, ""], ['is not', $field, null]])
                     ->limit(20)
                     ->asArray();
                 if ($category) {
