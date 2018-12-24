@@ -534,7 +534,8 @@
       }
 
       &-desctop,
-      &-mobile {
+      &-mobile,
+      &-all{
         > ul {
           margin: 0 20px;
           padding: 0;
@@ -583,12 +584,38 @@
       }
       &-mobile {
         display: none;
+
         @include media($tablets) {
           display: flex;
           flex-direction: column;
           font-size: 18px;
         }
       }
+
+      &-all{
+        display: flex;
+        flex-direction: column;
+
+        @include media($tablets) {
+          font-size: 18px;
+        }
+
+        &-select{
+          width: auto !important;
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
+
+          @include media($tablets) {
+            flex-direction: column;
+          }
+
+          .sd-select-selected{
+            width: 310px;
+          }
+        }
+      }
+
       &-info {
         @include media($tablets) {
           display: none;

@@ -1,19 +1,10 @@
-<div class="catalog-stores_sort-desctop">
-    <span class="catalog-stores_sort-desctop-title">{{ t('main', 'sort_by')|raw }}:</span>
-    <ul >
-        {% for sortLink in sortlinks %}
-            <li><a href="{{ _href(sortLink.link) }}" class="blue{% if sortLink.active == 1 %} active{% endif %}" >{{sortLink.title}}</a></li>
-        {% endfor %}
-    </ul>
-</div>
+<div class="catalog-stores_sort-all">
 
-<div class="catalog-stores_sort-mobile">
-
-    <div class="catalog-stores_sort-mobile-select sd-select linked">
-        <span class="catalog-stores_sort-mobile-title">{{ t('main', 'sort_by')|raw }}:</span>
+    <div class="catalog-stores_sort-all-select sd-select linked">
+        <span class="catalog-stores_sort-all-title">{{ t('main', 'sort_by')|raw }}:</span>
         {% for sortLink in sortlinks %}
              {% if sortLink.active == 1 %}
-                 <span class="sd-select-selected">{{ sortLink.title_mobile }}
+                 <span class="sd-select-selected">{{ sortLink.title }}
                     {{ svg('angle-down','','@frontend')|raw }}
                  </span>
              {% endif %}
@@ -22,9 +13,9 @@
             {% for sortLink in sortlinks%}
                 <li>
                     {% if sortLink.active == 1 %}
-                        <span>{{sortLink.title_mobile}}</span>
+                        <span>{{sortLink.title}}</span>
                     {% else %}
-                        <a href="{{ _href(sortLink.link) }}">{{sortLink.title_mobile}}</a>
+                        <a href="{{ _href(sortLink.link) }}">{{sortLink.title}}</a>
                     {% endif %}
                 </li>
             {% endfor %}

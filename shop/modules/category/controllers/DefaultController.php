@@ -72,8 +72,9 @@ class DefaultController extends SdController
         } else {
             $sort = Product::$defaultSort;
         }
+
         $limit = (!empty($limit)) ? $limit : Product::$defaultLimit;
-        $order = !empty($sortvars[$sort_request]['order']) ? $sortvars[$sort_request]['order'] : 'DESC';
+        $order = !empty($sortvars[$sort]['order']) ? $sortvars[$sort]['order'] : 'DESC';
 
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/category')];
 
@@ -101,7 +102,6 @@ class DefaultController extends SdController
             'sort' => $sort,
             'page' => $page,
         ];
-
         if ($priceStart) {
             $filter[] = ['>=', 'price', $priceStart];
             $paginateParams['price-start'] = $priceStart;

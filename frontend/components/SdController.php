@@ -200,7 +200,7 @@ class SdController extends Controller
                 'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
-                'active' => $params['sort'] == $currentSort ? 1 : 0,
+                'active' => $key == $currentSort ? 1 : 0,
             ];
         }
         return $result;
