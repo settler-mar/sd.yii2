@@ -629,10 +629,11 @@ class Product extends \yii\db\ActiveRecord
             $product = self::find()
                 ->from(self::tableName(). ' p')
                 ->select([$func.'('.$field.') as '.$field])
+                ->where(['and', ['<>', $field, ""], ['is not', $field, null]])
                 ->asArray();
             if ($category) {
                 $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->where(['ptc.category_id' => $category->childCategoriesId()]);
+                    ->andWhere(['ptc.category_id' => $category->childCategoriesId()]);
             }
             $product = $product->all();
             return isset($product[0][$field]) ? $product[0][$field] : 0;
