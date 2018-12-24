@@ -220,10 +220,7 @@ class DefaultController extends SdController
                 'url' => Help::href($path),
             ];
         }
-        $this->params['breadcrumbs'][] = [
-            'label' => $product->name,
-            'url' => Help::href('/category/product/id:'.$product->id),
-        ];
+        $this->breadcrumbs_last_item_disable = false;
 
         return $this->render('product', [
             'product' => $product,

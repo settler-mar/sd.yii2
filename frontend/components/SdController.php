@@ -42,6 +42,11 @@ class SdController extends Controller
 
     public $params;
 
+    /**
+     * @var bool сделать последний пункт меню неактивным
+     */
+    public $breadcrumbs_last_item_disable = true;
+
     protected $request_params = [];
 
     private $params_allow = [
@@ -232,7 +237,7 @@ class SdController extends Controller
 
     public function render($view, $params = [])
     {
-        if (isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+        if ($this->breadcrumbs_last_item_disable && isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
             $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
         }
         if (isset($params['page'])) {
