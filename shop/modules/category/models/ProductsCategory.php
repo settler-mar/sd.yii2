@@ -490,7 +490,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return str_replace("'", " ", json_encode($category->all()));
   }
 
-  public static function top($params = [])
+  public static function top($params = [])// Потребляет дофига ресурсов!!!!!
   {
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
