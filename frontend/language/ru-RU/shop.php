@@ -41,5 +41,17 @@ return [
     'filter_price' => 'Цена',
     'filter_vendor' => 'Производитель',
     'filter_stores' => 'Магазин',
+    'view_others' => 'Показать ещё',
+    'similar_products' => 'Похожие товары',
+    'other_products_category_{category}' => 'Другие товары категории {category}',
+    'other_products_brand_{brand}' => 'Другие товары бренда {brand}',
+    'add_to_favorites' => 'Отложить в избранное',
+    'buy_the_product_now' => 'Купить сейчас',
+    'buy_the_product_with_cashback' => 'Купить с кэшбэком',
+    'buy_the_product_without_cashback' => 'Купить без кэшбэка',
+    'shop_product_available_1' => 'В наличии',
+    'product_store' => 'Магазин',
+    'product_article' => 'Артикул',
+    'product_vendor' => 'Бренд',
 
 ];

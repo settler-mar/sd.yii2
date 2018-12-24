@@ -1,0 +1,7 @@
+{% if products %}
+    <div class="catalog-stores_list catalog-stores_list-product">
+        {% for product in products %}
+           {% include('parts/products/product.twig') %}
+        {% endfor %}
+    </div>
+{% endif %}

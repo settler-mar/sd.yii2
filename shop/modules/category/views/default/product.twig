@@ -73,7 +73,7 @@
                     {% set href_class = user_id ? '' : 'catalog_product_link' %}
                     <div class="catalog_product-props flex-col margin-half">
                         {% if  product.store.displayed_cashback %}
-                            <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn margin-half">
+                            <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn btn-transform margin-half">
                                 {{ t('shop', 'buy_the_product_without_cashback')|raw }}
                             </a>
                             <a href="{{ _href('/goto/product:'~product.id)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn {{ href_class }}">
@@ -132,7 +132,48 @@
             </div>
 
         </div>
+
     </div>
+
+    {% if brands_products %}
+        <div class="catalog_product-others margi-half">
+            <h3 class="catalog_product-others-header">
+                {{ t('shop', 'other_products_brand_{brand}', {'brand':product.vendor}) }}
+            </h3>
+            {% set products = brands_products %}
+            {% include('parts/products/other_products.twig') %}
+            <div class="align-center">
+                <a class="btn btn-transform" href="{{ _href('/category?vendor='~product.vendor)|raw }}">{{ t('shop','view_others')|raw }}</a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if category_products %}
+        <div class="catalog_product-others margin-half">
+            <h3 class="catalog_product-others-header">
+                {{ t('shop', 'other_products_category_{category}', {'category':product.categories[0].name}) }}
+            </h3>
+            {% set products = category_products %}
+            {% include('parts/products/other_products.twig') %}
+            <div class="align-center">
+                <a class="btn btn-transform" href="{{ _href('/category'~(category ? '/'~category.parentTree(1):''))|raw }}">{{ t('shop','view_others')|raw }}</a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if similar_products %}
+        <div class="catalog_product-others margin-half">
+            <h3 class="catalog_product-others-header">
+                {{ t('shop', 'similar_products') }}
+            </h3>
+            {% set products = similar_products %}
+            {% include('parts/products/other_products.twig') %}
+            <div class="align-center">
+                <a class="btn btn-transform" href="{{ _href('/category'~(category ? '/'~category.parentTree(1):'')~'?store='~product.store_id)|raw }}">{{ t('shop','view_others')|raw }}</a>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="catalog_products_store_conditions" id="product_store_cachback_modal_id">
         <div class="catalog_products_store_conditions_content">
             {{ _constant('product_cashback_informaiton')|raw }}

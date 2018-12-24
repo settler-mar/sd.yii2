@@ -41,5 +41,17 @@ return [
     'filter_price' => 'Price',
     'filter_vendor' => 'Manufacturer',
     'filter_stores' => 'Store',
+    'view_others' => 'View more',
+    'similar_products' => 'Similar products',
+    'other_products_category_{category}' => 'Other products from the category {category}',
+    'other_products_brand_{brand}' => 'Other products from the brand {brand}',
+    'add_to_favorites' => 'Add to favorites',
+    'buy_the_product_now' => 'Buy now',
+    'buy_the_product_with_cashback' => 'Buy with cash back',
+    'buy_the_product_without_cashback' => 'Buy without cash back',
+    'shop_product_available_1' => 'In stock',
+    'product_store' => 'Store',
+    'product_article' => 'Article',
+    'product_vendor' => 'Brand',
 
 ];

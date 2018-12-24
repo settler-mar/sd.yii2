@@ -222,11 +222,27 @@ class DefaultController extends SdController
         }
         $this->breadcrumbs_last_item_disable = false;
 
+        //продукты того же производителя
+        $brandsProducts = Product::top(['where' =>  ['vendor' => $product->vendor], 'count' => 8]);
+        //продукты той же категории
+        $categoryProducts = !empty($product->categories) ?
+            Product::top(['category_id' => $product->categories[0]->id, 'count' => 8]) : [];
+        //похожие - той же категории и того же шопа
+        $similarProducts = count($categoryProducts) && $product->store_id ?
+            Product::top([
+                'where' => ['store_id' => $product->store_id],
+                'category_id' => $product->categories[0]->id,
+                'count' => 8
+            ]) : [];
+
         return $this->render('product', [
             'product' => $product,
             'favorites_ids' => UsersFavorites::getUserFav(8, true),
+            'brands_products' => $brandsProducts,
+            'category_products' => $categoryProducts,
+            'similar_products' => $similarProducts,
+            'category' => !empty($product->categories) ? $product->categories[0] : false,
         ]);
-
     }
 
 

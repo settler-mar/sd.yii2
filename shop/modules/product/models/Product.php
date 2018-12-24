@@ -11,6 +11,7 @@ use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
 use shop\modules\category\models\ProductsCategory;
 use yii;
+use common\components\Help;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -741,17 +742,32 @@ class Product extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-    $casheName = 'products_top_' . implode('_', $params) . ($language ? '_' . $language : '');
+    $casheName = 'products_top_' . (!empty($params) ? Help::multiImplode('_', $params) : '') . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $products = $cache->getOrSet($casheName, function () use ($params) {
       $count = isset($params['count']) ? $params['count'] : 5;
-      //пока для примера сортировка??
       $product = self::find()->from(self::tableName() . ' p')
-          ->orderBy(['modified_time' => SORT_ASC])
+          ->innerJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
+          ->where(['p.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
+          ->select(['p.*', 'p.currency as product_currency','s.name as store_name', 's.route as store_route',
+              's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
+              's.currency as currency', 's.action_end_date as action_end_date',
+              'if (p.old_price, (p.old_price - p.price)/p.old_price, 0) as discount'])
+          ->orderBy([
+              isset($params['sort'])? $params['sort'] : 'modified_time' =>
+                  isset($params['order']) ? $params['order'] : SORT_ASC
+          ])
           ->limit($count)
-          ->all();
-      return $product;
+          ->asArray();
+      if (isset($params['where'])) {
+          $product->andWhere($params['where']);
+      }
+      if (isset($params['category_id'])) {
+          $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
+            ->andWhere(['ptc.category_id' => $params['category_id']]);
+      }
+      return $product->all();
     }, $cache->defaultDuration, $dependency);
 
     return $products;

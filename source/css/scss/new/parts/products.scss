@@ -1,7 +1,13 @@
 $media1: $laptop_min;
 $media2: $tablets;
 
+@mixin strait {
+  //на странице товара в shop
+  width: 22%;
+}
+
 @mixin shop {
+  //плитка товара в shop
   width: 28%;
 
   .catalog_products_item {
@@ -357,6 +363,18 @@ $media2: $tablets;
 
     &_content {
       font-size: 14px;
+    }
+  }
+
+}
+
+.catalog-stores_list-product {
+
+  .catalog_products {
+
+    &_item {
+      @include strait
+
     }
   }
 }
