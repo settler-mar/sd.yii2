@@ -1,14 +1,32 @@
 $media1: $laptop_min;
 $media2: $tablets;
+$media3: $phones;
 
 @mixin strait {
   //на странице товара в shop
   width: 22%;
+
+  @include media($media1) {
+    width: 28%;
+  }
+
+  @include media($media3) {
+    width: 100%;
+  }
 }
 
 @mixin shop {
   //плитка товара в shop
   width: 28%;
+  box-sizing: border-box;
+
+  @include media($media2) {
+    min-width: 100px;
+    width: 45%;
+  }
+  @include media($media3) {
+    width: 100%;
+  }
 
   .catalog_products_item {
 
@@ -118,15 +136,12 @@ $media2: $tablets;
       justify-content: space-between;
       align-items: center;
       padding: 5px;
+      position:relative;
 
-      &-vaforite {
-        align-self: stretch;
-
-        svg {
-          width: 20px;
-          height: 20px;
-        }
+      @include media($tablets) {
+        flex-direction: column;
       }
+
     }
 
     &_price {
@@ -141,15 +156,17 @@ $media2: $tablets;
       &-old {
         font-size: 14px;
         opacity: 0.6;
-        position: relative;
+        position: absolute;
         line-height: 1;
         text-align: left;
+        top: 3px;
+        left: 6px;
 
         &:after {
           content: " ";
           position: absolute;
           display: block;
-          width: 73%;
+          width: calc(100% + 6px);
           left: -3px;
           top: 50%;
           border-bottom: 1px solid $text_color;
@@ -199,6 +216,17 @@ $media2: $tablets;
       }
       .shop-cashback-link_cashback.is_not_old {
         font-size: 16px;
+      }
+
+    }
+    &-vaforite {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      svg {
+        width: 20px;
+        height: 20px;
       }
 
     }
