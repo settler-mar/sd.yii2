@@ -444,7 +444,7 @@ class DefaultController extends Controller
     if (!Yii::$app->user->isGuest || !$request->isAjax) {
       throw new NotFoundHttpException();
     }
-    $model = new Promos();
+    $model = new Promo();
     if ($model->load($request->post()) && $model->validate()) {
         $model->save();
         if ($model->dbPromo) {
@@ -482,9 +482,9 @@ class DefaultController extends Controller
      */
   public function actionReg()
   {
-     $this->viewPath = '@app/views/site';
-     $model = new Promos();
-     return $this->render('static_page', [
+    $this->viewPath = '@app/views/site';
+    $model = new Promo();
+    return $this->render('static_page', [
          'model' => $model,
          'recaptcha' => Yii::$app->reCaptcha->siteKey,
          'request' => Yii::$app->request,
