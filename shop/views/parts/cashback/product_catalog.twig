@@ -1,6 +1,7 @@
 <div class="cashback">
-    <span class="catalog_products_item_cashback-title">+ {{ t('main', 'cashback') }} </span>
-    <span class="shop-cashback-link_cashback {% if value == value_new %}is_not_old{% endif %}">
+    <div class="cashback_plus">+</div>
+    <span class="catalog_products_item_cashback-title">{{ t('main', 'cashback') }} </span>
+    <span class="catalog_products_item_cashback-amount shop-cashback-link_cashback {% if value == value_new %}is_not_old{% endif %}">
       {% if has_up_to %}
         {{ t('main', 'up_to') }}
       {% endif %}
@@ -21,12 +22,17 @@
       {% else %}
         {{ value_new |raw }}
       {% endif %}
-    </span>
-</div>
-<div class="question">
-    <a class="catalog_products_item_cashback-question modals_popup"
-       data-original-html="product_store_cachback_modal_id"
-       data-original-h="{{ t('shop', 'product_cashback_modal_title') }}">
+        <a class="catalog_products_item_cashback-question modals_popup"
+           data-original-html="product_store_cachback_modal_id"
+           data-original-h="{{ t('shop', 'product_cashback_modal_title') }}">
         {{ svg('question-circle-o', '', '@frontend')|raw }}
     </a>
+    </span>
 </div>
+{#<div class="question">#}
+    {#<a class="catalog_products_item_cashback-question modals_popup"#}
+       {#data-original-html="product_store_cachback_modal_id"#}
+       {#data-original-h="{{ t('shop', 'product_cashback_modal_title') }}">#}
+        {#{{ svg('question-circle-o', '', '@frontend')|raw }}#}
+    {#</a>#}
+{#</div>#}

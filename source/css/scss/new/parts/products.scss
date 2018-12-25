@@ -56,10 +56,10 @@ $media3: $phones;
         display: block;
         top: 0;
         left: 0;
-        padding: 0 5px;
+        padding: 2px 5px;
         border-radius: 2px;
         font-weight: bold;
-        line-height: 1.4;
+        line-height: 23px;
         a {
           text-decoration: none;
           &:hover {
@@ -114,12 +114,13 @@ $media3: $phones;
         }
 
         svg {
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           color: $text_color_light;
           fill: $text_color_light;
           stroke: $text_color_light;
           margin-right: 5px;
+          padding-bottom: 2px
         }
       }
 
@@ -175,6 +176,7 @@ $media3: $phones;
       }
     }
     &_cashback {
+      position: relative;
       color: red;
       font-weight: bold;
       display: flex;
@@ -184,7 +186,7 @@ $media3: $phones;
 
       border: 1px solid $btn_base_bg;
       border-radius: 2px;
-      padding: 2px;
+      padding: 5px 5px;
       font-size: 14px;
 
       .question {
@@ -201,13 +203,18 @@ $media3: $phones;
       }
       &-question {
         vertical-align: middle;
+        border-radius: 50%;
+        background: red;
+        padding: 0;
+        width: 18PX;
+        height: 18PX;
 
         svg {
-          color: red;
-          stroke: red;
-          fill: red;
-          width: 18px;
-          height: 18px;
+          color: #fff;
+          stroke: #fff;
+          fill: #fff;
+          width: 18PX;
+          height: 18PX;
         }
       }
 
@@ -218,10 +225,19 @@ $media3: $phones;
         font-size: 16px;
       }
 
+      .cashback_plus {
+        position: absolute;
+        top: calc(50% - 12px);
+        left: 3px;
+      }
+      &-amount {
+        line-height: 1;
+      }
+
     }
     &-vaforite {
       position: absolute;
-      top: 0;
+      top: 2px;
       right: 0;
 
       svg {
