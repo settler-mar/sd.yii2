@@ -1,29 +1,31 @@
 {% if user_id == 0 %}
-<div class="ajax_form">
-<form id="promo-ajax" class=" form-horizontal" action="/account/promo" method="post" role="form">
-    <input type="hidden" name="{{ request.csrfParam }}" value="{{ request.csrfToken }}">
-    <input type="hidden" name="Promo[form]" value="1">
+  <div class="ajax_form">
+    <form id="promo-ajax" class=" form-horizontal" action="/account/promo" method="post" role="form">
+      <input type="hidden" name="{{ request.csrfParam }}" value="{{ request.csrfToken }}">
+      <input type="hidden" name="Promo[form]" value="1">
 
-    <div class="form-group field-promo-promo required">
+      <div class="form-group field-promo-promo required">
         <div class="form-input-group">
-            <i> {{ svg("coupon2",'form-icon')|raw }}</i>
-            <label class="placeholder" for="promo-promo">{{ t('main', 'promocode')|raw }}</label>
-            <input type="text" id="promo-promo" class="form-control" name="Promo[promo]" placeholder="" required aria-required="true">
+          <i> {{ svg("coupon2",'form-icon')|raw }}</i>
+          <label class="placeholder" for="promo-promo">{{ t('main', 'promocode')|raw }}</label>
+          <input type="text" id="promo-promo" class="form-control" name="Promo[promo]" placeholder="" required
+                 aria-required="true">
         </div>
         <p class="help-block help-block-error "></p>
-    </div>
+      </div>
 
 
-    <div class="form-group field-promo-recaptcha required">
+      <div class="form-group field-promo-recaptcha required">
         <script src='https://www.google.com/recaptcha/api.js'></script>
         <div class="form-input-recaptcha align-center">
-            <input type="hidden" id="promo-recaptcha" name="Promo[reCaptcha]" >
-            <div class="g-recaptcha" data-sitekey="{{ recaptcha }}" input-id="promo-recaptcha"></div>
+          <input type="hidden" id="promo-recaptcha" name="Promo[reCaptcha]">
+          <div class="g-recaptcha" data-sitekey="{{ recaptcha }}" input-id="promo-recaptcha"></div>
         </div>
         <p class="help-block help-block-error "></p>
-    </div>
-    <button type="submit" class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('main', 'register_promocode')|raw }}</button>
+      </div>
+      <button type="submit"
+              class="btn block_margin-auto btn-min_width240 btn-margin_top">{{ t('main', 'register_promocode')|raw }}</button>
 
-</form>
-</div>
+    </form>
+  </div>
 {% endif %}
