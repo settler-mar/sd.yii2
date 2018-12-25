@@ -755,7 +755,11 @@ class Product extends \yii\db\ActiveRecord
       $count = isset($params['count']) ? $params['count'] : 5;
       $product = self::find()->from(self::tableName() . ' p')
           ->innerJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
-          ->where(['p.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
+          ->where([
+              'and',
+              ['p.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
+              ['is not', 'p.image', null],
+          ])
           ->select(['p.*', 'p.currency as product_currency','s.name as store_name', 's.route as store_route',
               's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
               's.currency as currency', 's.action_end_date as action_end_date',

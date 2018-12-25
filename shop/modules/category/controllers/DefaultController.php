@@ -224,14 +224,21 @@ class DefaultController extends SdController
         $this->breadcrumbs_last_item_disable = false;
 
         //продукты того же производителя
-        $brandsProducts = Product::top(['where' =>  ['vendor' => $product->vendor], 'count' => 8]);
+        $brandsProducts = Product::top([
+            'where' =>  ['and', ['vendor' => $product->vendor], ['<>', 'p.id', $product->id]],
+            'count' => 8
+        ]);
         //продукты той же категории
         $categoryProducts = !empty($product->categories) ?
-            Product::top(['category_id' => $product->categories[0]->id, 'count' => 8]) : [];
+            Product::top([
+                'category_id' => $product->categories[0]->id,
+                'count' => 8,
+                'where' => ['<>', 'p.id', $product->id],
+            ]) : [];
         //похожие - той же категории и того же шопа
         $similarProducts = count($categoryProducts) && $product->store_id ?
             Product::top([
-                'where' => ['store_id' => $product->store_id],
+                'where' => ['and', ['store_id' => $product->store_id],['<>', 'p.id', $product->id]],
                 'category_id' => $product->categories[0]->id,
                 'count' => 8
             ]) : [];
