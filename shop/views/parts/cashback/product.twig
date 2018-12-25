@@ -1,10 +1,10 @@
-<span class="catalog_product_cashback-cashback {% if value == value_new %}is_not_old{% endif %}">
+<span class="catalog_product-props-item-cashback {% if value == value_new %}is_not_old{% endif %}">
   {% if has_up_to %}
     {{ t('main', 'up_to') }}
   {% endif %}
   {% if value != value_new %}
     {% if is_persent %}
-      <span class="shop-cashback-link_cashback_old shop-cashback_old">
+      <span class="shop-cashback_old">
         {{ value |raw }}
       </span>
       {{ value_new |raw }}

@@ -1,6 +1,80 @@
 .catalog_product {
 
+  &-props {
+    &-item {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      color: $text_color_light;
+      align-items: center;
 
+      a {
+        color: $text-color_light;
+        text-decoration: underline;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .title {
+        color: $text_color;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+        margin-right: 5px;
+      }
+
+      &_available {
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: bold;
+        color: $button_base_hover_bg;
+
+        &.catalog_product_available_0 {
+          color: $notyfy_icon_color;
+        }
+        &.catalog_product_available_1 {
+          color: $cahsback_confirmed_color;
+        }
+
+      }
+      &-cashback {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        font-size: 14px;
+        color: red;
+        align-items: center;
+        font-weight: bold;
+
+        .shop-cashback_old {
+          color: red;
+          font-size: 13px;
+          text-decoration: line-through;
+          margin-right: 24px;
+        }
+        span {
+          width: 18px;
+          height: 18px;
+        }
+      }
+      &_price {
+        font-size: 18px;
+        color:red;
+        font-weight: bold;
+
+        &-old {
+          color: $text-color;
+          text-decoration: line-through;
+          margin-right: 10px;
+        }
+        &_currency {
+          //margin-left: 3px;
+        }
+      }
+
+    }
+  }
 
   &-store {
     display: flex;
@@ -108,12 +182,58 @@
 
     &-image {
       width: 40%;
+      margin-right: 20px;
+
       img {
-        max-width: 100%;
+        width: 100%;
+
+        &.no_optomize {
+          max-height: none;
+        }
       }
     }
     &-info h1 {
       font-size: 20px;
+    }
+  }
+  &-buttons {
+    a {
+      display: flex;
+      max-width: 200px;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      padding: 5px 50px;
+
+      .icon {
+        background-color: $text_color;
+        display: block;
+        padding: 5px;
+        border-radius: 3px;
+        margin-right: 10px;
+      }
+
+      svg {
+        color: #fff;
+        fill: #fff;
+        stroke: #fff;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+  &_favorite {
+
+    &-link {
+
+      svg {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      span {
+        font-size: 12px;
+        vertical-align: text-bottom;
+      }
     }
   }
 

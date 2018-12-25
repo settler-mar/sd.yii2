@@ -16,7 +16,7 @@
             <div class="catalog_product-main margin-half">
                 <div class="catalog_product-main-image">
                     {% if product.image %}
-                        <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+                        <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}" class="no_optomize">
                     {% else %}
                         <span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>
                     {% endif %}
@@ -26,16 +26,17 @@
                         <h1 class="" >{{ h1_final|raw }}</h1>
                     </div>
                     <div class="catalog_product-props margin-half">
-                        <div class="catalog_product-props-item catalog_products_item_price">
-                            {{ product.price }}<span class="catalog_products_item_price_currency">{{ t('main', product.currency) }}</span>
+                        <div class="catalog_product-props-item catalog_product-props-item_price">
                             {% if product.price < product.old_price %}
-                                <span class="catalog_products_item_price-old">
-                                    {{ product.old_price }}<span class="catalog_products_item_price_currency">{{ t('main', product.currency) }}</span>
+                                <span class="catalog_product-props-item_price-old">
+                                    {{ product.old_price }}<span class="catalog_product-props-item_price_currency">&nbsp;{{ t('main', product.currency) }}</span>
                                 </span>
                             {% endif %}
+                            {{ product.price }}<span class="catalog_product-props-item_price_currency">&nbsp;{{ t('main', product.currency) }}</span>
+
                         </div>
                         <div class="catalog_product-props-item">
-                            <span class="{{ t('shop', 'catalog_product_available_'~product.available)|raw }}">
+                            <span class="{{ t('shop', 'catalog_product-props-item_available catalog_product_available_'~product.available)|raw }}">
                                 {{ t('shop', 'shop_product_available_'~product.available)|raw }}
                             </span>
                         </div>
@@ -50,14 +51,13 @@
 
                     <div class="catalog_product-props margin-half">
                         <div class="catalog_product-props-item">
-                            <span class="title">{{ t('shop','product_store') }}:</span><a href="{{ _href('/category?store='~product.store.route) }}" target="_blank" rel="nofollow nooper noreferrer" class="blue"
-                               title="{{ t('shop','all_products_of_{store}',{'store':product.store.name})|raw }}">
+                            <span class="title">{{ t('shop','product_store') }}:</span><a href="{{ _href('/category?store='~product.store.route) }}" target="_blank" rel="nofollow nooper noreferrer"                               title="{{ t('shop','all_products_of_{store}',{'store':product.store.name})|raw }}">
                                 {{ product.store.name|raw }}
                             </a>
                         </div>
                         {% if product.vendor %}
                         <div class="catalog_product-props-item">
-                            <span class="title">{{ t('shop','product_vendor') }}:</span><a href="{{ _href('/category?vendor='~product.vendor) }}" target="_blank" rel="nofollow nooper noreferrer" class="blue"
+                            <span class="title">{{ t('shop','product_vendor') }}:</span><a href="{{ _href('/category?vendor='~product.vendor) }}" target="_blank" rel="nofollow nooper noreferrer"
                                 title="{{ t('shop','all_products_of_{vendor}',{'vendor':product.vendor})|raw }}">
                                 {{ product.vendor|raw }}
                             </a>
@@ -71,45 +71,42 @@
 
 
                     {% set href_class = user_id ? '' : 'catalog_product_link' %}
-                    <div class="catalog_product-props flex-col margin-half">
+                    <div class="catalog_product-buttons margin-half">
                         {% if  product.store.displayed_cashback %}
                             <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn btn-transform margin-half">
-                                {{ t('shop', 'buy_the_product_without_cashback')|raw }}
+                                <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_without_cashback')|raw }}
                             </a>
                             <a href="{{ _href('/goto/product:'~product.id)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn {{ href_class }}">
-                                {{ t('shop', 'buy_the_product_with_cashback')|raw }}
+                                <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_with_cashback')|raw }}
                             </a>
                         {% else %}
                             <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn">
-                                {{ t('shop', 'buy_the_product_now')|raw }}
+                                <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_now')|raw }}
                             </a>
                         {% endif %}
                     </div>
 
-                    <div class="catalog_product_vaforite ">
+                    <div class="catalog_product_favorite">
                         {#{% if user_id %}#}
                         {% if true %}
                             {% if product.id in favorites_ids %}
-                                <a class="catalog_product_cashback-favorite shop_panel-item product-favorite-remove favorite-link"
-                                   href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-toggle="tooltip" data-state="delete"
-                                   data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_remove')|raw }}">
+                                <a class="catalog_product_favorite-link shop_panel-item product-favorite-remove favorite-link"
+                                   href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-state="delete" >
                                     {{ svg('heart','shop_panel-item_icon in_fav_on','@frontend')|raw }}
-                                    <span>{{ t('shop', 'add_to_favorites')|raw }}</span>
+                                    <span class="title">{{ t('shop', 'product_vaforite_remove')|raw }}</span>
                                 </a>
                             {% else %}
-                                <a class="catalog_product_cashback-favorite shop_panel-item product-favorite-add favorite-link"
-                                   href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-toggle="tooltip" data-state="add"
-                                   data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                                <a class="catalog_product_favorite-link shop_panel-item product-favorite-add favorite-link"
+                                   href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-state="add">
                                     {{ svg('heart','shop_panel-item_icon in_fav_off','@frontend')|raw }}
-                                    <span>{{ t('shop', 'add_to_favorites')|raw }}</span>
+                                    <span class="title">{{ t('shop', 'product_vaforite_add')|raw }}</span>
                                 </a>
                             {% endif %}
                         {% else %}
-                            <a class="catalog_product_cashback-favorite shop_panel-item favorite-link" href="#"
-                               data-toggle="tooltip" data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                            <a class="catalog_product_favorite-link shop_panel-item favorite-link" href="#">
                                 {{ svg('heart-o','shop_panel-item_icon in_fav_off','@frontend')|raw }}
                             </a>
-                            <span>{{ t('shop', 'add_to_favorites')|raw }}</span>
+                            <span class="title">{{ t('shop', 'product_vaforite_add')|raw }}</span>
                         {% endif %}
                     </div>
 
