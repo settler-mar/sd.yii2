@@ -57,7 +57,7 @@
     @include media($tablets) {
       &.active {
         border-radius: 3px 3px 0 0;
-        border-bottom: none;
+        //border-bottom: none;
         svg {
           transform: rotate(180deg);
         }
