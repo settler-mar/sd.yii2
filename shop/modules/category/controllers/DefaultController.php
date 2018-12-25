@@ -94,8 +94,9 @@ class DefaultController extends SdController
             ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
         $filter = [];
-        $filterPriceStartMin = (int)Product::conditionValues('price', 'min', $this->category);
-        $filterPriceEndMax = (int)Product::conditionValues('price', 'max', $this->category);
+        $f_res = Product::conditionValues('price', ['min','max'], $this->category);
+        $filterPriceEndMax = (int)$f_res['max_price'];
+        $filterPriceStartMin=(int)$f_res['min_price'];
 
         $paginateParams = [
             'limit' => $limit,

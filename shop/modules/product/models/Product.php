@@ -608,36 +608,42 @@ class Product extends \yii\db\ActiveRecord
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $casheName = 'products_agregate_' . $field . '_' . $func . ($category ? '_'.$category->id : '') .
+        if(is_string($func))$func=[$func];
+        $casheName = 'products_agregate_' . $field . '_' . implode('_',$func) . ($category ? '_'.$category->id : '') .
             ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $out = $cache->getOrSet($casheName, function () use ($field, $func, $category) {
-            if ($func=='distinct') {
-                $product = self::find()->select([$field, 'count(*) as count'])
+          $product = self::find()->asArray();
+
+            if ($func[0]=='distinct') {
+              $product->select([$field, 'count(*) as count'])
                     ->from(self::tableName(). ' p')
                     ->groupBy($field)
                     ->orderBy(['count' => SORT_DESC])
                     ->andWhere(['and', ['<>', $field, ""], ['is not', $field, null]])
-                    ->limit(20)
-                    ->asArray();
+                    ->limit(20);
                 if ($category) {
                     $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
                         ->where(['ptc.category_id' => $category->childCategoriesId()]);
                 }
                 return $product->all();
             }
-            $product = self::find()
+
+            $select = [];
+            foreach ($func as $f){
+              $select[]=$f.'('.$field.') as '.$f.'_'.$field;
+            }
+            $product
                 ->from(self::tableName(). ' p')
-                ->select([$func.'('.$field.') as '.$field])
-                ->where(['and', ['<>', $field, ""], ['is not', $field, null]])
-                ->asArray();
+                ->select($select)
+                ->where(['and', ['<>', $field, ""], ['is not', $field, null]]);
             if ($category) {
                 $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
                     ->andWhere(['ptc.category_id' => $category->childCategoriesId()]);
             }
             $product = $product->all();
-            return isset($product[0][$field]) ? $product[0][$field] : 0;
+            return isset($product[0]) ? $product[0] : 0;
         }, $cache->defaultDuration, $dependency);
         return $out;
     }
