@@ -592,14 +592,24 @@ class Product extends \yii\db\ActiveRecord
     $this->clearCache();
   }
 
-  public static function activeCount()
+  public static function activeCount($params = [])
   {
-    $cache = Yii::$app->cache;
-    return $cache->getOrSet('products_active_count', function () {
-      return self::find()
-          ->where(['available' => [self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]])
-          ->count();
-    });
+      $cache = \Yii::$app->cache;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'catalog_product';
+      $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+      $casheName = 'products_active_count'.(!empty($params) ? '_'.Help::multiImplode('_', $params) : '') .
+          ($language ? '_' . $language : '');
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+      return $cache->getOrSet($casheName, function () use ($params) {
+          $products = self::find()
+              ->where(['available' => [self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]]);
+          if (!empty($params['where'])) {
+              $products->andWhere($params['where']);
+          }
+          return $products->count();
+      }, $cache->defaultDuration, $dependency);
   }
 
     public static function conditionValues($field, $func, $params=[])

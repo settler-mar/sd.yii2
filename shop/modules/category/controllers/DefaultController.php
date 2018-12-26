@@ -45,10 +45,9 @@ class DefaultController extends SdController
                 //валидация строки вендор
                 throw new \yii\web\NotFoundHttpException;
             }
-            //$vendorRequest = str_replace('_', ' ', $vendorRequest);
-            $vendorCount = Product::find()->where(['vendor' => $vendorRequest])->count();
+            //ecть ли в базе
+            $vendorCount = Product::activeCount(['where' => ['vendor' => $vendorRequest]]);
             if (!$vendorCount) {
-                //есть ли такой в базе вендор
                 throw new \yii\web\NotFoundHttpException;
             }
         } else {
