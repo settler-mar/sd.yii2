@@ -602,18 +602,19 @@ class Product extends \yii\db\ActiveRecord
     });
   }
 
-    public static function conditionValues($field, $func, $category = false)
+    public static function conditionValues($field, $func, $params=[])
     {
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         if(is_string($func))$func=[$func];
-        $casheName = 'products_agregate_' . $field . '_' . implode('_',$func) . ($category ? '_'.$category->id : '') .
+        $casheName = 'products_agregate_' . $field . '_' . implode('_',$func) .
+            (!empty($params) ? Help::multiImplode('_', $params) : '') .
             ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $out = $cache->getOrSet($casheName, function () use ($field, $func, $category) {
+        $out = $cache->getOrSet($casheName, function () use ($field, $func, $params) {
           $product = self::find()->asArray();
 
             if ($func[0]=='distinct') {
@@ -623,10 +624,14 @@ class Product extends \yii\db\ActiveRecord
                     ->orderBy(['count' => SORT_DESC])
                     ->andWhere(['and', ['<>', $field, ""], ['is not', $field, null]])
                     ->limit(20);
-                if ($category) {
+                if (!empty($params['category'])) {
                     $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                        ->where(['ptc.category_id' => $category->childCategoriesId()]);
+                        ->where(['ptc.category_id' => $params['category']->childCategoriesId()]);
                 }
+                if (!empty($params['vendor'])) {
+                    $product->where(['vendor' => $params['vendor']]);
+                }
+
                 return $product->all();
             }
 
@@ -638,9 +643,12 @@ class Product extends \yii\db\ActiveRecord
                 ->from(self::tableName(). ' p')
                 ->select($select)
                 ->where(['and', ['<>', $field, ""], ['is not', $field, null]]);
-            if ($category) {
+            if (!empty($params['category'])) {
                 $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->andWhere(['ptc.category_id' => $category->childCategoriesId()]);
+                    ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId()]);
+            }
+            if (!empty($params['vendor'])) {
+                $product->where(['vendor' => $params['vendor']]);
             }
             $product = $product->all();
             return isset($product[0]) ? $product[0] : 0;
@@ -648,16 +656,17 @@ class Product extends \yii\db\ActiveRecord
         return $out;
     }
 
-    public static function usedStores($category = false)
+    public static function usedStores($params = [])
     {
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $casheName = 'product_used_stores_' . ($category ? '_'.$category->id : '') . ($language ? '_' . $language : '');
+        $casheName = 'product_used_stores_' . ($params ? '_'.Help::multiImplode('_', $params) : '') .
+            ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $out = $cache->getOrSet($casheName, function () use ($category) {
+        $out = $cache->getOrSet($casheName, function () use ($params) {
             $stores = self::find()
                 ->from(self::tableName().' p')
                 ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
@@ -665,9 +674,12 @@ class Product extends \yii\db\ActiveRecord
                 ->groupBy(['s.name', 's.uid'])
                 ->orderBy(['s.rating' => SORT_DESC])
                 ->asArray();
-            if ($category) {
+            if (isset($params['vendor'])) {
+                $stores->where(['vendor' =>  $params['vendor']]);
+            }
+            if (isset($params['category'])) {
                 $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->where(['ptc.category_id' => $category->childCategoriesId()]);
+                    ->where(['ptc.category_id' =>  $params['category']->childCategoriesId()]);
             }
             return $stores->all();
         }, $cache->defaultDuration, $dependency);

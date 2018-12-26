@@ -134,6 +134,14 @@
   }
   &_filter{
 
+    &-form {
+      min-width: 300px;
+
+      @include media($phones) {
+        min-width: inherit;
+      }
+    }
+
     &-items{
       display: flex;
       flex-direction: column;

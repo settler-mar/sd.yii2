@@ -11,6 +11,7 @@ class CategoryMenu extends Widget
 {
     public $show_hidden = true;//показывать ли в меню скрытые категории
     public $where = false; //Where для запроса. Если задан то выборка только исходя их него
+    public $vendor = false;
 
     public function init()
     {
