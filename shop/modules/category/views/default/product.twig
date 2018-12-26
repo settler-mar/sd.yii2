@@ -41,7 +41,7 @@
                             </span>
                         </div>
                     </div>
-                    {% if product.store.displayed_cashback %}
+                    {% if product.store.displayed_cashback and product.store.is_active == 1 %}
                         <div class="catalog_product-props margin-half">
                             <div class="catalog_product-props-item">
                                 <span class="title">{{ t('main','cashback') }}:</span> {{ cashback(product.store, 'product')|raw }}

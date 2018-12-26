@@ -112,6 +112,7 @@ class DefaultController extends SdController
             ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
                 's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
+                's.is_active as store_active',
                 's.currency as currency', 's.action_end_date as action_end_date',
                 'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
             ->orderBy($sort . ' ' . $order);
