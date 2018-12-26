@@ -28,7 +28,7 @@ class DefaultController extends SdController
         $path = explode('/', Yii::$app->request->pathInfo);
         if (count($path) > 1 && $path[0] =='vendor') {
             $this->vendor = true;
-            Yii::$app->params['url_mask'] = 'vendor/*';
+            Yii::$app->params['url_mask'] = 'vendor';
         }
         return parent::beforeAction($action);
     }
@@ -227,10 +227,11 @@ class DefaultController extends SdController
             'price_start_user' => $priceStart ? $priceStart : $filterPriceStartMin,
             'price_end_user' => $priceEnd ? $priceEnd : $filterPriceEndMax,
             'vendors' => $this->vendor ? false : $vendors,
-            'vendors_user' => $vendorRequest ? $vendorRequest : [],
+            'vendors_user' => $vendorRequest ? $vendorRequest : false,
             'stores' => $stores,
             'store_user' => $storeRequest ? $storeRequest : [],
         ];
+        $storesData['vendor'] = $this->vendor ?  $vendorRequest : false;
         return $this->render('index', $storesData);
     }
 
