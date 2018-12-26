@@ -105,7 +105,7 @@ class Product extends \yii\db\ActiveRecord
         'name' => [
             "title" => Yii::t('main', 'sort_by_name'),
             "title_mobile" => Yii::t('main', 'sort_by_name_mobile'),
-            'order' => 'ASC'
+            'order' => SORT_ASC
         ],
         'modified_time' => [
             "title" => Yii::t('main', 'sort_by_time'),
@@ -123,7 +123,7 @@ class Product extends \yii\db\ActiveRecord
             "name" => 'price',
             "title" => Yii::t('main', 'sort_by_price_asc'),
             "title_mobile" => Yii::t('main', 'sort_by_price_asc_mobile'),
-            'order' => 'ASC'
+            'order' => SORT_ASC
         ],
     ];
   }
