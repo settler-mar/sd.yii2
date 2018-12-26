@@ -45,6 +45,7 @@ class DefaultController extends SdController
                 //валидация строки вендор
                 throw new \yii\web\NotFoundHttpException;
             }
+            //$vendorRequest = str_replace('_', ' ', $vendorRequest);
             $vendorCount = Product::find()->where(['vendor' => $vendorRequest])->count();
             if (!$vendorCount) {
                 //есть ли такой в базе вендор
@@ -101,6 +102,7 @@ class DefaultController extends SdController
 
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/category')];
         if ($this->vendor) {
+            //$this->params['breadcrumbs'][] = ['label' => $vendorRequest, 'url' => Help::href('/vendor/'.str_replace('', '_', $vendorRequest))];
             $this->params['breadcrumbs'][] = ['label' => $vendorRequest, 'url' => Help::href('/vendor/'.$vendorRequest)];
         }
 

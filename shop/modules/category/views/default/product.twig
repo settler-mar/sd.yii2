@@ -57,6 +57,7 @@
                         </div>
                         {% if product.vendor %}
                         <div class="catalog_product-props-item">
+                            {#<span class="title">{{ t('shop','product_vendor') }}:</span><a href="{{ _href('/vendor/'~product.vendor|replace(' ', '_')) }}" target="_blank" rel="nofollow nooper noreferrer"#}
                             <span class="title">{{ t('shop','product_vendor') }}:</span><a href="{{ _href('/vendor/'~product.vendor) }}" target="_blank" rel="nofollow nooper noreferrer"
                                 title="{{ t('shop','all_products_of_{vendor}',{'vendor':product.vendor})|raw }}">
                                 {{ product.vendor|raw }}
