@@ -37,7 +37,7 @@ return [
     'filter_price_end' => 'До',
     'filter_price_from-placeholder' => 'От',
     'filter_price_end-placeholder' => 'До',
-    'filter_start' => 'Поиск',
+    'filter_start' => 'Искать',
     'filter_price' => 'Цена',
     'filter_vendor' => 'Производитель',
     'filter_stores' => 'Магазин',

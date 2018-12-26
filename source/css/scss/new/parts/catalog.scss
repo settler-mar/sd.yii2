@@ -8,6 +8,39 @@
   transition: max-height 0.3s cubic-bezier(0, 1, 0, .95);
 }
 
+@mixin products {
+
+  ul {
+    padding:0;
+    left:0;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0;
+
+    > li > ul {
+      padding-left: 15px !important;
+    }
+
+    > li.open > ul {
+      left: 0;
+      background: #fff;
+      padding: 0;
+      width: 100%;
+      border-radius: 0;
+
+    }
+    > li.open > ul li a,
+    > li.open > ul li span {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .menu_angle-down {
+      right: 0;
+    }
+  }
+}
+
 .catalog {
 
   &_category {
@@ -329,6 +362,10 @@
             margin-bottom: 2px;
           }
         }
+
+        &.products {
+          @include products;
+        }
       }
 
       &-toggle {
@@ -490,6 +527,10 @@
         }
       }
 
+    }
+
+    &.products {
+      @include products;
     }
   }
 

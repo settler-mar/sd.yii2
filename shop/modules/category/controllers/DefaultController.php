@@ -154,8 +154,9 @@ class DefaultController extends SdController
         }
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
+            $cacheName .= ('_' . Help::multiImplode('_', $filter));
         }
-
+        //ddd($dataBaseData);
         $paginatePath = '/' . ($this->vendor ? 'vendor/'.$vendorRequest : 'category');
 
         if ($this->category) {

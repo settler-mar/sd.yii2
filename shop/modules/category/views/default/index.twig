@@ -20,7 +20,7 @@
     <div class="page-wrap-flex">
 
       {#слева категории#}
-      <div class="catalog-categories">
+      <div class="catalog-categories products">
         {% include('parts/products/left_menu.twig') %}
         {% include('parts/products/filter.twig') %}
       </div>
@@ -65,7 +65,7 @@
             </div>
 
             {% if pagination %}
-              <div class="catalog_pagination">
+              <div class="catalog_pagination products">
                 {{ pagination|raw }}
               </div>
             {% endif %}
