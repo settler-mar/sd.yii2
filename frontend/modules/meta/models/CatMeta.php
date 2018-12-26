@@ -68,7 +68,7 @@ class CatMeta extends \yii\db\ActiveRecord
         $page = preg_replace('/[^a-zA-Z0-9\/\-\*]/', '', $page);
 
         $cache = Yii::$app->cache;
-        return $cache->getOrSet('product_catalog_meta', function () use ($page) {
+        return $cache->getOrSet('product_catalog_meta_' . $page, function () use ($page) {
             $meta = CatMeta::find()->where(['page'=> $page])->asArray()->one();
             if ($meta) {
                 return $meta;
