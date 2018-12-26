@@ -177,17 +177,18 @@ $media3: $phones;
     }
     &_cashback {
       position: relative;
-      color: red;
+      color: white;
       font-weight: bold;
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
 
-      border: 1px solid $btn_base_bg;
+      border: 1px solid black;
+      background: black;
       border-radius: 2px;
-      padding: 5px 10px;
-      font-size: 14px;
+      padding: 3px 6px;
+      font-size: 12px;
 
       .question {
         margin-left: 5px;
@@ -204,10 +205,11 @@ $media3: $phones;
       &-question {
         vertical-align: middle;
         border-radius: 50%;
-        background: red;
+        background: black;
         padding: 0;
         width: 18PX;
         height: 18PX;
+        margin-left: 6px;
 
         svg {
           color: #fff;

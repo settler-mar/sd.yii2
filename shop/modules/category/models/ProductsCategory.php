@@ -4,7 +4,6 @@ namespace shop\modules\category\models;
 
 use common\components\Help;
 use frontend\modules\cache\models\Cache;
-use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use shop\modules\product\models\ProductsToCategory;
 use yii;
@@ -85,6 +84,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     return $this->hasOne(self::className(), ['id' => 'parent']);
   }
+
   public function getChildCategories()
   {
     return $this->hasMany(self::className(), ['parent' => 'id']);
@@ -114,52 +114,52 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public function childCategoriesId()
   {
-      if ($this->childCategoriesId === false) {
-          if (!$this->activeTree) {
-              $this->activeTree = self::tree(['where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
-          }
-          $this->childCategoriesId = self::getCategoryChilds($this->activeTree, $this->id, 'childs_ids');
-          $out = [];
-          self::getParentsArr($this->activeTree, $this->id, $out);
-
+    if ($this->childCategoriesId === false) {
+      if (!$this->activeTree) {
+        $this->activeTree = self::tree(['where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
       }
-      return $this->childCategoriesId;
+      $this->childCategoriesId = self::getCategoryChilds($this->activeTree, $this->id, 'childs_ids');
+      $out = [];
+      self::getParentsArr($this->activeTree, $this->id, $out);
+
+    }
+    return $this->childCategoriesId;
   }
 
-    /**
-     * @param bool $mode
-     * @return array|bool|string
-     */
+  /**
+   * @param bool $mode
+   * @return array|bool|string
+   */
   public function parentTree($mode = false)
   {
-      if ($this->parentTree === false) {
-          if (!$this->activeTree) {
-              $this->activeTree = self::tree(['where' => ['active'=>[ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
-          }
-          $parents = [];
-          self::getParentsArr($this->activeTree, $this->id, $parents);
-          $this->parentTree = array_reverse($parents);
+    if ($this->parentTree === false) {
+      if (!$this->activeTree) {
+        $this->activeTree = self::tree(['where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
       }
-      if (!$mode || !$this->parentTree) {
-          return $this->parentTree;
+      $parents = [];
+      self::getParentsArr($this->activeTree, $this->id, $parents);
+      $this->parentTree = array_reverse($parents);
+    }
+    if (!$mode || !$this->parentTree) {
+      return $this->parentTree;
+    }
+    foreach ($this->parentTree as $category) {
+      if (empty($category)) continue;
+      switch ($mode) {
+        case 0:
+          $out[] = $category['name'];
+          break;
+        case 1:
+          $out[] = $category['route'];
+          break;
+        case 2:
+          $out[] = '<a href="/admin-category/product/update/id:' . $category['id'] . '">' .
+              '<span class="' . self::activeClass($category['active']) . '">' .
+              $category['name'] . '</span></a>';
+          break;
       }
-      foreach ($this->parentTree as $category) {
-          if (empty($category)) continue;
-          switch ($mode) {
-              case 0:
-                  $out[] = $category['name'];
-                  break;
-              case 1:
-                  $out[] = $category['route'];
-                  break;
-              case 2:
-                  $out[] = '<a href="/admin-category/product/update/id:' . $category['id'] . '">' .
-                      '<span class="' . self::activeClass($category['active']) . '">' .
-                      $category['name'] . '</span></a>';
-                  break;
-          }
-      }
-      return implode($mode == 1 ? '/' : ' / ', $out);
+    }
+    return implode($mode == 1 ? '/' : ' / ', $out);
   }
 
   public function beforeSave($insert)
@@ -172,11 +172,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
           ->where(['parent' => $this->synonym])
           ->asArray()
           ->all();
-      foreach ($synonym_route as &$item){
-        $item='\''.$item['route'].'\'';
+      foreach ($synonym_route as &$item) {
+        $item = '\'' . $item['route'] . '\'';
       }
 
-      if(count($synonym_route)>0) {
+      if (count($synonym_route) > 0) {
         $synonym_route = implode(',', $synonym_route);
         //ddd($synonym_route);
         $sql = 'UPDATE `cw_products_category` SET `route`=CONCAT(`route`,\'_\',`id`) WHERE 
@@ -318,21 +318,41 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-
     $out = $cache->getOrSet(
         $cacheName,
-        function () use ($params, $language) {
-          $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active', 'route'])
-              ->asArray();
-          if (isset($params['where'])) {
-            $categoryArr->where($params['where']);
-          };
-          if (isset($params['counts'])) {
-              $categoryArr->leftJoin(ProductsToCategory::tableName(). ' ptc', 'pc.id = ptc.category_id')
-                  ->groupBy(['id', 'name', 'parent', 'active', 'route']);
-              $categoryArr->addSelect(['count(ptc.id) as count']);
+        function () use ($params, $language, $dependency) {
+          //d($params);
+
+          $params_t = $params;
+          foreach ($params as $k => $v) {
+            if (!in_array($k, ['where', 'counts'])) {
+              unset($params_t[$k]);
+            }
           }
-          $categoryArr = $categoryArr->all();
+          $cacheName = 'catalog_categories_menu' . (!empty($params_t) ? Help::multiImplode('_', $params_t) : '') .
+              ($language ? '_' . $language : '');
+
+          $cache = \Yii::$app->cache;
+          $categoryArr = $cache->getOrSet(
+              $cacheName,
+              function () use ($params, $language) {
+                $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active', 'route'])
+                    ->asArray();
+                if (isset($params['where'])) {
+                  $categoryArr->where($params['where']);
+                };
+                if (isset($params['counts'])) {
+                  $categoryArr->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
+                      ->groupBy(['id', 'name', 'parent', 'active', 'route']);
+                  $categoryArr->addSelect(['count(ptc.id) as count']);
+                }
+                $categoryArr = $categoryArr->all();
+                return $categoryArr;
+              },
+              $cache->defaultDuration,
+              $dependency
+          );
+
           //d($categoryArr);
           $categories = static::childsCategories($categoryArr, false, $params);
 
@@ -370,8 +390,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
           }
         }
         if (!$removeEmpty || $cat['count_all']) {
-            //если задано, то с пустым количеством товаров не выводим
-            $out[] = $cat;
+          //если задано, то с пустым количеством товаров не выводим
+          $out[] = $cat;
         }
       }
     }
@@ -550,19 +570,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public static function getParentsArr($categories, $id, &$out)
   {
-      foreach ($categories as $category) {
-          if ($category['id'] == $id) {
-              $out[] = $category;
-              return $category['id'];
-          }
-          if (isset($category['childs'])) {
-              $childs = self::getParentsArr($category['childs'], $id, $out);
-              if ($childs) {
-                  $out[] = $category;
-                  return $childs;
-              }
-          }
+    foreach ($categories as $category) {
+      if ($category['id'] == $id) {
+        $out[] = $category;
+        return $category['id'];
       }
+      if (isset($category['childs'])) {
+        $childs = self::getParentsArr($category['childs'], $id, $out);
+        if ($childs) {
+          $out[] = $category;
+          return $childs;
+        }
+      }
+    }
   }
 
   /**
