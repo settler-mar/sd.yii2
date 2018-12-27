@@ -196,6 +196,7 @@
 
     &-image {
       min-width: 48%;
+      max-width: 48%;
       margin-right: 20px;
       display:  flex;
       align-items: center;
@@ -228,6 +229,7 @@
         padding: 10px 10px;
         color: $text_color_light;
         background-color: $text_color;
+        max-width: 310px;
 
         .share42init {
           margin-left: 15px;
@@ -279,13 +281,14 @@
   &_favorite {
 
     &-link {
+      margin-left: 16px;
 
       svg {
         display: inline-block;
-        margin-right: 10px;
+        margin-right: 14px;
       }
       span {
-        font-size: 12px;
+        font-size: 16px;
         vertical-align: text-bottom;
       }
     }

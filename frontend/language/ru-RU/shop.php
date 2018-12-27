@@ -43,8 +43,8 @@ return [
     'filter_stores' => 'Магазин',
     'view_others' => 'Показать ещё',
     'similar_products' => 'Похожие товары',
-    'other_products_category_{category}' => 'Другие товары категории {category}',
-    'other_products_brand_{brand}' => 'Другие товары бренда {brand}',
+    'other_products_category_{category}' => 'Другие бренды категории &laquo;{category}&raquo;',
+    'other_products_brand_{brand}' => 'Другие товары бренда &laquo;{brand}&raquo;',
 //    'add_to_favorites' => 'Отложить в Избранное',
 //    'remove_from_favorites' => 'Убрать из Избранного',
     'buy_the_product_now' => 'Купить сейчас',
@@ -59,5 +59,6 @@ return [
     'footer_menu_col_3' => 'Промокоды',
     'footer_menu_col_4' => 'Menu column 4',
     'share' => 'Поделиться',
+    'product_props_description' => 'Характеристики и описание',
 
 ];

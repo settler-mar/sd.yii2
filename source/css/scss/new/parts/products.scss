@@ -20,6 +20,13 @@ $media3: $phones;
   width: 28%;
   box-sizing: border-box;
 
+  &.empty {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   @include media($media2) {
     min-width: 100px;
     width: 45%;

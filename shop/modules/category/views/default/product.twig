@@ -128,6 +128,10 @@
             <div class="catalog_product-bottom">
                 {% if product.description %}
                     <div class="catalog_product-description margin-half">
+                    <div class="catalog_product-bottom-header">
+                        <h3>{{ t('shop', 'product_props_description')|raw }}</h3>
+                    </div>
+
                         {{ product.description }}
                     </div>
                 {% endif %}
@@ -147,7 +151,7 @@
     {% if brands_products %}
         <div class="catalog_product-others margi-half">
             <h3 class="catalog_product-others-header">
-                {{ t('shop', 'other_products_brand_{brand}', {'brand':product.vendor}) }}
+                {{ t('shop', 'other_products_brand_{brand}', {'brand':product.vendor})|raw }}
             </h3>
             {% set products = brands_products %}
             {% include('parts/products/other_products.twig') %}
@@ -160,7 +164,7 @@
     {% if category_products %}
         <div class="catalog_product-others margin-half">
             <h3 class="catalog_product-others-header">
-                {{ t('shop', 'other_products_category_{category}', {'category':product.categories[0].name}) }}
+                {{ t('shop', 'other_products_category_{category}', {'category':product.categories[0].name})|raw }}
             </h3>
             {% set products = category_products %}
             {% include('parts/products/other_products.twig') %}
@@ -173,7 +177,7 @@
     {% if similar_products %}
         <div class="catalog_product-others margin-half">
             <h3 class="catalog_product-others-header">
-                {{ t('shop', 'similar_products') }}
+                {{ t('shop', 'similar_products')|raw }}
             </h3>
             {% set products = similar_products %}
             {% include('parts/products/other_products.twig') %}
