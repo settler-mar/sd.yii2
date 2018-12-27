@@ -33,7 +33,7 @@ class CatMeta extends \yii\db\ActiveRecord
     {
         return [
             [['page', 'title'], 'required'],
-            [['title', 'description', 'keyword', 'content', 'h1'], 'string'],
+            [['title', 'description', 'keyword', 'content', 'h1','upper_description', 'down_description'], 'string'],
             [['updated_at'], 'safe'],
             [['page'], 'string', 'max' => 255],
         ];
@@ -50,6 +50,8 @@ class CatMeta extends \yii\db\ActiveRecord
             'title' => 'Title',
             'h1' => 'H1',
             'description' => 'Description',
+            'upper_description' => 'Верхнее описание',
+            'down_description' => 'Нижнее описание',
             'keyword' => 'Keyword',
             'content' => 'Content',
             'updated_at' => 'Updated At',

@@ -13,6 +13,11 @@
 {#краткая информация категории#}
 <section class="gray-box wrap-round margin">
   <h1 class="page-header align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
+  {% if meta_upper_description %}
+    <div class="catalog_category-short-description laptop_hide catalog_category-content">
+        {{ meta_upper_description|raw }}
+    </div>
+  {% endif %}
 </section>
 
 <section class="catalog margin">
@@ -75,6 +80,12 @@
             <p>{{ t('main', 'not_found')|raw }}</p>
           {% endif %}
         </div>
+
+        {% if meta_down_description %}
+          <div class="catalog_category-down-description margin">
+              {{ meta_down_description|raw }}
+          </div>
+        {% endif %}
 
 
       </div>

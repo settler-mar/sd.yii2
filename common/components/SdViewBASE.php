@@ -16,6 +16,8 @@ use frontend\modules\notification\models\Notifications;
 class SdViewBASE extends View
 {
   public $contentBD;
+  public $meta_down_description;
+  public $meta_upper_description;
 
   public $all_params = [];
   public $first_init = true;
@@ -80,6 +82,8 @@ class SdViewBASE extends View
         if (isset($arr['title'])) $this->title = $arr['title'];
         if (isset($arr['content'])) $this->contentBD = $arr['content'];
         if (isset($arr['h1'])) $this->h1 = $arr['h1'];
+        if (isset($arr['upper_description'])) $this->meta_upper_description = $arr['upper_description'];
+        if (isset($arr['down_description'])) $this->meta_down_description = $arr['down_description'];
 
         if (isset($arr['head'])) $this->meta_head = $arr['head'];
 
