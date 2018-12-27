@@ -54,5 +54,9 @@ return [
     'product_store' => 'Магазин',
     'product_article' => 'Артикул',
     'product_vendor' => 'Бренд',
+    'footer_menu_col_1' => 'Menu column 1',
+    'footer_menu_col_2' => 'Menu column 2',
+    'footer_menu_col_3' => 'Промокоды',
+    'footer_menu_col_4' => 'Menu column 4',
 
 ];
