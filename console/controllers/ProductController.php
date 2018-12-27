@@ -201,6 +201,14 @@ class ProductController extends Controller
         break;
       }
     }
+    $sql = 'UPDATE `cw_product` set `image` = null  WHERE `image_download_count` >= ' . $imageDownloadMaxCount .
+      ' AND (`image` LIKE \'http://%\' OR `image` LIKE \'https://%\')';
+    try {
+      $updated = Yii::$app->db->createCommand($sql)->execute();
+      echo "Images set as not downloadable " . $updated . "\n";
+    } catch (\Exception $e) {
+      echo $e->getMessage() . "\n";
+    }
     echo 'Product Images ends at ' . date('Y-m-d H:i:s', time()) . ' processed ' . $process . ' downloaded ' .
         $downloads . ' skipped ' . $skip . ($error ? ' errors ' . $error : '') . "\n";
   }

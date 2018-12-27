@@ -12,7 +12,7 @@
             {% endfor %}
             <ul class="sd-select-drop">
                 {% for sortLink in sortlinks%}
-                    <li>
+                    <li {% if sortLink.active == 1 %}class="active"{% endif %}>
                         {% if sortLink.active == 1 %}
                             <span>{{sortLink.title}}</span>
                         {% else %}

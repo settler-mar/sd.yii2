@@ -46,7 +46,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
       //[['name'], 'required'],
         [['name', 'route'], 'string', 'max' => 255],
         [['parent'], 'exist', 'targetAttribute' => 'id'],
-        [['active', 'synonym', 'store_id', 'cpa_id'], 'integer'],
+        [['active', 'synonym', 'store_id', 'cpa_id', 'menu_index'], 'integer'],
         ['route', 'unique', 'targetAttribute' => ['route', 'parent']],
         [['route'], 'filter', 'filter' => function ($value) {
           $value = $value === '' ? null : $value;
@@ -68,7 +68,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
         'name' => 'Название',
         'parent' => 'Родительская категория',
         'synonym' => 'Является синонимом для',
-        'active' => 'Активна'
+        'active' => 'Активна',
+        'menu_index' => 'Позиция в меню'
     ];
   }
 
@@ -337,6 +338,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
               $cacheName,
               function () use ($params, $language) {
                 $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active', 'route'])
+                    ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
                     ->asArray();
                 if (isset($params['where'])) {
                   $categoryArr->where($params['where']);
@@ -353,7 +355,6 @@ class ProductsCategory extends \yii\db\ActiveRecord
               $dependency
           );
 
-          //d($categoryArr);
           $categories = static::childsCategories($categoryArr, false, $params);
 
           return $categories;

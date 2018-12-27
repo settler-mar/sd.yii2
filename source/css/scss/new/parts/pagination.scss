@@ -5,6 +5,19 @@ $paginate_text_color:  #1b2527;
 $paginate_color_hover: #ffcd16;
 $paginate_mobile_width: 768px;
 
+@mixin products {
+  ul > li {
+    width: 3.5em;
+    height: 3.5em;
+
+    span {
+      padding: 20PX 25PX;
+    }
+  }
+
+
+}
+
 
 .catalog_pagination {
   ul {
@@ -57,6 +70,9 @@ $paginate_mobile_width: 768px;
       }
 
     }
+  }
+  &.products {
+    @include products
   }
 }
 .pagination {

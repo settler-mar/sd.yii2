@@ -41,7 +41,7 @@
                             </span>
                         </div>
                     </div>
-                    {% if product.store.displayed_cashback %}
+                    {% if product.store.displayed_cashback and product.store.is_active == 1 %}
                         <div class="catalog_product-props margin-half">
                             <div class="catalog_product-props-item">
                                 <span class="title">{{ t('main','cashback') }}:</span> {{ cashback(product.store, 'product')|raw }}
@@ -72,7 +72,7 @@
 
                     {% set href_class = user_id ? '' : 'catalog_product_link' %}
                     <div class="catalog_product-buttons margin-half">
-                        {% if  product.store.displayed_cashback %}
+                        {% if  product.store.displayed_cashback and product.store.is_active == 1 %}
                             <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn btn-transform margin-half">
                                 <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_without_cashback')|raw }}
                             </a>

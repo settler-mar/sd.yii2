@@ -13,6 +13,11 @@
 {#краткая информация категории#}
 <section class="gray-box wrap-round margin">
   <h1 class="page-header align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
+  {% if meta_upper_description %}
+    <div class="catalog_category-short-description laptop_hide catalog_category-content">
+        {{ meta_upper_description|raw }}
+    </div>
+  {% endif %}
 </section>
 
 <section class="catalog margin">
@@ -20,7 +25,7 @@
     <div class="page-wrap-flex">
 
       {#слева категории#}
-      <div class="catalog-categories">
+      <div class="catalog-categories products">
         {% include('parts/products/left_menu.twig') %}
         {% include('parts/products/filter.twig') %}
       </div>
@@ -37,7 +42,7 @@
         </div>
 
         {#выбор и отображение сортировки#}
-        <div class="margin-half page-wrap-flex catalog-stores_sort">
+        <div class="margin-half page-wrap-flex catalog-stores_sort catalog-stores_sort-products">
           {% include('parts/sort-links.twig') %}
           <div class="catalog-stores_sort-info">
             {{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_products + 1 : '0'), 'end': offset_products + show_products, 'total': total_v})|raw }}
@@ -65,7 +70,7 @@
             </div>
 
             {% if pagination %}
-              <div class="catalog_pagination">
+              <div class="catalog_pagination products">
                 {{ pagination|raw }}
               </div>
             {% endif %}
@@ -75,6 +80,12 @@
             <p>{{ t('main', 'not_found')|raw }}</p>
           {% endif %}
         </div>
+
+        {% if meta_down_description %}
+          <div class="catalog_category-down-description margin">
+              {{ meta_down_description|raw }}
+          </div>
+        {% endif %}
 
 
       </div>

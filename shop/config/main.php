@@ -67,7 +67,7 @@ return [
                     'class' => 'shop\components\SdUrlCategories',
                 ],
                 '/category/<action>' => 'category/default/index',
-                'vendor/<vendor:\w+>' => 'category/default/index',
+                'vendor/<vendor>' => 'category/default/index',
                 'goto/product:<product:\d+>' => 'site/goto',
 
                 '<module>/default/<action>' => '404',

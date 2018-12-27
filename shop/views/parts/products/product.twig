@@ -12,8 +12,9 @@
 
         <div class="catalog_products_item_content">
             <div class="catalog_products_item_image">
-                <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+
                  <div class="catalog_products_item_image-wrap">
+                     <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
                      {% if product.price < old_price %}
                          <span class="catalog_products_item_image-discount">
                              {% set discount = (((old_price - product.price) / old_price) * 100)|round(0, 'floor') %}
@@ -25,6 +26,7 @@
                      {% else %}
                         <span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>
                      {% endif %}
+                     </a>
 
                      <div class="catalog_products_item-vaforite ">
                          {#{% if user_id %}#}
@@ -53,22 +55,20 @@
 
 
                  </div>
-
-                </a>
             </div>
             <div class="catalog_products_item_text">
                 <div class="catalog_products_item_text_store">
-                    <a href="{{ _href('/category?shop='~product.store_route)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                    <a href="{{  product_url }}" target="_blank" rel="nofollow nooper noreferrer">
                         {{ svg('chain','','@frontend')|raw }} {{ product.store_name }}
                     </a>
                 </div>
                 <div class="catalog_products_item_text_brand">
-                    <a href="{{ _href('/vendor/'~product.vendor)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                    <a href="{{  product_url }}" target="_blank" rel="nofollow nooper noreferrer">
                         {{ product.vendor }}
                     </a>
                 </div>
                 <div class="catalog_products_item_text_title">
-                    <a href="{{ product_url }}" target="_blank" class="">
+                    <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer">
                         {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name }} {% endif %}
                     </a>
                 </div>
@@ -77,16 +77,22 @@
         </div>
         <div class="catalog_products_item_prices">
             <div class="catalog_products_item_price">
-                {% if product.price < old_price %}
-                    <div class="catalog_products_item_price-old">
-                        {{ old_price }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
-                    </div>
-                {% endif %}
-                {{ product.price }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                    {% set k = product.product_currency in ['RUB'] ? 0 : 2 %}
+                    {% if product.price < old_price %}
+                        <div class="catalog_products_item_price-old">
+                            {{ _nf(old_price, k)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                        </div>
+                    {% endif %}
+                    {{ _nf(product.price, k)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                </a>
             </div>
-            {% if product.displayed_cashback %}
+
+            {% if product.displayed_cashback and product.store_active == 1 %}
                 <div class="catalog_products_item_cashback">
-                    {{ cashback(product, 'product_catalog')|raw }}
+                    <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                        {{ cashback(product, 'product_catalog')|raw }}
+                    </a>
                 </div>
             {% endif %}
 

@@ -79,7 +79,7 @@ class SiteController extends Controller
     $data = [];
     $data['stat'] = Product::stat();
     $data['popular_categories'] = ProductsCategory::top();
-    $data['popular_products'] = Product::top();
+    $data['popular_products'] = Product::top(['count' => 12, 'sort' => 'modified_time', 'order' => SORT_DESC]);
     $data['popular_brands'] = Product::topBy('vendor', ['count' => 20]);
     $data['posts'] = Posts::getLastPosts();
     //ddd($data);

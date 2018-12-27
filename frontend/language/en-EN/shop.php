@@ -53,5 +53,8 @@ return [
     'product_store' => 'Store',
     'product_article' => 'Article',
     'product_vendor' => 'Brand',
-
+    'footer_menu_col_1' => 'Menu column 1',
+    'footer_menu_col_2' => 'Menu column 2',
+    'footer_menu_col_3' => 'Popular Coupon Codes',
+    'footer_menu_col_4' => 'Menu column 4',
 ];

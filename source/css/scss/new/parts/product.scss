@@ -134,6 +134,10 @@
   }
   &_filter{
 
+    &-header {
+      font-weight: bold;
+    }
+
     &-form {
       min-width: 300px;
 
@@ -153,7 +157,8 @@
 
         &-price {
           //width: 33%;
-          margin: 0 10px;
+          margin-left: 10px;
+          margin-right: 10px;
 
           &-inputs {
             display: flex;
@@ -170,7 +175,8 @@
 
         }
         &-checkbox {
-          margin: 0 5px 0 15px;
+          margin-right: 5px;
+          margin-left: 15px;
         }
       }
     }
