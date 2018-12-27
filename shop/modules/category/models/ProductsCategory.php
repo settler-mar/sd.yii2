@@ -259,9 +259,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
       Yii::$app->globals->set('product_categories', $categories_db);
     }
 
+    $i = 0;
     while (!empty($id)) {
       $item = $categories_db[$id];
       $categories[] = $item;
+      $i++;
+      if($i>8)break;
       $id = empty($item['parent']) ? null : $item['parent'];
     }
 
