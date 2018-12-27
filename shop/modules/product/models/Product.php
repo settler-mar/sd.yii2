@@ -246,6 +246,12 @@ class Product extends \yii\db\ActiveRecord
     return $vendor->name;
   }
 
+  public function getVendorDb(){
+    if(empty($this->vendor_id))return null;
+    return $this->hasOne(Vendor::className(), ['id' => 'vendor_id']);
+  }
+
+
   public function setVendor($vendor){
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
     $path = 'vendor_by_name_'.$vendor;
@@ -669,8 +675,8 @@ class Product extends \yii\db\ActiveRecord
                     $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
                         ->where(['ptc.category_id' => $params['category']->childCategoriesId()]);
                 }
-                if (!empty($params['vendor'])) {
-                    $product->where(['vendor' => $params['vendor']]);
+                if (!empty($params['where'])) {
+                    $product->andWhere($params['where']);
                 }
 
                 return $product->all();
@@ -688,8 +694,8 @@ class Product extends \yii\db\ActiveRecord
                 $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
                     ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId()]);
             }
-            if (!empty($params['vendor'])) {
-                $product->where(['vendor' => $params['vendor']]);
+            if (!empty($params['where'])) {
+                $product->andWhere($params['where']);
             }
             $product = $product->all();
             return isset($product[0]) ? $product[0] : 0;
@@ -715,9 +721,9 @@ class Product extends \yii\db\ActiveRecord
                 ->groupBy(['s.name', 's.uid'])
                 ->orderBy(['s.rating' => SORT_DESC])
                 ->asArray();
-            if (isset($params['vendor'])) {
-                $stores->where(['vendor' =>  $params['vendor']]);
-            }
+//            if (!empty($params['vendor'])) {
+//                $stores->where(['vendor' =>  $params['vendor']]);
+//            }
             if (isset($params['category'])) {
                 $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
                     ->where(['ptc.category_id' =>  $params['category']->childCategoriesId()]);

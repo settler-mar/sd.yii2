@@ -34,9 +34,9 @@
                 </div>
                 <div class="catalog_product_filter-vendor catalog_product_filter-checkbox">
                     {% for vendor in filter.vendors  %}
-                        <input type="checkbox" id="label-filer-vendor{{ vendor.vendor }}" name="vendor[]" value="{{ vendor.vendor }}"
-                                {% if vendor.vendor in filter.vendors_user %} checked {% endif %} >
-                        <label for="label-filer-vendor{{ vendor.vendor }}">{{ vendor.vendor }}</label>
+                        <input type="checkbox" id="label-filer-vendor{{ vendor.route }}" name="vendor[]" value="{{ vendor.route }}"
+                                {% if vendor.route in filter.vendors_user %} checked {% endif %} >
+                        <label for="label-filer-vendor{{ vendor.route }}">{{ vendor.name }}</label>
                     {% endfor %}
                 </div>
             </div>

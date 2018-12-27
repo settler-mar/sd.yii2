@@ -5,6 +5,7 @@ namespace shop\modules\category\controllers;
 use frontend\modules\favorites\models\UsersFavorites;
 use yii\web\Controller;
 use shop\modules\product\models\Product;
+use shop\modules\vendor\models\Vendor;
 use shop\modules\category\models\ProductsCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
@@ -12,23 +13,18 @@ use frontend\modules\stores\models\Stores;
 use frontend\components\Pagination;
 use frontend\components\SdController;
 use common\components\Help;
+use frontend\modules\transitions\models\UsersVisits;
 use yii;
 
 class DefaultController extends SdController
 {
     public $category = null;
-    public $vendor = false;
 
     public function beforeAction($action)
     {
         if (isset(Yii::$app->params['catalog_category'])) {
             $this->category = Yii::$app->params['catalog_category'];
             Yii::$app->params['url_mask'] = 'category/*';
-        }
-        $path = explode('/', Yii::$app->request->pathInfo);
-        if (count($path) > 1 && $path[0] =='vendor') {
-            $this->vendor = true;
-            Yii::$app->params['url_mask'] = 'vendor';
         }
         return parent::beforeAction($action);
     }
@@ -39,16 +35,16 @@ class DefaultController extends SdController
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
 
-        $vendors = Product::conditionValues('vendor', 'distinct', $this->category);
-        $vendorValidator = new \yii\validators\RangeValidator([
-            'range' => array_column($vendors, 'vendor'),
-            'allowArray' => true
-        ]);
-        if (!empty($vendorRequest) && !$vendorValidator->validate($vendorRequest)) {
-            throw new \yii\web\NotFoundHttpException;
-        };
+        if ($vendorRequest) {
+            $vendorDb = Vendor::items(['limit' => 1, 'where' => ['v.route' => $vendorRequest], 'category' => $this->category->id]);
+            if (!$vendorDb) {
+                throw new \yii\web\NotFoundHttpException;
+            }
+        }
+        $vendors =  $vendorRequest ? [] : Vendor::items(['category' => $this->category, 'limit' => 20]);
+        //ddd($vendors);
 
-        $stores = Product::usedStores(['category' => $this->category, 'vendor' => $this->vendor ? $vendorRequest : false]);
+        $stores = Product::usedStores(['category' => $this->category, 'vendor' => $vendorRequest]);
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -88,19 +84,19 @@ class DefaultController extends SdController
         $order = !empty($sortvars[$sort_request]['order']) ? $sortvars[$sort_request]['order'] : SORT_DESC;
 
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/category')];
-        if ($this->vendor) {
-            //$this->params['breadcrumbs'][] = ['label' => $vendorRequest, 'url' => Help::href('/vendor/'.str_replace('', '_', $vendorRequest))];
-            $this->params['breadcrumbs'][] = ['label' => $vendorRequest, 'url' => Help::href('/vendor/'.$vendorRequest)];
-        }
 
         $storesData = [];
         $dataBaseData = Product::find()
             ->from(Product::tableName() . ' prod')
             ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-            ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
+            ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+            ->where([
+                'prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST],
+                'v.status' => Vendor::STATUS_ACTIVE,
+                ])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
                 's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
-                's.is_active as store_active',
+                's.is_active as store_active', 'v.name as vendor_name', 'v.route as vendor_route',
                 's.currency as currency', 's.action_end_date as action_end_date',
                 'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
             ->orderBy([$sort => $order]);
@@ -113,7 +109,10 @@ class DefaultController extends SdController
         $f_res = Product::conditionValues(
             'price',
             ['min','max'],
-            ['category' => $this->category, 'vendor' => $this->vendor ? $vendorRequest : false]
+            [
+                'category' => $this->category,
+                'where' => isset($vendorDb[0]['id']) ? ['vendor_id' => $vendorDb[0]['id']] : []
+            ]
         );
         $filterPriceEndMax = (int)$f_res['max_price'];
         $filterPriceStartMin=(int)$f_res['min_price'];
@@ -131,8 +130,8 @@ class DefaultController extends SdController
             $filter[] = ['<=', 'price', $priceEnd];
             $paginateParams['price-end'] = $priceEnd;
         }
-        if ($vendorRequest) {
-            $filter[] = ['vendor' => $vendorRequest];
+        if ($vendorRequest && isset($vendorDb[0]['id'])) {
+            $filter[] = ['vendor_id' => $vendorDb[0]['id']];
             $paginateParams['vendor'] = $vendorRequest;
         }
         if ($storeRequest) {
@@ -145,7 +144,7 @@ class DefaultController extends SdController
             $cacheName .= ('_' . Help::multiImplode('_', $filter));
         }
         //ddd($dataBaseData);
-        $paginatePath = '/' . ($this->vendor ? 'vendor/'.$vendorRequest : 'category');
+        $paginatePath = '/category';
 
         if ($this->category) {
             //есть категория
@@ -164,25 +163,6 @@ class DefaultController extends SdController
             $cacheName .= '_category_' . $this->category->route;
 
         }
-//        $filters = $filters->all();
-//        foreach ($filters as &$filter) {
-//            $values = ProductParametersValues::find()
-//                ->select(['id', 'name'])
-//                ->where(['parameter_id' => $filter['id'], 'active'=>ProductParametersValues::PRODUCT_PARAMETER_VALUES_ACTIVE_YES])
-//                ->asArray();
-//            if ($this->category) {
-//                //значения в т.ч. по дочерним ??
-//                $filterParamCategory = [];
-//                foreach($allCategories as $cat) {
-//                    $filterParamCategory[] = 'JSON_CONTAINS('.ProductParametersValues::tableName().'.categories,\'"'.$cat.'"\',"$")';
-//                }
-//                $values->andWhere(array_merge(['or', ['categories' => null]], $filterParamCategory));
-//            }
-//            $filter['values'] = $values->all();
-//        }
-        //$storeData['filter'] = $filters;
-        //ddd($cacheName);
-
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
@@ -217,12 +197,11 @@ class DefaultController extends SdController
             'price_end' => $filterPriceEndMax,
             'price_start_user' => $priceStart ? $priceStart : $filterPriceStartMin,
             'price_end_user' => $priceEnd ? $priceEnd : $filterPriceEndMax,
-            'vendors' => $this->vendor ? false : $vendors,
+            'vendors' => $vendors,
             'vendors_user' => $vendorRequest ? $vendorRequest : false,
             'stores' => $stores,
             'store_user' => $storeRequest ? $storeRequest : [],
         ];
-        $storesData['vendor'] = $this->vendor ?  $vendorRequest : false;
         return $this->render('index', $storesData);
     }
 
@@ -247,7 +226,7 @@ class DefaultController extends SdController
 
         //продукты того же производителя
         $brandsProducts = Product::top([
-            'where' =>  ['and', ['vendor' => $product->vendor], ['<>', 'p.id', $product->id]],
+            'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'p.id', $product->id]],
             'count' => 8
         ]);
         //продукты той же категории
@@ -264,6 +243,15 @@ class DefaultController extends SdController
                 'category_id' => $product->categories[0]->id,
                 'count' => 8
             ]) : [];
+
+//        //просмотренные товары
+//        $visits = UsersVisits::find()
+//            ->select(['cw_users_visits.product_id', 'max(visit_date) as visit_date'])
+//            ->where(['user_id' => Yii::$app->user->id, 'source'=>[UsersVisits::TRANSITION_TYPE_STORE, UsersVisits::TRANSITION_TYPE_COUPON]])
+//            ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
+//            ->groupBy('store_id');
+//
+//        $dataBaseData->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid');
 
         return $this->render('product', [
             'product' => $product,

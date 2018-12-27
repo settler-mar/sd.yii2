@@ -233,7 +233,7 @@ class DefaultController extends SdController
       $url = Help::href('/stores/visited');
       $visits = UsersVisits::find()
         ->select(['cw_users_visits.store_id', 'max(visit_date) as visit_date'])
-        ->where(['user_id' => Yii::$app->user->id])
+        ->where(['user_id' => Yii::$app->user->id, 'source'=>[UsersVisits::TRANSITION_TYPE_STORE, UsersVisits::TRANSITION_TYPE_COUPON]])
         ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
         ->groupBy('store_id');
 
