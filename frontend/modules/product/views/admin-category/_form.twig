@@ -18,6 +18,8 @@
 
           {{ form.field(model, 'code').textInput({'disabled':true})|raw }}
 
+          {{ form.field(model, 'menu_index').textInput({'maxlength':true})|raw }}
+
 
           <div class="form-group field-productscategory-synonym">
             <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
