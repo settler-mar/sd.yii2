@@ -91,5 +91,8 @@ return [
         'category' => [
             'class' => 'shop\modules\category\Module',
         ],
+        'vendor' => [
+            'class' => 'shop\modules\vendor\Module',
+        ],
     ],
 ];

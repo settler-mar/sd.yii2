@@ -23,7 +23,7 @@ class ProductSearch extends Product
     {
         return [
             [['id', 'available', 'store_id', 'catalog_id', 'cpa_id'], 'integer'],
-            [['article', 'currency', 'description', 'modified_time', 'name', 'image', 'url', 'vendor',
+            [['article', 'currency', 'description', 'modified_time', 'name', 'image', 'url',
                 'product_categories'], 'safe'],
             [['old_price', 'price'], 'number'],
             [['param','value'], 'string'],
@@ -86,8 +86,8 @@ class ProductSearch extends Product
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'params', $this->params])
             ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'vendor', $this->vendor]);
+            ->andFilterWhere(['like', 'url', $this->url]);
+            //->andFilterWhere(['like', 'vendor', $this->vendor]);
 
         if (!empty($this->product_categories)) {
             $categoriesTree = ProductsCategory::tree();

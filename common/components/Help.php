@@ -6,6 +6,7 @@ use kartik\daterange\DateRangePicker;
 use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
+use dosamigos\transliterator\TransliteratorHelper;
 
 /**
  * Class Help
@@ -320,4 +321,10 @@ class Help extends Component
         return $out;
     }
 
+  public function makeRoute($name){
+    $name = TransliteratorHelper::process($name, '', 'en');
+    $name = strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', htmlentities($name, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '-'));
+    //$name = preg_replace('/[\.\s]/','',$name);
+    return $name;
+  }
 }
