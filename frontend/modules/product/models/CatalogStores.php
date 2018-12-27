@@ -30,6 +30,7 @@ class CatalogStores extends \yii\db\ActiveRecord
     const CATALOG_STORE_ACTIVE_YES = 1;
     const CATALOG_STORE_ACTIVE_WAITING = 2;
 
+
     /**
      * @inheritdoc
      */

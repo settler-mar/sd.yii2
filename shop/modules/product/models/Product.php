@@ -10,6 +10,7 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use JBZoo\Image\Image;
 use shop\modules\category\models\ProductsCategory;
+use shop\modules\vendor\models\Vendor;
 use yii;
 use common\components\Help;
 
@@ -29,6 +30,7 @@ use common\components\Help;
  * @property string $image
  * @property string $href
  * @property string $vendor
+ * @property integer $vendor_id
  *
  * @property CwProductsToCategory[] $cwProductsToCategories
  */
@@ -69,6 +71,7 @@ class Product extends \yii\db\ActiveRecord
         [['modified_time'], 'safe'],
         [['old_price', 'price'], 'number'],
         [['article', 'name', 'image', 'vendor'], 'string', 'max' => 255],
+        ['vendor_id','integer'],
         [['url'], 'string'],
         [['currency'], 'string', 'max' => 3],
     ];
@@ -93,6 +96,7 @@ class Product extends \yii\db\ActiveRecord
         'params' => 'Параметры',
         'image' => 'Изображение',
         'url' => 'Url',
+        'vendor_id' => 'Производитель',
         'vendor' => 'Производитель',
         'categories' => 'Категории',
         'product_categories' => 'Категории',
@@ -234,6 +238,33 @@ class Product extends \yii\db\ActiveRecord
     return $out;
   }
 
+  public function getVendor(){
+    if(empty($this->vendor_id))return '';
+    $vendor = Vendor::find()
+        ->where(['id'=>$this->vendor_id])
+        ->one();
+    return $vendor->name;
+  }
+
+  public function setVendor($vendor){
+    $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
+    $path = 'vendor_by_name_'.$vendor;
+    return $cache->getOrSet($path, function () use ($vendor) {
+      $vendor_db = Vendor::find()
+          ->where(['name'=>$vendor])
+          ->one();
+
+      if(!$vendor_db){
+        $vendor_db = new Vendor();
+        $vendor_db->name = $vendor;
+        if(!$vendor_db->save()){
+          ddd($vendor_db->errors);
+        };
+      }
+
+      return $vendor_db->id;
+    });
+  }
   /**
    * @param $product
    * @return array
