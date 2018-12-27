@@ -58,5 +58,6 @@ return [
     'footer_menu_col_2' => 'Menu column 2',
     'footer_menu_col_3' => 'Промокоды',
     'footer_menu_col_4' => 'Menu column 4',
+    'share' => 'Поделиться',
 
 ];

@@ -2,6 +2,7 @@
 
 use yii\db\Migration;
 use \shop\modules\product\models\Product;
+use yii\helpers\Console;
 
 /**
  * Handles the creation of table `vendor`.
@@ -13,6 +14,9 @@ class m181227_090446_create_vendor_table extends Migration
      */
     public function safeUp()
     {
+        if (Console::isRunningOnWindows()) {
+            shell_exec('chcp 65001');
+        }
         $this->createTable('cw_vendor', [
           'id' => $this->primaryKey(),
           'route' => $this->string(30)->notNull()->unique(),
@@ -45,6 +49,7 @@ class m181227_090446_create_vendor_table extends Migration
 
       $vendors = Product::find()
           ->select('vendor')
+          ->where(['and', ['is not', 'vendor', null], ['<>', 'vendor', '']])
           ->groupBy('vendor')
           ->asArray()
           ->all();
@@ -61,6 +66,7 @@ class m181227_090446_create_vendor_table extends Migration
           $vendor_arr[$vendor_db->route]++;
           $vendor_db->route.='_'.$vendor_arr[$vendor_db->route];
         };
+        $vendor_db->route = substr($vendor_db->route, 0, 30);
         if($vendor_db->save()){
           Product::updateAll(['vendor_id'=>$vendor_db->id],['vendor'=>$vendor_db->name]);
         }else{

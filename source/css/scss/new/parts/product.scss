@@ -195,19 +195,59 @@
     }
 
     &-image {
-      width: 40%;
+      min-width: 48%;
       margin-right: 20px;
+      display:  flex;
+      align-items: center;
+      justify-content:  center;
+      border: solid 1px $menu_border_color;
+
+      &-empty {
+        display: block;
+        font-size: 30px;
+        text-align: center;
+      }
+
 
       img {
-        width: 100%;
+        object-fit: contain;
+        max-width: 100%;
 
         &.no_optomize {
           max-height: none;
         }
       }
     }
-    &-info h1 {
-      font-size: 20px;
+    &-info {
+
+      &-share {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        padding: 10px 10px;
+        color: $text_color_light;
+        background-color: $text_color;
+
+        .share42init {
+          margin-left: 15px;
+          //padding: 10px;
+
+          .share42_wrap {
+            display: flex;
+            align-items: center;
+
+            a {
+               display: flex;
+            }
+          }
+        }
+
+      }
+
+      h1 {
+        font-size: 20px;
+      }
     }
   }
   &-buttons {
@@ -217,7 +257,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: center;
-      padding: 5px 50px;
+      padding: 5px 10px;
 
       .icon {
         background-color: $text_color;

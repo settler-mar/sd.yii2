@@ -16,12 +16,24 @@
             <div class="catalog_product-main margin-half">
                 <div class="catalog_product-main-image">
                     {% if product.image %}
-                        <img {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}" class="no_optomize">
+                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}" class="no_optomize">
                     {% else %}
-                        <span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>
+                        <span class="catalog_product-main-image-empty">{{ t('shop', 'image_empty')|raw }}</span>
                     {% endif %}
                 </div>
-                <div class="catalog_product-main-info">
+                <div class=" catalog_product-main-info">
+                    <div class="catalog_product-main-info-share margin-half">
+                        {{ t('shop', 'share')|raw }}:
+                        <div class="share42init accauntSoc accauntSoc_32"
+                             data-image="{% if 'http' in product.image %}{% else %}https://shop.secretdiscounter.com/images/products/{% endif %}{{ product.image }}"
+                             data-title="{{ product.name|raw }}"
+                             data-description="{{ this.description }}"
+                             data-socials="{{ app.params.regions_list[app.params.region].socialsShareList }}"
+                             data-icon-type="svg"
+                             data-icon-size=24
+                        >
+                        </div>
+                    </div>
                     <div class="catalog_product-main-info-h1">
                         <h1 class="" >{{ h1_final|raw }}</h1>
                     </div>
