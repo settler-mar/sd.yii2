@@ -38,28 +38,16 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
-        if ($this->vendor) {
-            //страница /vendor
-            $stringValidator = new \yii\validators\stringValidator();
-            if (!$vendorRequest || !$stringValidator->validate($vendorRequest)) {
-                //валидация строки вендор
-                throw new \yii\web\NotFoundHttpException;
-            }
-            //ecть ли в базе
-            $vendorCount = Product::activeCount(['where' => ['vendor' => $vendorRequest]]);
-            if (!$vendorCount) {
-                throw new \yii\web\NotFoundHttpException;
-            }
-        } else {
-            $vendors = Product::conditionValues('vendor', 'distinct', $this->category);
-            $vendorValidator = new \yii\validators\RangeValidator([
-                'range' => array_column($vendors, 'vendor'),
-                'allowArray' => true
-            ]);
-            if (!empty($vendorRequest) && !$vendorValidator->validate($vendorRequest)) {
-                throw new \yii\web\NotFoundHttpException;
-            };
-        }
+
+        $vendors = Product::conditionValues('vendor', 'distinct', $this->category);
+        $vendorValidator = new \yii\validators\RangeValidator([
+            'range' => array_column($vendors, 'vendor'),
+            'allowArray' => true
+        ]);
+        if (!empty($vendorRequest) && !$vendorValidator->validate($vendorRequest)) {
+            throw new \yii\web\NotFoundHttpException;
+        };
+
         $stores = Product::usedStores(['category' => $this->category, 'vendor' => $this->vendor ? $vendorRequest : false]);
 
         $page = $request->get('page');
