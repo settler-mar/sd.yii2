@@ -147,7 +147,12 @@ $media3: $phones;
 
     &_price {
       font-weight: bold;
-      font-size: 22px;
+      font-size: 18px;
+
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
 
       &_currency {
         //font-weight: normal;
@@ -189,6 +194,11 @@ $media3: $phones;
       border-radius: 2px;
       padding: 3px 6px;
       font-size: 12px;
+
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
 
       .question {
         margin-left: 5px;
