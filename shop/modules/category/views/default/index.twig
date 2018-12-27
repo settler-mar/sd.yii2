@@ -42,7 +42,7 @@
         </div>
 
         {#выбор и отображение сортировки#}
-        <div class="margin-half page-wrap-flex catalog-stores_sort">
+        <div class="margin-half page-wrap-flex catalog-stores_sort catalog-stores_sort-products">
           {% include('parts/sort-links.twig') %}
           <div class="catalog-stores_sort-info">
             {{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_products + 1 : '0'), 'end': offset_products + show_products, 'total': total_v})|raw }}

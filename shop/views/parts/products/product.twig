@@ -78,12 +78,13 @@
         <div class="catalog_products_item_prices">
             <div class="catalog_products_item_price">
                 <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                    {% set k = product.product_currency in ['RUB'] ? 0 : 2 %}
                     {% if product.price < old_price %}
                         <div class="catalog_products_item_price-old">
-                            {{ old_price }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                            {{ _nf(old_price, k)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
                         </div>
                     {% endif %}
-                    {{ product.price }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                    {{ _nf(product.price, k)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
                 </a>
             </div>
 
