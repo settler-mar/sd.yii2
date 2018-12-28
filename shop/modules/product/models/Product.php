@@ -255,6 +255,7 @@ class Product extends \yii\db\ActiveRecord
   public function setVendor($vendor){
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
     $path = 'vendor_by_name_'.$vendor;
+    if(empty($vendor))return null;
     return $cache->getOrSet($path, function () use ($vendor) {
       $vendor_db = Vendor::find()
           ->where(['name'=>$vendor])
