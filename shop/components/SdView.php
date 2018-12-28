@@ -25,7 +25,6 @@ class SdView extends SdViewBASE
     if (!Yii::$app->user->isGuest) {
         $this->user_id = Yii::$app->user->id;
     }
-    //ddd(Yii::$app->user, Yii::$app->user->isGuest, Yii::$app->user->id);
 
     $request = Yii::$app->request;
     if ($request->isAjax) {

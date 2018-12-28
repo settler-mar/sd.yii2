@@ -90,7 +90,7 @@
             <div class="btn-header header-upline_plugin desctop">
               {{ get_menu_item({
                 'href': 'https://secretdiscounter.com/plugin',
-                'title': svg('puzzle', 'btn-header_button'),
+                'title': svg('puzzle', 'btn-header_button', '@frontend'),
                 'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
               })|raw }}
             </div>
@@ -99,7 +99,7 @@
               <div class="btn-header btn-header_favorite">
                 {{ get_menu_item({
                   'href': 'https://secretdiscounter.com/account/favorites',
-                  'title': svg('heart-o', 'btn-header_button'),
+                  'title': svg('heart-o', 'btn-header_button', '@frontend'),
                   'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites')}
                 })|raw }}
               </div>
@@ -108,7 +108,7 @@
             <div class="header-logo_noty btn-header last">
               {{ get_menu_item({
                 'href': 'https://secretdiscounter.com/account/notification',
-                'title': svg('bell-o', 'btn-header_button'),
+                'title': svg('bell-o', 'btn-header_button', '@frontend'),
                 'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
               })|raw }}
 
@@ -124,7 +124,7 @@
                 {{ svg('angle-down','avatar_angle-down', '@frontend')|raw }}
                 {{ svg('close', 'account-menu-toggle-close', '@frontend')|raw }}
               </div>
-              {% include 'parts/account_menu.twig' %}
+              {% include '@frontend/views/parts/account_menu.twig' %}
             </div>
 
           {% endif %}
@@ -169,7 +169,7 @@
         {#<li class="drop-menu_group__up">#}
           {#{{ get_menu_item({#}
             {#'href': '/stores',#}
-            {#'title': t('main', 'online_shops') ~ svg('angle-down','menu_angle-down'),#}
+            {#'title': t('main', 'online_shops') ~ svg('angle-down','menu_angle-down', '@frontend'),#}
             {#'class': 'drop-menu_group__up-header'#}
           {#})|raw }}#}
 
@@ -190,7 +190,7 @@
         {#<li class="drop-menu_group__up">#}
           {#{{ get_menu_item({#}
             {#'href': '/coupons',#}
-            {#'title': t('main', 'promocodes')~svg('angle-down','menu_angle-down'),#}
+            {#'title': t('main', 'promocodes')~svg('angle-down','menu_angle-down', '@frontend'),#}
             {#'class': 'drop-menu_group__up-header'#}
           {#})|raw }}#}
           {#{{ use('frontend/components/CategoryCouponsMenu') }}#}
@@ -204,7 +204,7 @@
           {#<li class="drop-menu_group__up">#}
             {#{{ get_menu_item({#}
               {#'href': '/stores/offline',#}
-              {#'title': t('main', 'offline_shops') ~ svg('angle-down','menu_angle-down'),#}
+              {#'title': t('main', 'offline_shops') ~ svg('angle-down','menu_angle-down', '@frontend'),#}
               {#'class': 'drop-menu_group__up-header'#}
             {#})|raw }}#}
 
@@ -260,7 +260,7 @@
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
               'gi':'https://secretdiscounter.com/account/webmaster',
-              'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\')|raw }}  '~t('account', 'menu_web_master'),
+              'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\', \'@frontend\')|raw }}  '~t('account', 'menu_web_master'),
             } %}
           {% else %}
             {% set item= {

@@ -179,8 +179,8 @@ $functionsList = [
             $attributes .= (' '.$key.'="'.$attribute.'"');
         }
     }
-    $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon') . $item['title'] . '</span>' : $item['title']) .
-        (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon') : '');
+    $title = (isset($item['left-icon']) ? '<span>' . Help::svg($item['left-icon'], 'left-icon', '@frontend') . $item['title'] . '</span>' : $item['title']) .
+        (isset($item['right-icon']) ? Help::svg($item['right-icon'], 'right-icon', '@frontend') : '');
     return '<a '.($className ? 'class="' . trim($className) . '"' : '') . $attributes .
         ($httpQuery == $item['href'] ? '' : 'href="' . $href . '"') . '>' .
     $title . '</a>';
