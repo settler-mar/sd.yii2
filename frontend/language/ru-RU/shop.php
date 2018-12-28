@@ -60,5 +60,6 @@ return [
     'footer_menu_col_4' => 'Menu column 4',
     'share' => 'Поделиться',
     'product_props_description' => 'Характеристики и описание',
+    'visiteds_products' => 'Просмотренные товары',
 
 ];

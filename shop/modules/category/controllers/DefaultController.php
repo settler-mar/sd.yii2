@@ -250,14 +250,15 @@ class DefaultController extends SdController
                 'count' => 8
             ]) : [];
 
-//        //просмотренные товары
-//        $visits = UsersVisits::find()
-//            ->select(['cw_users_visits.product_id', 'max(visit_date) as visit_date'])
-//            ->where(['user_id' => Yii::$app->user->id, 'source'=>[UsersVisits::TRANSITION_TYPE_STORE, UsersVisits::TRANSITION_TYPE_COUPON]])
-//            ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
-//            ->groupBy('store_id');
-//
-//        $dataBaseData->innerJoin(['cwuv' => $visits], 'cwuv.store_id = cws.uid');
+        //просмотренные товары
+        $user_id = 8;
+        if ($user_id) {//todo Yii::$app->user->id
+            $visits = Product::items()
+                ->innerJoin(UsersVisits::tableName(). ' uv', 'prod.id=uv.product_id')
+                ->where(['user_id' => $user_id])
+                ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
+                ->all();
+        }
 
         return $this->render('product', [
             'product' => $product,
@@ -266,6 +267,7 @@ class DefaultController extends SdController
             'category_products' => $categoryProducts,
             'similar_products' => $similarProducts,
             'category' => !empty($product->categories) ? $product->categories[0] : false,
+            'visiteds' => !empty($visits) ? $visits : [],
         ]);
     }
 

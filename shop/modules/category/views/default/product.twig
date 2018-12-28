@@ -187,6 +187,16 @@
         </div>
     {% endif %}
 
+    {% if visiteds %}
+        <div class="catalog_product-others margin-half">
+            <h3 class="catalog_product-others-header">
+                {{ t('shop', 'visiteds_products')|raw }}
+            </h3>
+            {% set products = visiteds %}
+            {% include('parts/products/other_products.twig') %}
+        </div>
+    {% endif %}
+
     <div class="catalog_products_store_conditions" id="product_store_cachback_modal_id">
         <div class="catalog_products_store_conditions_content">
             {{ _constant('product_cashback_informaiton')|raw }}
