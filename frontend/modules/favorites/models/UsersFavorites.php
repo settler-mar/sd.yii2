@@ -150,7 +150,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
       $dependencyName = 'account_favorites';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-      return \Yii::$app->cache->getOrSet($cacheName, function ($products) {
+      return \Yii::$app->cache->getOrSet($cacheName, function () use ($products) {
           if ($products) {
               return Product::items()
                   ->innerJoin(UsersFavorites::tableName() . ' cuf', 'prod.id = cuf.product_id')
