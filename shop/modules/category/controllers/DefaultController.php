@@ -42,9 +42,11 @@ class DefaultController extends SdController
             }
         }
         $vendors =  $vendorRequest ? [] : Vendor::items(['category' => $this->category, 'limit' => 20]);
-        //ddd($vendors);
 
-        $stores = Product::usedStores(['category' => $this->category, 'vendor' => $vendorRequest]);
+        $stores = Product::usedStores([
+            'category' => $this->category,
+            'where' => isset($vendorDb[0]['id']) ? ['vendor_id' => $vendorDb[0]['id']] : false
+        ]);
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -97,7 +99,7 @@ class DefaultController extends SdController
                 ])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
                 's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
-                's.is_active as store_active', 'v.name as vendor_name', 'v.route as vendor_route',
+                's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
                 's.currency as currency', 's.action_end_date as action_end_date',
                 'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
             ->orderBy([$sortDb => $order]);
@@ -227,7 +229,7 @@ class DefaultController extends SdController
 
         //продукты того же производителя
         $brandsProducts = Product::top([
-            'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'p.id', $product->id]],
+            'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'prod.id', $product->id]],
             'count' => 8
         ]);
         //продукты той же категории
@@ -235,12 +237,12 @@ class DefaultController extends SdController
             Product::top([
                 'category_id' => $product->categories[0]->id,
                 'count' => 8,
-                'where' => ['<>', 'p.id', $product->id],
+                'where' => ['<>', 'prod.id', $product->id],
             ]) : [];
         //похожие - той же категории и того же шопа
         $similarProducts = count($categoryProducts) && $product->store_id ?
             Product::top([
-                'where' => ['and', ['store_id' => $product->store_id],['<>', 'p.id', $product->id]],
+                'where' => ['and', ['store_id' => $product->store_id],['<>', 'prod.id', $product->id]],
                 'category_id' => $product->categories[0]->id,
                 'count' => 8
             ]) : [];

@@ -246,8 +246,11 @@ class Product extends \yii\db\ActiveRecord
     return $vendor->name;
   }
 
-  public function getVendorDb(){
-    if(empty($this->vendor_id))return null;
+  public function getVendorDb()
+  {
+    if (empty($this->vendor_id)) {
+        return null;
+    }
     return $this->hasOne(Vendor::className(), ['id' => 'vendor_id']);
   }
 
@@ -722,12 +725,12 @@ class Product extends \yii\db\ActiveRecord
                 ->groupBy(['s.name', 's.uid'])
                 ->orderBy(['s.rating' => SORT_DESC])
                 ->asArray();
-//            if (!empty($params['vendor'])) {
-//                $stores->where(['vendor' =>  $params['vendor']]);
-//            }
+            if (!empty($params['where'])) {
+                $stores->where($params['where']);
+            }
             if (isset($params['category'])) {
                 $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->where(['ptc.category_id' =>  $params['category']->childCategoriesId()]);
+                    ->andWhere(['ptc.category_id' =>  $params['category']->childCategoriesId()]);
             }
             return $stores->all();
         }, $cache->defaultDuration, $dependency);
@@ -813,28 +816,30 @@ class Product extends \yii\db\ActiveRecord
 
     $products = $cache->getOrSet($casheName, function () use ($params) {
       $count = isset($params['count']) ? $params['count'] : 5;
-      $product = self::find()->from(self::tableName() . ' p')
-          ->innerJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
+      $product = self::find()->from(self::tableName() . ' prod')
+          ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
+          ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
           ->where([
               'and',
-              ['p.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
-              ['is not', 'p.image', null],
+              ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
+              ['is not', 'prod.image', null],
           ])
-          ->select(['p.*', 'p.currency as product_currency','s.name as store_name', 's.route as store_route',
+          ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
               's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
+              's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
               's.currency as currency', 's.action_end_date as action_end_date',
-              'if (p.old_price, (p.old_price - p.price)/p.old_price, 0) as discount'])
+              'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
           ->orderBy([
               isset($params['sort'])? $params['sort'] : 'modified_time' =>
                   isset($params['order']) ? $params['order'] : SORT_ASC
           ])
-          ->limit($count)
-          ->asArray();
+          ->asArray()
+          ->limit($count);
       if (isset($params['where'])) {
           $product->andWhere($params['where']);
       }
       if (isset($params['category_id'])) {
-          $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
+          $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = prod.id')
             ->andWhere(['ptc.category_id' => $params['category_id']]);
       }
       return $product->all();
