@@ -94,11 +94,11 @@ class DefaultController extends SdController
         $storesData = [];
         $dataBaseData = Product::find()
             ->from(Product::tableName() . ' prod')
-            ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-            ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+            ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
+            ->leftJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
             ->where([
                 'prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST],
-                'v.status' => Vendor::STATUS_ACTIVE,
+                //'v.status' => Vendor::STATUS_ACTIVE,
                 ])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
                 's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
