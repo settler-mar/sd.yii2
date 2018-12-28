@@ -27,10 +27,11 @@ class TransitionsSearch extends UsersVisits
     public function rules()
     {
         return [
-            [['uid', 'user_id', 'source', 'store_id','cpa_name', 'watched'], 'integer'],
+            [['uid', 'user_id', 'source', 'store_id','cpa_name', 'watched', 'product_id'], 'integer'],
             [['visit_date', 'user_ip', 'user_agent', 'referrer', 'subid'], 'safe'],
             [['visit_date_range'], 'safe'],
-            [['visit_date_range'], 'default', 'value' => date('Y-m-d 00:00:00', time()) . ' - ' . date('Y-m-d H:i:s', time())],
+            [['visit_date_range'], 'default',
+                'value' => date('Y-m-d 00:00:00', time()) . ' - ' . date('Y-m-d H:i:s', time())],
         ];
     }
 
@@ -89,6 +90,7 @@ class TransitionsSearch extends UsersVisits
             'user_id' => $this->user_id,
             'source' => $this->source,
             'store_id' => $this->store_id,
+            'product_id' => $this->product_id,
         ]);
         $query->andFilterWhere(['like', 'user_ip', $this->user_ip]);
         $query->andFilterWhere(['like', 'user_agent', $this->user_agent]);

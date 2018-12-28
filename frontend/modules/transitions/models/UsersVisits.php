@@ -42,7 +42,7 @@ class UsersVisits extends \yii\db\ActiveRecord
   {
     return [
       [['user_id', 'visit_date'], 'required'],
-      [['user_id', 'source', 'store_id'], 'integer'],
+      [['user_id', 'source', 'store_id', 'product_id'], 'integer'],
       [['visit_date'], 'safe'],
       [['referrer'], 'string', 'max' => 256],
       [['user_ip'], 'string', 'max' => 16],

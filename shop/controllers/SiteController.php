@@ -103,6 +103,7 @@ class SiteController extends Controller
         $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS_CATALOG;
         $visit->store_id = $productDb->store_id;
         $visit->cpa_link_id = $productDb->catalog->cpa_link_id;
+        $visit->product_id = $productDb->id;
         $visit->save();
 
         $data['link'] = $productDb->url;

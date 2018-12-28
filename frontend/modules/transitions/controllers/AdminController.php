@@ -87,8 +87,14 @@ class AdminController extends Controller
             },
             'cpa_name' => function ($model) {
                 return $model->cpaLink->cpa->name;
+            },
+            'product' => function ($model) {
+                if (!$model->product_id) {
+                    return '';
+                }
+                return '<a target="_blank" rel="nooper noreferrer nofollow" '.
+                    'href="/admin/product/update/id:'.$model->product_id.'">'.$model->product_id.'</a>';
             }
-           
         ];
 
         $searchModel = new TransitionsSearch();
