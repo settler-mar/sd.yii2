@@ -829,6 +829,14 @@ class Product extends \yii\db\ActiveRecord
           $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = prod.id')
             ->andWhere(['ptc.category_id' => $params['category_id']]);
       }
+      if (!empty($params['multi_brands'])) {
+//          $vendors = Product::find()->from(Product::tableName().' .p')
+//            ->select(['vendor_id', 'count(id) as count', 'max(id) as id1', 'min(id) as id2'])
+//            ->groupBy(['vendor_id'])
+//            ->orderBy(['count' => SORT_DESC]);
+
+          //'SELECT vendor_id, count(id) as count, max(id) as id1, min(id) as id2  FROM `cw_product` `prod` where not vendor_id is null group by vendor_id order by count desc';
+      }
       return $product->all();
     }, $cache->defaultDuration, $dependency);
 

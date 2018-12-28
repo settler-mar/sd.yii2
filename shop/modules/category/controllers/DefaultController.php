@@ -235,17 +235,19 @@ class DefaultController extends SdController
             'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'prod.id', $product->id]],
             'count' => 8
         ]);
-        //продукты той же категории
+        //продукты той же категории другие бренды
         $categoryProducts = !empty($product->categories) ?
             Product::top([
                 'category_id' => $product->categories[0]->id,
                 'count' => 8,
-                'where' => ['<>', 'prod.id', $product->id],
+                'multi_brands' => true,
+                'where' => ['and', ['<>', 'prod.id', $product->id], ['<>', 'vendor_id', $product->vendor_id]],
             ]) : [];
         //похожие - той же категории и того же шопа
-        $similarProducts = count($categoryProducts) && $product->store_id ?
+        $similarProducts = $product->store_id ?
             Product::top([
                 'where' => ['and', ['store_id' => $product->store_id],['<>', 'prod.id', $product->id]],
+                'multi_brands' => true,
                 'category_id' => $product->categories[0]->id,
                 'count' => 8
             ]) : [];

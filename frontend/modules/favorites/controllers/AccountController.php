@@ -105,8 +105,8 @@ class AccountController extends Controller
       $contentData["favorites"] = UsersFavorites::userFavorites(true);
 
       $contentData["favorites_ids"] = array_column($contentData["favorites"], 'id');
-      $contentData['template'] = '@shop/views/parts/products/product.twig';
-      $contentData['type'] = 'product';
+      $contentData['products_template'] = '@shop/views/parts/products/product.twig';
+      $contentData['action_type'] = 'product';
 
       return $this->render('index', $contentData);
   }
