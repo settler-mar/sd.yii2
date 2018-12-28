@@ -5,6 +5,7 @@ namespace frontend\modules\favorites\models;
 use frontend\modules\stores\models\Stores;
 use yii;
 use frontend\modules\cache\models\Cache;
+use shop\modules\product\models\Product;
 
 /**
  * This is the model class for table "cw_users_favorites".
@@ -141,15 +142,22 @@ class UsersFavorites extends \yii\db\ActiveRecord
 
   }
 
-  public static function userFavorites()
+  public static function userFavorites($products = false)
   {
       $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-      $cacheName = 'account_favorites_'. ($language ? '_' . $language : '') . \Yii::$app->user->id;
+      $cacheName = 'account_favorites_'.($products ? '_products':''). ($language ? '_' . $language : '') . \Yii::$app->user->id;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'account_favorites';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-      return \Yii::$app->cache->getOrSet($cacheName, function () {
+      return \Yii::$app->cache->getOrSet($cacheName, function ($products) {
+          if ($products) {
+              return Product::items()
+                  ->innerJoin(UsersFavorites::tableName() . ' cuf', 'prod.id = cuf.product_id')
+                  ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
+                  ->orderBy('cuf.added DESC')
+                  ->all();
+          }
           return Stores::items()
               ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
               ->andWhere(["cuf.user_id" => \Yii::$app->user->id, 'product_id' => null])

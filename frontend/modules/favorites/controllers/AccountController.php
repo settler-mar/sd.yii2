@@ -89,23 +89,26 @@ class AccountController extends Controller
       return false;
     }
 
-//    $cacheName = 'account_favorites_' . \Yii::$app->user->id;
-//    $dependency = new yii\caching\DbDependency;
-//    $dependencyName = 'account_favorites';
-//    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-//
-//    $contentData["favorites"] = \Yii::$app->cache->getOrSet($cacheName, function () {
-//        return Stores::items()
-//          ->innerJoin(UsersFavorites::tableName() . ' cuf', 'cws.uid = cuf.store_id')
-//          ->andWhere(["cuf.user_id" => \Yii::$app->user->id])
-//          ->orderBy('cuf.added DESC')
-//          ->all();
-//    }, \Yii::$app->cache->defaultDuration, $dependency);
     $contentData["favorites"] = UsersFavorites::userFavorites();
     
     $contentData["favids"] = array_column($contentData["favorites"], 'uid');
 
     return $this->render('index', $contentData);
+  }
+
+    /** вывод продуктов
+     * @return string
+     *
+     */
+  public function actionProducts()
+  {
+      $contentData["favorites"] = UsersFavorites::userFavorites(true);
+
+      $contentData["favorites_ids"] = array_column($contentData["favorites"], 'id');
+      $contentData['template'] = '@shop/views/parts/products/product.twig';
+      $contentData['type'] = 'product';
+
+      return $this->render('index', $contentData);
   }
 
 }

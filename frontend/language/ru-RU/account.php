@@ -146,6 +146,11 @@ return [
     'support_mail_topic' => 'Тема письма',
     'support_mail_text' => 'Текст обращения',
     'favorites' => 'Избранные магазины',
+    'favorites_product' => 'Избранные товары',
+    'account_favorite-products_breadcrumbs' => 'Избранные товары',
+    'favorites_empty_product' => 'На данный момент у Вас нет избранных товаров.',
+    'favorites_empty_text_view_<a href="{href}">here</a>_after_add_product' =>
+        'После добавления товаров из <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">нашего каталога</a> в избранное  они будут отображаться на данной странице.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add' => 'После добавления магазинов из <a class="blue" href="{href}">нашего каталога</a> в избранное  они будут отображаться на данной странице.',
     'favorites_empty' => 'На данный момент у Вас нет избранных магазинов.',
     'favorites_<a href="{href}">login</a>_to_add' => 'Для того, чтобы добавить магазин в Избранное, вы должны быть <a href="{href}">авторизованы</a> на сайте.',

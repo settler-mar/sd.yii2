@@ -146,7 +146,13 @@ return [
     'support_mail_topic' => 'Subject',
     'support_mail_text' => 'Type your text here',
     'favorites' => 'My Faforites',
-    'favorites_empty_text_view_<a href="{href}">here</a>_after_add' => 'After adding stores from <a class="blue" href="{href}">our catalog</a> to your favorites, they will be displayed on this page.',
+    'favorites_product' => 'My Favorite Products',
+    'account_favorite-products_breadcrumbs' => 'My Favorite Products',
+    'favorites_empty_product' => 'At the moment, you don\'t have any favorite product.',
+    'favorites_empty_text_view_<a href="{href}">here</a>_after_add_product' =>
+        'After adding proudcts from <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">our catalog</a> to your favorites, they will be displayed on this page.',
+    'favorites_empty_text_view_<a href="{href}">here</a>_after_add' =>
+        'After adding stores from <a class="blue" href="{href}">our catalog</a> to your favorites, they will be displayed on this page.',
     'favorites_empty' => 'At the moment, you don\'t have any favorites stores.',
     'favorites_<a href="{href}">login</a>_to_add' => 'In order to add a store to Favorites, you must be <a href="{href}">authorized</a> on the site.',
     'favorites_add_noshop' => 'Unable to find the chosen store.',

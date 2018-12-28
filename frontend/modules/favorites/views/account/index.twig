@@ -2,14 +2,16 @@
     <section class="favorites account-padding account-home">
         <div class="row">
             <div class="col-md-12">
-                <h1>{{ t('account', 'favorites')|raw }}</h1>
+                <h1>{{ t('account', 'favorites'~(type ? '_'~type : ''))|raw }}</h1>
             </div>
             {% if favorites|length > 0 %}
 
 
             <div class="shops col-md-12">
+                {% set template = template ? template : 'parts/shop.twig' %}
                 {% for store in favorites %}
-                    {% include 'parts/shop.twig' %}
+                    {% set product = store %}
+                    {% include template %}
                 {% endfor %}
                 <div class="shop shop-empty"></div>
                 <div class="shop shop-empty"></div>
@@ -23,9 +25,11 @@
             {% else %}
             <div class="col-md-12">
                 <p>
-                    {{ t('account', 'favorites_empty_text_view_<a href="{href}">here</a>_after_add', {'href': _href('/stores')})|raw }}
+                    {% set href = type=='product' ? '/category' : '/stores' %}
+                    {% set domain = type=='product' ? 'https://shop.secretdiscounter.com' : '' %}
+                    {{ t('account', 'favorites_empty_text_view_<a href="{href}">here</a>_after_add'~(type ? '_'~type : ''), {'href': _href(href, domain)})|raw }}
                 </p>
-                <div class="not-found">{{ t('account', 'favorites_empty')|raw }}</div>
+                <div class="not-found">{{ t('account', 'favorites_empty'~(type ? '_'~type : ''))|raw }}</div>
             </div>
             {% endif %}
         </div>
