@@ -36,12 +36,15 @@ class DefaultController extends SdController
         $vendorRequest = $request->get('vendor');
 
         if ($vendorRequest) {
-            $vendorDb = Vendor::items(['limit' => 1, 'where' => ['v.route' => $vendorRequest], 'category' => $this->category->id]);
+            $vendorDb = Vendor::items([
+                'limit' => 1,
+                'where' => ['v.route' => $vendorRequest], 'category' => $this->category ? $this->category->id : false
+                ]);
             if (!$vendorDb) {
                 throw new \yii\web\NotFoundHttpException;
             }
         }
-        $vendors =  $vendorRequest ? [] : Vendor::items(['category' => $this->category, 'limit' => 20]);
+        $vendors =  $vendorRequest ? [] : Vendor::items(['category' => $this->category ? $this->category->id : false, 'limit' => 20]);
 
         $stores = Product::usedStores([
             'category' => $this->category,

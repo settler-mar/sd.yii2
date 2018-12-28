@@ -35,12 +35,26 @@ return [
         'user' => [
             'identityClass' => 'frontend\modules\users\models\Users',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-shop', 'httpOnly' => true],
-            'loginUrl' => ['/login'],
+            'identityCookie' => [
+                'name' => '_identity-frontend',
+                'httpOnly' => true,
+                'path' => '/',
+                'domain' => strpos(DOMAIN_FRONT, '.0.0.1') ? false : DOMAIN_FRONT,
+            ],
+            'loginUrl' => ['https://secretdiscounter.com/#login'],
+//            'on afterLogin' => function ($event) {
+//                frontend\modules\users\models\Users::afterLogin($event->identity->id,$event);
+//            },
+
         ],
         'session' => [
           // this is the name of the session cookie used for login on the b2b
-            'name' => 'advanced-shop',
+            //'name' => 'advanced-shop',
+            'name' => 'advanced-frontend',
+            'cookieParams' => [
+                'domain' => (strpos(DOMAIN_FRONT, '.0.0.1') ? '' : '.') . DOMAIN_FRONT,
+                'httpOnly' => true,
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

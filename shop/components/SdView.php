@@ -13,7 +13,7 @@ class SdView extends SdViewBASE
 {
 
   protected $metaClass = 'frontend\modules\meta\models\CatMeta';
-
+  public $user_id;
   public $sd_counter = false;
   public $product_main_category = false;
 
@@ -21,6 +21,11 @@ class SdView extends SdViewBASE
   public function init_param()
   {
     $this->first_init=false;
+
+    if (!Yii::$app->user->isGuest) {
+        $this->user_id = Yii::$app->user->id;
+    }
+    //ddd(Yii::$app->user, Yii::$app->user->isGuest, Yii::$app->user->id);
 
     $request = Yii::$app->request;
     if ($request->isAjax) {
