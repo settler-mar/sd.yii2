@@ -60,10 +60,12 @@ class DefaultController extends SdController
       };
 
       if (!empty($sort_request)) {
-        $sort = isset($sortvars[$sort_request]['name']) ? $sortvars[$sort_request]['name'] : $sort_request;
+        $sortDb = isset($sortvars[$sort_request]['name']) ? $sortvars[$sort_request]['name'] : $sort_request;
+        $sort = $sort_request;
       } else {
-        $sort = Product::$defaultSort;
+        $sortDb = $sort = Product::$defaultSort;
       }
+
 
       $limit = (!empty($limit)) ? $limit : Product::$defaultLimit;
       $order = !empty($sortvars[$sort_request]['order']) ? $sortvars[$sort_request]['order'] : SORT_DESC;
@@ -81,10 +83,10 @@ class DefaultController extends SdController
               's.is_active as store_active',
               's.currency as currency', 's.action_end_date as action_end_date',
               'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
-          ->orderBy([$sort => $order]);
+          ->orderBy([$sortDb => $order]);
       $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
       $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
-      $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sort . '_' . $order .
+      $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
           ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
       $filter = [];
