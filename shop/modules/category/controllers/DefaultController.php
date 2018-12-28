@@ -253,8 +253,8 @@ class DefaultController extends SdController
             ]) : [];
 
         //просмотренные товары
-        $user_id = 8;
-        if ($user_id) {//todo Yii::$app->user->id
+        $user_id = $this->user_id;
+        if ($user_id) {
             $visits = Product::items()
                 ->innerJoin(UsersVisits::tableName(). ' uv', 'prod.id=uv.product_id')
                 ->where(['user_id' => $user_id])

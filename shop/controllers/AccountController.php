@@ -22,14 +22,13 @@ class AccountController extends Controller
         if (!$request->isAjax) {
             throw new \yii\web\NotFoundHttpException();
         }
-        //if (Yii::$app->user->isGuest) { //todo
-        if (false) {
+        if (Yii::$app->user->isGuest) {
             return json_encode(['error'=>[Yii::t('shop', 'favorites_add_no_register')]]);
         }
 
         $type = $request->post('type');
         $product_id = $request->post('product_id');
-        $user_id = 8;//Yii::$app->user->id;//todo
+        $user_id = Yii::$app->user->id;
         $product = Product::findOne(['id'=>$product_id, 'available'=>[Product::PRODUCT_AVAILABLE_REQUEST, Product::PRODUCT_AVAILABLE_YES]]);
         $fav = UsersFavorites::findOne(['product_id'=>$product_id, 'user_id'=>$user_id]);
 
@@ -42,7 +41,7 @@ class AccountController extends Controller
             } else {
                 $fav = new UsersFavorites();
                 $fav->store_id = $product->store->uid;
-                $fav->user_id = $user_id;//todo убрать
+                $fav->user_id = $user_id;
                 $fav->product_id = $product->id;
                 $result = $fav->save();
 
