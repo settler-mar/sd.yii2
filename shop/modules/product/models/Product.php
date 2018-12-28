@@ -794,7 +794,7 @@ class Product extends \yii\db\ActiveRecord
     $data = $cache->getOrSet($cacheName, function () {
       $product = self::find();
       $count = $product->count();
-      $brands = $product->select(['vendor'])->groupBy(['vendor'])->count();
+      $brands = Vendor::find()->count();
       $shops = self::find()->select(['catalog_id'])->groupBy(['catalog_id'])->count();
       return [
           'products' => $count,

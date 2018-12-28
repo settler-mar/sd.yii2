@@ -96,7 +96,7 @@ class Vendor extends \yii\db\ActiveRecord
             $vendors = self::find()
                 ->from(self::tableName().' v')
                 ->leftJoin(Product::tableName(). ' p', 'p.vendor_id = v.id')
-                ->select(['v.id', 'v.name', 'v.route', 'count(p.id) as count'])
+                ->select(['v.id', 'v.name', 'v.route', 'v.logo', 'count(p.id) as count'])
                 ->where(['v.status' => self::STATUS_ACTIVE])
                 ->groupBy(['v.id', 'v.name', 'v.route'])
                 ->orderBy(['count' => SORT_DESC])

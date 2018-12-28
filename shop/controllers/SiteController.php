@@ -10,6 +10,7 @@ use Yii;
 use yii\web\Controller;
 use frontend\modules\transitions\models\UsersVisits;
 use common\components\Help;
+use shop\modules\vendor\models\Vendor;
 
 
 /**
@@ -71,18 +72,12 @@ class SiteController extends Controller
 
   public function actionIndex_test()
   {
-//        Yii::$app->params['global_bg']='gray-box';
-//        Yii::$app->params['global_wrap']='page-404';
-//        Yii::$app->params['pre_footer_hide']=true;
     Yii::$app->params['wrap'] = 'index';
-//        return $this->render('under_development.twig');
-    $data = [];
     $data['stat'] = Product::stat();
-    $data['popular_categories'] = ProductsCategory::top();
-    $data['popular_products'] = Product::top(['count' => 12, 'sort' => 'modified_time', 'order' => SORT_DESC]);
-    $data['popular_brands'] = Product::topBy('vendor', ['count' => 20]);
+    $data['popular_categories'] = ProductsCategory::top();//todo по визитам
+    $data['popular_products'] = Product::top(['count' => 12, 'sort' => 'modified_time', 'order' => SORT_DESC]);//todo по визитам
+    $data['popular_brands'] = Vendor::items(['limit'=>10]);//todo по визитам
     $data['posts'] = Posts::getLastPosts();
-    //ddd($data);
 
     return $this->render('index', $data);
   }

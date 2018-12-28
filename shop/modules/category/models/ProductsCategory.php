@@ -530,6 +530,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
           ->innerJoin(ProductsToCategory::tablename() . ' ptc', 'ptc.category_id = pc.id')
           ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'count(ptc.id) as count'])
           ->groupBy(['pc.id', 'pc.name', 'pc.route', 'pc.parent'])
+          ->where(['active' => ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES])
           ->orderBy(['count' => SORT_DESC])
           ->limit($count);
       if (isset($params['parent'])) {

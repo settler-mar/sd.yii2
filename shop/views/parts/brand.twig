@@ -1,23 +1,18 @@
 <div class="shop hover-box">
-    {#{% if category.image %}#}
-    {#<div class="shop-logo">#}
-    {#<a class="shop-logo_link" href="{{ _href('/'~category.parentsTree(true)) }}">#}
-    {#<img class="shop-logo_link-img" src="images/logos/{{category.image}}" alt="{{ _eol(category.name, 20) }}">#}
-    {#</a>#}
-    {#</div>#}
-    {#{% endif %}#}
+    {% if brand.logo %}
+        <div class="shop-logo">
+            <a class="shop-logo_link" href="{{ _href('/vendor/'~brand.route) }}">
+                <img class="shop-logo_link-img" src="images/brands/{{brand.logo}}" alt="{{ _eol(brand.name, 20) }}">
+            </a>
+        </div>
+    {% endif %}
 
     <a class="shop_header {{ _if(store.name|length> 35,"small-size") }}"
-       href="{{ _href('/category?vendor='~brand.vendor) }}" >
+       href="{{ _href('/vendor/'~brand.route) }}" >
         <div class="shop_header-title">
             <span class="shop_header-title_name">
-                {{brand.vendor}}
+                {{brand.name}}
             </span>
-            {#{% if category.description %}#}
-            {#<span  class="shop_header-title_description_extend">#}
-            {#{{ category.description|raw}}#}
-            {#</span>#}
-            {#{% endif %}#}
         </div>
     </a>
 
