@@ -34,25 +34,26 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
+        $storeRequest = $request->get('store');
 
         if ($vendorRequest) {
-            $vendorDb = Vendor::items([
-                'limit' => 1,
+            $vendorDb = array_column(Vendor::items([
                 'where' => ['v.route' => $vendorRequest], 'category' => $this->category ? $this->category->id : false
-                ]);
-            if (!$vendorDb) {
+                ]), 'id');
+            if (empty($vendorDb)) {
                 throw new \yii\web\NotFoundHttpException;
             }
         }
-        $vendors =  $vendorRequest ? [] : Vendor::items([
+        $vendors =  Vendor::items([
             'category' => $this->category ? $this->category->id : false,
             'limit' => 20,
-            'sort'=>'name'
+            'sort'=>'name',
+            'where' => isset($storeRequest)? ['p.store_id' => $storeRequest] : [],
         ]);
 
         $stores = Product::usedStores([
             'category' => $this->category,
-            'where' => isset($vendorDb[0]['id']) ? ['vendor_id' => $vendorDb[0]['id']] : false
+            'where' => !empty($vendorDb) ? ['vendor_id' => $vendorDb] : false
         ]);
 
         $page = $request->get('page');
@@ -61,7 +62,6 @@ class DefaultController extends SdController
         $priceStart = $request->get('price-start');
         $priceEnd = $request->get('price-end');
 
-        $storeRequest = $request->get('store');
 
         $sortvars = Product::sortvars();
         $defaultSort = Product::$defaultSort;
@@ -69,16 +69,11 @@ class DefaultController extends SdController
         $validator = new \yii\validators\NumberValidator();
         $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
 
-        $storeValidator = new \yii\validators\RangeValidator([
-            'range' => array_column($stores, 'uid'),
-            'allowArray' => true
-        ]);
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
             !empty($sort_request) && !$validatorIn->validate($sort_request) ||
             !empty($priceStart) && !$validator->validate($priceStart) ||
-            !empty($priceEnd) && !$validator->validate($priceEnd) ||
-            !empty($storeRequest) && !$storeValidator->validate($storeRequest)
+            !empty($priceEnd) && !$validator->validate($priceEnd)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
@@ -116,12 +111,19 @@ class DefaultController extends SdController
             ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
         $filter = [];
+        $where = [];
+        if (!empty($vendorDb)) {
+            $where['vendor_id'] = $vendorDb;
+        }
+        if (isset($storeRequest)) {
+            $where['store_id'] = $storeRequest;
+        }
         $f_res = Product::conditionValues(
             'price',
             ['min','max'],
             [
                 'category' => $this->category,
-                'where' => isset($vendorDb[0]['id']) ? ['vendor_id' => $vendorDb[0]['id']] : []
+                'where' => $where,
             ]
         );
         $filterPriceEndMax = (int)$f_res['max_price'];
@@ -137,11 +139,12 @@ class DefaultController extends SdController
             $paginateParams['price-start'] = $priceStart;
         }
         if ($priceEnd) {
+            $priceEnd = $priceEnd<$priceStart ? $priceStart : $priceEnd;
             $filter[] = ['<=', 'price', $priceEnd];
             $paginateParams['price-end'] = $priceEnd;
         }
-        if ($vendorRequest && isset($vendorDb[0]['id'])) {
-            $filter[] = ['vendor_id' => $vendorDb[0]['id']];
+        if ($vendorRequest && !empty($vendorDb)) {
+            $filter[] = ['vendor_id' => $vendorDb];
             $paginateParams['vendor'] = $vendorRequest;
         }
         if ($storeRequest) {
@@ -172,6 +175,13 @@ class DefaultController extends SdController
 
             $cacheName .= '_category_' . $this->category->route;
 
+        }
+        if (!empty($filter)) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('shop', 'filter_result'),
+                'url' => Help::href($paginatePath . '&' . http_build_query($paginateParams)),
+            ];
+            Yii::$app->params['url_mask'] = 'category/filter';
         }
         $pagination = new Pagination(
             $dataBaseData,
@@ -204,14 +214,15 @@ class DefaultController extends SdController
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(8, true);
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
-            'price_end' => $filterPriceEndMax,
-            'price_start_user' => $priceStart ? $priceStart : $filterPriceStartMin,
-            'price_end_user' => $priceEnd ? $priceEnd : $filterPriceEndMax,
+            'price_end' =>  $filterPriceEndMax,
+            'price_start_user' => $priceStart && $priceStart > $filterPriceStartMin ? $priceStart : $filterPriceStartMin,
+            'price_end_user' => $priceEnd && ($priceEnd < $filterPriceEndMax || $filterPriceEndMax ==0) ? $priceEnd : $filterPriceEndMax,
             'vendors' => $vendors,
             'vendors_user' => $vendorRequest ? $vendorRequest : false,
             'stores' => $stores,
             'store_user' => $storeRequest ? $storeRequest : [],
         ];
+       // ddd($storesData['filter']);
         return $this->render('index', $storesData);
     }
 

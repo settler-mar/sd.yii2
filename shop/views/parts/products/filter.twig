@@ -27,7 +27,7 @@
                 </div>
 
             </div>
-            {% if filter.vendors|length >1 %}
+            {% if filter.vendors|length >0 %}
             <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_vendor') }}
@@ -41,7 +41,7 @@
                 </div>
             </div>
             {% endif %}
-          {% if filter.stores|length >1 %}
+          {% if filter.stores|length >0 %}
             <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_stores') }}

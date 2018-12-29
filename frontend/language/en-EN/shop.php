@@ -58,5 +58,6 @@ return [
     'footer_menu_col_3' => 'Popular Coupon Codes',
     'footer_menu_col_4' => 'Menu column 4',
     'visiteds_products' => 'Visited products',
+    'filter_result' => 'Search result',
 
 ];

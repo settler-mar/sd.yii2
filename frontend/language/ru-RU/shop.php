@@ -61,5 +61,6 @@ return [
     'share' => 'Поделиться',
     'product_props_description' => 'Характеристики и описание',
     'visiteds_products' => 'Просмотренные товары',
+    'filter_result' => 'Результат поиска',
 
 ];
