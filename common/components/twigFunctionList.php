@@ -230,8 +230,8 @@ $functionsList = [
     return \frontend\modules\stores\models\Stores::findOne(['uid'=>$store_id]);
   },
   //Универсальная ф-я вывода блока ставки кэшбэка в ависимости от типа
-  'cashback' =>function($store,$params_id){
-    return Yii::$app->help->cashback($store,$params_id);
+  'cashback' =>function($store, $params_id){
+    return Yii::$app->help->cashback($store, $params_id);
   },
 //функция - вывести кешбек  и валюту, если не задан процента кешбека для шопа
   '_cashback' => function ($cashback, $currency = '', $action = 0, $mode = 0) use ($currencyIcon) {
@@ -369,20 +369,24 @@ $functionsList = [
     $s = implode('@<wbr>', $s);
     return $s;
   },
-  '_nf' => function ($s, $k = 2, $minus_test = true, $separate = "&nbsp;", $wrap = false) {
+  '_nf' => function ($s, $k = 2, $minus_test = true, $separate = "&nbsp;", $wrap = false, $wrap_item = false) {
     if ($minus_test && $s < 0) {
       $s = 0;
     }
     $s = (float)$s;
-    $out = number_format($s, $k, '.', "&nbsp;");
+    $out = number_format($s, $k, '.', $separate);
 
-    if ($separate != "&nbsp;") {
-      $out = str_replace("&nbsp;", $separate, $out);
-    }
     if ($wrap == 1) {
       for ($i = 0; $i < 10; $i++) {
         $out = str_replace($i, '<span>' . $i . '</span>', $out);
       }
+    }
+    if ($wrap_item) {
+        $arr  = explode($separate, $out);
+        $out = '';
+        foreach ($arr as $item) {
+            $out .= ('<span>'.$item.'</span>');
+        }
     }
     return $out;
   },

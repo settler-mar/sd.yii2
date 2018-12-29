@@ -164,7 +164,7 @@ $media3: $phones;
       &_currency {
         //font-weight: normal;
         font-size: 0.6em;
-        margin-left: 3px;
+        //margin-left: 3px;
       }
       &-old {
         font-size: 14px;
@@ -184,6 +184,11 @@ $media3: $phones;
           top: 50%;
           border-bottom: 1px solid $text_color;
           opacity: 0.6;
+        }
+      }
+      span {
+        &:not(:last-child) {
+          margin-right: 3px;
         }
       }
     }

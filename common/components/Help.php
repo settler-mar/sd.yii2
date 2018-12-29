@@ -281,8 +281,10 @@ class Help extends Component
     $params['only_number']=isset($params['only_number'])&&$params['only_number'];
     if ($is_num && !$params['only_number']) {
       if ($is_persent) {
-        $value = number_format((float) $value, 2, '.', '&nbsp;') . "%";
-        $value_n = number_format((float) $value_n, 2, '.', '&nbsp;') . "%";
+        $value = !empty($params['float']) ? (float) $value : number_format((float) $value, 2, '.', '&nbsp;');
+        $value_n = !empty($params['float']) ? (float) $value_n : number_format((float) $value_n, 2, '.', '&nbsp;');
+        $value = $value . "%";
+        $value_n = $value_n . "%";
       } else {
         $k = 2;//($this->round($value_n) == $this->round($value_n,2)) ? 0 : 2;
         $value = number_format($value, $k, '.', "&nbsp;") . "&nbsp;" . $currency;

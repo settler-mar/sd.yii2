@@ -17,7 +17,8 @@ $params = [
     ],
     'product_catalog'=>[//Плитка товара в каталоге
         'show_charity' => false,
-        'view'  => 'product_catalog'
+        'view'  => 'product_catalog',
+        'float' => true,
     ],
     'calck_cashback'=>[ //калькулятор кэшбэка
         'show_charity' => false,
