@@ -59,5 +59,6 @@ return [
     'footer_menu_col_4' => 'Menu column 4',
     'visiteds_products' => 'Visited products',
     'filter_result' => 'Search result',
+    'how_shop_works' => 'Why we?',
 
 ];

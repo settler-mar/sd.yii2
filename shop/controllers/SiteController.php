@@ -3,14 +3,17 @@
 namespace shop\controllers;
 
 
+use frontend\modules\meta\models\CatMeta;
+use frontend\modules\meta\models\Meta;
 use frontend\modules\sdblog\models\Posts;
 use shop\modules\category\models\ProductsCategory;
 use shop\modules\product\models\Product;
-use Yii;
+use yii;
 use yii\web\Controller;
 use frontend\modules\transitions\models\UsersVisits;
 use common\components\Help;
 use shop\modules\vendor\models\Vendor;
+use yii\web\NotFoundHttpException;
 
 
 /**
@@ -18,7 +21,8 @@ use shop\modules\vendor\models\Vendor;
  */
 class SiteController extends Controller
 {
-  /**
+  public $params;
+    /**
    * @inheritdoc
    */
   public function behaviors()
@@ -112,6 +116,20 @@ class SiteController extends Controller
 
         $this->layout = '@app/views/layouts/blank.twig';
         return $this->render('@frontend/views/site/goto', $data);
+    }
+
+    public function actionStaticPage($action)
+    {
+        $page = CatMeta::findByUrl($action);
+        if (!$page || !isset($page['content'])) {
+            throw new NotFoundHttpException();
+        }
+        $page['user_id'] = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
+
+        $this->params['breadcrumbs'][] = $page['title'];
+
+        $page['app_params'] = Yii::$app->params;
+        return $this->render('@frontend/views/site/static_page', $page);
     }
 
 
