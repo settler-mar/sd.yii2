@@ -15,6 +15,8 @@ class DefaultController extends SdController
 {
     public function actionView($vendor)
     {
+      Yii::$app->params['url_mask'] = 'vendor';
+
       if($vendor != \Yii::$app->help->makeRoute($vendor)){
         throw new \yii\web\NotFoundHttpException;
       }
@@ -79,6 +81,7 @@ class DefaultController extends SdController
           ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
           ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
           ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
+          ->andWhere(['prod.vendor_id'=> $vendor->id])
           ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
               's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
               's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
@@ -91,10 +94,14 @@ class DefaultController extends SdController
           ($language ? '_' . $language : '') . ($region? '_' . $region : '');
 
       $filter = [];
+      $where['vendor_id'] = $vendor->id;
+      if (isset($storeRequest)) {
+        $where['store_id'] = $storeRequest;
+      }
       $f_res = Product::conditionValues(
           'price',
           ['min','max'],
-          ['where' => ['vendor_id' => $vendor->id]]
+          ['where' => $where]
       );
       $filterPriceEndMax = (int)$f_res['max_price'];
       $filterPriceStartMin=(int)$f_res['min_price'];
@@ -109,24 +116,28 @@ class DefaultController extends SdController
         $paginateParams['price-start'] = $priceStart;
       }
       if ($priceEnd) {
+        $priceEnd = $priceEnd<$priceStart ? $priceStart : $priceEnd;
         $filter[] = ['<=', 'price', $priceEnd];
         $paginateParams['price-end'] = $priceEnd;
       }
 
-      $filter[] = ['vendor_id' => $vendor->id];
-      $paginateParams['vendor'] = $vendor->route;
+      $filter =[];
 
       if ($storeRequest) {
         $filter[] = ['store_id' => $storeRequest];
         $paginateParams['store'] = $storeRequest;
 
       }
+      $paginatePath = '/vendor/'.$vendor->route;
       if (!empty($filter)) {
         $dataBaseData->andWhere(array_merge(['and'], $filter));
         $cacheName .= ('_' . Help::multiImplode('_', $filter));
+        $this->params['breadcrumbs'][] = [
+          'label' => Yii::t('shop', 'filter_result'),
+          'url' => Help::href($paginatePath . '&' . http_build_query($paginateParams)),
+        ];
+        Yii::$app->params['url_mask'] = 'category/filter';
       }
-      //ddd($dataBaseData);
-      $paginatePath = '/vendor/'.$vendor->route;
 
       $pagination = new Pagination(
           $dataBaseData,
@@ -160,14 +171,14 @@ class DefaultController extends SdController
       $storesData['filter'] = [
           'price_start' => $filterPriceStartMin,
           'price_end' => $filterPriceEndMax,
-          'price_start_user' => $priceStart ? $priceStart : $filterPriceStartMin,
-          'price_end_user' => $priceEnd ? $priceEnd : $filterPriceEndMax,
+          'price_start_user' => $priceStart && $priceStart > $filterPriceStartMin ? $priceStart : $filterPriceStartMin,
+          'price_end_user' => $priceEnd && ($priceEnd < $filterPriceEndMax || $filterPriceEndMax ==0) ? $priceEnd : $filterPriceEndMax,
           'vendors' => false, //??????????
           'vendors_user' => false,
           'stores' => $stores,
           'store_user' => $storeRequest ? $storeRequest : [],
       ];
-      $storesData['vendor'] = false; //??????????
+      $storesData['vendor'] = $vendor->name; //для мета
       return $this->render('@shop/modules/category/views/default/index', $storesData);
     }
 }

@@ -55,6 +55,9 @@ class DefaultController extends SdController
             'category' => $this->category,
             'where' => !empty($vendorDb) ? ['vendor_id' => $vendorDb] : false
         ]);
+        $storesUsed = Product::usedStores([
+            'category' => $this->category,
+        ]);
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -68,12 +71,17 @@ class DefaultController extends SdController
 
         $validator = new \yii\validators\NumberValidator();
         $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
+        $storeValidator = new \yii\validators\RangeValidator([
+            'range' => array_column($storesUsed, 'uid'),
+            'allowArray' => true
+        ]);
 
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
             !empty($sort_request) && !$validatorIn->validate($sort_request) ||
             !empty($priceStart) && !$validator->validate($priceStart) ||
-            !empty($priceEnd) && !$validator->validate($priceEnd)
+            !empty($priceEnd) && !$validator->validate($priceEnd) ||
+            !empty($storeRequest) && !$storeValidator->validate($storeRequest)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
