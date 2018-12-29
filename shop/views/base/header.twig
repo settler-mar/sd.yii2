@@ -235,13 +235,13 @@
             {{ svg('angle-down','menu_angle-down', '@frontend')|raw }}
           </span>
           <ul>
-            {% set link_list = _constant("main_menu_service") %}
+            {% set link_list = _constant("shop_main_menu_service") %}
             {% for item in link_list %}
               {% if item.show==1 %}
                 <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
                   {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
                   {{ get_menu_item({
-                    'href': 'https://secretdiscounter.com/'~item.url,
+                    'href': item.url,
                     'outer': item.outer,
                     'title': item.name,
                     'attributes': attributes
@@ -277,13 +277,13 @@
             {{ svg('angle-down','menu_angle-down', '@frontend')|raw }}
           </span>
             <ul class="left-">
-              {% set link_list = _constant("main_menu_help") %}
+              {% set link_list = _constant("shop_main_menu_help") %}
               {% for item in link_list %}
                 {% if item.show==1 %}
                   <li {% if item.hide_mobile %}class="hide_mobile"{% endif %} >
                     {% set attributes = (item.outer==1 or item.blank==1) ? {"rel":"noopener noreferrer nofollow", 'target': "_blank"} : null %}
                     {{ get_menu_item({
-                      'href': 'https://secretdiscounter.com/'~item.url,
+                      'href': item.url,
                       'outer': item.outer,
                       'title': item.name,
                       'attributes': attributes
