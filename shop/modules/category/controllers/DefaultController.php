@@ -44,7 +44,11 @@ class DefaultController extends SdController
                 throw new \yii\web\NotFoundHttpException;
             }
         }
-        $vendors =  $vendorRequest ? [] : Vendor::items(['category' => $this->category ? $this->category->id : false, 'limit' => 20]);
+        $vendors =  $vendorRequest ? [] : Vendor::items([
+            'category' => $this->category ? $this->category->id : false,
+            'limit' => 20,
+            'sort'=>'name'
+        ]);
 
         $stores = Product::usedStores([
             'category' => $this->category,
@@ -254,7 +258,7 @@ class DefaultController extends SdController
 
         //просмотренные товары
         $user_id = Yii::$app->user->id;
-        if ($user_id) {
+        if ($user_id > 0) {
             $visits = Product::items()
                 ->innerJoin(UsersVisits::tableName(). ' uv', 'prod.id=uv.product_id')
                 ->where(['user_id' => $user_id])

@@ -723,7 +723,7 @@ class Product extends \yii\db\ActiveRecord
                 ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
                 ->select(['s.name', 's.uid'])
                 ->groupBy(['s.name', 's.uid'])
-                ->orderBy(['s.rating' => SORT_DESC])
+                ->orderBy(['s.name' => SORT_ASC])
                 ->asArray();
             if (!empty($params['where'])) {
                 $stores->where($params['where']);

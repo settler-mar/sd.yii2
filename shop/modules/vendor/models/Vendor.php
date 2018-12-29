@@ -111,7 +111,16 @@ class Vendor extends \yii\db\ActiveRecord
             if (!empty($params['where'])) {
                 $vendors->andWhere($params['where']);
             }
-            return !empty($params['count']) ? $vendors->count() : $vendors->all();
+            if (!empty($params['count'])) {
+                return $vendors->count();
+            }
+            $vendors = $vendors->all();
+            if (!empty($params['sort'])) {
+                usort($vendors, function ($a, $b) use ($params) {
+                    return $a[$params['sort']]>$b[$params['sort']];
+                });
+            }
+            return $vendors;
         }, $cache->defaultDuration, $dependency);
         return $out;
     }
