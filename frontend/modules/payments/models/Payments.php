@@ -694,7 +694,8 @@ class Payments extends \yii\db\ActiveRecord
       //Грузим с кэша. Период очистки 8 часов.
       $cache = Yii::$app->cache;
       $out = $cache->getOrSet('counter_index', function () {
-          $user_count = Users::find()->orderBy(['uid' => SORT_DESC])->asArray()->select('uid')->one();
+          //$user_count = Users::find()->orderBy(['uid' => SORT_DESC])->asArray()->select(['uid'])->one();
+          $user_count = Users::find()->count();
 
           $sql = "SELECT max(cashback) as cashback, count(uid) as cnt 
               FROM `cw_payments` 
@@ -718,8 +719,8 @@ class Payments extends \yii\db\ActiveRecord
                 $result2    = $command->queryOne();
           */
           $out = [
-              'user_count' => round($user_count['uid'] * 5.4),
-              'total_save' => round($user_count['uid'] * 302.4, 2),
+              'user_count' => round($user_count * 5.4),
+              'total_save' => round($user_count * 302.4, 2),
               'count_save' => round($result['cnt'] * 112.4),
               'sum_save' => round($result2['cashback'] * 5.4, 2),
               'save_persent' => 39,

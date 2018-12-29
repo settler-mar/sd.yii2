@@ -111,11 +111,11 @@ class DefaultController extends SdController
           'sort' => $sort,
           'page' => $page,
       ];
-      if ($priceStart) {
+      if ($priceStart && $priceStart != $filterPriceStartMin) {
         $filter[] = ['>=', 'price', $priceStart];
         $paginateParams['price-start'] = $priceStart;
       }
-      if ($priceEnd) {
+      if ($priceEnd && $priceEnd != $filterPriceEndMax) {
         $priceEnd = $priceEnd<$priceStart ? $priceStart : $priceEnd;
         $filter[] = ['<=', 'price', $priceEnd];
         $paginateParams['price-end'] = $priceEnd;

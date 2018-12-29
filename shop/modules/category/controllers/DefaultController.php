@@ -55,7 +55,7 @@ class DefaultController extends SdController
             'category' => $this->category,
             'where' => !empty($vendorDb) ? ['vendor_id' => $vendorDb] : false
         ]);
-        $storesUsed = Product::usedStores([
+        $storesUsed = empty($venodrDb) ? $stores : Product::usedStores([
             'category' => $this->category,
         ]);
 
@@ -142,11 +142,11 @@ class DefaultController extends SdController
             'sort' => $sort,
             'page' => $page,
         ];
-        if ($priceStart) {
+        if ($priceStart && $priceStart != $filterPriceStartMin) {
             $filter[] = ['>=', 'price', $priceStart];
             $paginateParams['price-start'] = $priceStart;
         }
-        if ($priceEnd) {
+        if ($priceEnd && $priceEnd != $filterPriceEndMax) {
             $priceEnd = $priceEnd<$priceStart ? $priceStart : $priceEnd;
             $filter[] = ['<=', 'price', $priceEnd];
             $paginateParams['price-end'] = $priceEnd;
