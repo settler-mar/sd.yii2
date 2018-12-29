@@ -41,9 +41,9 @@
         </div>
 
         <div class="footer-menu-col">
-            {% set footer_links_list = _constant("shop_footer_useful_links") %}
-            {% set links_title =  t('main', 'footer_menu_usful') %}
-            {% set class_menu = '' %}
+            {% set footer_links_list = _constant("shop_footer_links_4") %}
+            {% set links_title = t('shop', 'footer_menu_col_4') %}
+            {% set class_menu = 'laptop-min_hide' %}
             {% include('@frontend/views/parts/footer_links_list.twig') %}
 
             {% set footer_links_list = _constant("shop_footer_links_3") %}
@@ -53,26 +53,29 @@
         </div>
 
         <div class="footer-menu-col">
+            {% set footer_links_list = _constant("shop_footer_useful_links") %}
+            {% set links_title =  t('main', 'footer_menu_usful') %}
+            {% set class_menu = '' %}
+            {% include('@frontend/views/parts/footer_links_list.twig') %}
+
             {% set footer_links_list = _constant("shop_footer_help") %}
             {% set links_title = t('main', 'footer_menu_help') %}
             {% set class_menu = '' %}
             {% include('@frontend/views/parts/footer_links_list.twig') %}
-            {% set footer_links_list = _constant("shop_footer_links_4") %}
-            {% set links_title = t('shop', 'footer_menu_col_4') %}
-            {% set class_menu = 'laptop-min_hide' %}
-            {% include('@frontend/views/parts/footer_links_list.twig') %}
 
 
-          <div class="footer-menu-lists">
+
+
+          {#<div class="footer-menu-lists">#}
               {#<div class="footer-withdraws flex-col">#}
-            <div class="footer-menu-title footer-menu-title-margin">{{ t('main', 'withdraw_methods') }}</div>
-              {% set payment_system = _constant("payment_system") %}
-              {% for item in payment_system %}
-                  {% if item.on_footer==1 %}
-                    <div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>
-                  {% endif %}
-              {% endfor %}
-          </div>
+            {#<div class="footer-menu-title footer-menu-title-margin">{{ t('main', 'withdraw_methods') }}</div>#}
+              {#{% set payment_system = _constant("payment_system") %}#}
+              {#{% for item in payment_system %}#}
+                  {#{% if item.on_footer==1 %}#}
+                    {#<div class="footer-withdraws-item footer-withdraws-{{ item.code }}"></div>#}
+                  {#{% endif %}#}
+              {#{% endfor %}#}
+          {#</div>#}
 
         </div>
 

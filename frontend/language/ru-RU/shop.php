@@ -57,7 +57,7 @@ return [
     'footer_menu_col_1' => 'Menu column 1',
     'footer_menu_col_2' => 'Menu column 2',
     'footer_menu_col_3' => 'Промокоды',
-    'footer_menu_col_4' => 'Menu column 4',
+    'footer_menu_col_4' => 'Часто ищут',
     'share' => 'Поделиться',
     'product_props_description' => 'Характеристики и описание',
     'visiteds_products' => 'Просмотренные товары',
