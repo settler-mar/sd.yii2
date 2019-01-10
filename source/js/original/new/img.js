@@ -121,7 +121,7 @@ $( document ).ready(function() {
     }
   }
 
-  function testImg(imgs,no_img){
+  function testImg(imgs, no_img){
     if(!imgs || imgs.length==0)return;
 
     if(!no_img)no_img='/images/template-logo.jpg';
@@ -168,4 +168,9 @@ $( document ).ready(function() {
   //тест аватарок в коментариях
   imgs=$('.comment-photo,.scroll_box-avatar');
   testImg(imgs,'/images/no_ava_square.png');
+
+  //тест картинок продуктов
+  imgs = $('.catalog_products_item_image-wrap img');
+  testImg(imgs);
+
 });

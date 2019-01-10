@@ -16,9 +16,10 @@
             <div class="catalog_product-main margin-half">
                 <div class="catalog_product-main-image">
                     {% if product.image %}
-                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}" class="no_optomize">
+                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
                     {% else %}
-                        <span class="catalog_product-main-image-empty">{{ t('shop', 'image_empty')|raw }}</span>
+                        <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.name }}">
+                        {#<span class="catalog_product-main-image-empty">{{ t('shop', 'image_empty')|raw }}</span>#}
                     {% endif %}
                 </div>
                 <div class=" catalog_product-main-info">
@@ -39,12 +40,13 @@
                     </div>
                     <div class="catalog_product-props margin-half">
                         <div class="catalog_product-props-item catalog_product-props-item_price">
+                            {% set k = product.currency in ['RUB'] ? 0 : 2 %}
                             {% if product.price < product.old_price %}
                                 <span class="catalog_product-props-item_price-old">
-                                    {{ product.old_price }}<span class="catalog_product-props-item_price_currency">&nbsp;{{ t('main', product.currency) }}</span>
+                                    {{ _nf(product.old_price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_product-props-item_price_currency">&nbsp;{{ t('main', product.currency) }}</span>
                                 </span>
                             {% endif %}
-                            {{ product.price }}<span class="catalog_product-props-item_price_currency">&nbsp;{{ t('main', product.currency) }}</span>
+                            {{ _nf(product.price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_product-props-item_price_currency">&nbsp;{{ t('main', product.currency) }}</span>
 
                         </div>
                         <div class="catalog_product-props-item">
