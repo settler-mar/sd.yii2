@@ -4,6 +4,7 @@ namespace frontend\modules\banners\models;
 
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\stores\models\CategoriesStores;
+use shop\modules\category\models\ProductsCategory;
 use Yii;
 use yii\web\UploadedFile;
 use frontend\modules\cache\models\Cache;
@@ -320,7 +321,10 @@ class Banners extends \yii\db\ActiveRecord
 
     private function updatePlacesArray()
     {
-        $cupons = CategoriesCoupons::find()->asArray()->all();
+        $cupons = CategoriesCoupons::find()
+            ->asArray()
+            ->orderBy(['name' => SORT_ASC])
+            ->all();
         foreach ($cupons as $cupon) {
             $key = 'coupons-' . $cupon['uid'] . '-left-menu';
             $this->places_array[$key] = [
@@ -331,6 +335,7 @@ class Banners extends \yii\db\ActiveRecord
         $stores = CategoriesStores::find()
             ->where(['parent_id' => 0])
             ->asArray()
+            ->orderBy(['name' => SORT_ASC])
             ->all();
         foreach ($stores as $store) {
             $key = 'stores-' . $store['uid'] . '-left-menu';
@@ -338,6 +343,17 @@ class Banners extends \yii\db\ActiveRecord
                 'name' => 'Магазины.Левое меню.' . $store['name'],
             ];
         };
+        $categoriesProducts = ProductsCategory::find()
+            ->where(['parent' => null])
+            ->asArray()
+            ->orderBy(['name' => SORT_ASC])
+            ->all();
+        foreach ($categoriesProducts as $category) {
+            $key = 'product-category-' . $category['id'] . '-left-menu';
+            $this->places_array[$key] = [
+                'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
+            ];
+        }
     }
 
 }
