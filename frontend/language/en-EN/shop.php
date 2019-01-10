@@ -60,5 +60,13 @@ return [
     'visiteds_products' => 'Visited products',
     'filter_result' => 'Search result',
     'how_shop_works' => 'Why we?',
+    'menu_categories' => 'Categories',
+    'menu_vendors' => 'Brands',
+    'menu_stores' => 'Stores',
+    'menu_cashback' => 'Cash back',
+    'menu_sale' => 'Sale',
+
+
+
 
 ];

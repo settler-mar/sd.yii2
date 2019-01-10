@@ -63,5 +63,10 @@ return [
     'visiteds_products' => 'Просмотренные товары',
     'filter_result' => 'Результат поиска',
     'how_shop_works' => 'Почему мы?',
+    'menu_categories' => 'Категории',
+    'menu_vendors' => 'Бренды',
+    'menu_stores' => 'Магазины',
+    'menu_cashback' => 'Кэшбэк',
+    'menu_sale' => 'Распродажа',
 
 ];

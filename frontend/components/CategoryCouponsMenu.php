@@ -12,6 +12,7 @@ class CategoryCouponsMenu extends Widget
 {
     public $search_item = false;
     public $where = [];
+    public $out_address;//внешняя ссылка
 
     public function init()
     {
@@ -84,9 +85,11 @@ class CategoryCouponsMenu extends Widget
             } else {
                 //$lg = Yii::$app->params['lang_code'];
                 //$href = ($lg == 'ru'  ? '' : '/'.$lg) .'/coupons' . ($category['route']? '/'.$category['route'] : '');
-                $href = Help::href('/coupons' . ($category['route']? '/'.$category['route'] : ''));
+                $href = Help::href('/coupons' . ($category['route']? '/'.$category['route'] : ''), $this->out_address);
                 $out .=  '<a href="'.$href.
-                    '" class="title'.(isset($category['class']) ? ' '.($category['class']) : '').'">' .
+                    '" class="title'.(isset($category['class']) ? ' '.($category['class']) : '').'"'.
+                    ($this->out_address ? ' target="_blank" rel="nooper nofollow noreferrer"' : '').
+                    '>' .
                     $category['name'] .($category['count'] !== null ?  '&nbsp;(' . $category['count'] .')' : '') .
                     '</a>';
             }

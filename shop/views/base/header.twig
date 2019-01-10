@@ -166,20 +166,43 @@
             })|raw }}
           </li>
         {% endif %}
-        {#<li class="drop-menu_group__up">#}
-          {#{{ get_menu_item({#}
-            {#'href': '/stores',#}
-            {#'title': t('main', 'online_shops') ~ svg('angle-down','menu_angle-down', '@frontend'),#}
-            {#'class': 'drop-menu_group__up-header'#}
-          {#})|raw }}#}
+        <li class="drop-menu_group__up">
+          {{ get_menu_item({
+            'href': '/categories',
+            'title': t('shop', 'menu_categories') ~ svg('angle-down','menu_angle-down', '@frontend'),
+            'class': 'drop-menu_group__up-header'
+          })|raw }}
 
-          {#{{ use('frontend/components/CategoryMenu') }}#}
-          {#{% set offline = app.params.stores_menu_separate ? 0 : null %}#}
-          {#{% set category_tree = category_menu_widget({'show_hidden': true, 'ext_items':'favorite,all_shops,visited', 'offline': offline}) %}#}
-          {#{% if category_tree %}#}
-            {#{{ category_tree|raw }}#}
-          {#{% endif %}#}
-        {#</li>#}
+          {{ use('shop/components/CategoryMenu') }}
+          {% set category_tree = category_menu_widget() %}
+          {% if category_tree %}
+            {{ category_tree|raw }}
+          {% endif %}
+        </li>
+        <li class="">
+          {{ get_menu_item({
+            'href': '/vendor',
+            'title': t('shop', 'menu_vendors'),
+          })|raw }}
+        </li>
+        <li class="">
+          {{ get_menu_item({
+            'href': '/stores',
+            'title': t('shop', 'menu_stores'),
+          })|raw }}
+        </li>
+        <li class="">
+          {{ get_menu_item({
+            'href': '/cashback',
+            'title': t('shop', 'menu_cashback'),
+          })|raw }}
+        </li>
+        <li class="drop-menu_group__up-pointed">
+          {{ get_menu_item({
+            'href': '/sale',
+            'title': t('shop', 'menu_sale'),
+          })|raw }}
+        </li>
         {#<li class="mobile">#}
           {#{{ get_menu_item({#}
             {#'href': '/stores/double-cashback-stores',#}
@@ -187,18 +210,18 @@
             {#'class': 'link_mobile_bold'#}
           {#})|raw }}#}
         {#</li>#}
-        {#<li class="drop-menu_group__up">#}
-          {#{{ get_menu_item({#}
-            {#'href': '/coupons',#}
-            {#'title': t('main', 'promocodes')~svg('angle-down','menu_angle-down', '@frontend'),#}
-            {#'class': 'drop-menu_group__up-header'#}
-          {#})|raw }}#}
-          {#{{ use('frontend/components/CategoryCouponsMenu') }}#}
-          {#{% set category_coupons = category_coupons_menu_widget({'where': {'hide_high_menu': 0}}) %}#}
-          {#{% if category_coupons %}#}
-            {#{{ category_coupons|raw }}#}
-          {#{% endif %}#}
-        {#</li>#}
+        <li class="drop-menu_group__up">
+          {{ get_menu_item({
+            'href': 'https://secretdiscounter.com/coupons',
+            'title': t('main', 'promocodes')~svg('angle-down','menu_angle-down', '@frontend'),
+            'class': 'drop-menu_group__up-header'
+          })|raw }}
+          {{ use('frontend/components/CategoryCouponsMenu') }}
+          {% set category_coupons = category_coupons_menu_widget({'where': {'hide_high_menu': 0}, 'out_address':'https://secretdiscounter.com'}) %}
+          {% if category_coupons %}
+            {{ category_coupons|raw }}
+          {% endif %}
+        </li>
         {#если есть в настройках, выводим меню шопов оффлайн#}
         {#{% if app.params.stores_menu_separate %}#}
           {#<li class="drop-menu_group__up">#}
@@ -220,16 +243,16 @@
             'title': t('main', 'duble_cashback'),
           })|raw }}
         </li>#}
-        <li class="drop-menu_bold">
-          {{ get_menu_item({
-            'href': 'https://secretdiscounter.com/products/aliexpress',
-            'title': t('main', 'top-ali'),
-            'attributes':{
-              'target':"_blank",
-              'rel': "noopener noreferrer nofollow",
-            }
-          })|raw }}
-        </li>
+        {#<li class="drop-menu_bold">#}
+          {#{{ get_menu_item({#}
+            {#'href': 'https://secretdiscounter.com/products/aliexpress',#}
+            {#'title': t('main', 'top-ali'),#}
+            {#'attributes':{#}
+              {#'target':"_blank",#}
+              {#'rel': "noopener noreferrer nofollow",#}
+            {#}#}
+          {#})|raw }}#}
+        {#</li>#}
         <li class="drop-menu_group__up drop-menu_group__up-pointed">
           <span class="drop-menu_group__up-header"> {{ t('main', 'services') }}
             {{ svg('angle-down','menu_angle-down', '@frontend')|raw }}
