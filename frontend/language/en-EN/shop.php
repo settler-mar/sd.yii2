@@ -68,7 +68,9 @@ return [
     'menu_payments' => 'My purchases',
     'menu_favorites' => 'Deferred purchases',
     'menu_viewed' => 'Viewed products',
-    'view_all_visiteds' => 'All Viewed Products'
+    'view_all_visiteds' => 'All Viewed Products',
+    'products' => 'Products',
+
 
 
 

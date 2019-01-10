@@ -195,6 +195,14 @@
             {{ category_tree|raw }}
           {% endif %}
         </li>
+          <li class="">
+              {{ get_menu_item({
+                  'href': 'https://shop.secretdiscounter.com',
+                  'title': t('shop', 'products'),
+                  'attributes': {'target':'_blank'},
+              })|raw }}
+          </li>
+
         <li class="mobile">
           {{ get_menu_item({
             'href': '/stores/double-cashback-stores',

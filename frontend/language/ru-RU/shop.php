@@ -72,6 +72,7 @@ return [
     'menu_favorites' => 'Отложенные товары',
     'menu_viewed' => 'Просмотренное товары',
     'view_all_visiteds' => 'Все просмотренное товары',
+    'products' => 'Товары',
 
 
 ];

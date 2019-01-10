@@ -86,7 +86,7 @@ return [
 
                 '<module>/default/<action>' => '404',
                 '<module>/default' => '404',
-                '<action:(how-shop-works)>' => 'site/static-page',
+                '<action:(how-shop-works|cashback)>' => 'site/static-page',
 
               //   '/' => 'site/index',
               //   '/index' => '404',
