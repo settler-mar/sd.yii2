@@ -14,7 +14,8 @@
                 {{ this.user.name }}
             </div>
             <div class="account-menu_header-info-balance">
-                <a href="{{ _href('/account/payments', 'https://secretdiscounter.com')|raw }}" class="account-menu_header-info-balance-link">
+                <a target="_blank" rel="nooper nofollow noreferrer"
+                    href="{{ _href('/account/payments', 'https://secretdiscounter.com')|raw }}" class="account-menu_header-info-balance-link">
                     <span class="account-menu_header-info-balance-link-confirmed" >
                   {{ _nf(this.balance.current) | raw}} {{ curr|raw }}</span>
                     <span class="account-menu_header-info-balance-link-all">&nbsp;/&nbsp;{{ _nf(this.balance.pending) | raw}} {{ curr|raw }} </span>
@@ -38,13 +39,15 @@
                 'href':'https://secretdiscounter.com/account',
                 'title': t('account', 'menu_main_page'),
                 'left-icon': 'user',
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             })|raw }}
         </li>
         <li class="favorite-icon fasicon">
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/deferred',
                 'title': t('shop', 'menu_favorites'),
-                'left-icon': 'heart-o'
+                'left-icon': 'heart-o',
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             })|raw }}
         </li>
 
@@ -52,7 +55,8 @@
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/viewed-products',
                 'title': t('shop', 'menu_viewed'),
-                'left-icon': 'star-o'
+                'left-icon': 'star-o',
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             })|raw }}
         </li>
 
@@ -60,21 +64,24 @@
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/payments',
                 'left-icon': 'history',
-                'title': t('shop', 'menu_payments'
-                )})|raw }}
+                'title': t('shop', 'menu_payments'),
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
+                })|raw }}
         </li>
         <li>
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/affiliate',
                 'left-icon': 'money-bag',
-                'title': t('account', 'affiliate_referrals_payments'
-                )})|raw }}
+                'title': t('account', 'affiliate_referrals_payments'),
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
+                })|raw }}
         </li>
         <li class="offlineshop-icon fasicon">
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/offline',
                 'title': t('account', 'menu_offline'),
-                'left-icon': 'bay'
+                'left-icon': 'bay',
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             })|raw }}
         </li>
 
@@ -82,6 +89,7 @@
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/settings',
                 'title': t('account', 'menu_settings'),
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'},
                 'left-icon': 'cogs'
             })|raw }}
         </li>
@@ -90,13 +98,15 @@
             {{ get_menu_item({
               'href':'https://secretdiscounter.com/account/support',
               'left-icon': 'question-circle-o',
-              'title': t('account', 'menu_help'
-              )})|raw }}
+              'title': t('account', 'menu_help'),
+              'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
+              })|raw }}
         </li>
 
         <li class="action-btn"> {{ get_menu_item({
                 'href':'https://secretdiscounter.com/logout',
                 'title': t('common', 'logout'),
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'},
                 'left-icon': 'sign-out'
             })|raw }}
         </li>

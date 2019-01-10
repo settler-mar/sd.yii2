@@ -21,7 +21,9 @@
         </div>
 
         <div class="header-upline_logo">
-          {{ get_menu_item({'href': '/','title': '<img class="header-upline_logo-pc" src="https://secretdiscounter.com/images/templates/sd_logo.png" alt="secretdiscounter logo">
+          {{ get_menu_item({
+              'href': '/',
+              'title': '<img class="header-upline_logo-pc" src="https://secretdiscounter.com/images/templates/sd_logo.png" alt="secretdiscounter logo">
             <img class="header-upline_logo-mobile" src="https://secretdiscounter.com/images/svg/mini-logo-2.svg" alt="secretdiscounter logo">' })|raw }}
         </div>
 
@@ -57,7 +59,7 @@
 
         <div class="header-upline_in-right">
 
-          {% if this.user_id != 0 %}
+          {% if this.user_id == 0 %}
             {{ get_menu_item({'href': '/how-shop-works','title': t('shop', 'how_shop_works'), 'class':'header-upline_in-right-howitworks header-right_link header-other-btn'})|raw }}
             <div class="header-authorization">
               <a class="header-authorization-btn header-authorization-enter modals_open_" rel="nofollow"
@@ -83,7 +85,8 @@
                 ~ _nf(this.balance.current) ~'&nbsp;'~t('main',app.user.identity.currency)~' </span><span class="ballance-all" data-toggle="tooltip"  data-original-title="'~t('account', 'ballance_pending')~'">&nbsp;/&nbsp;'
                 ~ _nf(this.balance.pending) ~'&nbsp;'~t('main',app.user.identity.currency)~' </span>'
                 ~ '</span>',
-                'class':'btn-header-ballance'
+                'class':'btn-header-ballance',
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
               })|raw }}
 
             </div>
@@ -91,7 +94,7 @@
               {{ get_menu_item({
                 'href': 'https://secretdiscounter.com/plugin',
                 'title': svg('puzzle', 'btn-header_button', '@frontend'),
-                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer', 'data-toggle':"tooltip", 'data-original-title': t('main', 'install-plugin')}
               })|raw }}
             </div>
             {% if this.favorites %}
@@ -100,7 +103,7 @@
                 {{ get_menu_item({
                   'href': 'https://secretdiscounter.com/account/favorites',
                   'title': svg('heart-o', 'btn-header_button', '@frontend'),
-                  'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites')}
+                  'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer', 'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites')}
                 })|raw }}
               </div>
             {% endif %}
@@ -109,7 +112,7 @@
               {{ get_menu_item({
                 'href': 'https://secretdiscounter.com/account/notification',
                 'title': svg('bell-o', 'btn-header_button', '@frontend'),
-                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer', 'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
               })|raw }}
 
             </div>
@@ -144,7 +147,7 @@
 
           </li>
           <li class="mobile">
-            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open_" rel="nofollow"
+            <a class="header-right_link link_mobile_bold link_mobile_pointed mobile modals_open_" target="_blank" rel="nofollow nooper noreferrer"
                href="https://secretdiscounter.com/{{ _href('#registration')|raw }}">
               {{ t('account', 'register_and_get_plus_30_percent_cachback')|raw }}
             </a>
@@ -154,7 +157,8 @@
             {{ get_menu_item({
               'href': 'https://secretdiscounter.com/howitworks',
               'title': t('main', 'how_it_works'),
-              'class': 'header-right_link mobile'
+              'class': 'header-right_link mobile',
+              'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             })|raw }}
           </li>
         {% else %}
@@ -162,7 +166,8 @@
             {{ get_menu_item({
               'href': 'https://secretdiscounter.com/account',
               'title': t('account', 'menu_main_page'),
-              'class': 'mobile'
+              'class': 'mobile',
+              'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             })|raw }}
           </li>
         {% endif %}
@@ -214,7 +219,8 @@
           {{ get_menu_item({
             'href': 'https://secretdiscounter.com/coupons',
             'title': t('main', 'promocodes')~svg('angle-down','menu_angle-down', '@frontend'),
-            'class': 'drop-menu_group__up-header'
+            'class': 'drop-menu_group__up-header',
+            'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
           })|raw }}
           {{ use('frontend/components/CategoryCouponsMenu') }}
           {% set category_coupons = category_coupons_menu_widget({'where': {'hide_high_menu': 0}, 'out_address':'https://secretdiscounter.com'}) %}
@@ -277,18 +283,24 @@
       </ul>
       <ul class="header-right page-wrap-flex drop-menu">
         <li>
-          {{ get_menu_item({'href': 'https://secretdiscounter.com/dobro','title': svg('heart', 'header-heart heart-red', '@frontend') ~ t('main', 'we_make_good')})|raw }}
+          {{ get_menu_item({
+              'href': 'https://secretdiscounter.com/dobro',
+              'title': svg('heart', 'header-heart heart-red', '@frontend') ~ t('main', 'we_make_good'),
+              'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
+          })|raw }}
         </li>
         <li>
           {% if this.isWebMaster or this.user.waitModeration==1 %}
             {% set item= {
               'gi':'https://secretdiscounter.com/account/webmaster',
               'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\', \'@frontend\')|raw }}  '~t('account', 'menu_web_master'),
+              'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             } %}
           {% else %}
             {% set item= {
               'href':'https://secretdiscounter.com/affiliate-system',
               'title': '{{ svg(\'money\', \'drop-menu_item-icon-money laptop-min_order2\', \'@frontend\')|raw }}  '~t('account', 'menu_affiliate'),
+              'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
             } %}
           {% endif %}
           {{ get_menu_item(item)|raw }}
@@ -317,11 +329,19 @@
             </ul>
           </li>
           <li class="mobile">
-            {{ get_menu_item({'href': 'https://secretdiscounter.com/logout','title': t('common', 'do_logout')})|raw }}
+            {{ get_menu_item({
+                'href': 'https://secretdiscounter.com/logout',
+                'title': t('common', 'do_logout'),
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
+            })|raw }}
           </li>
         {% else %}
           <li>
-            {{ get_menu_item({'href': 'https://secretdiscounter.com/help-center','title': t('main', 'help')})|raw }}
+            {{ get_menu_item({
+                'href': 'https://secretdiscounter.com/help-center',
+                'title': t('main', 'help'),
+                'attributes': {'target':'_blank', 'rel':'nooper nofollow noreferrer'}
+            })|raw }}
           </li>
         {% endif %}
       </ul>
