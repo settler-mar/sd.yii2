@@ -55,6 +55,17 @@ body {
   margin: 0;
 }
 
+.sd_content {
+
+  ol,ul {
+    font-size: 14px;
+    padding-left: 25px;
+  }
+  a {
+    color: $link_color_blue;
+  }
+}
+
 a {
   color: $a_color;
   transition: all .25s ease;

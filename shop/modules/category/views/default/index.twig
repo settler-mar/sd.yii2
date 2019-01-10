@@ -14,7 +14,7 @@
 <section class="gray-box wrap-round margin">
   <h1 class="page-header align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
   {% if meta_upper_description %}
-    <div class="catalog_category-short-description laptop_hide catalog_category-content">
+    <div class="catalog_category-short-description laptop_hide catalog_category-content sd_content">
         {{ meta_upper_description|raw }}
     </div>
   {% endif %}
@@ -83,7 +83,7 @@
         </div>
 
         {% if meta_down_description %}
-          <div class="catalog_category-down-description margin">
+          <div class="catalog_category-down-description margin sd_content">
               {{ meta_down_description|raw }}
           </div>
         {% endif %}
@@ -93,7 +93,7 @@
     </div>
 
     <div class="catalog_products_store_conditions" id="product_store_cachback_modal_id">
-      <div class="catalog_products_store_conditions_content">
+      <div class="catalog_products_store_conditions_content sd_content">
         {{ _constant('product_cashback_informaiton')|raw }}
       </div>
     </div>

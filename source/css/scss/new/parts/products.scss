@@ -191,6 +191,9 @@ $media3: $phones;
           margin-right: 3px;
         }
       }
+      &-new_with-old {
+        margin-top: 6px;
+      }
     }
     &_cashback {
       position: relative;
@@ -218,6 +221,7 @@ $media3: $phones;
 
       &-title {
         text-transform: uppercase;
+        margin: 0 6px;
       }
 
       &-value {
@@ -256,6 +260,7 @@ $media3: $phones;
       }
       &-amount {
         line-height: 1;
+        justify-content: center;
       }
 
     }

@@ -64,7 +64,7 @@
                     </a>
                 </div>
                 <div class="catalog_products_item_text_brand">
-                    <a href="{{  product_url }}" target="_blank" rel="nofollow nooper noreferrer">
+                    <a href="/vendor/{{  product.vendor_route }}" target="_blank" rel="nofollow nooper noreferrer">
                         {{ product.vendor }}
                     </a>
                 </div>
@@ -85,7 +85,9 @@
                             {{ _nf(old_price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
                         </div>
                     {% endif %}
-                    {{ _nf(product.price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                    <div class="catalog_products_item_price-new {% if product.price < old_price %}catalog_products_item_price-new_with-old{% endif %}">
+                        {{ _nf(product.price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                    </div>
                 </a>
             </div>
 
