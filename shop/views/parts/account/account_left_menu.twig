@@ -32,15 +32,6 @@
     </div>
 
     <ul>
-        {% if header != 1 %}
-            <li>
-                {% if this.isWebMaster or this.user.waitModeration==1 %}
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/account/webmaster', 'left-icon': 'dollar', 'title': t('account', 'menu_web_master')})|raw }}
-                {% else %}
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/account/affiliate', 'left-icon': 'dollar', 'title': t('account', 'menu_affiliate')})|raw }}
-                {%  endif %}
-            </li>
-        {% endif %}
 
         <li class="overview users">
             {{ get_menu_item({
@@ -49,71 +40,36 @@
                 'left-icon': 'user',
             })|raw }}
         </li>
+        <li class="favorite-icon fasicon">
+            {{ get_menu_item({
+                'href':'https://secretdiscounter.com/account/deferred',
+                'title': t('shop', 'menu_favorites'),
+                'left-icon': 'heart-o'
+            })|raw }}
+        </li>
 
-        {% if header == 1 %}
-            <li>
-                {{ get_menu_item({
-                    'href':'https://secretdiscounter.com/account/payments',
-                    'left-icon': 'history',
-                    'title': t('account', 'menu_history'
-                    )})|raw }}
-            </li>
-            <li>
-                {{ get_menu_item({
-                    'href':'https://secretdiscounter.com/account/affiliate',
-                    'left-icon': 'money-bag',
-                    'title': t('account', 'affiliate_referrals_payments'
-                    )})|raw }}
-            </li>
-        {% else %}
-            <li class="has-children bookmarks">
-                {{ get_menu_item({
-                    'href':'https://secretdiscounter.com/account/payments',
-                    'title': t('account', 'menu_history'),
-                    'left-icon': 'history',
-                    'right-icon': 'angle-right'
-                })|raw }}
-                <ul>
-                    <li>
-                        {{ get_menu_item({'href':'https://secretdiscounter.com/account/payments', 'title': t('account', 'menu_history_payments')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'https://secretdiscounter.com/account/bonuses', 'title': t('account', 'menu_history_bonuses')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'https://secretdiscounter.com/account/transitions', 'title': t('account', 'menu_history_visits')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'https://secretdiscounter.com/account/withdraw/history', 'title': t('account', 'menu_history_withdraw')})|raw }}
-                    </li>
-                    <li>
-                        {{ get_menu_item({'href':'https://secretdiscounter.com/account/charity', 'title': t('account', 'menu_history_charity')})|raw }}
-                    </li>
-                </ul>
-            </li>
-        {% endif %}
+        <li class="favorite-icon fasicon">
+            {{ get_menu_item({
+                'href':'https://secretdiscounter.com/account/viewed-products',
+                'title': t('shop', 'menu_viewed'),
+                'left-icon': 'star-o'
+            })|raw }}
+        </li>
 
-        {% if header != 1 %}
-            <li class="notifications">
-                {% set noty_count=noty_novi_count ? '<span class="count">'~noty_novi_count~'</span>' : '' %}
-                {{ get_menu_item({
-                    'href':'https://secretdiscounter.com/account/notification',
-                    'title': t('account','menu_notify')~noty_count,
-                    'left-icon':'bell-o'
-                })|raw }}
-            </li>
-        {% endif %}
-
-        {% if header != 1 %}
-            <li class="favorite-icon fasicon">
-                {{ get_menu_item({
-                    'href':'https://secretdiscounter.com/account/favorites',
-                    'title': t('account', 'menu_favorites'),
-                    'left-icon': 'heart-o'
-                })|raw }}
-            </li>
-        {% endif %}
-
+        <li>
+            {{ get_menu_item({
+                'href':'https://secretdiscounter.com/account/payments',
+                'left-icon': 'history',
+                'title': t('shop', 'menu_payments'
+                )})|raw }}
+        </li>
+        <li>
+            {{ get_menu_item({
+                'href':'https://secretdiscounter.com/account/affiliate',
+                'left-icon': 'money-bag',
+                'title': t('account', 'affiliate_referrals_payments'
+                )})|raw }}
+        </li>
         <li class="offlineshop-icon fasicon">
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/offline',
@@ -121,6 +77,7 @@
                 'left-icon': 'bay'
             })|raw }}
         </li>
+
         <li class="settings-icon fasicon">
             {{ get_menu_item({
                 'href':'https://secretdiscounter.com/account/settings',
@@ -129,50 +86,14 @@
             })|raw }}
         </li>
 
-        <li class="action-btn">
-            {{ get_menu_item({
-                'href':'https://secretdiscounter.com/account/withdraw',
-                'title': t('account', 'menu_withdraw'),
-                'left-icon': 'coins'
-            })|raw }}
-        </li>
-      {% if header == 1 %}
-          <li>
+        <li>
             {{ get_menu_item({
               'href':'https://secretdiscounter.com/account/support',
               'left-icon': 'question-circle-o',
               'title': t('account', 'menu_help'
               )})|raw }}
-          </li>
-      {% else %}
-          <li class="help-icon fasicon has-children">
-            {{ get_menu_item({
-              'href':'https://secretdiscounter.com/account/support',
-              'title': t('account', 'menu_help'),
-              'left-icon': 'question-circle-o',
-              'right-icon': 'angle-right'
-            })|raw }}
-              <ul>
-                  <li>
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/account/support', 'title': t('account', 'menu_help_support')})|raw }}
-                  </li>
-                  <li>
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/howitworks', 'title': t('account', 'menu_help_howitworks')})|raw }}
-                  </li>
-                  <li>
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/faq', 'title': t('account', 'menu_help_faq')})|raw }}
-                  </li>
-                  <li>
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/loyalty', 'title': t('account', 'menu_help_loyalty')})|raw }}
-                  </li>
-                  <li>
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/recommendations', 'title': t('account', 'menu_help_recommendations')})|raw}}
-                  <li>
-                    {{ get_menu_item({'href':'https://secretdiscounter.com/reviews', 'title': t('account', 'menu_help_reviews')})|raw }}
-                  </li>
-              </ul>
-          </li>
-      {% endif %}
+        </li>
+
         <li class="action-btn"> {{ get_menu_item({
                 'href':'https://secretdiscounter.com/logout',
                 'title': t('common', 'logout'),

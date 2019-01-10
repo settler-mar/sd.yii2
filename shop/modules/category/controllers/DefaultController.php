@@ -219,7 +219,7 @@ class DefaultController extends SdController
 //        $storesData['limitlinks'] =
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
-        $storesData['favorites_ids'] = UsersFavorites::getUserFav(8, true);
+        $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
             'price_end' =>  $filterPriceEndMax,
@@ -264,6 +264,7 @@ class DefaultController extends SdController
                 'category_id' => $product->categories[0]->id,
                 'count' => 8,
                 'multi_brands' => true,
+                'with_image' => true,
                 'where' => ['and', ['<>', 'prod.id', $product->id], ['<>', 'vendor_id', $product->vendor_id]],
             ]) : [];
         //похожие - той же категории и того же шопа
@@ -272,17 +273,19 @@ class DefaultController extends SdController
                 'where' => ['and', ['store_id' => $product->store_id],['<>', 'prod.id', $product->id]],
                 'multi_brands' => true,
                 'category_id' => $product->categories[0]->id,
+                'with_image' => true,
                 'count' => 8
             ]) : [];
 
         //просмотренные товары
-        $user_id = Yii::$app->user->id;
+        $user_id = 8;//Yii::$app->user->id;
         if ($user_id > 0) {
-            $visits = Product::items()
-                ->innerJoin(UsersVisits::tableName(). ' uv', 'prod.id=uv.product_id')
-                ->where(['user_id' => $user_id])
-                ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)])
-                ->all();
+            $visits = Product::top([
+                'user_transition' => $user_id,
+                'sort' => 'uv.visit_date',
+                'order' => SORT_DESC,
+                'where' => ['>', 'visit_date', date('Y-m-d H:i:s', time() - 7 * 24 * 60 * 60)]
+            ]);
         }
 
         return $this->render('product', [

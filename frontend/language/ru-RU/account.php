@@ -146,8 +146,8 @@ return [
     'support_mail_topic' => 'Тема письма',
     'support_mail_text' => 'Текст обращения',
     'favorites' => 'Избранные магазины',
-    'favorites_product' => 'Избранные товары',
-    'account_favorite-products_breadcrumbs' => 'Избранные товары',
+    'favorites_product' => 'Отложенные товары',
+    'account_deferred_breadcrumbs' => 'Отложенные товары',
     'favorites_empty_product' => 'На данный момент у Вас нет избранных товаров.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add_product' =>
         'После добавления товаров из <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">нашего каталога</a> в избранное  они будут отображаться на данной странице.',
@@ -366,4 +366,6 @@ return [
     'account_users_breadcrumbs' => 'Мои пользователи',
     'account_email-success_breadcrumbs' => 'Подтверждение e-mail',
     'account_payments_ref_id:_{id}_breadcrumbs' => 'История заказов друга ID:{id}',
+    'favorites_viewed-products' => 'Просмотренные товары',
+    'account_viewed-products_breadcrumbs' => 'Просмотренные товары',
 ];

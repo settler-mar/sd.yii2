@@ -79,7 +79,12 @@ class SiteController extends Controller
     Yii::$app->params['wrap'] = 'index';
     $data['stat'] = Product::stat();
     $data['popular_categories'] = ProductsCategory::top();//todo по визитам
-    $data['popular_products'] = Product::top(['count' => 12, 'sort' => 'modified_time', 'order' => SORT_DESC]);//todo по визитам
+    $data['popular_products'] = Product::top([
+        'with_image' => true,
+        'count' => 12,
+        'sort' => 'modified_time',
+        'order' => SORT_DESC
+    ]);//todo по визитам
     $data['popular_brands'] = Vendor::items(['limit'=>10]);//todo по визитам
     $data['posts'] = Posts::getLastPosts();
 

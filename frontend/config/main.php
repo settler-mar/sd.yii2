@@ -180,7 +180,8 @@ $config = [
                 'account/promo' => 'users/default/promo',
                 'account/bay-loyalty/<id>'=>'/users/account/bay-loyalty',
                 'account/bay-loyalty/<id>/<stat>'=>'/users/account/bay-loyalty',
-                'account/favorite-products' => 'favorites/account/products',
+                'account/deferred' => 'favorites/account/products',
+                'account/viewed-products' => 'favorites/account/viewed-products',
                 'deleteaccount' => 'users/account/delete',
                 'reg' => 'users/default/reg',
 

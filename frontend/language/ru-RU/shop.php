@@ -68,5 +68,10 @@ return [
     'menu_stores' => 'Магазины',
     'menu_cashback' => 'Кэшбэк',
     'menu_sale' => 'Распродажа',
+    'menu_payments' => 'Мои покупки',
+    'menu_favorites' => 'Отложенные товары',
+    'menu_viewed' => 'Просмотренное товары',
+    'view_all_visiteds' => 'Все просмотренное товары',
+
 
 ];

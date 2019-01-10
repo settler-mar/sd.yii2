@@ -194,6 +194,9 @@
             </h3>
             {% set products = visiteds %}
             {% include('parts/products/other_products.twig') %}
+            <div class="align-center">
+                <a class="btn btn-transform" href="{{ _href('/account/viewed-products','https://secretdiscounter.com')|raw }}">{{ t('shop','view_all_visiteds')|raw }}</a>
+            </div>
         </div>
     {% endif %}
 

@@ -8,6 +8,7 @@ use frontend\modules\params\models\ProductParametersProcessing;
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\transitions\models\UsersVisits;
 use JBZoo\Image\Image;
 use shop\modules\category\models\ProductsCategory;
 use shop\modules\vendor\models\Vendor;
@@ -825,9 +826,16 @@ class Product extends \yii\db\ActiveRecord
       if (isset($params['where'])) {
           $product->andWhere($params['where']);
       }
+      if (!empty($params['with_image'])) {
+          $product->andWhere(['is not', 'prod.image', null]);
+      }
       if (isset($params['category_id'])) {
           $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = prod.id')
             ->andWhere(['ptc.category_id' => $params['category_id']]);
+      }
+      if (!empty($params['user_transition'])) {
+          $product->innerJoin(UsersVisits::tableName(). ' uv', 'uv.product_id = prod.id')
+              ->andWhere(['uv.user_id' => $params['user_transition']]);
       }
       if (!empty($params['multi_brands'])) {
 //          $vendors = Product::find()->from(Product::tableName().' .p')
@@ -851,7 +859,7 @@ class Product extends \yii\db\ActiveRecord
         ->where([
             'and',
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
-            ['is not', 'prod.image', null],
+            //['is not', 'prod.image', null],
         ])
         ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
             's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',

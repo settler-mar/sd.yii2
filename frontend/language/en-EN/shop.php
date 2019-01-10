@@ -65,6 +65,9 @@ return [
     'menu_stores' => 'Stores',
     'menu_cashback' => 'Cash back',
     'menu_sale' => 'Sale',
+    'menu_payments' => 'My purchases',
+    'menu_favorites' => 'Deferred purchases',
+    'menu_viewed' => 'Viewed products',
 
 
 
