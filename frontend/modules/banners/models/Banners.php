@@ -43,6 +43,9 @@ class Banners extends \yii\db\ActiveRecord
         'coupons-left-menu' => ['name' => 'Купоны. Левое меню'],
         'coupons-catalog-left-menu' => ['name' => 'Купоны. Левое меню. Основной каталог'],
         'shop-page' => ['name' => 'В магазине'],
+        'product-left-menu' => ['name' => 'Продукты. Левое меню'],
+        'product-category-left-menu' => ['name' => 'Продукты. Левое меню. Категория'],
+        'product-venodor-left-menu' => ['name' => 'Продукты. Левое меню. Производитель'],
     ];
 
     /**
@@ -293,7 +296,7 @@ class Banners extends \yii\db\ActiveRecord
                 Yii::$app->session->set('sd_banner_last_list', $bannerLastList);
             }
             return Yii::$app->view->render(
-                '@app/views/parts/banner.twig',
+                '@frontend/views/parts/banner.twig',
                 [
                     'banners' => $banners,
                     'wrapper_class' => !empty($params['options']['wrapper_class']) ? $params['options']['wrapper_class'] : null,

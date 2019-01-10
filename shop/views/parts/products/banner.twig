@@ -1,0 +1,11 @@
+
+{{ use('frontend/components/Banner') }}
+
+    {% set banner_places = vendor ? ['product-venodor-left-menu'] :
+        (category ? ['product-category-left-menu'] : ['product-left-menu']) %}
+
+    {% set banners  = banner_widget({
+        'place':banner_places,'options':{'wrapper_class':'banner__wrapper margin',}}) %}
+    {% if banners %}
+        {{ banners|raw }}
+    {% endif %}
