@@ -16,9 +16,9 @@
             <div class="catalog_product-main margin-half">
                 <div class="catalog_product-main-image">
                     {% if product.image %}
-                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name|raw }}">
                     {% else %}
-                        <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.name }}">
+                        <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.nam|raw }}">
                         {#<span class="catalog_product-main-image-empty">{{ t('shop', 'image_empty')|raw }}</span>#}
                     {% endif %}
                 </div>

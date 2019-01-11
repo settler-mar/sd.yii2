@@ -22,9 +22,9 @@
                          </span>
                      {% endif %}
                      {% if product.image %}
-                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name }}">
+                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name|raw }}">
                      {% else %}
-                         <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.name }}">
+                         <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.name|raw }}">
                          {#<span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>#}
                      {% endif %}
                      </a>
@@ -59,18 +59,18 @@
             </div>
             <div class="catalog_products_item_text">
                 <div class="catalog_products_item_text_store">
-                    <a href="{{  product_url }}" target="_blank" rel="nofollow nooper noreferrer">
-                        {{ svg('chain','','@frontend')|raw }} {{ product.store_name }}
+                    <a href="{{  product_url|raw }}" target="_blank" rel="nofollow nooper noreferrer">
+                        {{ svg('chain','','@frontend')|raw }} {{ product.store_name|raw }}
                     </a>
                 </div>
                 <div class="catalog_products_item_text_brand">
-                    <a href="/vendor/{{  product.vendor_route }}" target="_blank" rel="nofollow nooper noreferrer">
-                        {{ product.vendor }}
+                    <a href="{{ href('/vendor/'~product.vendor_route)|raw }}" target="_blank" rel="nofollow nooper noreferrer">
+                        {{ product.vendor|raw }}
                     </a>
                 </div>
                 <div class="catalog_products_item_text_title">
                     <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer">
-                        {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name }} {% endif %}
+                        {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name|raw }} {% endif %}
                     </a>
                 </div>
 

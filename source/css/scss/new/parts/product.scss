@@ -202,6 +202,9 @@
       align-items: center;
       justify-content:  center;
       border: solid 1px $menu_border_color;
+      padding: 5px;
+      max-height: 520px;
+
 
       &-empty {
         display: block;
@@ -213,9 +216,11 @@
       img {
         object-fit: contain;
         max-width: 100%;
+        max-height: 100%;
 
         &.no_optomize {
-          max-height: none;
+          max-height: 100%;
+          height: inherit;
         }
       }
     }
@@ -226,9 +231,9 @@
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: center;
-        padding: 10px 10px;
-        color: $text_color_light;
-        background-color: $text_color;
+        padding: 10px 0;
+        //color: $text_color_light;
+        //background-color: $text_color;
         max-width: 310px;
 
         .share42init {
