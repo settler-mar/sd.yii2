@@ -198,7 +198,7 @@
         </li>
         <li class="">
           {{ get_menu_item({
-            'href': '/cashback',
+            'href': user_id == 0 ? '/cashback' : 'https://secretdiscounter.com/stores',
             'title': t('shop', 'menu_cashback'),
           })|raw }}
         </li>

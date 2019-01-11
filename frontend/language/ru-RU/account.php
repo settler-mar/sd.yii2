@@ -95,6 +95,7 @@ return [
     'menu_promo' => 'Промокоды',
     'menu_stores' => 'Интернет-магазины',
     'menu_offline_stores' => 'Оффлайн магазины',
+    'menu_products' => 'Товары',
     'button_offline_stores_disable' => 'Кэшбэк в оффлайн-магазинах заработает в начале 2018 года',
     'view_payments_history' => 'Посмотреть историю покупок',
     'user_loyalty_status' => 'Ваш статус лояльности',
@@ -150,8 +151,8 @@ return [
     'account_deferred_breadcrumbs' => 'Отложенные товары',
     'favorites_empty_product' => 'На данный момент у Вас нет избранных товаров.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add_product' =>
-        'После добавления товаров из <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">нашего каталога</a> в избранное  они будут отображаться на данной странице.',
-    'favorites_empty_text_view_<a href="{href}">here</a>_after_add' => 'После добавления магазинов из <a class="blue" href="{href}">нашего каталога</a> в избранное  они будут отображаться на данной странице.',
+        'После добавления товаров из <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">нашего каталога</a> в Избранное  они будут отображаться на данной странице.',
+    'favorites_empty_text_view_<a href="{href}">here</a>_after_add' => 'После добавления магазинов из <a class="blue" href="{href}">нашего каталога</a> в Избранное  они будут отображаться на данной странице.',
     'favorites_empty' => 'На данный момент у Вас нет избранных магазинов.',
     'favorites_<a href="{href}">login</a>_to_add' => 'Для того, чтобы добавить магазин в Избранное, вы должны быть <a href="{href}">авторизованы</a> на сайте.',
     'favorites_add_noshop' => 'Невозможно найти выбранный магазин.',

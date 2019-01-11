@@ -29,7 +29,7 @@
                     {% set domain = action_type=='product' ? 'https://shop.secretdiscounter.com' : '' %}
                     {{ t('account', 'favorites_empty_text_view_<a href="{href}">here</a>_after_add'~(action_type ? '_'~action_type : ''), {'href': _href(href, domain)})|raw }}
                 </p>
-                <div class="not-found">{{ t('account', 'favorites_empty'~(action_type ? '_'~action_type : ''))|raw }}</div>
+                <div class="alert not-found">{{ t('account', 'favorites_empty'~(action_type ? '_'~action_type : ''))|raw }}</div>
             </div>
             {% endif %}
         </div>

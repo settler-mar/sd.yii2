@@ -70,8 +70,8 @@ return [
     'menu_sale' => 'Распродажа',
     'menu_payments' => 'Мои покупки',
     'menu_favorites' => 'Отложенные товары',
-    'menu_viewed' => 'Просмотренное товары',
-    'view_all_visiteds' => 'Все просмотренное товары',
+    'menu_viewed' => 'Просмотренные товары',
+    'view_all_visiteds' => 'Все просмотренные товары',
     'products' => 'Товары',
 
 

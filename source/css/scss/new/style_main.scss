@@ -62,7 +62,7 @@ body {
     padding-left: 25px;
   }
   a {
-    color: $link_color_blue;
+    color: $link_color_blue_light;
   }
 }
 
@@ -71,7 +71,7 @@ a {
   transition: all .25s ease;
 
   &.blue {
-    color: $link_color_blue;
+    color: $link_color_blue_light;
     svg {
       //color: $link_color_blue;
       //fill: $link_color_blue;

@@ -112,11 +112,34 @@
                     'left-icon': 'heart-o'
                 })|raw }}
             </li>
-            <li class="favorite-icon fasicon">
+            <li class="has-children bookmarks">
+                {{ get_menu_item({
+                    'href':'/account/deferred',
+                    'title': t('account', 'menu_products'),
+                    'left-icon': 'gift',
+                    'right-icon': 'angle-right'
+                })|raw }}
+                <ul>
+                    <li>
+                        {{ get_menu_item({'href':'/account/deferred', 'title': t('shop', 'menu_favorites')})|raw }}
+                    </li>
+                    <li>
+                        {{ get_menu_item({'href':'/account/viewed-products', 'title': t('shop', 'menu_viewed')})|raw }}
+                    </li>
+                </ul>
+            {#<li class="favorite-icon fasicon">#}
+                {#{{ get_menu_item({#}
+                    {#'href':'/account/deferred',#}
+                    {#'title': t('shop', 'menu_favorites'),#}
+                    {#'left-icon': 'gift',#}
+                {#})|raw }}#}
+            </li>
+        {% else %}
+            <li class="offlineshop-icon fasicon">
                 {{ get_menu_item({
                     'href':'/account/deferred',
                     'title': t('shop', 'menu_favorites'),
-                    'left-icon': 'heart-o',
+                    'left-icon': 'gift'
                 })|raw }}
             </li>
         {% endif %}

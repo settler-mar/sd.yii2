@@ -95,6 +95,7 @@ return [
     'menu_promo' => 'Coupons',
     'menu_stores' => 'Online Stores',
     'menu_offline_stores' => 'In-store cash back',
+    'menu_products' => 'Товары',
     'button_offline_stores_disable' => 'Кэшбэк в оффлайн-магазинах заработает в начале 2018 года',
     'view_payments_history' => 'My shopping trips',
     'user_loyalty_status' => 'Your loyalty level',
@@ -150,9 +151,9 @@ return [
     'account_deferred_breadcrumbs' => 'My Deferred Purchases',
     'favorites_empty_product' => 'At the moment, you don\'t have any favorite product.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add_product' =>
-        'After adding proudcts from <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">our catalog</a> to your favorites, they will be displayed on this page.',
+        'After adding proudcts from <a class="blue" target="_blank" rel="nooper noreferrer nofollow" href="{href}">our catalog</a> to your Favorites, they will be displayed on this page.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add' =>
-        'After adding stores from <a class="blue" href="{href}">our catalog</a> to your favorites, they will be displayed on this page.',
+        'After adding stores from <a class="blue" href="{href}">our catalog</a> to your Favorites, they will be displayed on this page.',
     'favorites_empty' => 'At the moment, you don\'t have any favorites stores.',
     'favorites_<a href="{href}">login</a>_to_add' => 'In order to add a store to Favorites, you must be <a href="{href}">authorized</a> on the site.',
     'favorites_add_noshop' => 'Unable to find the chosen store.',
