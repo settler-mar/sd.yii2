@@ -44,18 +44,7 @@ class DefaultController extends SdController
                 throw new \yii\web\NotFoundHttpException;
             }
         }
-        $vendors =  Vendor::items([
-            'category' => $this->category ? $this->category->id : false,
-            'limit' => 20,
-            'sort'=>'name',
-            'where' => isset($storeRequest)? ['p.store_id' => $storeRequest] : [],
-        ]);
-
-        $stores = Product::usedStores([
-            'category' => $this->category,
-            'where' => !empty($vendorDb) ? ['vendor_id' => $vendorDb] : false
-        ]);
-        $storesUsed = empty($venodrDb) ? $stores : Product::usedStores([
+        $storesUsed = Product::usedStores([
             'category' => $this->category,
         ]);
 
@@ -64,6 +53,10 @@ class DefaultController extends SdController
         $sort_request = $request->get('sort');
         $priceStart = $request->get('price-start');
         $priceEnd = $request->get('price-end');
+        $priceStartMin = $request->get('price-start-min');
+        $priceEndMax = $request->get('price-end-max');
+        $priceStart = $priceStart == $priceStartMin ? false : $priceStart;
+        $priceEnd = $priceEnd == $priceEndMax ? false : $priceEnd;
 
 
         $sortvars = Product::sortvars();
@@ -102,14 +95,14 @@ class DefaultController extends SdController
         $dataBaseData = Product::find()
             ->from(Product::tableName() . ' prod')
             ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-            ->leftJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+            ->leftJoin(Vendor::tableName(). ' vendor', 'vendor.id = prod.vendor_id')
             ->where([
                 'prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST],
                 //'v.status' => Vendor::STATUS_ACTIVE,
                 ])
             ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
                 's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
-                's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
+                's.is_active as store_active', 'vendor.name as vendor', 'vendor.route as vendor_route',
                 's.currency as currency', 's.action_end_date as action_end_date',
                 'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
             ->orderBy([$sortDb => $order]);
@@ -220,6 +213,17 @@ class DefaultController extends SdController
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
+
+        $vendors =  Vendor::items([
+            'limit' => 20,
+            'sort'=>'v.name',
+            'database' => $dataBaseData,
+        ]);
+
+        $stores = Product::usedStores([
+            'database' => $dataBaseData
+        ]);
+
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
             'price_end' =>  $filterPriceEndMax,

@@ -733,6 +733,13 @@ class Product extends \yii\db\ActiveRecord
                 $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
                     ->andWhere(['ptc.category_id' =>  $params['category']->childCategoriesId()]);
             }
+            if (isset($params['database'])) {
+                //связь с запросом к продуктам
+                $dataBaseSelect = clone $params['database'];
+                $dataBaseSelect->select(['prod.id']);
+                $dataBaseSelect->orderBy([]);
+                $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
+            }
             return $stores->all();
         }, $cache->defaultDuration, $dependency);
         return $out;

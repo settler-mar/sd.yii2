@@ -114,6 +114,13 @@ class Vendor extends \yii\db\ActiveRecord
             if (!empty($params['count'])) {
                 return $vendors->count();
             }
+            if (isset($params['database'])) {
+                //связь с запросом к продуктам
+                $dataBaseSelect = clone $params['database'];
+                $dataBaseSelect->select(['prod.id']);
+                $dataBaseSelect->orderBy([]);
+                $vendors->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
+            }
             $vendors = $vendors->all();
             if (!empty($params['sort'])) {
                 usort($vendors, function ($a, $b) use ($params) {
