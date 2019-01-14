@@ -4,7 +4,7 @@
   "description": "__MSG_appDesc__",
   "short_name": "__MSG_appShortName__",
   "default_locale": "ru",
-  "version": "2.9",
+  "version": "2.10",
   "homepage_url": "https://secretdiscounter.com/",
   "permissions": [
     "tabs",

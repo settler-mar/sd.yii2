@@ -89,7 +89,7 @@ function iconFlashClear(){
     displayCashback(false);
 }
 
-chrome.tabs.onActiveChanged.addListener(function (tabId){
+chrome.tabs.onActivated.addListener(function (tabId){
     iconFlashForceStop();
     currentTab = tabId;
     currentCashback = tabsCashback[currentTab] !== undefined && tabsCashback[currentTab] !== null ? tabsCashback[currentTab] : false;
@@ -98,7 +98,6 @@ chrome.tabs.onActiveChanged.addListener(function (tabId){
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, callback) {
-
     if (request.action == "sd_xhttp") {
 
         var xhr = new XMLHttpRequest();
