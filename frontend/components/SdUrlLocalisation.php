@@ -51,9 +51,8 @@ class SdUrlLocalisation implements UrlRuleInterface{
         //не задан доступный регион
         $url = '/'. (isset($regionsConfig[$location['region']]['code']) ?
                 $regionsConfig[$location['region']]['code'] :
-                $location['region']) . $request->url = '/' ? '' : $request->url;
-        //ddd($url);
-        Yii::$app->response->redirect($url, 301)->send();//todo вернуть
+                $location['region']) . ($request->url == '/' ? '' : $request->url);
+        Yii::$app->response->redirect($url, 301)->send();
         exit;
         //return;
     }
