@@ -1049,8 +1049,7 @@ class Stores extends \yii\db\ActiveRecord
       foreach (self::$translated_attributes as $attr) {
           //$translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
           $translated[] = $language ? 'lgs.' . $attr. ' as '.$attr : 'cws.'.$attr;
-          $translated[] = $language ? "concat('/".$lang_code."/stores/',cws.route) as store_href" :
-              "concat('/stores/',cws.route) as store_href";
+          $translated[] = "concat('/stores/',cws.route) as store_href";
       }
       return array_merge($attributes, $translated);
 

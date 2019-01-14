@@ -166,7 +166,11 @@ $functionsList = [
           Yii::$app->params['lang_code'] :
           Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'];
     $lg = $lg == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lg;
-    $href = ($lg == '' || (isset($item['outer']) && $item['outer'] == 1)  ? '' : '/'.$lg) . ($item['href'] ? $item['href'] : '');
+
+    $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
+    $regionCode = (isset($region['code']) ? '/' . $region['code'] : '/'.$region);
+    $href = (isset($item['outer']) && $item['outer'] == 1  ? '' : $regionCode . ($lg ? '/'.$lg : '')) . ($item['href'] !='/' ? $item['href'] : '');
+    $href = $href == '' ? '/' : $href;
 
     $httpQuery = '/' . Yii::$app->request->pathInfo;
     $className = (empty($item['class']) ? '' : $item['class']) . (($httpQuery == $item['href']) ? ' active' : '');

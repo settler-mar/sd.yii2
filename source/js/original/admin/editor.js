@@ -9,7 +9,7 @@ editor = function () {
       var ready = false;
       var tpls = {};
 
-      $.get('/admin/template/tpls', function (data) {
+      $.get('/ru/admin/template/tpls', function (data) {
         for (index in data) {
           tpls[index] = Twig.twig({
             data: data[index]
@@ -802,7 +802,7 @@ editor = function () {
           'data': JSON.stringify(getData()),
           '_csrf-frontend': $('.w_editor').closest('form').find('[name=_csrf-frontend]').val()
       };
-      $.post('/admin/template/preview?db=1', data, function (data) {
+      $.post('ru/admin/template/preview?db=1', data, function (data) {
 
           var data_msg = {
               buttonYes: false,

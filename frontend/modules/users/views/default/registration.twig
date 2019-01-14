@@ -5,7 +5,7 @@
   {% set form = active_form_begin({
     'id' : isAjax?'registration-form-ajax':'registration-form',
     'layout' : 'horizontal',
-    'action':isAjax?"/registration":'/registration?index=2',
+    'action': _href(isAjax ? "/registration" : '/registration?index=2'),
     'fieldConfig':{
       'horizontalCssClasses':{
         'wrapper':'form-input-group',

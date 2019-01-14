@@ -4,7 +4,7 @@
   try {
     href = window.opener.location.href;
     if (
-      href.indexOf('account/offline') > 0
+      href.indexOf('/account/offline') > 0
     ) {
       window.print()
     }

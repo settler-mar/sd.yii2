@@ -5,6 +5,7 @@
   {% set form = active_form_begin({
     'id' : isAjax?'login-form-ajax':'login-form',
     'layout' : 'horizontal',
+    'action' : _href('login'),
     'fieldConfig':{
       'horizontalCssClasses':{
         'wrapper':'form-input-group',

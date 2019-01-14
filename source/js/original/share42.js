@@ -18,7 +18,8 @@ function share42(){
         promo = u.substr(promoStart + key.length, promoLength);
       }
     }
-    var self_promo = (promo && promo.length > 0)? "setTimeout(function(){send_promo('"+promo+"');},2000);" : "";
+    var promourl = e[k].getAttribute('data-promourl');
+    var self_promo = (promo && promo.length > 0)? "setTimeout(function(){send_promo('"+promo+"',"+promourl+");},2000);" : "";
     if (e[k].getAttribute('data-icon-size') != -1)
       var icon_size = e[k].getAttribute('data-icon-size');
     if (e[k].getAttribute('data-title') != -1)
@@ -184,10 +185,11 @@ function fav(a) {
   return false;
 }
 
-function send_promo(promo){
+function send_promo(promo, promourl){
   $.ajax({
     method: "post",
-    url: "/account/promo",
+    url: promourl,
+    //url: "/account/promo",
     dataType: 'json',
     data: {promo: promo},
     success: function(data) {

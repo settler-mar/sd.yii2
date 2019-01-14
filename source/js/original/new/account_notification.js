@@ -4,7 +4,8 @@
     return;
   }
 
-  var href = '/'+lang.href_prefix+'account/notification';
+  //var href = '/'+lang.href_prefix+'account/notification';
+  var href =  $('#account_notifications_link').attr('href');
 
   $.get(href, function (data) {
     if (!data.notifications || data.notifications.length == 0) return;
@@ -32,6 +33,7 @@
     }
 
     $notyfi_btn.on('click', function (e) {
+      var href =  $('#account_notifications_link').attr('href');
       e.preventDefault();
       if ($('.header-noty-box').hasClass('header-noty-box_open')) {
         $('.header-noty-box').removeClass('header-noty-box_open');
@@ -41,7 +43,7 @@
         $('html').addClass('no_scrol_laptop_min');
 
         if ($(this).hasClass('has-noty')) {
-          $.post('/account/notification', function () {
+          $.post(href, function () {
             $('.header-logo_noty').removeClass('tooltip').removeClass('has-noty');
           })
         }

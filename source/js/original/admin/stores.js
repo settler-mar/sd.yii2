@@ -51,7 +51,7 @@ $(function() {
       type:$this.attr('mode')
     };
     updateElement=update.bind($this);
-    $.post("/admin/stores/ajax_insert/"+$this.attr('mode'),post,updateElement).fail(function() {
+    $.post("/ru/admin/stores/ajax_insert/"+$this.attr('mode'),post,updateElement).fail(function() {
       alert( "Ошибка добавления" );
     })
   });

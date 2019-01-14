@@ -115,7 +115,7 @@
                 {{ get_menu_item({
                   'href': '/account/favorites',
                   'title': svg('heart-o', 'btn-header_button'),
-                  'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites')}
+                  'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'favorites'), 'id':'account_favorites_link'}
                 })|raw }}
               </div>
             {% endif %}
@@ -124,7 +124,7 @@
               {{ get_menu_item({
                 'href': '/account/notification',
                 'title': svg('bell-o', 'btn-header_button'),
-                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify')}
+                'attributes': {'data-toggle':"tooltip", 'data-original-title': t('account', 'menu_notify'), 'id':'account_notifications_link'}
               })|raw }}
 
             </div>
@@ -198,6 +198,7 @@
           <li class="">
               {{ get_menu_item({
                   'href': 'https://shop.secretdiscounter.com',
+                  'outer': 1,
                   'title': t('shop', 'products'),
                   'attributes': {'target':'_blank'},
               })|raw }}

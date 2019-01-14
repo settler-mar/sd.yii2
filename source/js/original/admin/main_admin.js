@@ -26,7 +26,7 @@ $(function() {
 
 	$(".select2-users").select2({
 		ajax: {
-			url: "/admin/users/list",
+			url: "/ru/admin/users/list",
 			type: 'post',
 			dataType: 'json',
 			delay: 250,
@@ -67,7 +67,7 @@ $(function() {
 			'title':$this.data('title')||'Подтверждение действия',
 			'callbackYes':function(){
 				$this=$(this);
-				$.post('/admin/stores/import-cat/id:'+$this.data('store'),function(data){
+				$.post('/ru/admin/stores/import-cat/id:'+$this.data('store'),function(data){
 					if(data.error){
 						notification.notifi({message:data.error,type:'err'})
 					}else {
@@ -119,7 +119,7 @@ $(function() {
 			return;
 		}
 
-		$.post('/admin/payments/admitad-test',{'ids':ids,'update':(href.indexOf('update')>0?1:0)},function(data){
+		$.post('/ru/admin/payments/admitad-test',{'ids':ids,'update':(href.indexOf('update')>0?1:0)},function(data){
 			ad=$('.admitad_data');
 			ad.text('данные не найдены');
 			ad.removeClass('loading');

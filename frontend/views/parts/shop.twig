@@ -3,13 +3,13 @@
         <span class="shop_promo-label shop_promo-label_x2"></span>
     {% endif %}
     <div class="shop-logo">
-        <a class="shop-logo_link" href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}">
+        <a class="shop-logo_link" href="{{ _href(store.store_href) }}{{ _if(store.is_offline,'-offline') }}">
             <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
         </a>
     </div>
     <div class="shop_panel">
         {% if store.reviews_rating %}
-            <a href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}#reviews"
+            <a href="{{ _href(store.store_href) }}{{ _if(store.is_offline,'-offline') }}#reviews"
                class="shop_panel-item"
                data-toggle="tooltip" data-state="delete" data-placement="top"
                data-original-title="{{ t('main', 'based_on_reviews_of_{count}_our_users', {'count':store.reviews_count})|raw }}"

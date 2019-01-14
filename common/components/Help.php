@@ -188,18 +188,21 @@ class Help extends Component
 
   public static function href($href, $basePath = '')
   {
+
     $regionLangs=array_flip(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList']);
     $baseLangCode = $regionLangs[Yii::$app->params['base_lang']];
     $langCode = $regionLangs[Yii::$app->language];
+    $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
+    $regionCode = (isset($region['code']) ? $region['code'] : $region);
 
     $lang = $baseLangCode == $langCode || count($regionLangs) == 1 ? '' : $langCode;
-    if ($lang == '') {
-      return $basePath . $href;
-    }
+    //if ($lang == '') {
+      //return ($basePath !='' ? $basePath : '/' . $regionCode) . $href;
+    //}
     if (substr($href, 0, 1) == '#') {
-      return ($basePath != '' ? $basePath . '/' : '') . substr($href, 0, 1) . $lang . '/' . substr($href, 1);
+      return ($basePath != '' ? $basePath . '/' : '') . substr($href, 0, 1) . $regionCode . '/'. ($lang ? $lang . '/' : '') . substr($href, 1);
     } else {
-      return $basePath . '/' . $lang . $href;
+      return ($basePath != '' ? $basePath : '/') . $regionCode . ($lang ? '/'. $lang : '') . $href;
     }
   }
 

@@ -26,8 +26,9 @@ $(document).ready(function () {
     /*if(type == "add") {
      self.find(".item_icon").removeClass("muted");
      }*/
+    var href =  $('#account_favorites_link').attr('href');
 
-    $.post("/account/favorites", {
+    $.post(href, {
       "type": type,
       "affiliate_id": affiliate_id,
       "product_id": product_id

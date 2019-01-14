@@ -5,6 +5,7 @@ use yii;
 use yii\web\Controller;
 //use frontend\components\Help;
 use yii\helpers\Url;
+use common\components\Help;
 
 /**
  * как родительский для контроллеров, где нужно выводить девево Категории Магазинов
@@ -189,6 +190,10 @@ class SdController extends Controller
         $params['limit'] = $params['limit'] == $this->defaultLimit ? null : $params['limit'];
         $currentSort = $params['sort'];
 
+        if (!empty($params['page'])) {
+            $pageName .= ($params['page'] > 1 ? '/page-'.$params['page'] : '');
+            unset($params['page']);
+        }
         foreach ($sortNames as $key => $sortName) {
             if ($key == $defaultSortName) {
                 // способ сортировки  по умолчанию
@@ -196,8 +201,10 @@ class SdController extends Controller
             } else {
                 $params['sort'] = $key;
             }
+            $paramsString = http_build_query($params);
             $result[] = [
-                'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
+                //'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
+                'link' => Help::href($pageName).($paramsString ? '?' . $paramsString : ''),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
                 'active' => $key == $currentSort ? 1 : 0,

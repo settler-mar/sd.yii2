@@ -138,7 +138,8 @@ class Pagination
     $pageName = preg_replace('/\/store:[0-9]*/', '', $pageName);
     $params['page'] = null;
     $isAjaxLoad=isset($params['isAjax'])?$params['isAjax']:true;
-    $pageName = array_merge(['/' . $pageName], $params);
+    //$pageName = array_merge(['/' . $pageName], $params);
+    $paramsArr = http_build_query($params);
     //d($pageName, array_merge($params, ['page' => 5]), Url::toRoute(array_merge($params, ['page' => 5]))) ;
 
     $a_class=$isAjaxLoad?"ajax_load ":"";
@@ -146,7 +147,9 @@ class Pagination
     //предыдущая
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="'.Yii::t('main','previous_page').'" class="'.$a_class.'"  href="' .
-      Url::toRoute(array_merge($pageName, ['page' => $page - 1])) . '">' .
+        //Url::toRoute(array_merge($pageName, ['page' => $page - 1])) .
+            Help::href($pageName. '/page=' . ($page - 1) . ($paramsArr ? '?' . $paramsArr : '')) .
+        '">' .
       //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
       Help::svg('caret-left', 'pagination_button pagination_button_left', '@frontend').'</a></li>' : '';
 
@@ -154,18 +157,22 @@ class Pagination
     $first = $page >= $displayCount && $total > $displayCount ?
       '<li class="first"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="'.Yii::t('main','first_page').'" class="'.$a_class.'"  href="' .
-      Url::toRoute(array_merge($pageName, ['page' => 1])) . '">1' .
-      '</a></li>' : '';
+        Help::href($pageName. '/page=1' . ($paramsArr ? '?' . $paramsArr : '')) .
+        //Url::toRoute(array_merge($pageName, ['page' => 1])) .
+      '">1</a></li>' : '';
     //последняя
     $last = $total - $page >= $displayCount ? '<li class="last"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="'.Yii::t('main','last_page').'" class="'.$a_class.'"  href="' .
-      Url::toRoute(array_merge($pageName, ['page' => $total])) . '">' . $total .
-      '</a></li>' : '';
+        Help::href($pageName. '/page=' . $total . ($paramsArr ? '?' . $paramsArr : '')) .
+        //Url::toRoute(array_merge($pageName, ['page' => $total])) .
+        '">' . $total . '</a></li>' : '';
 
     //следующая
     $nextpage = $page != $total ? '<li class="next"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="'.Yii::t('main','next_page').'" class="'.$a_class.'"  href="' .
-      Url::toRoute(array_merge($pageName, ['page' => $page + 1])) . '">' .
+          Help::href($pageName. '/page=' . ($page + 1) . ($paramsArr ? '?' . $paramsArr : '')) .
+  //        Url::toRoute(array_merge($pageName, ['page' => $page + 1])) .
+        '">' .
       //'<span class="fa fa fa-caret-right"></span></a>' : '';
         Help::svg('caret-right', 'pagination_button pagination_button_right', '@frontend').'</a>' : '';
 
@@ -180,7 +187,9 @@ class Pagination
     for ($i = $pageStart; $i <= $pageEnd; $i++) {
       $pages .= ($i == $page ? '<li class="active"><span>' . $i . '</span></li>' :
         '<li><a class="'.$a_class.'"  href="' .
-        Url::toRoute(array_merge($pageName, ['page' => $i])) . '">' . $i . '</a></li>');
+        Help::href($pageName. '/page=' . $i . ($paramsArr ? '?' . $paramsArr : '')) .
+        //Url::toRoute(array_merge($pageName, ['page' => $i])) .
+        '">' . $i . '</a></li>');
     };
 
     $pages .= ($total - $page <= $displayCount - 1 || $total <= $displayCount  + 1 ? '' : '...');
