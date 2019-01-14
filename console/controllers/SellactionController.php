@@ -103,7 +103,7 @@ class SellactionController extends Controller
       $page_cnt=$payments['_meta']['pageCount'];
 
       foreach ($payments['data'] as $payment){
-        d($payment);
+        //d($payment);
 
         $store = $this->getStore($payment['campaign_id']);
         $user = $this->getUserData($payment['sub_id1']);
