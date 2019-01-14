@@ -91,7 +91,7 @@ class SellactionController extends Controller
         2 =>1,// - отменен
         3 =>0,// - ожидает подтверждения
         4 =>1,// - ожидает отмены
-        5 =>0,// - оплачен
+        5 =>2,// - оплачен
     ];
 
     $users=array();
@@ -103,7 +103,7 @@ class SellactionController extends Controller
       $page_cnt=$payments['_meta']['pageCount'];
 
       foreach ($payments['data'] as $payment){
-        //d($payment);
+        d($payment);
 
         $store = $this->getStore($payment['campaign_id']);
         $user = $this->getUserData($payment['sub_id1']);
@@ -112,7 +112,7 @@ class SellactionController extends Controller
           continue;
         }
 
-        $status = $payment['status_string'];
+        $status = $payment['status'];
         $status = isset($pay_status[$status]) ? $pay_status[$status] : 0;
 
         $paymentsCount++;
