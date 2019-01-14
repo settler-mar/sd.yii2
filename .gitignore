@@ -57,6 +57,7 @@ phpunit.phar
 /frontend/web/images/account/avatars
 /frontend/web/img
 /frontend/web/thumbs
+/frontend/web/images/.htaccess
 
 log/
 logs/
