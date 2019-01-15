@@ -5,7 +5,7 @@ namespace frontend\modules\shop\controllers;
 use frontend\modules\favorites\models\UsersFavorites;
 use yii\web\Controller;
 use frontend\modules\product\models\Product;
-use frontend\modules\product\models\Vendor;
+use frontend\modules\vendor\models\Vendor;
 use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
@@ -240,6 +240,7 @@ class DefaultController extends SdController
         $stores = Product::usedStores([
             'database' => $dataBaseData
         ]);
+        //ddd($stores);
 
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,

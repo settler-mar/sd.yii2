@@ -55,6 +55,7 @@ phpunit.phar
 /shop/web/images/logos
 /shop/web/images/banners
 /frontend/web/images/account/avatars
+/frontend/web/images/vendor
 /frontend/web/img
 /frontend/web/thumbs
 /frontend/web/images/.htaccess

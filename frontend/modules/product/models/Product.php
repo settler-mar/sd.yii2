@@ -11,7 +11,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\transitions\models\UsersVisits;
 use JBZoo\Image\Image;
 use frontend\modules\product\models\ProductsCategory;
-use frontend\modules\product\models\Vendor;
+use frontend\modules\vendor\models\Vendor;
 use yii;
 use common\components\Help;
 
@@ -738,6 +738,7 @@ class Product extends \yii\db\ActiveRecord
                 $dataBaseSelect = clone $params['database'];
                 $dataBaseSelect->select(['prod.id']);
                 $dataBaseSelect->orderBy([]);
+                $dataBaseSelect->limit = null;
                 $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
             }
             return $stores->all();

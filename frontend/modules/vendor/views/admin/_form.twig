@@ -1,0 +1,29 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="vendor-form">
+    {% set form = active_form_begin() %}
+
+        {{ form.field(model, 'id').textInput({'disabled':true})|raw }}
+
+        {{ form.field(model, 'route').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
+
+        {{ form.field(model, 'synonym').textInput()|raw }}
+
+        {{ form.field(model, 'status').dropDownList(model.statusLabels())|raw }}
+
+        <p>
+            <span>Logo:</span>
+            <img for="Vendor[logoImage]" style="max-height: 150px;" src="{{ model.imagePath }}{{ model.logo | raw }}">
+        </p>
+        {{ form.field(model, 'logoImage').fileInput().label(false)|raw }}
+
+        {{ form.field(model, 'priority').textInput()|raw }}
+
+        {{ form.field(model, 'description').textarea({'rows':6})|raw }}
+
+    <div class="form-group">
+        <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}" class="{{ model.isNewRecord ? "btn btn-success" : "btn btn-primary" }}">
+    </div>
+    {{ active_form_end() }}
+</div>

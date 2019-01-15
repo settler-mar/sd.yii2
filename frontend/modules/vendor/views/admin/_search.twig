@@ -1,0 +1,30 @@
+{{ use('/yii/widgets/ActiveForm') }}
+<div class="vendor-search">
+    {% set form = active_form_begin({
+            'action': ['index'],
+            'method': 'get',
+        })
+    %}
+
+    {{ form.field(model, 'id')|raw }}
+
+    {{ form.field(model, 'route')|raw }}
+
+    {{ form.field(model, 'name')|raw }}
+
+    {{ form.field(model, 'synonym')|raw }}
+
+    {{ form.field(model, 'status')|raw }}
+
+    {# form.field(model, 'logo')|raw #}
+
+    {# form.field(model, 'priority')|raw #}
+
+    {# form.field(model, 'description')|raw #}
+
+    <div class="form-group">
+        <input type="submit" value="{{ 'Search' }}" class="btn btn-primary">
+        <input type="reset" value="{{ 'Reset' }}" class="btn btn-default">
+    </div>
+    {{ active_form_end() }}
+</div>

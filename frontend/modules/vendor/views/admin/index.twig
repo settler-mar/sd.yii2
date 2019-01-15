@@ -1,0 +1,48 @@
+{{ use('/yii/grid/GridView') }}
+{% set title = 'Vendors' %}
+{{ set(this, 'title', title) }}
+{% if not this.params.breadcrumbs %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': []})) }}
+{% endif %}
+{% set breadcrumbs = this.params.breadcrumbs %}
+{% set breadcrumbs = breadcrumbs|merge([title]) %}
+{{ set(this, 'params', this.params|merge({'breadcrumbs': breadcrumbs})) }}
+<div class="vendor-index">
+    <div class="content-wrapper">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ html.encode(this.title) }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                {{ grid_view_widget({
+                        'dataProvider': dataProvider,
+                        'filterModel': searchModel,
+                            'columns': [
+                            {'class': '\\yii\\grid\\SerialColumn'},
+
+                            'id',
+                            'route',
+                            {'attribute':'name','format':'raw', 'value':tableData.name},
+                            {'attribute':'logo', 'format':'raw','value':tableData.logo},
+                            'priority',
+                            {'attribute':'synonym','format':'raw', 'value':tableData.synonym},
+                            {'attribute':'status','format':'raw','filter':searchModel.statusLabels(),'value':tableData.status},
+
+                            {'class': '\\yii\\grid\\ActionColumn','template':'{update}'},
+                        ],
+                    })
+                }}
+    {#
+'logo',
+'priority',
+'description:ntext'
+#}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
