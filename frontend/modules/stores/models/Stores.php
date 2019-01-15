@@ -13,7 +13,7 @@ use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\users\models\Users;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\products\models\Products;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 use b2b\modules\stores_points\models\B2bStoresPoints;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;

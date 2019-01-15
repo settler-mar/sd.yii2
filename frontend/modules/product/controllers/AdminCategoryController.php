@@ -3,11 +3,11 @@
 namespace frontend\modules\product\controllers;
 
 use frontend\modules\stores\models\Stores;
-use shop\modules\category\models\ProductsCategory;
-use shop\modules\category\models\LgProductsCategory;
-use shop\modules\category\models\ProductsCategorySearch;
-use shop\modules\product\models\Product;
-use shop\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\product\models\LgProductsCategory;
+use frontend\modules\product\models\ProductsCategorySearch;
+use frontend\modules\product\models\Product;
+use frontend\modules\product\models\ProductsToCategory;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;

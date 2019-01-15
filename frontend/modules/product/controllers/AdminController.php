@@ -2,16 +2,16 @@
 
 namespace frontend\modules\product\controllers;
 
-use shop\modules\category\models\ProductsCategory;
-use shop\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\product\models\ProductsToCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\product\models\CatalogStores;
 use Yii;
-use shop\modules\product\models\Product;
-use shop\modules\product\models\ProductSearch;
+use frontend\modules\product\models\Product;
+use frontend\modules\product\models\ProductSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -127,8 +127,8 @@ class AdminController extends Controller
                     if (preg_match('/^http(s?)\:\/\//', $model->image)) {
                         $img = '<img height="100" src="'.$model->image.'">';
                     } else {
-                        $imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/' . $model->image)));
-                        $img = '<img height="100" src="data: jpeg;base64,' . $imageData . '">';
+                        //$imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/' . $model->image)));
+                        $img = '<img height="100" src="/product/images/'.$model->image.'">';
                     }
                     return '<a target="_blank" rel="nooper noreferrer nofollow" href="/admin/product/update/id:'.
                         $model->id.'">'.$img.'</a>';
@@ -253,8 +253,9 @@ class AdminController extends Controller
             } else if (preg_match('/^http(s?)\:\/\//', $model->image)) {
                 $img = $model->image;
             } else {
-                $imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/'.$model->image)));
-                $img = 'data: jpeg;base64,'.$imageData;
+                //$imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/'.$model->image)));
+                //$img = 'data: jpeg;base64,'.$imageData;
+                $img = '/product/images/'.$model->image;
             }
             return $this->render('update.twig', [
                 'model' => $model,

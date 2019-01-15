@@ -2,7 +2,7 @@
 
 namespace frontend\modules\params\models;
 
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\cache\models\Cache;
 use Yii;
 use yii\helpers\ArrayHelper;

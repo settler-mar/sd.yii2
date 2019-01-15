@@ -11,7 +11,7 @@ use frontend\modules\product\models\CatalogStores;
 use yii\console\Controller;
 use common\models\Impact;
 use yii\helpers\Console;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 use frontend\modules\cache\models\Cache;
 use yii;
 

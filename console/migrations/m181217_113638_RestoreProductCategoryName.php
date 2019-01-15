@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 
 
 /**
@@ -30,7 +30,7 @@ class m181217_113638_RestoreProductCategoryName extends Migration
 
       foreach ($categories as $category) {
         $category->validate();
-        \shop\modules\product\models\ProductsToCategory::updateAll(['category_id' => $category->synonym],['category_id' => $category->id]);
+          frontend\modules\product\models\ProductsToCategory::updateAll(['category_id' => $category->synonym],['category_id' => $category->id]);
         ProductsCategory::updateAll(['parent' =>$category->synonym],['parent' => $category->id]);
         $category->save();
       };

@@ -3,7 +3,7 @@
 namespace frontend\modules\params\models;
 
 use yii;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 
 /**
  * This is the model class for table "cw_product_parameters_processing".

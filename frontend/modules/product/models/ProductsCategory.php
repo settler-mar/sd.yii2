@@ -1,11 +1,11 @@
 <?php
 
-namespace shop\modules\category\models;
+namespace frontend\modules\product\models;
 
 use common\components\Help;
 use frontend\modules\cache\models\Cache;
 use frontend\modules\stores\models\Stores;
-use shop\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\ProductsToCategory;
 use yii;
 
 /**

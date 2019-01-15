@@ -4,7 +4,7 @@ namespace frontend\modules\params\models;
 
 use Yii;
 use common\components\JsonBehavior;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\params\models\ProductParametersProcessing;
 use frontend\modules\cache\models\Cache;
 use frontend\components\ProcessParams;

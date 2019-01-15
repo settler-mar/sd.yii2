@@ -4,7 +4,7 @@ namespace frontend\components;
 
 use yii\base\Object;
 use frontend\components\ProcessParams as ParamsProcessing;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 
 class ProcessParams extends Object implements \yii\queue\Job
 {

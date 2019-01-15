@@ -776,7 +776,7 @@ $functionsList = [
     }
   },
   '_product_category_tree' => function($category, $mode=0) {
-    return shop\modules\category\models\ProductsCategory::parentsTree($category->toArray(), $mode);
+    return frontend\modules\product\models\ProductsCategory::parentsTree($category->toArray(), $mode);
   },
   '_product_param_by_code' => function($code, $categoryId) {
     return frontend\modules\params\models\ProductParameters::byCode($code, $categoryId);

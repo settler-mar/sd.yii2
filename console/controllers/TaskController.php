@@ -627,7 +627,8 @@ class TaskController extends Controller
   public function actionLoadGeoIpCountry()
   {
       Yii::$app->db->createCommand("TRUNCATE TABLE `geo_ip_country`")->execute();
-      $archive = file_get_contents('http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip');
+      //$archive = file_get_contents('http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip');
+      $archive = file_get_contents('https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip');
       file_put_contents(Yii::getAlias('@runtime') . '/GeoIPCountryCSV.zip', $archive);
       $zip = new \ZipArchive();
       $zip->open(Yii::getAlias('@runtime') . '/GeoIPCountryCSV.zip');

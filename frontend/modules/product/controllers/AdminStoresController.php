@@ -1,5 +1,6 @@
 <?php
 namespace frontend\modules\product\controllers;
+
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\product\models\CatalogStoresSearch;
 use frontend\modules\stores\models\Stores;

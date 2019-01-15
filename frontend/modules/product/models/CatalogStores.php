@@ -4,7 +4,7 @@ namespace frontend\modules\product\models;
 
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 use frontend\modules\cache\models\Cache;
 use yii;
 

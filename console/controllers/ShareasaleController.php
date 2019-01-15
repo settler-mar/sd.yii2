@@ -12,7 +12,7 @@ use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\products\models\Products;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 use Yii;
 use yii\console\Controller;
 use frontend\modules\cache\models\Cache;

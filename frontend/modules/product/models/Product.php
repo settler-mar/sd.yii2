@@ -1,6 +1,6 @@
 <?php
 
-namespace shop\modules\product\models;
+namespace frontend\modules\product\models;
 
 use frontend\modules\cache\models\Cache;
 use frontend\modules\params\models\ProductParameters;
@@ -10,8 +10,8 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\transitions\models\UsersVisits;
 use JBZoo\Image\Image;
-use shop\modules\category\models\ProductsCategory;
-use shop\modules\vendor\models\Vendor;
+use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\product\models\Vendor;
 use yii;
 use common\components\Help;
 
@@ -536,7 +536,7 @@ class Product extends \yii\db\ActiveRecord
   {
     if ($old &&
         (strpos($old, 'http://') !== false || strpos($old, 'https://') !== false) &&
-        file_exists(Yii::getAlias('@shop/web/images/product/' . $old))
+        file_exists(Yii::getAlias('@frontend/web/images/product/' . $old))
     ) {
       //в базе уже есть и это локальный файл - ничего менять не нужно
       return $old;
@@ -549,7 +549,7 @@ class Product extends \yii\db\ActiveRecord
       return $old;
     }
     $size = 300;//требуемая ширина и высота
-    $path = Yii::$app->getBasePath() . '/../shop/web/images/product/';
+    $path = Yii::$app->getBasePath() . '/../frontend/web/images/product/';
     if ($old) {
       try {
         $imageSize = getimagesize($path . $old);

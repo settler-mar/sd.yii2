@@ -329,7 +329,9 @@ $config = [
         'params' => [
             'class' => 'frontend\modules\params\Module',
         ],
-
+        'shop' => [
+            'class' => 'frontend\modules\shop\Module',
+        ],
     ],
     'params' => $params,
 

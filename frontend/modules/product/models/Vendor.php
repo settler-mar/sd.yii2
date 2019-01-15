@@ -1,11 +1,11 @@
 <?php
 
-namespace shop\modules\vendor\models;
+namespace frontend\modules\product\models;
 
 use yii;
 use common\components\Help;
-use shop\modules\product\models\Product;
-use shop\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\Product;
+use frontend\modules\product\models\ProductsToCategory;
 
 /**
  * This is the model class for table "cw_vendor".

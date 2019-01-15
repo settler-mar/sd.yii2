@@ -4,7 +4,7 @@ namespace frontend\modules\banners\models;
 
 use frontend\modules\coupons\models\CategoriesCoupons;
 use frontend\modules\stores\models\CategoriesStores;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 use Yii;
 use yii\web\UploadedFile;
 use frontend\modules\cache\models\Cache;

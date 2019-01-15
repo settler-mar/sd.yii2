@@ -1,6 +1,6 @@
 <?php
 
-namespace shop\modules\category\models;
+namespace frontend\modules\product\models;
 
 use Yii;
 

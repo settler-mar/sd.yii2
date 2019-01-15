@@ -5,7 +5,7 @@ namespace frontend\modules\favorites\models;
 use frontend\modules\stores\models\Stores;
 use yii;
 use frontend\modules\cache\models\Cache;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 
 /**
  * This is the model class for table "cw_users_favorites".

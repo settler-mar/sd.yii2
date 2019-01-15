@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\params\models\ProductParameters;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 
 /**
  * ProductParametersSearch represents the model behind the search form about `frontend\modules\params\models\ProductParameters`.

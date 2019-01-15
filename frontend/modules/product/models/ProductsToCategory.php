@@ -1,9 +1,9 @@
 <?php
 
-namespace shop\modules\product\models;
+namespace frontend\modules\product\models;
 
 use Yii;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\cache\models\Cache;
 
 /**

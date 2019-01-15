@@ -11,10 +11,10 @@ use frontend\modules\params\models\ProductParametersValues;
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\stores\models\CategoriesStores;
 use JBZoo\Image\Image;
-use shop\modules\category\models\LgProductsCategory;
-use shop\modules\category\models\ProductsCategory;
-use shop\modules\product\models\Product;
-use shop\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\LgProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\product\models\Product;
+use frontend\modules\product\models\ProductsToCategory;
 use yii;
 use yii\console\Controller;
 
@@ -97,7 +97,7 @@ class ProductController extends Controller
 
     CatalogStores::updateAll(['date_import' => null, 'product_count' => null]);
 
-    $path = Yii::getAlias('@shop/web/images/product');
+    $path = Yii::getAlias('@frontend/web/images/product');
     $this->deletePath($path);
   }
 
@@ -163,7 +163,7 @@ class ProductController extends Controller
       $file = false;
       $process++;
       $path = $this->getPath($product['catalog_id']);//путь
-      $fullPath = Yii::getAlias('@shop/web/images/product/' . $path);//полный путь
+      $fullPath = Yii::getAlias('@frontend/web/images/product/' . $path);//полный путь
       $imageUrl = $product['image'];
       $ext = explode('.', $imageUrl);
       $ext = $ext[count($ext) - 1];
@@ -273,7 +273,7 @@ class ProductController extends Controller
       } else {
         $this->catalogs[$id] = $id . '/' . $id . '/';
       }
-      $path = Yii::getAlias('@shop/web/images/product/' . $this->catalogs[$id]);
+      $path = Yii::getAlias('@frontend/web/images/product/' . $this->catalogs[$id]);
       if (!file_exists($path)) {
         mkdir($path, '0777', true);
       }

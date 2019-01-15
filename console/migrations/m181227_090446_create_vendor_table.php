@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use \shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 use yii\helpers\Console;
 
 /**
@@ -56,7 +56,7 @@ class m181227_090446_create_vendor_table extends Migration
 
       $vendor_arr = [];
       foreach ($vendors as $vendor){
-        $vendor_db = new \shop\modules\vendor\models\Vendor();
+        $vendor_db = new frontend\modules\product\models\Vendor();
         $vendor_db->name = $vendor['vendor'];
         $vendor_db->validate();
 
@@ -71,7 +71,7 @@ class m181227_090446_create_vendor_table extends Migration
           Product::updateAll(['vendor_id'=>$vendor_db->id],['vendor'=>$vendor_db->name]);
         }else{
           d($vendor['vendor']);
-          d(\shop\modules\vendor\models\Vendor::find()->where(['route'=>$vendor_db->route])->asArray()->all());
+          d(\frontend\modules\product\models\Vendor::find()->where(['route'=>$vendor_db->route])->asArray()->all());
           ddd($vendor_db->errors);
         }
       }

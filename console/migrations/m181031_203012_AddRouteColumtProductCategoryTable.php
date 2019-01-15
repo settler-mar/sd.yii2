@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 
 /**
  * Class m181031_203012_AddRouteColumtProductCategoryTable

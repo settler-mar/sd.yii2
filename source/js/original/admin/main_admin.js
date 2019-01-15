@@ -26,7 +26,7 @@ $(function() {
 
 	$(".select2-users").select2({
 		ajax: {
-			url: "/ru/admin/users/list",
+			url: "/admin/users/list",
 			type: 'post',
 			dataType: 'json',
 			delay: 250,
@@ -67,7 +67,7 @@ $(function() {
 			'title':$this.data('title')||'Подтверждение действия',
 			'callbackYes':function(){
 				$this=$(this);
-				$.post('/ru/admin/stores/import-cat/id:'+$this.data('store'),function(data){
+				$.post('/admin/stores/import-cat/id:'+$this.data('store'),function(data){
 					if(data.error){
 						notification.notifi({message:data.error,type:'err'})
 					}else {

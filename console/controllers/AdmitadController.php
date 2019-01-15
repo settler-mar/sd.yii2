@@ -13,7 +13,7 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\users\models\Users;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;

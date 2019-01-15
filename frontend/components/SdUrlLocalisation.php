@@ -45,50 +45,54 @@ class SdUrlLocalisation implements UrlRuleInterface{
         }
     }
     //Yii::$app->params['regions_list'] = $regions;
+
     $region = $path[0];
-    //ddd($regions);
-    if (!in_array($region, array_keys($regions))) {
-        //не задан доступный регион
-        $url = '/'. (isset($regionsConfig[$location['region']]['code']) ?
-                $regionsConfig[$location['region']]['code'] :
-                $location['region']) . ($request->url == '/' ? '' : $request->url);
-        Yii::$app->response->redirect($url, 301)->send();
-        exit;
-        //return;
-    }
-    $this->region = $regions[$region];
-    $langArr = $this->region['langList'];
-    Yii::$app->params['region'] = $this->region['key'];
-    unset($path[0]);
-    $lang = isset($path[1]) ? $path[1] : false;
-    if ($lang && in_array($lang, array_keys($langArr))) {
-        unset($path[1]);
-        if ($lang == $this->region['langDefault']) {
-            //задан язык по умолчанию - редирект
-            $url = '/' . implode('/', $path). (isset($urlArr[1]) ? '?'.$urlArr[1] : '');
+    if (in_array($region, ['admin', 'admin-categories', 'admin-values', 'admin-stores', 'admin-catalog', 'admin-category'])) {
+        $this->region = $regions['default'];
+        Yii::$app->params['region'] = 'default';
+        Yii::$app->language = 'ru-RU';
+    } else {
+        if (!in_array($region, array_keys($regions))) {
+            //не задан доступный регион
+            $url = '/'. (isset($regionsConfig[$location['region']]['code']) ?
+                    $regionsConfig[$location['region']]['code'] :
+                    $location['region']) . ($request->url == '/' ? '' : $request->url);
             Yii::$app->response->redirect($url, 301)->send();
             exit;
+            //return;
         }
-        if (in_array($lang, $this->region['langListActive'])) {
-            Yii::$app->language = $langArr[$lang];
-            Yii::$app->params['lang_code'] = $lang;
+        $this->region = $regions[$region];
+        $langArr = $this->region['langList'];
+        Yii::$app->params['region'] = $this->region['key'];
+        unset($path[0]);
+        $lang = isset($path[1]) ? $path[1] : false;
+        if ($lang && in_array($lang, array_keys($langArr))) {
+            unset($path[1]);
+            if ($lang == $this->region['langDefault']) {
+                //задан язык по умолчанию - редирект
+                $url = '/' . implode('/', $path). (isset($urlArr[1]) ? '?'.$urlArr[1] : '');
+                Yii::$app->response->redirect($url, 301)->send();
+                exit;
+            }
+            if (in_array($lang, $this->region['langListActive'])) {
+                Yii::$app->language = $langArr[$lang];
+                Yii::$app->params['lang_code'] = $lang;
+            } else {
+                Yii::$app->language = isset($langArr[$this->region['langDefault']]) ? $langArr[$this->region['langDefault']] :
+                    $this->region['langDefault'];
+                Yii::$app->params['lang_code'] = $this->region['langDefault'];
+            }
         } else {
             Yii::$app->language = isset($langArr[$this->region['langDefault']]) ? $langArr[$this->region['langDefault']] :
                 $this->region['langDefault'];
             Yii::$app->params['lang_code'] = $this->region['langDefault'];
         }
-    } else {
-        Yii::$app->language = isset($langArr[$this->region['langDefault']]) ? $langArr[$this->region['langDefault']] :
-            $this->region['langDefault'];
-        Yii::$app->params['lang_code'] = $this->region['langDefault'];
+
+        $request->pathInfo = implode('/', $path);
+        $request->url = '/'. $request->pathInfo . (isset($urlArr[1]) ? '?' . $urlArr[1] : '') ;
     }
 
-    //d($location, $request->url, $path, $this->region, Yii::$app->language);
 
-
-    $request->pathInfo = implode('/', $path);
-    $request->url = '/'. $request->pathInfo . (isset($urlArr[1]) ? '?' . $urlArr[1] : '') ;
-    //ddd($request->url, $request->pathInfo);
 
     //$host=$request->headers['host'];
     //$this->region=isset(Yii::$app->params['regions_list'][$host])?$host:'default';

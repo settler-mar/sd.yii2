@@ -2,14 +2,14 @@
 
 namespace frontend\modules\params\controllers;
 
-use shop\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\ProductsToCategory;
 use Yii;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\LgProductParameters;
 use frontend\modules\params\models\ProductParametersSearch;
 use frontend\modules\params\models\ProductParametersValues;
-use shop\modules\category\models\ProductsCategory;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\product\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

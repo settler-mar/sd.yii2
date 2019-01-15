@@ -7,7 +7,7 @@ use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\stores\models\Stores;
 use common\components\Help;
 use frontend\components\AccountController as Controller;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\Product;
 
 class AccountController extends Controller
 {
