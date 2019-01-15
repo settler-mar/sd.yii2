@@ -38,10 +38,11 @@ class AccountController extends Controller
       }
 
       $type = $request->post('type');
-      $affiliate_id = $request->post('affiliate_id');
-      $user_id=Yii::$app->user->id;
+      $affiliate_id = (int) $request->post('affiliate_id');
+      $user_id= (int) Yii::$app->user->id;
+      $product_id = (int) $request->post('product_id');
 
-      $fav = UsersFavorites::findOne(['store_id'=>$affiliate_id,'user_id'=>$user_id]);
+      $fav = UsersFavorites::findOne(['store_id'=>$affiliate_id,'user_id'=>$user_id, 'product_id' => $product_id ? $product_id : null]);
       $store=Stores::findOne(['uid'=>$affiliate_id,'is_active'=>[0,1]]);
 
       if(!$store){
@@ -51,33 +52,65 @@ class AccountController extends Controller
 
       if($type=='add'){
         if($fav){
-          return json_encode(['error'=>Yii::t('account', 'favorites_shop_allready')]);
+          return json_encode([
+            'error'=>$product_id ? Yii::t('shop', 'favorites_product_allready'):
+              Yii::t('account', 'favorites_shop_allready')
+          ]);
         }else{
           $fav=new UsersFavorites();
           $fav->store_id=$affiliate_id;
-          $fav->product_id = null;
-          $fav->save();
+          $fav->product_id = $product_id ? $product_id : null;
+          $result = $fav->save();
+
+          if ($product_id) {
+              $msg = $result ? Yii::t('shop', 'favorites_product_add') :
+                  Yii::t('shop', 'favorites_product_add_error');
+          } else {
+              $msg = $result ? Yii::t('account', 'favorites_shop_add'):
+                  Yii::t('account', 'favorites_shop_add_error');
+          }
 
           return json_encode([
-            'error'=>false,
-            'msg'=>Yii::t('account', 'favorites_shop_add'),
+            'error' => !$result,
+            'errors' => $fav->errors,
+            'msg' =>$msg,
             'data-state'=>'delete',
-            'data-original-title'=>Yii::t('account', 'favorites_shop_do_remove'),
-            'title'=>Yii::t('common', 'congratulations')
+            'data-original-title' => $product_id ?  Yii::t('shop', 'product_vaforite_remove') :
+                Yii::t('account', 'favorites_shop_do_remove'),
+            'title'=>$result ? Yii::t('common', 'congratulations') :
+                Yii::t('common', 'error'),
           ]);
         }
       }
       if($type=='delete'){
         if(!$fav){
-          return json_encode(['error'=>Yii::t('account', 'favorites_shop_removed_allready')]);
-        }else{
-          $fav->delete();
           return json_encode([
-            'error'=>false,
-            'msg'=>Yii::t('account', 'favorites_shop_removed'),
+              'error'=>$product_id ? Yii::t('shop', 'favorites_shop_removed_allready') :
+                  Yii::t('account', 'favorites_shop_removed_allready')
+          ]);
+        }else{
+          try {
+            $fav->delete();
+            $error = 0;
+          } catch (\Exception $e) {
+            $error = 1;
+          }
+          if ($product_id) {
+            $msg = $error ? Yii::t('shop', 'favorites_product_add_error'):
+                Yii::t('shop', 'favorites_shop_removed');
+          } else {
+            $msg = !$error ? Yii::t('account', 'favorites_shop_removed'):
+               Yii::t('account', 'favorites_shop_removed_error');
+          }
+
+          return json_encode([
+            'error' => $error,
+            'errors'=>$fav->errors,
+            'msg' => $msg,
             'data-state'=>'add',
             'data-original-title'=>Yii::t('account', 'favorites_shop_do_add'),
-            'title'=>Yii::t('common', 'congratulations'),
+            'title'=> !$error ? Yii::t('common', 'congratulations') :
+              Yii::t('common', 'error'),
           ]);
         }
       }

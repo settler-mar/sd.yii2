@@ -111,6 +111,14 @@ class SdUrlRule implements UrlRuleInterface
       };
       unset ($parameters[count($parameters) - 1]);
     }
+    //проверяем последний параметр на product
+    if (strpos($parameters[count($parameters) - 1], 'product:') !== false) {
+      $params['product'] = substr($parameters[count($parameters) - 1], 8);
+      if (!empty($params['id']) && !$validator->validate($params['product'])) {
+        throw new \yii\web\NotFoundHttpException;
+      };
+      unset ($parameters[count($parameters) - 1]);
+    }
 
     //проверяем последний параметр на expired
     if ($parameters[count($parameters) - 1] == 'expired') {

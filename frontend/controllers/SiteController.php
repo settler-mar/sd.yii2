@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\components\SdController;
+use common\components\Help;
 use common\components\Sitemap;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\charity\models\Charity;
@@ -11,6 +12,7 @@ use frontend\modules\meta\models\Meta;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\products\models\Products;
+use frontend\modules\product\models\Product;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
@@ -341,10 +343,10 @@ class SiteController extends SdController
    *
    * @return mixed
    */
-  public function actionGoto($store = 0, $coupon = 0, $products = 0)
+  public function actionGoto($store = 0, $coupon = 0, $products = 0, $product = 0)
   {
-    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0 && $products == 0) {
-      return $this->redirect('/stores');
+    if ((Yii::$app->user->isGuest || $store == 0) && $coupon == 0 && $products == 0 && $product == 0) {
+      return $this->redirect(Help::href('/stores'));
     }
 
     if ($store > 0 && !Yii::$app->user->isGuest && empty(Yii::$app->user->identity->email_verified)) {
@@ -352,7 +354,7 @@ class SiteController extends SdController
       //$store = Stores::findOne($store);
       //ValidateEmail::emailStatusInfo(Yii::$app->user->identity, $store);
       //return $this->goBack(!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : '/stores');
-      $this->redirect(Url::to('/account/sendverifyemail?path=' . $store))->send();
+      $this->redirect(Help::href('/account/sendverifyemail?path=' . $store))->send();
     }
 
     $visit = new UsersVisits();
@@ -362,7 +364,7 @@ class SiteController extends SdController
       $visit->source = UsersVisits::TRANSITION_TYPE_COUPON;
       $coupon = Coupons::findOne(['uid' => $coupon]);
       if (!$coupon) {
-        return $this->redirect('/coupons');
+        return $this->redirect(Help::href('/coupons'));
       }
       //$data['link'] = $coupon->goto_link;
       $data['link'] = CpaLink::makeGotoLink($coupon->goto_link, ['subid' => (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id)]);
@@ -376,7 +378,7 @@ class SiteController extends SdController
       $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS;
       $products = Products::findOne(['uid' => $products, 'store_id' => 93]);
       if (!$products) {
-        return $this->redirect('/products');
+        return $this->redirect(Help::href('/products'));
       }
       $products->visit++;
       $products->save();
@@ -387,24 +389,43 @@ class SiteController extends SdController
       ]);
     }
 
-    $store = Stores::findOne(['uid' => $store]);
-    if (!$store) {
-      return $this->redirect('/stores');
+    if ($product > 0) {
+        //todo if (Yii::$app->user->isGuest || $product == 0) {
+        $productDb = Product::findOne($product);
+
+        if (!$productDb) {
+            return $this->redirect(Help::href('/shop'));
+        }
+        $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS_CATALOG;
+        $visit->store_id = $productDb->store_id;
+        $visit->cpa_link_id = $productDb->catalog->cpa_link_id;
+        $visit->product_id = $productDb->id;
+
+        $data['link'] = $productDb->url;
+        $data['store'] = $productDb->store;
+        $data['store_route'] = $productDb->store->route;
+    } else {
+        $store = Stores::findOne(['uid' => $store]);
+        if (!$store) {
+            return $this->redirect(Help::href('/stores'));
+        }
+
+        if ($store->is_active == 0) {
+            return $this->redirect(Help::href('/stores/' . $store->routeUrl));
+        }
+
+        if ($data['link'] == '') {
+            $data['link'] = CpaLink::clickUrl($store);
+        }
+
+        $data['store'] = $store;
+        $data['store_route'] = $store->route;
+
+        $visit->store_id = $store->uid;
+        $visit->cpa_link_id = $store->active_cpa;
     }
 
-    if ($store->is_active == 0) {
-      return $this->redirect('/stores/' . $store->routeUrl);
-    }
 
-    if ($data['link'] == '') {
-      $data['link'] = CpaLink::clickUrl($store);
-    }
-
-    $data['store'] = $store;
-    $data['store_route'] = $store->route;
-
-    $visit->store_id = $store->uid;
-    $visit->cpa_link_id = $store->active_cpa;
     $visit->save();
 
     //header("Refresh: 5; url=" . $data['link']);
