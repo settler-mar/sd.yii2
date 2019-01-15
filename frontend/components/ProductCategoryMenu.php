@@ -1,13 +1,13 @@
 <?php
 
-namespace shop\components;
+namespace frontend\components;
 
 use yii\base\Widget;
 use yii;
-use shop\modules\category\models\ProductsCategory;
+use frontend\modules\product\models\ProductsCategory;
 
 
-class CategoryMenu extends Widget
+class ProductCategoryMenu extends Widget
 {
     public $show_hidden = true;//показывать ли в меню скрытые категории
     public $where = false; //Where для запроса. Если задан то выборка только исходя их него
@@ -20,7 +20,7 @@ class CategoryMenu extends Widget
 
     public function getViewPath()
     {
-        return \Yii::getAlias('@shop/views/components');
+        return \Yii::getAlias('@frontend/views/components');
     }
 
     public function run()

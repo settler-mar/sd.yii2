@@ -1,0 +1,11 @@
+{% if products %}
+    <div class="catalog-stores_list catalog-stores_list-product margin-half">
+        {% for product in products %}
+           {% include('parts/products/product.twig') %}
+        {% endfor %}
+        <div class="catalog_products_item shop empty"></div>
+        <div class="catalog_products_item shop empty"></div>
+        <div class="catalog_products_item shop empty"></div>
+        <div class="catalog_products_item shop empty"></div>
+    </div>
+{% endif %}

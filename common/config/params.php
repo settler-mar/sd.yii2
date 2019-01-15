@@ -20,6 +20,10 @@ $params = [
         'view'  => 'product_catalog',
         'float' => true,
     ],
+    'catalog_product'=>[ // страница продукта каталога
+      'show_charity' => true,
+      'view'  => 'catalog_product'
+    ],
     'calck_cashback'=>[ //калькулятор кэшбэка
         'show_charity' => false,
         'view'  => 'calck_cashback',
@@ -29,7 +33,7 @@ $params = [
         'show_charity' => true,
         'view'  => 'search_line'
     ],
-    'product'=>[ // квадратик каталога продуктов
+    'product'=>[ // Плитка каталога top Ali продуктов
         'show_charity' => true,
         'view'  => 'product'
     ],

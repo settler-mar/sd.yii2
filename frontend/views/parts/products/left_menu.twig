@@ -1,0 +1,19 @@
+{{ use('frontend/components/ProductCategoryMenu') }}
+
+{% if app.controller.vendor == false %}
+
+    {% set category_tree = product_category_menu_widget(app.controller.vendor ? {'vendor': filter.vendors_user} : {}) %}
+
+    {% if category_tree %}
+
+        <div class="catalog-categories_tree-cat accordeon">
+            <div class="catalog-categories_tree-cat-close">
+                {{ svg('close', 'catalog-categories_tree-cat-close-icon', '@frontend')|raw }}
+                <span class="catalog-categories_tree-cat-close-tittle">{{ t('main', 'shops_left_menu_categories')|raw }}</span>
+            </div>
+            {{ category_tree|raw }}
+        </div>
+
+    {% endif %}
+
+{% endif %}

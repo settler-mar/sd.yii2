@@ -3,28 +3,29 @@
     <span class="catalog_products_item_cashback-title">{{ t('main', 'cashback') }} </span>
     <span class="catalog_products_item_cashback-amount shop-cashback-link_cashback {% if value == value_new %}is_not_old{% endif %}">
       {% if has_up_to %}
-        {{ t('main', 'up_to') }}
+          {{ t('main', 'up_to') }}
       {% endif %}
-      {% if value != value_new %}
-        {% if is_persent %}
-          <span class="shop-cashback-link_cashback_old shop-cashback_old">
+        {% if value != value_new %}
+            {% if is_persent %}
+                <span class="shop-cashback-link_cashback_old shop-cashback_old">
             {{ value |raw }}
           </span>
           {{ value_new |raw }}
         {% else %}
-          <span class="shop-cashback-link_cashback_old shop-cashback_old_cash">
+                <span class="shop-cashback-link_cashback_old shop-cashback_old_cash">
             {{ value |raw }}
-            <span>
+                    <span>
               {{ value_new |raw }}
             </span>
           </span>
+            {% endif %}
+        {% else %}
+            {{ value_new |raw }}
         {% endif %}
-      {% else %}
-        {{ value_new |raw }}
-      {% endif %}
         <span class="catalog_products_item_cashback-question modals_popup"
-           data-original-html="product_store_cachback_modal_id"
-           data-original-h="{{ t('shop', 'product_cashback_modal_title') }}">
+              data-original-html="product_store_cachback_modal_id"
+              data-notyclass="notify_box-wide"
+              data-original-h="{{ t('shop', 'product_cashback_modal_title') }}">
         {{ svg('question-circle-o', '', '@frontend')|raw }}
     </span>
     </span>

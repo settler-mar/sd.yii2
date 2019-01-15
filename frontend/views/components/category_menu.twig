@@ -9,7 +9,7 @@
                         {% endif %}
                     </span>
                 {% else %}
-                    <a class="shops-category-menu_link" href="{{ _href('/category/'~category.full_route)|raw }}">{{ category.name|raw }} {% if category.count_all %}({{ category.count_all }}){% endif %}
+                    <a class="shops-category-menu_link" href="{{ _href('/shop/'~category.full_route)|raw }}">{{ category.name|raw }} {% if category.count_all %}({{ category.count_all }}){% endif %}
                         {% if category.childs|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
                         {% endif %}

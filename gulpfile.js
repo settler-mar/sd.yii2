@@ -172,6 +172,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/accordion.js',
         paths.source.js+'/original/jquery.ajaxForm.js',
         //paths.source.js+'/external/jquery.flexslider-min.js',
+        paths.source.js+'/original/admin/jquery-ui.min.js',
         paths.source.js+'/original/new/tooltip.js',
         paths.source.js+'/original/new/account_notification.js',
         paths.source.js+'/original/new/slider.js',
@@ -195,6 +196,7 @@ gulp.task('js_new', compileJs([
         paths.source.js+'/original/new/banner.js',
         paths.source.js+'/original/new/country_select.js',
         paths.source.js+'/original/new/users_online.js',
+        paths.source.js+'/original/new/product_filter.js',
 
   //for_all
         paths.source.js+'/original/notification.js',

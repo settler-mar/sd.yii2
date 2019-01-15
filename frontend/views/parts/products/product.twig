@@ -1,0 +1,104 @@
+{% if not products_store %}
+    {% set products_store = store %}
+{% endif %}
+
+<div class="catalog_products_item shop hover-box ">
+    {% set url=_href(product.url) %}
+    {% set product_url=_href('/shop/product/'~product.id) %}
+    {% set href_class = user_id ? '' : 'catalog_product_link' %}
+
+    {% set old_price = product.old_price  %}
+    <div class="catalog_products_item_in">
+
+        <div class="catalog_products_item_content">
+            <div class="catalog_products_item_image">
+
+                 <div class="catalog_products_item_image-wrap">
+                     <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                     {% if product.price < old_price %}
+                         <span class="catalog_products_item_image-discount">
+                             {% set discount = (((old_price - product.price) / old_price) * 100)|round(0, 'floor') %}
+                             -{{ discount }}%
+                         </span>
+                     {% endif %}
+                     {% if product.image %}
+                        <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name|raw }}">
+                     {% else %}
+                         <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.name|raw }}">
+                         {#<span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>#}
+                     {% endif %}
+                     </a>
+
+                     <div class="catalog_products_item-vaforite ">
+                         {#{% if user_id %}#}
+                         {% if true %}
+                             {% if product.id in favorites_ids %}
+                                 <a class="shop_panel-item product-favorite-remove favorite-link"
+                                    href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-toggle="tooltip" data-state="delete"
+                                    data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_remove')|raw }}">
+                                     {{ svg('heart','shop_panel-item_icon in_fav_on','@frontend')|raw }}
+                                 </a>
+                             {% else %}
+                                 <a class="shop_panel-item product-favorite-add favorite-link"
+                                    href="#" data-affiliate-id="{{product.store_id}}" data-product-id="{{product.id}}" data-toggle="tooltip" data-state="add"
+                                    data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                                     {{ svg('heart','shop_panel-item_icon in_fav_off','@frontend')|raw }}
+                                 </a>
+                             {% endif %}
+                         {% else %}
+                             <a class="shop_panel-item favorite-link" href="#"
+                                data-toggle="tooltip" data-placement="top" data-original-title="{{ t('shop', 'product_vaforite_add')|raw }}">
+                                 {{ svg('heart-o','shop_panel-item_icon in_fav_off','@frontend')|raw }}
+                             </a>
+                         {% endif %}
+                     </div>
+
+
+
+                 </div>
+            </div>
+            <div class="catalog_products_item_text">
+                <div class="catalog_products_item_text_store">
+                    <a href="{{  product_url|raw }}" target="_blank" rel="nofollow nooper noreferrer">
+                        {{ svg('chain','','@frontend')|raw }} {{ product.store_name|raw }}
+                    </a>
+                </div>
+                <div class="catalog_products_item_text_brand">
+                    <a href="{{ _href('/shop/vendor/'~product.vendor_route)|raw }}" target="_blank" rel="nofollow nooper noreferrer">
+                        {{ product.vendor|raw }}
+                    </a>
+                </div>
+                <div class="catalog_products_item_text_title">
+                    <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer">
+                        {% if product.name == '-' %} {{ t('main', 'product_no_title') }} {% else %} {{ product.name|raw }} {% endif %}
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="catalog_products_item_prices">
+            <div class="catalog_products_item_price">
+                <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                    {% set k = product.product_currency in ['RUB'] ? 0 : 2 %}
+                    {% if product.price < old_price %}
+                        <div class="catalog_products_item_price-old">
+                            {{ _nf(old_price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                        </div>
+                    {% endif %}
+                    <div class="catalog_products_item_price-new {% if product.price < old_price %}catalog_products_item_price-new_with-old{% endif %}">
+                        {{ _nf(product.price, k, false, '&nbsp;', false, true)|raw }}<span class="catalog_products_item_price_currency">{{ t('main', product.product_currency) }}</span>
+                    </div>
+                </a>
+            </div>
+
+            {% if product.displayed_cashback and product.store_active == 1 %}
+                <div class="catalog_products_item_cashback">
+                    <a href="{{ product_url }}" target="_blank" rel="nofollow nooper noreferrer" class="">
+                        {{ cashback(product, 'product_catalog')|raw }}
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
