@@ -169,7 +169,7 @@ class Vendor extends \yii\db\ActiveRecord
                 $dataBaseSelect = clone $params['database'];
                 $dataBaseSelect->select(['prod.id']);
                 $dataBaseSelect->orderBy([]);
-                $dataBaseSelect->limit = null;
+                $dataBaseSelect->limit(null);
                 $vendors->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
             }
             $vendors = $vendors->all();
