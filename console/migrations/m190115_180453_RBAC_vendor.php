@@ -13,6 +13,9 @@ class m190115_180453_RBAC_vendor extends Migration
      */
     public function safeUp()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $this->auth = \Yii::$app->authManager;
         $role = $this->auth->getRole('admin');
 
@@ -38,6 +41,9 @@ class m190115_180453_RBAC_vendor extends Migration
      */
     public function safeDown()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $this->auth = \Yii::$app->authManager;
         $role = $this->auth->getRole('admin');
 

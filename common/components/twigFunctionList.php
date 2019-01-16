@@ -168,7 +168,8 @@ $functionsList = [
     $lg = $lg == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lg;
 
     $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
-    $regionCode = (isset($region['code']) ? '/' . $region['code'] : '/'.$region);
+    $regionArray=explode('.', Yii::$app->params['region']);
+    $regionCode = (isset($region['code']) ? '/' . $region['code'] : '/'.$regionArray[0]);
     $href = (isset($item['outer']) && $item['outer'] == 1  ? '' : $regionCode . ($lg ? '/'.$lg : '')) . ($item['href'] !='/' ? $item['href'] : '');
     $href = $href == '' ? '/' : $href;
 

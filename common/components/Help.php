@@ -193,7 +193,8 @@ class Help extends Component
     $baseLangCode = $regionLangs[Yii::$app->params['base_lang']];
     $langCode = $regionLangs[Yii::$app->language];
     $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
-    $regionCode = (isset($region['code']) ? $region['code'] : $region);
+    $regionArray=explode('.', Yii::$app->params['region']);
+    $regionCode = isset($region['code']) ? $region['code'] : $regionArray[0];
 
     $lang = $baseLangCode == $langCode || count($regionLangs) == 1 ? '' : $langCode;
     //if ($lang == '') {
