@@ -189,21 +189,12 @@ class Help extends Component
   public static function href($href, $basePath = '')
   {
 
-    $regionLangs=array_flip(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList']);
-    $baseLangCode = $regionLangs[Yii::$app->params['base_lang']];
-    $langCode = $regionLangs[Yii::$app->language];
-    $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
-    $regionArray=explode('.', Yii::$app->params['region']);
-    $regionCode = isset($region['code']) ? $region['code'] : $regionArray[0];
-
-    $lang = $baseLangCode == $langCode || count($regionLangs) == 1 ? '' : $langCode;
-    //if ($lang == '') {
-      //return ($basePath !='' ? $basePath : '/' . $regionCode) . $href;
-    //}
+    $prefix = Yii::$app->params['url_prefix'];
     if (substr($href, 0, 1) == '#') {
-      return ($basePath != '' ? $basePath . '/' : '') . substr($href, 0, 1) . $regionCode . '/'. ($lang ? $lang . '/' : '') . substr($href, 1);
+      $href =  substr($href, 1);
+      return ($basePath != '' ? $basePath . '/' : '') . '#' . $prefix .  (substr($href, 0, 1) != '/' ? '/' : '') . $href;
     } else {
-      return ($basePath != '' ? $basePath : '/') . $regionCode . ($lang ? '/'. $lang : '') . $href;
+      return ($basePath != '' ? $basePath : '/') . $prefix . (substr($href, 0, 1) != '/' ? '/' : '') . $href;
     }
   }
 

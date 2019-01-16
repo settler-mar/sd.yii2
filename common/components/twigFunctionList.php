@@ -161,16 +161,8 @@ function getConstant($name, $json_col = false, $json_index = 0) {
 $functionsList = [
 //вывод одного элемента меню врутри <li> ... </li>
   'get_menu_item' => function ($item) {
-    //$lg = Yii::$app->params['lang_code'];
-    $lg = isset(Yii::$app->params['lang_code']) ?
-          Yii::$app->params['lang_code'] :
-          Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'];
-    $lg = $lg == Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault'] ? '' : $lg;
-
-    $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
-    $regionArray=explode('.', Yii::$app->params['region']);
-    $regionCode = (isset($region['code']) ? '/' . $region['code'] : '/'.$regionArray[0]);
-    $href = (isset($item['outer']) && $item['outer'] == 1  ? '' : $regionCode . ($lg ? '/'.$lg : '')) . ($item['href'] !='/' ? $item['href'] : '');
+    $prefix = Yii::$app->params['url_prefix'];
+    $href = (isset($item['outer']) && $item['outer'] == 1  ? '' : $prefix) . ($item['href'] !='/' ? $item['href'] : '');
     $href = $href == '' ? '/' : $href;
 
     $httpQuery = '/' . Yii::$app->request->pathInfo;

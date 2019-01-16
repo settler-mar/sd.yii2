@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default'=>[
+    'ru'=>[
         'name'=>'СНГ',
         'url'=>'127.0.0.1:8080',
         'protocol'=>'http',
@@ -13,9 +13,8 @@ return [
         ],
         'socialsShareList' => '1,0,2,4,3,5,6',//vk,fb,ok,g+,tw,mali.ru,lj
         'active' => 1,
-        'code' => 'rus'
     ],
-    'usa.secretdiscounter.com'=>[
+    'en'=>[
         'name'=>'USA',
         'langList'=>['en'=>'en-EN'],
         'langListActive' => ['en'],
@@ -25,6 +24,5 @@ return [
         ],
         'socialsShareList' => '0,4,3,6',//fb,g+,tw,lj
         'active' => 1,
-        'code' => 'eng'
     ]
 ];
