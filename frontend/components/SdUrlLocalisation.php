@@ -51,6 +51,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
         $this->region = $regions['default'];
         Yii::$app->params['region'] = 'default';
         Yii::$app->language = 'ru-RU';
+        $lang = 'ru';
     } else {
         if (!in_array($region, array_keys($regions))) {
             //не задан доступный регион
