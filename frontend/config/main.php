@@ -186,8 +186,8 @@ $config = [
                 'reg' => 'users/default/reg',
 
                 'search' => 'search/default/index',
-                'search/coupon' => 'search/default/coupon',
-                'search/<action>' => '404',
+                'search/<action:coupon|product>' => 'search/default/<action>',
+                //'search/<action>' => '404',
                 'coupons/search' => '404',
                 'tpls' => 'template/admin/tpls',
 

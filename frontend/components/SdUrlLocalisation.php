@@ -88,6 +88,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
         Yii::$app->language = $prefixes[$prefix]['language'];
         $lang = $langReverse[$prefixes[$prefix]['language']];
         Yii::$app->params['url_prefix'] = $prefix;
+        Yii::$app->params['lang_code'] = $lang;
         unset($path[0]);
         $request->pathInfo = implode('/', $path);
         $request->url = '/'. $request->pathInfo . (isset($urlArr[1]) ? '?' . $urlArr[1] : '') ;
