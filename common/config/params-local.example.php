@@ -105,6 +105,11 @@ return [
         'ftp_login' => 'ps-ftp_233466',
         'ftp_password' => '!75CNGJYC%',
     ],
+    'connexity' => [
+        'login' => '648186',
+        'password' => '2011odn',
+        'apikey' => '	9edbbb0626d119a67398c34aa1415482',
+    ],
     'pays_update_period' => 1,
     'b2b_address' => '127.0.0.1:8080',
     'outstand_cpa' => [

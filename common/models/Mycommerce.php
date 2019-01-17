@@ -147,6 +147,7 @@ Update_Date	Date the product was updated to the feed (DD-MMM-YY format i.e. 26-M
 
         if ($statusCode == 200) {
             d('Downloaded!');
+
             $content = file_get_contents($file);
             $xml = simplexml_load_string($content);
 
