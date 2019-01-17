@@ -33,7 +33,7 @@
                   {#<option value="store">{{ t('common', 'shops') }}</option>#}
                   {#<option value="coupon">{{ t('main', 'promocodes') }}</option>#}
               {#</select>#}
-              {#<input type="hidden" id="header-search_form-module-hidden" name="module" value="store">#}
+              <input type="hidden" id="header-search_form-module-hidden" name="module" value="store">
               <input type="hidden" id="header-search_form-limit-hidden" name="limit" value="">
               <label class="header-search_form-input-module-label" for="header-search_form-module-text">
                 <span  id="header-search_form-module-text" class="header-search_form-input header-search_form-input-module">{{ t('common', 'shops') }}</span>
@@ -42,21 +42,21 @@
               <div class="header-search_form-popup">
                   <ul class="form-popup-select">
                       <li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'shops') }}"
-                          {#data-id2="header-search_form-module-hidden" data-value2="store"#}
+                          data-id2="header-search_form-module-hidden" data-value2="store"
                           data-id4="header-search_form-limit-hidden" data-value4=""
                           data-id3="search" data-value3="{{ t('main', 'find_shop') }}"
                           data-action="{{ _href('/search') }}" >
                           {{ t('common', 'shops') }}
                       </li>
                       <li data-id1="header-search_form-module-text" data-value1="{{ t('main', 'promocodes') }}"
-                          {#data-id2="header-search_form-module-hidden" data-value2="coupon"#}
+                          data-id2="header-search_form-module-hidden" data-value2="coupon"
                           data-id4="header-search_form-limit-hidden" data-value4="30"
                           data-id3="search" data-value3="{{ t('main', 'find_promocode') }}"
                           data-action="{{ _href('/search/coupon') }}">
                           {{ t('main', 'promocodes') }}
                       </li>
                       <li data-id1="header-search_form-module-text" data-value1="{{ t('main', 'products') }}"
-                          {#data-id2="header-search_form-module-hidden" data-value2="product"#}
+                          data-id2="header-search_form-module-hidden" data-value2="product"
                           data-id4="header-search_form-limit-hidden" data-value4="1000"
                           data-id3="search" data-value3="{{ t('main', 'find_product') }}"
                           data-action="{{ _href('/search/product') }}">

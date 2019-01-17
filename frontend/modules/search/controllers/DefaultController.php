@@ -89,17 +89,18 @@ class DefaultController extends SdController
   public function actionProduct($query)
   {
       $query = strip_tags($query);
-      $limit = !Yii::$app->request->isAjax ? 1000 :
-          (Yii::$app->request->get('limit') ? Yii::$app->request->get('limit') : 10);
+      $request = Yii::$app->request;
+      $limit = !$request->isAjax ? 1000 :
+          ($request->get('limit') ? $request->get('limit') : 10);
       $validator = new \yii\validators\NumberValidator();
       if (!empty($limit) && !$validator->validate($limit)) {
           throw new \yii\web\NotFoundHttpException;
       };
 
-      $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . $limit;
-      $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
+      if ($request->isAjax && $request->get('module') == 'product') {
+          $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . $limit;
+          $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
 
-      if (Yii::$app->request->isAjax) {
           $products = Product::items()->andWhere(['prod.id' => $ids])->asArray()->all();
           $out = [];
           foreach ($products as $k => $v) {
@@ -114,9 +115,8 @@ class DefaultController extends SdController
           }
           return json_encode($out);
       } else {
-          $request = Yii::$app->request;
-          //$request->get['limit'] = $limit;
-          return \Yii::$app->runAction('shop/default/search', ['ids' => $ids]);
+          Yii::$app->params['search_query'] = $query;
+          return \Yii::$app->runAction('shop/default/index');
       }
   }
 }

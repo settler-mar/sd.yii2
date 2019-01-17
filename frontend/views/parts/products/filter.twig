@@ -1,7 +1,11 @@
 {% if filter %}
 <div class="catalog_product_filter margin-half">
-    <form class="catalog_product_filter-form" method="get">
+    <form class="catalog_product_filter-form" method="get" {% if filter.action %}action="{{ filter.action }}" {% endif %}>
         <div class="catalog_product_filter-items margin-half">
+            {% if filter.query %}
+                <input type="hidden" name="query" value="{{ filter.query }}">
+                <input type="hidden" name="limit" value="{{ limit }}">
+            {% endif %}
             <div class="catalog_product_filter-items-item catalog_product_filter-items-item-price margin-half">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_price') }}
