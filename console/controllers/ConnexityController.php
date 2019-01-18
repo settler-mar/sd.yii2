@@ -20,6 +20,8 @@ class ConnexityController extends Controller
     protected $inserted;
     protected $error;
 
+    protected $categoryTree;
+
     public function init()
     {
         $this->service = new Connexity();
@@ -137,25 +139,33 @@ class ConnexityController extends Controller
         }
     }
 
-    public function actionTaksonomy()
-    {
-        //все категории feed
-        $taxonomy = $this->service->taxonomyFeed();
-        ddd($taxonomy);
-    }
-    public function actionTestproduct()
-    {
-        //продукты один файл фиид
-        $products = $this->service->productFeed('58_8269.json.gz');
-        ddd($products);
-    }
-    public function actionFeedlist()
-    {
-        ddd($this->service->fileList());
-    }
-
-
+//    public function actionTaksonomy()
+//    {
+//        //все категории feed
+//        $taxonomy = $this->service->taxonomyFeed();
+//        ddd($taxonomy);
+//    }
     public function actionProduct()
+    {
+        $categories = $this->service->taxonomyFeed();
+        $this->categoryTree = isset($categories['taxonomy']['categories']['category'][0]['children']['category']) ?
+            $categories['taxonomy']['categories']['category'][0]['children']['category'] : [];
+        ddd($this->categoryTree);
+
+        //'23000600'
+
+        //продукты один файл фиид
+        //$products = $this->service->productFeed('58_8269.json.gz');
+        //ddd($products);
+    }
+
+//    public function actionFeedlist()
+//    {
+//        ddd($this->service->fileList());
+//    }
+
+
+    public function actionTestProduct()
     {
         $taxonomy = $this->service->taxonomy();
 
@@ -267,6 +277,15 @@ class ConnexityController extends Controller
     'categoryId' => integer 12150125
     'id' => integer 2360015787
          */
+    }
+
+
+    protected function getCategoryById($id)
+    {
+        $out = [];
+        if (!$this->categoryTree) {
+            return null;
+        }
     }
 
 

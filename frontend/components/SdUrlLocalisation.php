@@ -34,9 +34,11 @@ class SdUrlLocalisation implements UrlRuleInterface{
 
     $prefixes = [];//все возможные префиксы
     $langReverse = [];//все возможные языки перевёрнуто
+    $langs=[]; //не перевёрнуто
     foreach ($regions as $key => $regionItem) {
         foreach ($regionItem['langList'] as $langKey => $langActive) {
             $langReverse[$langActive] = $langKey;
+            $langs[$langKey] = $langActive;
             if (in_array($key, $regionItem['langListActive'])) {
                 $prefixes[$key . '-' . $langKey] = [
                     'region' => $key,
@@ -51,6 +53,16 @@ class SdUrlLocalisation implements UrlRuleInterface{
                     ];
                 }
             }
+        }
+        //языки, отсутсвующие в регионе
+        $emptyLanguages = array_diff(array_keys($langs), array_keys($regionItem['langList']));
+        //по ним редирект
+        foreach ($emptyLanguages as $emptyLanguage) {
+            $prefixes[$key . '-' . $emptyLanguage] = [
+                'region' => $key,
+                'language' => $langs[$regionItem['langDefault']],
+                'redirect' => $key,
+            ];
         }
     }
     $defaultPrefix = $location['region'] . (isset($langReverse[$location['language']]) ?
