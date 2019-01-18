@@ -862,8 +862,8 @@ class Product extends \yii\db\ActiveRecord
   public static function items()
   {
     return self::find()->from(self::tableName() . ' prod')
-        ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-        ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+        ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
+        ->leftJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
         ->where([
             'and',
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
