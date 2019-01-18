@@ -76,6 +76,19 @@ class Connexity
 
 
     //методы для фидов
+
+    //дата обновления каталога
+    public function dateUpdate()
+    {
+        $file = $this->getFeed('publisher_build.json');
+        if ($file) {
+            $content = json_decode(file_get_contents($file), true);
+            $this->dropFile('publisher_build.json');
+            return $content;
+        }
+    }
+
+
     //список фидов
     public function fileList()
     {
@@ -91,7 +104,7 @@ class Connexity
     {
         $file = $this->getFeed('merchants.json.gz');
         if ($file) {
-            $content = json_decode(file_get_contents($file));
+            $content = json_decode(file_get_contents($file), true);
             $this->dropFile('merchants.json.gz');
             return $content;
         }
@@ -101,7 +114,7 @@ class Connexity
     {
         $file = $this->getFeed('categories.json.gz');
         if ($file) {
-            $content = json_decode(file_get_contents($file));
+            $content = json_decode(file_get_contents($file), true);
             $this->dropFile('categories.json.gz');
             return $content;
         }
@@ -111,7 +124,7 @@ class Connexity
     {
         $file = $this->getFeed($fileName);
         if ($file) {
-            $content = json_decode(file_get_contents($file));
+            $content = json_decode(file_get_contents($file), true);
             $this->dropFile($fileName);
             return $content;
         }

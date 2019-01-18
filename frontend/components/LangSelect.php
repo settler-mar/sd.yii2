@@ -35,7 +35,8 @@ class LangSelect extends Widget
       $langs_active = Yii::$app->params['regions_list'][Yii::$app->params['region']]['langListActive'];
       $urlCurrent = Yii::$app->request->url;
       $currentRegion = Yii::$app->params['region'];
-      $baseLangCode = $regionLangs[Yii::$app->params['base_lang']];
+      $baseLangCode = isset($regionLangs[Yii::$app->params['base_lang']]) ?
+          $regionLangs[Yii::$app->params['base_lang']] : $langs_active[0];
 
       $lang = [];
       $region =  $currentRegion;

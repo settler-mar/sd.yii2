@@ -7,6 +7,7 @@ use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\CpaLink;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\product\models\Product;
+use frontend\modules\product\models\CatalogStores;
 use yii;
 use yii\console\Controller;
 
@@ -31,6 +32,12 @@ class ConnexityController extends Controller
 
     public function actionStore()
     {
+        $count = 0;
+        $inserted = 0;
+        $errors = 0;
+        $insertedCpaLink =0 ;
+        $affiliate_list = [];
+        $errorsCpaLink = 0;
         //вариант с api
 //        $response = $this->service->merchantInfo(['activeOnly'=>'true']);
 //        $stores = isset($response['merchant']) ? $response['merchant'] : [];
@@ -38,8 +45,96 @@ class ConnexityController extends Controller
 //            d($store);
 //        }
         //вариант с загрузкой
+        $dateUpdates = $this->service->dateUpdate();
+        $dateUpdate = isset($dateUpdates['build']['timestamp']) ? $dateUpdates['build']['timestamp'] :
+            date('Y-m-d H:i:s');
+
         $response = $this->service->merchantFeed();
-        ddd($response);
+        $stores = isset($response['merchant']) ? $response['merchant'] : [];
+        foreach ($stores as $merchant) {
+            $count++;
+
+//            'mid' => string (6) "314039"
+//            'merchantInfo' => array (5) [
+//            'name' => string (13) "Boutique Lust"
+//                'url' => string (187) "http://rd.bizrate.com/rd?t=http%3A%2F%2Fwww.boutiquelust.com%2F&mid=314039&cat_id=&prod_id=&oid=&pos=1&b_id=18&rf=af1&af_assettype_id=12&af_creative_id=2973&af_id=648186&af_placement_id=1"
+//                'merchantUrl' => string (25) "https://boutiquelust.com/"
+//                'logoUrl' => string (37) "http://s5.cnnx.io/merchant/314039.gif"
+//                'logoUrlSmall' => string (44) "http://s5.cnnx.io/merchant/little/314039.gif"
+//            ]
+//            'merchantRating' => array (1) [
+//            'rating' => array (1) [
+//            'dimensionalAverages' => array (1) [
+//            'average' => array (5) [
+//                            *DEPTH TOO GREAT*
+//                        ]
+//                    ]
+//                ]
+//            ]
+//        ]
+            $affiliate_id = $merchant['mid'];
+            d($affiliate_id);
+            $info = $merchant['merchantInfo'];
+            $affiliate_list[] = $affiliate_id;
+
+            $newStore = [
+                'logo' => isset($info['logoUrl']) ? $info['logoUrl'] : null,
+                'cpa_id' => $this->cpa_id,
+                'affiliate_id' => $affiliate_id,
+                'url' => isset($info['merchantUrl']) ? substr($info['merchantUrl'], 0, 255) : null,
+                'name' => isset($info['name']) ? $info['name'] : null,
+                'currency' => 'USD',
+                'cashback' => "0",
+                'hold_time' => 30,
+                'affiliate_link' => isset($info['url']) ? substr($info['url'], 0, 255) : null,
+            ];
+
+            //CatalogStores
+            $storeResult = Stores::addOrUpdate($newStore);
+            if (!$storeResult['result']) {
+                $errors++;
+            } else {
+                $catalog_db = CatalogStores::find()
+                    ->where([
+                        'cpa_link_id' => $storeResult['cpa_link']->id,
+                        'name' => $info['name'],
+                    ])
+                    ->one();
+                if (!$catalog_db) {
+                    $catalog_db = new CatalogStores();
+                    $catalog_db->cpa_link_id = $storeResult['cpa_link']->id;
+                    $catalog_db->name = $info['name'];
+                    $catalog_db->active = 2;
+                }
+                $catalog_db->date_download = $dateUpdate;
+                $catalog_db->csv = '';
+
+                $catalog_db->save();
+            }
+            if ($storeResult['new']) {
+                $inserted++;
+            }
+            if ($storeResult['newCpa']) {
+                $insertedCpaLink++;
+                if (!$storeResult['resultCpa']) {
+                    $errorsCpaLink++;
+                }
+            }
+        }
+        $sql = "UPDATE `cw_stores` cws
+        LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
+        SET `is_active` = '0'
+        WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
+        Yii::$app->db->createCommand($sql)->execute();
+        echo 'Stores ' . $count . "\n";
+        echo 'Inserted ' . $inserted . "\n";
+        if (!empty($errors)) {
+            echo 'Stores fails ' . $errors . "\n";
+        }
+        echo 'Inserted Cpa link ' . $insertedCpaLink . "\n";
+        if (!empty($errorsCpaLink)) {
+            echo 'Cpa link fails ' . $errorsCpaLink . "\n";
+        }
     }
 
     public function actionTaksonomy()

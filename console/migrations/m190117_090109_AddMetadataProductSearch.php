@@ -18,15 +18,17 @@ class m190117_090109_AddMetadataProductSearch extends Migration
 
 
         $meta = Meta::findOne(['page' => 'category/filter']);
-        $meta->isNewRecord = true;
-        $meta->uid = null;
-        $meta->page = 'category/search';
-        $meta->h1 = 'Результаты поиска по вашему запросу &laquo;{{ filter.query }}&raquo; ({{total_v}} товаров с кэшбэком,
+        if ($meta) {
+            $meta->isNewRecord = true;
+            $meta->uid = null;
+            $meta->page = 'category/search';
+            $meta->h1 = 'Результаты поиска по вашему запросу &laquo;{{ filter.query }}&raquo; ({{total_v}} товаров с кэшбэком,
                 скидками, купонами и промокодами от официальных интернет-магазинов)';
-        $meta->keywords = 'интернет-магазины кэшбэк, интернет-магазины экономия, интернет-магазины, возврат денег';
-        if (!$meta->save()) {
-            ddd($meta->errors);
-        };
+            $meta->keywords = 'интернет-магазины кэшбэк, интернет-магазины экономия, интернет-магазины, возврат денег';
+            if (!$meta->save()) {
+                ddd($meta->errors);
+            };
+        }
     }
 
     /**
