@@ -18,7 +18,7 @@ class m190116_054734_MoveShopMetadata extends Migration
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
         $sql = 'INSERT INTO `'.Meta::tableName().'` (`page`, `title`, `description`, `content`, `h1`, `updated_at`, `keywords`) '.
-            ' SELECT `page`, `title`, `description`, `content`, `h1`, `updated_at`, `keywords` FROM `'.CatMeta::tableName().'`';
+            ' SELECT `page`, `title`, `description`, `content`, `h1`, `updated_at`, `keyword` FROM `'.CatMeta::tableName().'`';
 
         $this->execute($sql);
 
