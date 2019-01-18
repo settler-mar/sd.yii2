@@ -83,7 +83,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
             Yii::$app->response->redirect($newUrl)->send();
             exit;
         }
-        $this->region = $regions[$prefix];
+        $this->region = $regions[$prefixes[$prefix]['region']];
         Yii::$app->params['region'] = $prefixes[$prefix]['region'];
         Yii::$app->language = $prefixes[$prefix]['language'];
         $lang = $langReverse[$prefixes[$prefix]['language']];
@@ -92,6 +92,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
         unset($path[0]);
         $request->pathInfo = implode('/', $path);
         $request->url = '/'. $request->pathInfo . (isset($urlArr[1]) ? '?' . $urlArr[1] : '') ;
+        //ddd($this->region, Yii::$app->params['region'], Yii::$app->language, $lang, $prefix, $request->pathinfo, $request->url);
     }
 
     $host=$request->headers['host'];

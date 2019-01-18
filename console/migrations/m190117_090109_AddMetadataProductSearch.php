@@ -16,19 +16,17 @@ class m190117_090109_AddMetadataProductSearch extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-
-        $meta = Meta::findOne(['page' => 'category/filter']);
-        if ($meta) {
-            $meta->isNewRecord = true;
-            $meta->uid = null;
-            $meta->page = 'category/search';
-            $meta->h1 = 'Результаты поиска по вашему запросу &laquo;{{ filter.query }}&raquo; ({{total_v}} товаров с кэшбэком,
+        $meta = new Meta();
+        $meta->page = 'category/search';
+        $meta->title = 'Каталог SecretDiscounter {{ category.name|raw }} поиск';
+        $meta->h1 = 'Результаты поиска по вашему запросу &laquo;{{ filter.query }}&raquo; ({{total_v}} товаров с кэшбэком,
                 скидками, купонами и промокодами от официальных интернет-магазинов)';
-            $meta->keywords = 'интернет-магазины кэшбэк, интернет-магазины экономия, интернет-магазины, возврат денег';
-            if (!$meta->save()) {
+        $meta->description = 'Кэшбэк-сервис SecretDiscounter предоставляет огромный выбор интернет-магазинов, где вы можете сэкономить и вернуть часть потраченных денег назад. Бесплатно регистрируйтесь и не переплачивайте!';
+        $meta->keywords = 'интернет-магазины кэшбэк, интернет-магазины экономия, интернет-магазины, возврат денег';
+        if (!$meta->save()) {
                 ddd($meta->errors);
-            };
-        }
+        };
+
     }
 
     /**

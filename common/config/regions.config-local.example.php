@@ -2,7 +2,7 @@
 
 return [
     'ru'=>[
-        'name'=>'СНГ',
+        'name'=>'RU',
         'url'=>'127.0.0.1:8080',
         'protocol'=>'http',
         'langList'=>['ru'=>'ru-RU','en'=>'en-EN'],
