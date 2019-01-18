@@ -51,7 +51,7 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
-        $storeRequest = $request->get('store');
+        $storeRequest = $request->get('store_id');
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
 

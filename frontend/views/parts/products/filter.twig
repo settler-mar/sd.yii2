@@ -54,7 +54,7 @@
                 </div>
                 <div class="catalog_product_filter-stores  catalog_product_filter-checkbox">
                     {% for store in filter.stores  %}
-                        <input type="checkbox" id="label-filer-store{{ store.uid }}" name="store[]" value="{{ store.uid }}"
+                        <input type="checkbox" id="label-filer-store{{ store.uid }}" name="store_id[]" value="{{ store.uid }}"
                                 {% if store.uid in filter.store_user %} checked {% endif %} >
                         <label for="label-filer-store{{ store.uid }}">{{ store.name }}</label>
                     {% endfor %}

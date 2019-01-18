@@ -25,9 +25,6 @@ class SdUrlLocalisation implements UrlRuleInterface{
         Yii::$app->params['country_to_region_default_language'];
     Yii::$app->params['location'] = $location;
 
-    Yii::info($request->pathInfo);
-    Yii::info($request->url);
-
     $path = explode('/',$request->pathInfo);
     $urlArr = explode('?', $request->url);
     $regions = Yii::$app->params['regions_list'];

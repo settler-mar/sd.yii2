@@ -51,7 +51,7 @@ class DefaultController extends SdController
         $priceStart = $request->get('price-start');
         $priceEnd = $request->get('price-end');
 
-        $storeRequest = $request->get('store');
+        $storeRequest = $request->get('store_id');
 
         $sortvars = Product::sortvars();
         $defaultSort = Product::$defaultSort;
