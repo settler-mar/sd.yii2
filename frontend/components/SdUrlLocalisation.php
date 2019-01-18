@@ -67,6 +67,7 @@ class SdUrlLocalisation implements UrlRuleInterface{
         Yii::$app->params['region'] = 'ru';
         Yii::$app->language = 'ru-RU';
         $lang = 'ru';
+        Yii::$app->params['url_prefix'] = 'ru';
     } else {
         if (!in_array($prefix, array_keys($prefixes))) {
             //такой префикс недопустим

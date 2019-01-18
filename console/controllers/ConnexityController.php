@@ -81,12 +81,12 @@ class ConnexityController extends Controller
                 'logo' => isset($info['logoUrl']) ? $info['logoUrl'] : null,
                 'cpa_id' => $this->cpa_id,
                 'affiliate_id' => $affiliate_id,
-                'url' => isset($info['merchantUrl']) ? substr($info['merchantUrl'], 0, 255) : null,
+                'url' => isset($info['merchantUrl']) ? $info['merchantUrl'] : null,
                 'name' => isset($info['name']) ? $info['name'] : null,
                 'currency' => 'USD',
                 'cashback' => "0",
                 'hold_time' => 30,
-                'affiliate_link' => isset($info['url']) ? substr($info['url'], 0, 255) : null,
+                'affiliate_link' => isset($info['url']) ? $info['url'] : null,
             ];
 
             //CatalogStores
