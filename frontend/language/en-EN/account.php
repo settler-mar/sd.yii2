@@ -156,6 +156,8 @@ return [
         'After adding stores from <a class="blue" href="{href}">our catalog</a> to your Favorites, they will be displayed on this page.',
     'favorites_empty' => 'At the moment, you don\'t have any favorites stores.',
     'favorites_<a href="{href}">login</a>_to_add' => 'In order to add a store to Favorites, you must be <a href="{href}">authorized</a> on the site.',
+    'favorites_empty_viewed-products' => 'At the moment, you don\'t have any viewed product.',
+    'favorites_empty_text_view_<a href="{href}">here</a>_after_add_viewed-products' => 'After You go to product from <a class="blue" href="{href}">our catalog</a>, they will be displayed on this page.',
     'favorites_add_noshop' => 'Unable to find the chosen store.',
     'favorites_shop_allready' => 'This store is already in your Favorites.',
     'favorites_shop_add' => 'The store was successfully added to Favorites.',
@@ -368,5 +370,8 @@ return [
     'account_withdraw_history_breadcrumbs' => 'Withdraw history',
     'account_offline_breadcrumbs' => 'Cash back offline',
     'account_users_breadcrumbs' => 'My users',
-    'account_payments_ref_id:_{id}_breadcrumbs' => 'Payments history of my user ID:{id}'
+    'account_payments_ref_id:_{id}_breadcrumbs' => 'Payments history of my user ID:{id}',
+    'favorites_viewed-products' => 'Viewed products',
+    'account_viewed-products_breadcrumbs' => 'Viewed products',
+
 ];

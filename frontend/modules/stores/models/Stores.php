@@ -1045,7 +1045,7 @@ class Stores extends \yii\db\ActiveRecord
         'cws.related', 'cws.is_offline', 'cws.video', 'cws.cash_number',
         'cws.url_alternative', 'cws.related_stores', 'cws.network_name', 'cws.show_notify', 'cws.show_tracking', 'show_products','cws.test_link'];
       $translated = [];
-      $lang_code=isset(Yii::$app->params['lang_code'])?Yii::$app->params['lang_code']:Yii::$app->language;
+      $lang_code=isset(Yii::$app->params['lang_code'])? Yii::$app->params['lang_code']:Yii::$app->language;
       foreach (self::$translated_attributes as $attr) {
           //$translated[] = $language ? 'if (lgs.' . $attr . '>"",lgs.'.$attr.',cws.'.$attr.') as '.$attr : 'cws.'.$attr;
           $translated[] = $language ? 'lgs.' . $attr. ' as '.$attr : 'cws.'.$attr;

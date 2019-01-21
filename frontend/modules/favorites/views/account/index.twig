@@ -25,9 +25,9 @@
             {% else %}
             <div class="col-md-12">
                 <p>
-                    {% set href = action_type=='product' ? '/category' : '/stores' %}
+                    {% set href = action_type=='viewed-products' ? '/shop' : '/stores' %}
                     {% set domain = action_type=='product' ? 'https://shop.secretdiscounter.com' : '' %}
-                    {{ t('account', 'favorites_empty_text_view_<a href="{href}">here</a>_after_add'~(action_type ? '_'~action_type : ''), {'href': _href(href, domain)})|raw }}
+                    {{ t('account', 'favorites_empty_text_view_<a href="{href}">here</a>_after_add'~(action_type ? '_'~action_type : ''), {'href': _href(href)})|raw }}
                 </p>
                 <div class="alert not-found">{{ t('account', 'favorites_empty'~(action_type ? '_'~action_type : ''))|raw }}</div>
             </div>

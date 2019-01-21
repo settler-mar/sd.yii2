@@ -155,6 +155,8 @@ return [
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add' => 'После добавления магазинов из <a class="blue" href="{href}">нашего каталога</a> в Избранное  они будут отображаться на данной странице.',
     'favorites_empty' => 'На данный момент у Вас нет избранных магазинов.',
     'favorites_<a href="{href}">login</a>_to_add' => 'Для того, чтобы добавить магазин в Избранное, вы должны быть <a href="{href}">авторизованы</a> на сайте.',
+    'favorites_empty_viewed-products' => 'На данный момент у Вас нет просмотренных товаров.',
+    'favorites_empty_text_view_<a href="{href}">here</a>_after_add_viewed-products' => 'После переходов в товары из <a class="blue" href="{href}">нашего каталога</a> они будут отображаться на данной странице.',
     'favorites_add_noshop' => 'Невозможно найти выбранный магазин.',
     'favorites_shop_allready' => 'Данный магазин уже находится у вас в Избранном.',
     'favorites_shop_add' => 'Магазин был успешно добавлен в Избранное.',

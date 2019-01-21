@@ -825,6 +825,7 @@ class Product extends \yii\db\ActiveRecord
     $casheName = 'products_top_' . (!empty($params) ? Help::multiImplode('_', $params) : '') . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
+
     $products = $cache->getOrSet($casheName, function () use ($params) {
       $count = isset($params['count']) ? $params['count'] : 5;
       $product = self::items()
