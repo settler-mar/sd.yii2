@@ -195,9 +195,11 @@ class Help extends Component
     }
     if (substr($href, 0, 1) == '#') {
       $href =  substr($href, 1);
-      return ($basePath != '' ? $basePath . '/' : '') . '#' . $prefix .  (substr($href, 0, 1) != '/' ? '/' : '') . $href;
+      return ($basePath != '' ? $basePath . '/' : '') . '#' . $prefix .
+          (substr($href, 0, 1) != '/' ? '/' : '') . ($href == '/' ? '' : $href);
     } else {
-      return ($basePath != '' ? $basePath : '/') . $prefix . (substr($href, 0, 1) != '/' ? '/' : '') . $href;
+      return ($basePath != '' ? $basePath : '/') . $prefix .
+          (substr($href, 0, 1) != '/' ? '/' : '') . ($href == '/' ? '' : $href);
     }
   }
 
