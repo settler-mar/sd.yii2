@@ -6,8 +6,8 @@ use yii;
 
 class Connexity
 {
-    public $config;
-    public $productApi = 'http://catalog.bizrate.com/services/catalog/v1/api/';
+    protected $config;
+    protected $productApi = 'http://catalog.bizrate.com/services/catalog/v1/api/';
     public $feedsUrl = 'http://publisherexports.connexity.com/feeds/';
 
 
@@ -73,6 +73,13 @@ class Connexity
     {
         return $this->getProductApi('merchantinfo', $params);
     }
+    //бренды
+    public function brands($params = [])
+    {
+        return $this->getProductApi('brands', $params);
+    }
+
+
 
 
     //методы для фидов

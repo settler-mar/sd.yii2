@@ -158,7 +158,7 @@ class DefaultController extends SdController
         }
         if ($storeRequest) {
             $filter[] = ['store_id' => $storeRequest];
-            $paginateParams['store'] = $storeRequest;
+            $paginateParams['store_id'] = $storeRequest;
 
         }
         if (!empty($filter)) {
