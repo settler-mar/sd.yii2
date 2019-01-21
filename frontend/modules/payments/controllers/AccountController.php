@@ -109,7 +109,7 @@ class AccountController extends Controller
     }
     $data['payments'] = $payments;
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('payments/account/ref', ['id' => $id,'date'=>$search_range]);
+      $data["pagination"] = $pagination->getPagination('account/payments/ref', ['id' => $id,'date'=>$search_range]);
     }
     $data['ref_user'] = $user;
 
@@ -142,7 +142,7 @@ class AccountController extends Controller
     }
     $data['payments'] = $payments;
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('payments/account', []);
+      $data["pagination"] = $pagination->getPagination('account/payments', []);
     }
 
     return $this->render('index', $data);

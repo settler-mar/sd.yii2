@@ -605,18 +605,14 @@ class SiteController extends SdController
     return json_encode(['error' => 0]);
   }
 
-  public function actionRobots()
-  {
-    Yii::$app->response->format=\yii\web\Response::FORMAT_RAW;
-    $content = file_get_contents(Yii::getAlias('@frontend/config/robots.txt'));
-
-    $region = Yii::$app->params['regions_list'][Yii::$app->params['region']];
-    $url = (isset($region['protocol']) ? $region['protocol'] : 'http') . '://' .
-        (isset($region['url']) ? $region['url'] : Yii::$app->params['region']);
-    $url = preg_replace('/\/*$/', '', $url);
-
-    $content .= "\nHost: " . $url . "/  \nSitemap: " . $url . "/" . Sitemap::$path . "/" . Sitemap::$file .
-        "." . Yii::$app->params['region'] . ".xml\n";
-    return $content;
-  }
+//  public function actionRobots()
+//  {
+//    $request = Yii::$app->request;
+//    Yii::$app->response->format=\yii\web\Response::FORMAT_RAW;
+//    $content = file_get_contents(Yii::getAlias('@frontend/config/robots.txt'));
+//
+//    $content .= $request->hostInfo . "/" . Sitemap::$path . "/" . Sitemap::$file .
+//        "." . Yii::$app->params['region'] . ".xml\n";
+//    return $content;
+//  }
 }

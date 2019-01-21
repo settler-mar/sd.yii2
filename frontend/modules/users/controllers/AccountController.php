@@ -109,7 +109,7 @@ class AccountController extends Controller
 
     return $this->render('index', [
         'users' => $models,
-        'pagination' => $pagination->getPagination('users/account', $paginateParams),
+        'pagination' => $pagination->getPagination('account/users', $paginateParams),
         'users_total' => $totQuery,
         'data_ranger' => $data_ranger,
         'from_refQuery' => $from_refQuery,

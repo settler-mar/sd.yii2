@@ -3,9 +3,10 @@
 namespace frontend\modules\search\controllers;
 
 use frontend\modules\stores\models\Stores;
+use frontend\modules\product\models\Product;
 use yii;
 use frontend\components\SdController;
-use common\components\Help;
+//use common\components\Help;
 //use yii\sphinx\Query;
 //use yii\sphinx\ActiveRecord;
 
@@ -17,7 +18,7 @@ class DefaultController extends SdController
 
     $query = strip_tags($query);
     $request = Yii::$app->request;
-    if ($request->get('module') && $request->get('module') == 'coupon') {
+    if (isset($params['module']) && $params['module'] == 'coupon') {
         $params['url'] ='/coupons/';
         $params['limit'] = 100;
         $params['store_active'] = [1];
@@ -56,13 +57,6 @@ class DefaultController extends SdController
             'route' => $baseURL.$v['route_url']
           ]
         ];
-//        $out["suggestions"][] = [
-//          "value" => $v->name,
-//          "data" => [
-//            'name' => $v->name,
-//            'route' => $v->routeUrl
-//          ]
-//        ];
       }
 
       echo json_encode($out);
@@ -82,12 +76,47 @@ class DefaultController extends SdController
         $param=[
             'url'=>'/coupons/',
             'limit'=>100,
-            'store_active' => [1]
+            'store_active' => [1],
+            'module' => 'coupons',
         ];
         return $this->actionIndex($query,$param);
     } else {
         Yii::$app->params['search_query'] = $query = strip_tags($query);
         return \Yii::$app->runAction('coupons/default/search');
     }
+  }
+
+  public function actionProduct($query)
+  {
+      $query = strip_tags($query);
+      $request = Yii::$app->request;
+      $limit = !$request->isAjax ? 1000 :
+          ($request->get('limit') ? $request->get('limit') : 10);
+      $validator = new \yii\validators\NumberValidator();
+      if (!empty($limit) && !$validator->validate($limit)) {
+          throw new \yii\web\NotFoundHttpException;
+      };
+
+      if ($request->isAjax && $request->get('module') == 'product') {
+          $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . $limit;
+          $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
+
+          $products = Product::items()->andWhere(['prod.id' => $ids])->asArray()->all();
+          $out = [];
+          foreach ($products as $k => $v) {
+              $out["suggestions"][] = [
+                  "value" => $v['name'],
+                  "cashback" => Yii::$app->help->cashback($v, "search_line"),
+                  "data" => [
+                      'name' => $v['name'],
+                      'route' => Yii::$app->help->href('/shop/product/'.$v['id']),
+                  ]
+              ];
+          }
+          return json_encode($out);
+      } else {
+          Yii::$app->params['search_query'] = $query;
+          return \Yii::$app->runAction('shop/default/index');
+      }
   }
 }

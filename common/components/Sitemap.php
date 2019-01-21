@@ -5,11 +5,13 @@ use yii;
 
 class Sitemap
 {
-    public static $path = 'sitemap';
-    public static $file = 'sitemap';
-
-    protected $languages = [];
-    protected $url;
+    protected $config = [
+        'path' => 'sitemap',
+        'file' => 'sitemap',
+        'file_count' => 49500,
+    ];
+    protected $prefixes = [];
+    protected $url = 'https://secretdiscouner.com';
     protected $out = '';
     protected $map;
     protected $count = 0;
@@ -17,51 +19,50 @@ class Sitemap
     protected $fileIndex = 0;
     protected $files;
     protected $itemCount = 0;
-    protected $fileCount = 49500;
-    protected $baseLang;
 
     /**
      * @param $map
      * @param $region
      * @param string $baseLang
      */
-    public function __construct($map, $regions, $baseLang = 'ru-RU')
+    public function __construct($map)
     {
         $this->map = $map;
-        $this->regions = $regions;
-        $this->baseLang = $baseLang;
+        if (isset(Yii::$app->params['sitemap'])) {
+            $this->config = Yii::$app->params['sitemap'];
+            $this->url = isset($this->config['site_url']) ? $this->config['site_url'] :
+                $this->url;
+        }
+
+        foreach (Yii::$app->params['regions_list'] as $key => $regionItem) {
+            foreach ($regionItem['langList'] as $langKey => $langActive) {
+                if (in_array($key, $regionItem['langListActive'])) {
+                    $this->prefixes[] = [
+                        'prefix' => $key . ($langKey == $regionItem['langDefault'] ? '' :  '-' . $langKey),
+                        'region' => $key,
+                        'language' => $regionItem['langList'][$langKey],
+                        'lang_code' => $langKey,
+                        'conditions' => [
+                            'coupon_languages' => Yii::$app->params['coupons_languages_arrays'][$langKey]
+                        ]
+                    ];
+                }
+            }
+        }
     }
 
     public function getMaps($alias)
     {
         $this->clear($alias);
         $out = [];
-        foreach ($this->regions as $key => $region) {
-            $path = $alias.'/'.self::$path;
-            if (!file_exists($path)) {
-                mkdir($path);
-            }
-            $this->fileName = $path.'/'.self::$file.'.'.$key;
-            $this->fileIndex = 0;
-
-            $this->url = (isset($region['protocol'])? $region['protocol'] : 'http').'://'.
-                (isset($region['url']) ? $region['url'] : $key);
-            $this->url = preg_replace('/\/*$/', '', $this->url);
-
-            $this->languages = [];
-            foreach ($region['langList'] as $langKey => $language) {
-                if (!in_array($langKey, $region['langListActive'])) {
-                    continue;
-                }
-                $this->languages[$langKey] = [
-                    'url' => $language == $this->baseLang ? '' : '/'. $langKey,
-                    'conditions' => [
-                        'coupon_languages' => Yii::$app->params['coupons_languages_arrays'][$langKey]
-                    ],
-                ];
-            }
-            $out[]  = $this->getMap();
+        $path = $alias.'/'.$this->config['path'];
+        if (!file_exists($path)) {
+            mkdir($path);
         }
+        $this->fileName = $path.'/'.$this->config['file'];
+        $this->fileIndex = 0;
+
+        $out[]  = $this->getMap();
         return $out;
     }
 
@@ -87,7 +88,7 @@ class Sitemap
                 $requestItems = [1];
                 if (!empty($mapItem['lang_request'])) {
                     //для каждого языка свой запрос
-                    $requestItems = $this->languages;
+                    $requestItems = $this->prefixes;
                 }
                 foreach ($requestItems as $requestItem) {
                     $model = $mapItem['model'];
@@ -98,7 +99,7 @@ class Sitemap
                         //Условия для запроса по языкам
                         foreach ($requestItem['conditions'] as $key => $value) {
                             foreach ($conditions as &$condition) {
-                                if ($condition == '{{' . $key . '}}') {
+                                if ($condition === '{{' . $key . '}}') {
                                     $condition = $value;
                                 }
                             }
@@ -172,20 +173,20 @@ class Sitemap
 
     protected function clear($alias)
     {
-        $dir = $alias.'/'.self::$path;
+        $dir = $alias.'/'.$this->config['path'];
         if (!file_exists($dir)) {
             return;
         }
         $files = scandir($dir);
         foreach ($files as $file) {
-            if (strpos($file, self::$file) === 0) {
+            if (strpos($file, $this->config['file']) === 0) {
                 unlink($dir.'/'.$file);
             }
         }
     }
 
 
-    protected function addByUrl($item, $url, $lastMod, $priority, $friquency, $languages = null)
+    protected function addByUrl($item, $url, $lastMod, $priority, $friquency, $prefixes = null)
     {
         foreach ($item as $key => $value) {
             $url = str_replace('{{'.$key.'}}', $value, $url);
@@ -193,9 +194,9 @@ class Sitemap
         if (!empty($mapItem['replaces']) && isset($mapItem['replaces'][$url])) {
             $url = $mapItem['replaces'][$url];
         }
-        $languages = $languages ? $languages : $this->languages;
-        foreach ($languages as $lang) {
-            $urlFinal = $this->url . $lang['url'] . $url;
+        $prefixes = $prefixes ? $prefixes : $this->prefixes;
+        foreach ($prefixes as $prefix) {
+            $urlFinal = $this->url . '/'. $prefix['prefix'] . $url;
             $this->count++;
             $this->itemCount++;
             $this->out .= '<url>'.
@@ -204,7 +205,7 @@ class Sitemap
                 '<changefreq>'.$friquency.'</changefreq>'.
                 '<priority>'.$priority.'</priority>'.
                 '</url>';
-            if ($this->count >= $this->fileCount) {
+            if ($this->count >= $this->config['file_count']) {
                 $this->endFile();
                 $this->startFile();
             }
@@ -224,7 +225,7 @@ class Sitemap
         $this->fileIndex++;
         $fileName = $this->fileName .'.'. $this->fileIndex.'.xml';
         file_put_contents($fileName, $this->out);
-        $this->files[] = $this->url.'/'.self::$path.'/'.basename($fileName);
+        $this->files[] = $this->url.'/'.$this->config['path'].'/'.basename($fileName);
     }
 
     protected function writeResult()

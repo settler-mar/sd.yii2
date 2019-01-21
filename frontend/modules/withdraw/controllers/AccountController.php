@@ -88,7 +88,7 @@ class AccountController extends Controller
     $data['withdraw'] = $pagination->data();
 
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('withdraw/account/history', []);
+      $data["pagination"] = $pagination->getPagination('account/withdraw/history', []);
     }
     $payment_statuses = Yii::t('dictionary', 'pay_status');
     foreach ($data['withdraw'] as &$withdraw) {

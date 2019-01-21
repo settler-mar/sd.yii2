@@ -4,7 +4,7 @@ return [
     [
         'model' => 'frontend\modules\meta\models\Meta',
         'priority' => 1,
-        'condition' => ['not like', 'page', '*'],
+        'condition' => ['and', ['not like', 'page', '/'], ['<>', 'page', 'index']],
         'select' => ['page', 'updated_at'],
         'url' => '/{{page}}',
         'replaces' => [
@@ -116,6 +116,13 @@ return [
         //единичный юрл
         'url' => '/reviews',
         'updated_request' => 'select max(added) as updated_at from `cw_users_reviews`',
+        'friquency' => 'daily',
+        'priority' => 1,
+    ],
+    [
+        //единичный юрл
+        'url' => '/shop',
+        'updated_request' => 'select max(date_import) as updated_at from `cw_catalog_stores`',
         'friquency' => 'daily',
         'priority' => 1,
     ]

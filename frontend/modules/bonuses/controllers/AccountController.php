@@ -92,7 +92,7 @@ class AccountController extends Controller
           $dependency);
 
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('bonuses/account', []);
+      $data["pagination"] = $pagination->getPagination('account/bonuses', []);
     }
 
     return $this->render('index', $data);

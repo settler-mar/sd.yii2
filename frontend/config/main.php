@@ -150,7 +150,7 @@ $config = [
                 [ // обработка перехода после авторизации из админки под пользователем обратно в админку
                     'class' => 'frontend\components\SdUrlAdmin',
                 ],
-                'robots.txt' => 'site/robots',
+                //'robots.txt' => 'site/robots',
                 /*'users/<action>/<action>'=>'404',
                 'users/<action>/<action>/<action>'=>'404',*/
 
@@ -180,13 +180,12 @@ $config = [
                 'reg' => 'users/default/reg',
 
                 'search' => 'search/default/index',
-                'search/coupon' => 'search/default/coupon',
-                'search/<action>' => '404',
+                'search/<action:coupon|product>' => 'search/default/<action>',
+                //'search/<action>' => '404',
                 'coupons/search' => '404',
                 'tpls' => 'template/admin/tpls',
 
                 '<action:(admin|offline)>' => 'site/<action>',
-                'robots.txt' => 'site/robots',
                 'affiliate-system' => 'site/affiliate',
                 'offline-system' => 'site/offline-system',
                 'account-blocked' => 'site/accountblocked',

@@ -51,7 +51,9 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
-        $storeRequest = $request->get('store');
+        $storeRequest = $request->get('store_id');
+
+        $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
 
         if ($vendorRequest) {
             $vendorDb = array_column(Vendor::items([
@@ -109,24 +111,12 @@ class DefaultController extends SdController
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
 
         $storesData = [];
-        $dataBaseData = Product::find()
-            ->from(Product::tableName() . ' prod')
-            ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-            ->leftJoin(Vendor::tableName(). ' vendor', 'vendor.id = prod.vendor_id')
-            ->where([
-                'prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST],
-                //'v.status' => Vendor::STATUS_ACTIVE,
-            ])
-            ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
-                's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
-                's.is_active as store_active', 'vendor.name as vendor', 'vendor.route as vendor_route',
-                's.currency as currency', 's.action_end_date as action_end_date',
-                'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
-            ->orderBy([$sortDb => $order]);
+        $dataBaseData = Product::items()->orderBy([$sortDb => $order]);
+
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
-            ($language ? '_' . $language : '') . ($region? '_' . $region : '');
+            ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '');
 
         $filter = [];
         $where = [];
@@ -151,6 +141,7 @@ class DefaultController extends SdController
             'limit' => $limit,
             'sort' => $sort,
             'page' => $page,
+            'query' => $query ? $query : null,
         ];
         if ($priceStart && $priceStart != $filterPriceStartMin) {
             $filter[] = ['>=', 'price', $priceStart];
@@ -174,7 +165,6 @@ class DefaultController extends SdController
             $dataBaseData->andWhere(array_merge(['and'], $filter));
             $cacheName .= ('_' . Help::multiImplode('_', $filter));
         }
-        //ddd($dataBaseData);
         $paginatePath = '/shop';
 
         if ($this->category) {
@@ -194,6 +184,18 @@ class DefaultController extends SdController
             $cacheName .= '_category_' . $this->category->route;
 
         }
+        if ($query) {
+            $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . $limit;
+            $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
+
+            $dataBaseData->andWhere(['prod.id' => $ids]);
+            $paginatePath = '/search/product';
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('main', 'breadcrumbs_search'),
+                'url' => Help::href($paginatePath.'?limit=1000&query='.$query),
+            ];
+            Yii::$app->params['url_mask'] = 'category/search';
+        }
         if (!empty($filter)) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'filter_result'),
@@ -204,7 +206,7 @@ class DefaultController extends SdController
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
-            ['limit' => $limit, 'page' => $page, 'asArray'=> true]
+            ['limit' => $query ? 48 : $limit, 'page' => $page, 'asArray'=> true]
         );
 
         $storesData['category'] = $this->category;
@@ -240,7 +242,6 @@ class DefaultController extends SdController
         $stores = Product::usedStores([
             'database' => $dataBaseData
         ]);
-        //ddd($stores);
 
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
@@ -251,8 +252,10 @@ class DefaultController extends SdController
             'vendors_user' => $vendorRequest ? $vendorRequest : false,
             'stores' => $stores,
             'store_user' => $storeRequest ? $storeRequest : [],
+            'query' => $query ? $query : false,
+            'action' => Yii::$app->help->href($paginatePath),//чтобы не попал page
+            'limit' => $query ? $limit : false,
         ];
-        // ddd($storesData['filter']);
         return $this->render('index', $storesData);
     }
 

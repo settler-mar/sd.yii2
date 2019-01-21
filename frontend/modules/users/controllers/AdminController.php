@@ -410,7 +410,7 @@ class AdminController extends Controller
           'bonus_status_list' => $bonus_status_list,
           'fav_store' => $fav_store,
           'ref_users' => $ref_users,
-          "pagination" => $pagination->getPagination('users/admin/update', ['id' => $id]),
+          "pagination" => $pagination->getPagination('admin/users/update', ['id' => $id]),
           'refs_active' => $refsActive,
           'traffTypeList' => Users::trafficTypeList(),
           'MaskedInput_class' => MaskedInput::className(),
