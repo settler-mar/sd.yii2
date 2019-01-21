@@ -87,7 +87,8 @@ class DefaultController extends Controller
     $session = Yii::$app->session;
     $session->remove('admin_id');
     Yii::$app->user->logout();
-    return $this->goHome();
+    return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
+    //return $this->goHome();
   }
 
   /**
@@ -99,12 +100,14 @@ class DefaultController extends Controller
   {
 
     if (!Yii::$app->user->isGuest) { // если мы уже залогинены
-      return $this->goHome();
+      return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
+      //return $this->goHome();
     }
 
     $request = Yii::$app->request;
     if (!$request->isAjax) {
-      return $this->goHome();
+      //return $this->goHome();
+      return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
     }
 
     $model = new RegistrationForm();

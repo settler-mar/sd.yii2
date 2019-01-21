@@ -1,15 +1,16 @@
 <div class="shop hover-box">
+    {% set store_href =  _href(store.store_href~(store.is_offline ? '-offline':'')) %}
     {% if store.action_id == 1 %}
         <span class="shop_promo-label shop_promo-label_x2"></span>
     {% endif %}
     <div class="shop-logo">
-        <a class="shop-logo_link" href="{{ _href(store.store_href) }}{{ _if(store.is_offline,'-offline') }}">
+        <a class="shop-logo_link" href="{{ store_href|raw }}">
             <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
         </a>
     </div>
     <div class="shop_panel">
         {% if store.reviews_rating %}
-            <a href="{{ _href(store.store_href) }}{{ _if(store.is_offline,'-offline') }}#reviews"
+            <a href="{{ store_href|raw }}#reviews"
                class="shop_panel-item"
                data-toggle="tooltip" data-state="delete" data-placement="top"
                data-original-title="{{ t('main', 'based_on_reviews_of_{count}_our_users', {'count':store.reviews_count})|raw }}"
@@ -34,7 +35,7 @@
             {% set s=getShop(store.related) %}
             {% if s.is_active !=-1 %}
                 <a
-                        class="shop_panel-item" href="{{ s.store_href }}{{ _if(s.is_offline,'-offline') }}"
+                        class="shop_panel-item" href="{{ store_href|raw }}"
                         data-toggle="tooltip" data-state="delete" data-placement="top"
                         data-original-title="{{ _if(store.is_offline,t('main', 'there_is_online_shop'), t('main', 'there_is_offline_shop'))|raw }}"
                 >
@@ -61,7 +62,7 @@
     </div>
     <a
             class="shop_header {{ _if(store.name|length> 35,"small-size") }}"
-            href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}"
+            href="{{ store_href|raw }}"
     >
         <div class="shop_header-title">
             <span class="shop_header-title_name">
@@ -76,7 +77,7 @@
     </a>
 
     <a class="shop-cashback-link {% if store.action_id != 0 %}shop-cashback-link_action{% endif %}"
-            href="{{store.store_href}}{{ _if(store.is_offline,'-offline') }}"
+            href="{{ store_href|raw }}"
             {% if _is_empty(store.displayed_cashback) %} data-toggle="tooltip" data-placement="top" data-original-title="{{ t('common', 'charity_shop')|raw }}"{% endif %} >
       {{ cashback(store,'shop_catalog')|raw }}
     </a>

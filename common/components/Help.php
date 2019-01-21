@@ -190,11 +190,16 @@ class Help extends Component
   {
 
     $prefix = Yii::$app->params['url_prefix'];
+    if ($basePath) {
+        $basePath = substr($basePath, strlen($basePath) - 1, 1) == '/' ? $basePath : $basePath . '/';
+    }
     if (substr($href, 0, 1) == '#') {
       $href =  substr($href, 1);
-      return ($basePath != '' ? $basePath . '/' : '') . '#' . $prefix .  (substr($href, 0, 1) != '/' ? '/' : '') . $href;
+      return ($basePath != '' ? $basePath . '/' : '') . '#' . $prefix .
+          (substr($href, 0, 1) != '/' ? '/' : '') . ($href == '/' ? '' : $href);
     } else {
-      return ($basePath != '' ? $basePath : '/') . $prefix . (substr($href, 0, 1) != '/' ? '/' : '') . $href;
+      return ($basePath != '' ? $basePath : '/') . $prefix .
+          (substr($href, 0, 1) != '/' ? '/' : '') . ($href == '/' ? '' : $href);
     }
   }
 

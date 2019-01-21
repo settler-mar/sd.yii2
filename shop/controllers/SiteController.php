@@ -6,13 +6,13 @@ namespace shop\controllers;
 use frontend\modules\meta\models\CatMeta;
 use frontend\modules\meta\models\Meta;
 use frontend\modules\sdblog\models\Posts;
-use shop\modules\category\models\ProductsCategory;
-use shop\modules\product\models\Product;
+use frontend\modules\product\models\ProductsCategory;
+use frontend\modules\product\models\Product;
 use yii;
 use yii\web\Controller;
 use frontend\modules\transitions\models\UsersVisits;
 use common\components\Help;
-use shop\modules\vendor\models\Vendor;
+use frontend\modules\vendor\models\Vendor;
 use yii\web\NotFoundHttpException;
 
 
@@ -70,7 +70,7 @@ class SiteController extends Controller
     Yii::$app->params['global_wrap'] = 'page-404';
     Yii::$app->params['pre_footer_hide'] = true;
     //Yii::$app->params['wrap'] = 'index';
-    Yii::$app->params['test'] = '1';
+    Yii::$app->params['test'] = 0;
     return $this->render('under_development.twig');
   }
 
