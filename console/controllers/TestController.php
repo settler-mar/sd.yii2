@@ -25,13 +25,16 @@ class TestController extends Controller
     return parent::beforeAction($action);
   }
 
-  public $id,$code;
+  public $id,$code,$table;
 
   //добавляем параметры для запуска
   public function options($actionID)
   {
     if (in_array($actionID,array('api-payments','api-stores'))) {
       return ['id','code'];
+    }
+    if (in_array($actionID,array('sphinx'))) {
+      return ['table'];
     }
   }
 
@@ -237,4 +240,10 @@ class TestController extends Controller
         d('saved');
     }
 
+    public function actionSphinx($table = 'products'){
+      if(empty($this->table))$this->table=$table;
+      $sSql = 'SELECT * FROM '.$this->table.' LIMIT 10';
+      $ids = Yii::$app->sphinx->createCommand($sSql)->queryAll();
+      ddd($ids);
+    }
 }
