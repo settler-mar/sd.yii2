@@ -56,7 +56,7 @@ class AccountController extends Controller
         $data['charity'] = $pagination->data();
 
         if ($pagination->pages() > 1) {
-            $data["pagination"] = $pagination->getPagination('charity/account', []);
+            $data["pagination"] = $pagination->getPagination('account/charity', []);
         }
 
         return $this->render('index', $data);

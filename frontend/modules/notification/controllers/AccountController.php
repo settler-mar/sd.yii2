@@ -119,7 +119,7 @@ class AccountController extends Controller
     Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));
 
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination('notification/account', ['isAjax'=>false]);
+      $data["pagination"] = $pagination->getPagination('account/notification', ['isAjax'=>false]);
     }
 
     return $this->render('index', $data);

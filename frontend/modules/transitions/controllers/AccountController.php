@@ -57,7 +57,7 @@ class AccountController extends Controller
         $data['visit_history'] = $pagination->data();
 
         if ($pagination->pages() > 1) {
-            $data["pagination"] = $pagination->getPagination('transitions/account', []);
+            $data["pagination"] = $pagination->getPagination('account/transitions', []);
         }
         $data['date_format'] =  \Yii::t('dictionary', 'date_format_long');
 
