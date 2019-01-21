@@ -6,3 +6,17 @@
 @daily /usr/bin/php /home/sd/web/global/yii task/generate-user-list
 0 */2 * * * /usr/bin/php /home/sd/web/global/yii payments/auto-complite
 0 */8 * * * /usr/bin/php /home/sd/web/global/yii task/update-curs
+
+
+от 21.01.19
+*/20 * * * * php /home/sd/web/global/yii payments
+* * * * * php /home/sd/web/global/yii queue/run
+0 */12 * * * php /home/sd/web/global/yii store
+0 0 * * * php /home/sd/web/global/yii coupons/insert
+0 0 */2 * * php /home/sd/web/global/yii task/generate-stores-list
+0 0 */2 * * php /home/sd/web/global/yii task/generate-user-list
+*/5 * * * * php /home/sd/web/global/yii task
+0 0 */7 * * php /home/sd/web/global/yii task/load-geo-ip-country
+0 0 2 * * php /home/sd/web/global/yii task/make-rating
+0 0 3 * * php /home/sd/web/global/yii task/sitemap
+0 */8 * * * php /home/sd/web/global/yii task/update-curs

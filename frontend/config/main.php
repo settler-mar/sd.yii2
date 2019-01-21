@@ -47,12 +47,6 @@ $config = [
                 'httpOnly' => true,
             ],
         ],
-        'sphinx' => [
-            'class' => 'yii\sphinx\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=9306;',
-            'username' => 'root',
-            'password' => '123456',
-        ],
         'log' => [
             'traceLevel' => YII_LOG_LEVEL ? YII_LOG_LEVEL : 0,
             'targets' => [
