@@ -181,9 +181,9 @@ class TaskController extends Controller
     foreach ($users as &$user) {
       $user['name'] = explode(' ', $user['name']);
       if (count($user['name']) > 1) {
-        $user['name'] = $user['name'][0] . ' ' . mb_substr($user['name'][1], 0, 1) . '.';
+        $user['name'] = html_entity_decode($user['name'][0] . ' ' . mb_substr($user['name'][1], 0, 1) . '.');
       } else {
-        $user['name'] = $user['name'][0];
+        $user['name'] = html_entity_decode($user['name'][0]);
       }
 
       $i++;
