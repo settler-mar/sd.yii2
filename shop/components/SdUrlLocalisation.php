@@ -12,62 +12,105 @@ class SdUrlLocalisation implements UrlRuleInterface{
 
   public function parseRequest($manager, $request){
 
-    $location = GeoIpCountry::byIp($request->userIP);
-    $countryToLanguge = false;
-    if ($location) {
-        $countryToLanguge = CountryToLanguage::findOne(['country'=>$location['code']]);
-    }
-    $location['region'] = $countryToLanguge ? $countryToLanguge->region :
-        Yii::$app->params['country_to_region_default_region'];
-    $location['language'] = $countryToLanguge ? $countryToLanguge->language :
-        Yii::$app->params['country_to_region_default_language'];
-    Yii::$app->params['location'] = $location;
+      $location = GeoIpCountry::byIp($request->userIP);
+      $countryToLanguge = false;
+      if ($location) {
+          $countryToLanguge = CountryToLanguage::findOne(['country'=>$location['code']]);
+      }
+      $location['region'] = $countryToLanguge ? $countryToLanguge->region :
+          Yii::$app->params['country_to_region_default_region'];
+      $location['language'] = $countryToLanguge ? $countryToLanguge->language :
+          Yii::$app->params['country_to_region_default_language'];
+      Yii::$app->params['location'] = $location;
 
-    $path = explode('/',$request->pathInfo);
-    $url = $request->url;
-    $regionKey = '';
-    Yii::$app->params['region'] = 'default';
-    foreach(Yii::$app->params['regions_list'] as $key => $region) {
-        $codeArr = explode('.', $key);
-        $code = isset($region['code']) ? $region['code'] : $codeArr[0];
-        if ($path[0] == $code) {
-            $regionKey = '/'.$path[0];
-            $url = substr($url, strlen('/'. $path[0]));
-            if ($key == 'default') {
-                //регион  совпадает с default - делать редирект ??
-                //Yii::$app->response->redirect($this->makeUrl($url))->send();
-                //или 404 ??
-                throw new NotFoundHttpException();
-            }
-            Yii::$app->params['region'] = $key;
-            array_splice($path, 0, 1);
-            break;
-        }
-    }
-    $baseLangCode = substr(Yii::$app->params['base_lang'], 0, 2);
-    Yii::$app->language = Yii::$app->params['base_lang'];
-    Yii::$app->params['lang_code'] = $baseLangCode;
-    foreach(Yii::$app->params['language_list'] as $key => $language) {
-        $keyCode = substr($key, 0, 2);
-        if ($path[0] == $keyCode) {
-            $url = substr($url, strlen('/' . $path[0]));
-            if ($keyCode == $baseLangCode) {
-                //язык  совпадает с default - делать редирект
-                Yii::$app->response->redirect($this->makeUrl($regionKey . $url))->send();
-            }
-            Yii::$app->language = $key;
-            Yii::$app->params['lang_code'] = $keyCode;
-            array_splice($path, 0, 1);
-            break;
-        }
-    }
-    if (!in_array(Yii::$app->language, Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
-        Yii::$app->language =
-            Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'][Yii::$app->params['regions_list'][Yii::$app->params['region']]['langDefault']];
-    }
-    $request->url = $url;
-    $request->pathInfo = implode('/', $path);
 
+
+//      $path = explode('/',$request->pathInfo);
+//      $urlArr = explode('?', $request->url);
+//      $regions = Yii::$app->params['regions_list'];
+//
+//      $prefixes = [];//все возможные префиксы
+//      $langReverse = [];//все возможные языки перевёрнуто
+//      $langs=[]; //не перевёрнуто
+//      foreach ($regions as $key => $regionItem) {
+//          foreach ($regionItem['langList'] as $langKey => $langActive) {
+//              $langReverse[$langActive] = $langKey;
+//              $langs[$langKey] = $langActive;
+//              if (in_array($key, $regionItem['langListActive'])) {
+//                  $prefixes[$key . '-' . $langKey] = [
+//                      'region' => $key,
+//                      'language' => $regionItem['langList'][$langKey],
+//                      'redirect' => $regionItem['langDefault'] == $langKey ? $key : false,
+//                  ];
+//                  if ($regionItem['langDefault'] == $langKey) {
+//                      $prefixes[$key] = [
+//                          'region' => $key,
+//                          'language' => $regionItem['langList'][$langKey],
+//                          'redirect' => false,
+//                      ];
+//                  }
+//              }
+//          }
+//          //языки, отсутсвующие в регионе
+//          $emptyLanguages = array_diff(array_keys($langs), array_keys($regionItem['langList']));
+//          //по ним редирект
+//          foreach ($emptyLanguages as $emptyLanguage) {
+//              $prefixes[$key . '-' . $emptyLanguage] = [
+//                  'region' => $key,
+//                  'language' => $langs[$regionItem['langDefault']],
+//                  'redirect' => $key,
+//              ];
+//          }
+//      }
+//      $defaultPrefix = $location['region'] . (isset($langReverse[$location['language']]) ?
+//              '-' . $langReverse[$location['language']] : '');
+//      if (isset($prefixes[$defaultPrefix])) {
+//          $defaultPrefix = $prefixes[$defaultPrefix]['redirect'] ? $prefixes[$defaultPrefix]['redirect'] : $defaultPrefix;
+//      } else {
+//          $defaultPrefix = 'ru';
+//      }
+//
+//      $prefix = $path[0];
+//      if (in_array($prefix, ['admin', 'admin-categories', 'admin-values', 'admin-stores', 'admin-catalog', 'admin-category'])) {
+//          $this->region = $regions['ru'];
+//          Yii::$app->params['region'] = 'ru';
+//          Yii::$app->language = 'ru-RU';
+//          $lang = 'ru';
+//          Yii::$app->params['url_prefix'] = 'ru';
+//      } else {
+//          if (!in_array($prefix, array_keys($prefixes))) {
+//              //такой префикс недопустим
+//              //редирект на тот что из гео ип
+//              $newUrl = '/' . $defaultPrefix . ($request->url == '/' ? '' : $request->url);
+//              Yii::$app->response->redirect($newUrl)->send();
+//              exit;
+//          }
+//          if ($prefixes[$prefix]['redirect']) {
+//              //для префикс редирект задан
+//              $newUrl = implode('/', array_slice($path, 1));
+//              $newUrl = ($newUrl ? '/' . $newUrl : '') . (isset($urlArr[1]) ? '?' . $urlArr[1] : '');
+//              $newUrl = '/'.$prefixes[$prefix]['redirect'] . $newUrl;
+//              Yii::$app->response->redirect($newUrl)->send();
+//              exit;
+//          }
+//          $this->region = $regions[$prefixes[$prefix]['region']];
+//          Yii::$app->params['region'] = $prefixes[$prefix]['region'];
+//          Yii::$app->language = $prefixes[$prefix]['language'];
+//          $lang = $langReverse[$prefixes[$prefix]['language']];
+//          Yii::$app->params['url_prefix'] = $prefix;
+//          Yii::$app->params['lang_code'] = $lang;
+//          unset($path[0]);
+//          $request->pathInfo = implode('/', $path);
+//          $request->url = '/'. $request->pathInfo . (isset($urlArr[1]) ? '?' . $urlArr[1] : '') ;
+//          //ddd($this->region, Yii::$app->params['region'], Yii::$app->language, $lang, $prefix, $request->pathinfo, $request->url);
+//      }
+//
+//      $host=$request->headers['host'];
+//
+//      Yii::$app->homeUrl = $host;;
+    Yii::$app->language = 'ru-RU';
+    Yii::$app->params['url_prefix'] = 'ru';
+    Yii::$app->params['region'] = 'ru';
     Yii::$app->params['transform_language_list'] = [];
     foreach (Yii::$app->params['regions_list'] as $key => $region) {
         foreach ($region['langList'] as $lang_key => $language) {
