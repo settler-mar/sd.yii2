@@ -8,6 +8,7 @@ use frontend\modules\product\models\LgProductsCategory;
 use frontend\modules\product\models\ProductsCategorySearch;
 use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductsToCategory;
+use frontend\modules\stores\models\Cpa;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -85,6 +86,13 @@ class AdminCategoryController extends Controller
             ->all(),
         'uid', 'name'
     );
+    $cpa = Cpa::find()
+        ->select(['cpa.id','cpa.name'])
+        ->from(Cpa::tableName().' cpa')
+        ->leftJoin(ProductsCategory::tableName() . ' pc', 'pc.cpa_id = cpa.id')
+        ->where(['is not', 'pc.id', null])
+        ->groupBy(['cpa.id', 'cpa.name'])
+        ->asArray()->all();
 
 
     return $this->render('index.twig', [
@@ -128,12 +136,13 @@ class AdminCategoryController extends Controller
                     ->innerJoin(ProductsToCategory::tableName().' ptc', 'p.id = ptc.product_id')
                     ->where(['ptc.category_id' => $model->id])
                     ->count();
-            }
+            },
         ],
         'parents' => ['0' => 'Нет'] + $parentsFilter,
         'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $synonymFilter,
         'activeFilter' => $this->activeFilter(),
         'data' => ProductsCategory::categoriesJson(),
+        'cpa' => ArrayHelper::map($cpa,'id', 'name'),
     ]);
   }
 

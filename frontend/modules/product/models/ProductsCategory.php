@@ -5,6 +5,7 @@ namespace frontend\modules\product\models;
 use common\components\Help;
 use frontend\modules\cache\models\Cache;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\product\models\ProductsToCategory;
 use yii;
 
@@ -103,6 +104,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     return $this->hasMany(self::className(), ['synonym' => 'id']);
   }
+
+  public function getCpa()
+  {
+    return $this->hasOne(Cpa::className(), ['id' => 'cpa_id']);
+  }
+
 
   public function beforeValidate()
   {

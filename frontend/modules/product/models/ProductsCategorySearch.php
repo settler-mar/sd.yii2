@@ -18,7 +18,7 @@ class ProductsCategorySearch extends ProductsCategory
     public function rules()
     {
         return [
-            [['id', 'parent', 'active','synonym','store_id', 'menu_index'], 'integer'],
+            [['id', 'parent', 'active','synonym','store_id', 'menu_index', 'cpa_id'], 'integer'],
             [['name', 'crated_at', 'route'], 'safe'],
         ];
     }
@@ -68,6 +68,7 @@ class ProductsCategorySearch extends ProductsCategory
             'crated_at' => $this->crated_at,
             'active' => $this->active,
             'store_id' =>$this->store_id,
+            'cpa_id' =>$this->cpa_id,
             'menu_index' => $this->menu_index,
          ]);
         if ($this->parent === '0') {
