@@ -14,8 +14,8 @@ use frontend\modules\cache\models\Cache;
 
 class ConnexityController extends Controller
 {
-    public $service;
-    public $cpa_id;
+    protected $service;
+    protected $cpa_id;
 
     protected $count;
     protected $inserted;
@@ -36,6 +36,17 @@ class ConnexityController extends Controller
         $this->cpa_id = $cpa->id;
     }
 
+    //вариант с api
+    public function actionStoreTest()
+    {
+        $response = $this->service->merchantInfo(['activeOnly'=>'true']);
+        $stores = isset($response['merchant']) ? $response['merchant'] : [];
+        foreach ($stores as $store) {
+            d($store);
+        }
+    }
+
+    //вариант с загрузкой
     public function actionStore()
     {
         $count = 0;
@@ -44,13 +55,6 @@ class ConnexityController extends Controller
         $insertedCpaLink =0 ;
         $affiliate_list = [];
         $errorsCpaLink = 0;
-        //вариант с api
-//        $response = $this->service->merchantInfo(['activeOnly'=>'true']);
-//        $stores = isset($response['merchant']) ? $response['merchant'] : [];
-//        foreach ($stores as $store) {
-//            d($store);
-//        }
-        //вариант с загрузкой
         $dateUpdates = $this->service->dateUpdate();
         $dateUpdate = isset($dateUpdates['build']['timestamp']) ? $dateUpdates['build']['timestamp'] :
             date('Y-m-d H:i:s');
@@ -59,27 +63,7 @@ class ConnexityController extends Controller
         $stores = isset($response['merchant']) ? $response['merchant'] : [];
         foreach ($stores as $merchant) {
             $count++;
-
-//            'mid' => string (6) "314039"
-//            'merchantInfo' => array (5) [
-//            'name' => string (13) "Boutique Lust"
-//                'url' => string (187) "http://rd.bizrate.com/rd?t=http%3A%2F%2Fwww.boutiquelust.com%2F&mid=314039&cat_id=&prod_id=&oid=&pos=1&b_id=18&rf=af1&af_assettype_id=12&af_creative_id=2973&af_id=648186&af_placement_id=1"
-//                'merchantUrl' => string (25) "https://boutiquelust.com/"
-//                'logoUrl' => string (37) "http://s5.cnnx.io/merchant/314039.gif"
-//                'logoUrlSmall' => string (44) "http://s5.cnnx.io/merchant/little/314039.gif"
-//            ]
-//            'merchantRating' => array (1) [
-//            'rating' => array (1) [
-//            'dimensionalAverages' => array (1) [
-//            'average' => array (5) [
-//                            *DEPTH TOO GREAT*
-//                        ]
-//                    ]
-//                ]
-//            ]
-//        ]
             $affiliate_id = $merchant['mid'];
-            d($affiliate_id);
             $info = $merchant['merchantInfo'];
             $affiliate_list[] = $affiliate_id;
 
@@ -95,7 +79,6 @@ class ConnexityController extends Controller
                 'affiliate_link' => isset($info['url']) ? $info['url'] : null,
             ];
 
-            //CatalogStores
             $storeResult = Stores::addOrUpdate($newStore);
             if (!$storeResult['result']) {
                 $errors++;
@@ -143,48 +126,41 @@ class ConnexityController extends Controller
         }
     }
 
-//    public function actionTaksonomy()
-//    {
-//        //все категории feed
-//        $taxonomy = $this->service->taxonomyFeed();
-//        ddd($taxonomy);
-//    }
+        //через апи по категориям
+    public function actionProductTest()
+    {
+        $taxonomy = $this->service->taxonomy();
 
-//    public function actionTestProduct()
-//    {
-//        $taxonomy = $this->service->taxonomy();
-//
-//        if (isset($taxonomy['taxonomy']['categories']['category'][0]['children']['category'])) {
-//            //корневые категории
-//            $categories = $taxonomy['taxonomy']['categories']['category'][0]['children']['category'];
-//
-//            foreach ($categories as $category) {
-//                d($category['id'].' '.$category['name'].' '.$category['uniqueName']);
-//                //без ид категории не возвращает , если точнее..
-//                // Note that though all three of the categoryId, keyword and productId parameters are listed as optional, at least one of them must be specified.
-//                $limit = 50;
-//                $start = 0;
-//                $all = $limit + 1;
-//                do {
-//                    $response = $this->service->products(['categoryId' => $category['id'], 'start'=>$start, 'results'=>$limit]);
-//                    $products = isset($response['products']['product']) ? $response['products']['product'] : [];
-//                    foreach ($products as $product) {
-//                        $this->writeProduct($product);
-//                    }
-//                    $count = count($products);
-//                    $start = $start + $count;
-//                    $all = isset($response['products']['totalResults']) ? $response['products']['totalResults'] : $all;
-//                    d($start, $count, $all);
-//                } while ($start + $count < $all + 1);
-//
-//                break;
-//            }
-//
-//
-//        }
-//        echo "Insert Connexity products \n";
-//        echo "Products $this->count\n";
-//    }
+        if (isset($taxonomy['taxonomy']['categories']['category'][0]['children']['category'])) {
+            //корневые категории
+            $categories = $taxonomy['taxonomy']['categories']['category'][0]['children']['category'];
+
+            foreach ($categories as $category) {
+                d($category['id'].' '.$category['name'].' '.$category['uniqueName']);
+                //без ид категории не возвращает , если точнее..
+                // Note that though all three of the categoryId, keyword and productId parameters are listed as optional, at least one of them must be specified.
+                $limit = 50;
+                $start = 0;
+                $all = $limit + 1;
+                do {
+                    $response = $this->service->products(['categoryId' => $category['id'], 'start'=>$start, 'results'=>$limit]);
+                    $products = isset($response['products']['product']) ? $response['products']['product'] : [];
+                    foreach ($products as $product) {
+                        //$this->writeProduct($product);
+                        d($product);
+                    }
+                    $count = count($products);
+                    $start = $start + $count;
+                    $all = isset($response['products']['totalResults']) ? $response['products']['totalResults'] : $all;
+                    //d($start, $count, $all);
+                } while ($start + $count < $all + 1);
+
+                break;
+            }
+        }
+        echo "Insert Connexity products \n";
+        echo "Products $this->count\n";
+    }
 
     public function actionProduct()
     {
@@ -295,13 +271,16 @@ class ConnexityController extends Controller
             }
         }
 
-
         Cache::deleteName('product_category_menu');
         Cache::clearName('catalog_product');
         Cache::deleteName('products_active_count');
-
     }
 
+    /**
+     * назавние бренда по id
+     * @param $id
+     * @return null
+     */
     protected function brandName($id)
     {
         if ($this->brands === false) {
@@ -310,6 +289,9 @@ class ConnexityController extends Controller
         return isset($this->brands[$id]) ? $this->brands[$id] : null;
     }
 
+    /*
+     * бренды
+     */
     protected function getBrands()
     {
 
@@ -377,7 +359,9 @@ class ConnexityController extends Controller
         }
     }
 
-
+    /*
+     * cписок файлов для загрузки
+     */
     protected function feeds()
     {
         if ($this->feedList === false) {
