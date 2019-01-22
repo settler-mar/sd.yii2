@@ -66,12 +66,6 @@ $config = [
             'class' => 'yii\rbac\DbManager',
           //'cache' => 'yii\caching\FileCache',
         ],
-        'sphinx' => [
-            'class' => 'yii\sphinx\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=9306;',
-            'username' => '',
-            'password' => '',
-        ],
         'assetManager' => [
             'bundles' => [
               //'yii\bootstrap\BootstrapAsset' => true,
