@@ -1,9 +1,9 @@
 var lang = (function(){
     var code = '';
     var key = '';
-    var href_prefix = '';
 
     var langlist = $("#sd_lang_list").data('json');
+    var url_prefix = $("#sd_lang_list").data('url-prefix');
     var location = window.location.pathname;
 
     if (langlist) {
@@ -11,7 +11,6 @@ var lang = (function(){
         if (langKey && langlist[langKey]) {
             code = langlist[langKey];
             key = langKey;
-            href_prefix = key === 'ru' ? '' : key+'/';
         } else {
             key = 'ru';
             code = langlist[key] ? langlist[key] : '';
@@ -20,6 +19,6 @@ var lang = (function(){
     return {
         code: code,
         key: key,
-        href_prefix: href_prefix
+        href_prefix: url_prefix ? '/'+url_prefix : ''
     }
 })();

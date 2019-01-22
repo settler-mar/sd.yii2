@@ -493,4 +493,9 @@ class DefaultController extends Controller
          'request' => Yii::$app->request,
      ]);
   }
+
+  public function goHome()
+  {
+     return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
+  }
 }

@@ -450,7 +450,8 @@ class SiteController extends SdController
   {
     $request = Yii::$app->request;
     if (!$request->isAjax) {
-      return $this->goHome();
+      //return $this->goHome();
+      return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
     }
 
     if (!($user = Users::this())) { // если мы не залогинены

@@ -489,4 +489,9 @@ class AccountController extends Controller
     $data['html'] .= $this->renderAjax('bay_loyalty', array_merge($data, ['data' => $data]));
     return json_encode($data);
   }
+
+  public function goHome()
+  {
+      return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
+  }
 }
