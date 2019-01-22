@@ -19,6 +19,7 @@ class Sitemap
     protected $fileIndex = 0;
     protected $files;
     protected $itemCount = 0;
+    protected $replaces;
 
     /**
      * @param $map
@@ -77,6 +78,7 @@ class Sitemap
         $this->startFile();
 
         foreach ($this->map as $mapItem) {
+            $this->replaces = isset($mapItem['replaces']) ? $mapItem['replaces'] : [];
             $this->itemCount = 0;
             $priority = isset($mapItem['priority']) ? $mapItem['priority'] : 1;
             $friquency = isset($mapItem['friquency']) ? $mapItem['friquency'] : 'daily';
@@ -191,8 +193,11 @@ class Sitemap
         foreach ($item as $key => $value) {
             $url = str_replace('{{'.$key.'}}', $value, $url);
         }
-        if (!empty($mapItem['replaces']) && isset($mapItem['replaces'][$url])) {
-            $url = $mapItem['replaces'][$url];
+        if (isset($this->replaces[$url]) && $this->replaces[$url] === null) {
+            return;
+        }
+        if (!empty($this->replaces) && isset($this->replaces[$url])) {
+            $url = $this->replaces[$url];
         }
         $prefixes = $prefixes ? $prefixes : $this->prefixes;
         foreach ($prefixes as $prefix) {

@@ -4,11 +4,14 @@ return [
     [
         'model' => 'frontend\modules\meta\models\Meta',
         'priority' => 1,
-        'condition' => ['and', ['not like', 'page', '/'], ['<>', 'page', 'index']],
+        'condition' => ['and', ['not like', 'page', '*']],
         'select' => ['page', 'updated_at'],
         'url' => '/{{page}}',
         'replaces' => [
             '/index' => '',
+            '/category' => '/shop',
+            '/category/search' => '/search/product',
+            '/category/filter' => null, //это не выводится
         ],
         'friquency' => 'monthly'
     ],
@@ -119,11 +122,5 @@ return [
         'friquency' => 'daily',
         'priority' => 1,
     ],
-    [
-        //единичный юрл
-        'url' => '/shop',
-        'updated_request' => 'select max(date_import) as updated_at from `cw_catalog_stores`',
-        'friquency' => 'daily',
-        'priority' => 1,
-    ]
+
 ];
