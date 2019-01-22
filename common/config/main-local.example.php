@@ -18,8 +18,8 @@ return [
         'sphinx' => [
             'class' => 'yii\sphinx\Connection',
             'dsn' => 'mysql:host=127.0.0.1;port=9306;',
-            'username' => 'root',
-            'password' => '123456',
+            'username' => '',
+            'password' => '',
         ],
         'mailer' => [
             //'class' => 'common\components\Mailer', //используется для очереди отправки писем.
@@ -50,12 +50,12 @@ return [
             'class'=>'yii\caching\DummyCache',
             'defaultDuration' => 86400,
         ],
-        'sphinx' => [
-            'class' => 'yii\sphinx\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;port=9306;',
-            'username' => '',
-            'password' => '',
-        ],
+//        'sphinx' => [
+//            'class' => 'yii\sphinx\Connection',
+//            'dsn' => 'mysql:host=127.0.0.1;port=9306;',
+//            'username' => '',
+//            'password' => '',
+//        ],
 
     ],
 ];

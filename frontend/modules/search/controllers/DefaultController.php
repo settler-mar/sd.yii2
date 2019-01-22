@@ -103,6 +103,8 @@ class DefaultController extends SdController
 
           $products = Product::items()->andWhere(['prod.id' => $ids])->asArray()->all();
           $out = [];
+          $out["suggestions"] = [];
+          $out["query"] = $query;
           foreach ($products as $k => $v) {
               $out["suggestions"][] = [
                   "value" => $v['name'],
