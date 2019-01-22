@@ -25,7 +25,7 @@ return [
         'condition' => [
             'and',
             ['cw_categories_stores.is_active' => 1],
-            ['cws.is_active' => [0,1]],
+            ['cws.is_active' => [0, 1]],
             ['cws.is_offline' => 0],
             ['hide_on_site' => 0],
             ['is not', 'cws.uid', null]
@@ -45,7 +45,7 @@ return [
         'condition' => [
             'and',
             ['cw_categories_stores.is_active' => 1],
-            ['cws.is_active' => [0,1]],
+            ['cws.is_active' => [0, 1]],
             ['cws.is_offline' => 1],
             ['hide_on_site' => 0],
             ['is not', 'cws.uid', null]
@@ -115,6 +115,32 @@ return [
         'url' => '/coupons/{{route}}/{{uid}}',
         'friquency' => 'daily'
     ],
+    [   //категории товаров
+        'model' => 'frontend\modules\product\models\ProductsCategory',
+        'priority' => 1,
+        'condition' => ['and',
+            ['cw_products_category.active' => 1],
+            ['cw_products_category.synonym' => null],
+        ],
+        'asArray' => false,
+        'methods' => [
+            'route-tree' => [
+                'method' => 'parentTree',
+                'argument' => 1
+            ],
+        ],
+        'url' => '/shop/{{route-tree}}',
+        'friquency' => 'daily'
+    ],
+//    [
+//        //товары
+//        'model' => 'frontend\modules\product\models\Product',
+//        'priority' => 1,
+//        'condition' => ['and', ['available' => [1, 2]]],
+//        'select' => ['id', 'modified_time as updated_at'],
+//        'url' => '/shop/product/{{id}}',
+//        'friquency' => 'daily'
+//    ],
     [
         //единичный юрл
         'url' => '/reviews',

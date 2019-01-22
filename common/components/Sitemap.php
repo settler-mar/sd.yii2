@@ -20,6 +20,7 @@ class Sitemap
     protected $files;
     protected $itemCount = 0;
     protected $replaces;
+    protected $methods;
 
     /**
      * @param $map
@@ -79,6 +80,7 @@ class Sitemap
 
         foreach ($this->map as $mapItem) {
             $this->replaces = isset($mapItem['replaces']) ? $mapItem['replaces'] : [];
+            $this->methods = isset($mapItem['methods']) ? $mapItem['methods'] : [];
             $this->itemCount = 0;
             $priority = isset($mapItem['priority']) ? $mapItem['priority'] : 1;
             $friquency = isset($mapItem['friquency']) ? $mapItem['friquency'] : 'daily';
@@ -94,7 +96,7 @@ class Sitemap
                 }
                 foreach ($requestItems as $requestItem) {
                     $model = $mapItem['model'];
-                    $model = $model::find()->asArray();
+                    $model = $model::find();
 
                     $conditions = isset($mapItem['condition']) ? $mapItem['condition'] : false;
                     if ($conditions && isset($requestItem['conditions'])) {
@@ -121,6 +123,9 @@ class Sitemap
                     }
                     if (!empty($mapItem['group_by'])) {
                         $model->groupBy($mapItem['group_by']);
+                    }
+                    if (!isset($mapItem['asArray']) || $mapItem['asArray'] !== false) {
+                        $model->asArray();
                     }
                     $model = $model->all();
 
@@ -190,15 +195,27 @@ class Sitemap
 
     protected function addByUrl($item, $url, $lastMod, $priority, $friquency, $prefixes = null)
     {
+        //замена ключей в пути полями
         foreach ($item as $key => $value) {
             $url = str_replace('{{'.$key.'}}', $value, $url);
         }
+        //замена ключей в пути результатами методов модели
+        foreach ($this->methods as $key => $method) {
+            if (method_exists($item, $method['method'])) {
+                $methodName = $method['method'];
+                $value = $item->$methodName(isset($method['argument']) ? $method['argument'] : null);
+                $url = str_replace('{{'.$key.'}}', $value, $url);
+            }
+        }
+        //исключения для url (используем для meta)
         if (isset($this->replaces[$url]) && $this->replaces[$url] === null) {
             return;
         }
+        //замены в url
         if (!empty($this->replaces) && isset($this->replaces[$url])) {
             $url = $this->replaces[$url];
         }
+        //префиксы (массив) или как аргумент, или как свойство
         $prefixes = $prefixes ? $prefixes : $this->prefixes;
         foreach ($prefixes as $prefix) {
             $urlFinal = $this->url . '/'. $prefix['prefix'] . $url;
