@@ -246,6 +246,6 @@ class TestController extends Controller
 
       $query_search = new Query();
       $ids = $query_search->from($table)->match('a')->all();
-      ddd($ids->count);
+      ddd(count($ids));
     }
 }
