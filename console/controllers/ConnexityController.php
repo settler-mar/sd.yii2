@@ -25,9 +25,15 @@ class ConnexityController extends Controller
     protected $categoryes=[];
     protected $feedList = false;
     protected $brands = false;
+    protected $config;
 
     public function init()
     {
+        if (isset(Yii::$app->params['connexity'])) {
+            $this->config = Yii::$app->params['connexity'];
+        } else {
+            ddd('Error - Config for Connexity not found!');
+        }
         $this->service = new Connexity();
         $cpa = Cpa::findOne(['name' => 'Connexity']);
         if (!$cpa) {

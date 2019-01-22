@@ -282,7 +282,7 @@ class Product extends \yii\db\ActiveRecord
    * @param $product
    * @return array
    */
-  public static function addOrUpdate($product, $store)
+  public static function addOrUpdate($product, $store, $config = [])
   {
     $new = 0;
     $error = 0;
@@ -302,8 +302,8 @@ class Product extends \yii\db\ActiveRecord
     //}
 
     $productModifiedTime = !empty($product['modified_time']) ? $product['modified_time'] : false;
-    //todo убрать отсюда true после заполнения полей категорий
-    if (true || !$productDb || !$productDb->modified_time ||
+
+    if (!$productDb || !$productDb->modified_time ||
         ($productModifiedTime && $productModifiedTime > strtotime($productDb->modified_time))) {
       //всё остальное, если продукта нет или дата модификации продукта больше
 
@@ -327,7 +327,7 @@ class Product extends \yii\db\ActiveRecord
         $new = 1;
       }
 
-      $categories = $productDb->makeCategories($product['categoryId'], $product);//массив ид категорий из строки с разделителямиы '/'
+      $categories = $productDb->makeCategories($product['categoryId'], $product, $config);//массив ид категорий из строки с разделителямиы '/'
 
       $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
           $product['params'];
@@ -449,55 +449,51 @@ class Product extends \yii\db\ActiveRecord
     return $result;
   }
 
-  protected function makeCategories($categories, $product)
+  protected function makeCategories($categories, $product, $config = [])
   {
     $path = 'categories_' . $categories;
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
+    $product['store_id'] = !isset($config['product_category_to_store']) || $config['product_category_to_store'] ?
+        $product['store_id'] : null;
 
-    $out = $cache->getOrSet($path, function () use ($categories, $path, $product) {
+    $out = $cache->getOrSet($path, function () use ($categories, $path, $product, $config) {
       //пробуем найти категорию по коду
       $category = ProductsCategory::find()
           ->andWhere([
               'and',
               ['code' => $categories],
-              [
-                  'or',
-                  ['cpa_id' => $product['cpa_id']],
-                  ['cpa_id' => null],//временно для определения тех категорий что есть. убрать null
-              ],
-              [
-                  'or',
-                  ['store_id' => $product['store_id']],
-                  ['store_id' => null],//временно для определения тех категорий что есть. убрать null
-              ],
+              ['cpa_id' => $product['cpa_id']],
+              ['store_id' => $product['store_id']],
           ]);
       $category = $category->one();
 
       if ($category) {
         //нашли
-        $category->cpa_id = $product['cpa_id']; //временно для определения тех категорий что есть. Убрать
-        $category->store_id = $product['store_id'];//временно для определения тех категорий что есть. Убрать
-        $category->save();//временно для определения тех категорий что есть. Убрать
+        //$category->cpa_id = $product['cpa_id']; //временно для определения тех категорий что есть. Убрать
+        //$category->store_id = $product['store_id'];//временно для определения тех категорий что есть. Убрать
+        //$category->save();//временно для определения тех категорий что есть. Убрать
 
         //временно для определения тех категорий что есть. Убрать начало
-        $categories_arr = explode('/', $categories);
-        array_pop($categories_arr);
-        $categories_par = '';
-        if(count($categories_arr)>0) {
-          foreach ($categories_arr as &$item) {
-            $item = $categories_par . $item;
-            $categories_par = $item . '/';
-            ProductsCategory::updateAll([
-              'cpa_id' => $product['cpa_id'],
-              'store_id' => $product['store_id'],
-            ], [
-              'code' => $categories_arr,
-              'cpa_id' => null,
-              'store_id' => null,
-            ]);
-          }
-        }
+//        $categories_arr = explode('/', $categories);
+//        array_pop($categories_arr);
+//        $categories_par = '';
+//        if(count($categories_arr)>0) {
+//          foreach ($categories_arr as &$item) {
+//            $item = $categories_par . $item;
+//            $categories_par = $item . '/';
+//            ProductsCategory::updateAll([
+//              'cpa_id' => $product['cpa_id'],
+//              'store_id' => $product['store_id'],
+//            ], [
+//              'code' => $categories_arr,
+//              'cpa_id' => null,
+//              'store_id' => null,
+//            ]);
+//          }
+//        }
         //временно для определения тех категорий что есть. Убрать конец
+
+
         $category=$category->toArray();
         if(!empty($category['synonym'])){
           $category=ProductsCategory::find()

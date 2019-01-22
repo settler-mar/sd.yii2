@@ -109,6 +109,7 @@ return [
         'login' => '648186',
         'password' => '2011odn',
         'apikey' => '	9edbbb0626d119a67398c34aa1415482',
+        'product_category_to_store' => false,//нет привязки категории продукта к шопу
     ],
     'pays_update_period' => 1,
     'b2b_address' => '127.0.0.1:8080',
