@@ -73,4 +73,10 @@
       {% endif %}
   </div>
 {% endif %}
-<div style="display: none;" id="sd_lang_list" data-json="{{ langlist }}" data-url-prefix="{{ app.params.url_prefix }}"></div>
+<div style="display: none;"
+     id="sd_lang_list"
+     data-key="{{ app.params.lang_code }}"
+     data-code="{{ app.language }}"
+     data-json="{{ langlist }}"
+     data-url-prefix="{{ app.params.url_prefix }}">
+</div>

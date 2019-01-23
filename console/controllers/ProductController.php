@@ -15,6 +15,7 @@ use frontend\modules\product\models\LgProductsCategory;
 use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductsToCategory;
+use frontend\modules\vendor\models\Vendor;
 use yii;
 use yii\console\Controller;
 
@@ -94,6 +95,8 @@ class ProductController extends Controller
     $db->createCommand('TRUNCATE  ' . Product::tableName())->execute();
     //$db->createCommand('delete from  ' . Product::tableName())->execute();
     //$db->createCommand('alter table ' . Product::tableName() . ' AUTO_INCREMENT = 1')->execute();
+    $db->createCommand('TRUNCATE  ' . Vendor::tableName())->execute();
+
     $db->createCommand('SET FOREIGN_KEY_CHECKS = 1;')->execute();
 
     CatalogStores::updateAll(['date_import' => null, 'product_count' => null]);

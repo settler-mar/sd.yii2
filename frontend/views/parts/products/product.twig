@@ -24,7 +24,7 @@
                      {% if product.image %}
                         <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name|raw }}">
                      {% else %}
-                         <img class="no_optomize" src="/images/template-logo.jpg" alt="{{ product.name|raw }}">
+                        <img class="no_optomize" src="/images/{{ app.params.lang_code }}-no-image.png" alt="{{ product.name|raw }}">
                          {#<span class="catalog_products_item_image-empty">{{ t('shop', 'image_empty')|raw }}</span>#}
                      {% endif %}
                      </a>

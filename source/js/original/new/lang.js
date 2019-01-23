@@ -1,24 +1,18 @@
 var lang = (function(){
-    var code = '';
-    var key = '';
+    var code = 'ru-RU';
+    var key = 'ru';
+    var url_prefix ='ru';
 
-    var langlist = $("#sd_lang_list").data('json');
-    var url_prefix = $("#sd_lang_list").data('url-prefix');
-    var location = window.location.pathname;
-
-    if (langlist) {
-        var langKey = (location.length === 3 || location.substr(3,1) === '/') ? location.substr(1,2) : '';
-        if (langKey && langlist[langKey]) {
-            code = langlist[langKey];
-            key = langKey;
-        } else {
-            key = 'ru';
-            code = langlist[key] ? langlist[key] : '';
-        }
+    var elem = $("#sd_lang_list");
+    if (elem) {
+        code = $(elem).data('code') ? $(elem).data('code') : code;
+        key = $(elem).data('key') ? $(elem).data('key') : key;
+        url_prefix = $(elem).data('url-prefix') ? $(elem).data('url-prefix') : url_prefix;
     }
+
     return {
         code: code,
         key: key,
-        href_prefix: url_prefix ? '/'+url_prefix : ''
+        href_prefix: url_prefix
     }
 })();

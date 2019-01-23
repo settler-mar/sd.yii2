@@ -243,9 +243,10 @@ class DefaultController extends SdController
             'database' => $dataBaseData
         ]);
 
+        $filterPriceEndMax = $filterPriceStartMin == $filterPriceEndMax ? $filterPriceEndMax + 1 : $filterPriceEndMax;
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
-            'price_end' =>  $filterPriceEndMax,
+            'price_end' => $filterPriceEndMax,
             'price_start_user' => $priceStart && $priceStart > $filterPriceStartMin ? $priceStart : $filterPriceStartMin,
             'price_end_user' => $priceEnd && ($priceEnd < $filterPriceEndMax || $filterPriceEndMax ==0) ? $priceEnd : $filterPriceEndMax,
             'vendors' => $vendors,
@@ -275,10 +276,10 @@ class DefaultController extends SdController
         $this->breadcrumbs_last_item_disable = false;
 
         //продукты того же производителя
-        $brandsProducts = Product::top([
+        $brandsProducts = $product->vendor_id ? Product::top([
             'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'prod.id', $product->id]],
             'count' => 8
-        ]);
+        ]) : [];
         //продукты той же категории другие бренды
         $categoryProducts = !empty($product->categories) ?
             Product::top([

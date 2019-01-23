@@ -1,0 +1,27 @@
+<div class="catalog-stores_sort-all">
+
+    <div class="catalog-stores_sort-all-select linked">
+        <span class="catalog-stores_sort-all-title">{{ t('main', 'sort_by')|raw }}:</span>
+            <div class="sd-select">
+            {% for sortLink in sortlinks %}
+                 {% if sortLink.active == 1 %}
+                     <span class="sd-select-selected">{{ sortLink.title }}
+                        {{ svg('angle-down','','@frontend')|raw }}
+                     </span>
+                 {% endif %}
+            {% endfor %}
+            <ul class="sd-select-drop">
+                {% for sortLink in sortlinks%}
+                    <li {% if sortLink.active == 1 %}class="active"{% endif %}>
+                        {% if sortLink.active == 1 %}
+                            <span>{{sortLink.title}}</span>
+                        {% else %}
+                            <a href="{{ _href(sortLink.link) }}">{{sortLink.title}}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <input type="hidden" name=""/>
+        </div>
+    </div>
+</div>
