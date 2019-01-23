@@ -14,7 +14,7 @@
         <div class="catalog-product ">
 
             <div class="catalog_product-main margin-half">
-                <div class="catalog_product-main-image">
+                <div class="catalog_product-main-image catalog_products_item_image-wrap">
                     {% if product.image %}
                         <img class="no_optomize" {% if 'http' in product.image %} src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name|raw }}">
                     {% else %}

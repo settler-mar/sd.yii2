@@ -22,6 +22,7 @@ use yii\console\Controller;
 class ProductController extends Controller
 {
   private $catalogs = [];
+  private $imagesPath = '@frontend/web/images/product/';
 
   /**
    * Перезапись параметров продуктов Каталога
@@ -146,9 +147,10 @@ class ProductController extends Controller
   public function actionImages()
   {
     $startTime = time();
-    $processTime = 5;
-    $imageDownloadMaxCount = 5;
-    $size = 300;//требуемая ширина и высота
+    $processTime = isset(Yii::$app->params['image_download_time']) ? Yii::$app->params['image_download_time'] : 5;
+    $imageDownloadMaxCount = isset(Yii::$app->params['image_download_attemps']) ? Yii::$app->params['image_download_attemps'] : 5;
+    $size = isset(Yii::$app->params['image_size']) ? Yii::$app->params['image_size'] : 600;//требуемая ширина и высота
+
     echo 'Product Images starts at ' . date('Y-m-d H:i:s', $startTime) . "\n";
 
     $sql = 'SELECT `id`, `image`, `catalog_id`, `image_download_count` FROM `cw_product` WHERE `image_download_count` < ' .
@@ -163,7 +165,7 @@ class ProductController extends Controller
       $file = false;
       $process++;
       $path = $this->getPath($product['catalog_id']);//путь
-      $fullPath = Yii::getAlias('@frontend/web/images/product/' . $path);//полный путь
+      $fullPath = Yii::getAlias($this->imagesPath . $path);//полный путь
       $imageUrl = $product['image'];
       $ext = explode('.', $imageUrl);
       $ext = $ext[count($ext) - 1];
@@ -182,12 +184,6 @@ class ProductController extends Controller
               ->saveAs($fullPath . $name);
           $update['image'] = $path . $name;
           $downloads++;
-          //запись
-          Yii::$app->db->createCommand()->update(
-              'cw_product',
-              $update,
-              ['id' => $product['id']]
-          )->execute();
         } catch (\Exception $e) {
           echo $e->getMessage() . "\n";
           $error++;
@@ -195,6 +191,8 @@ class ProductController extends Controller
       } else {
         $skip++;
       }
+      //Запись
+      Yii::$app->db->createCommand()->update('cw_product', $update, ['id' => $product['id']])->execute();
 
       if (time() > $startTime + $processTime * 60) {
         echo 'Interrupted due to time limit ' . $processTime . " minutes\n";
@@ -273,7 +271,7 @@ class ProductController extends Controller
       } else {
         $this->catalogs[$id] = $id . '/' . $id . '/';
       }
-      $path = Yii::getAlias('@frontend/web/images/product/' . $this->catalogs[$id]);
+      $path = Yii::getAlias($this->imagesPath . $this->catalogs[$id]);
       if (!file_exists($path)) {
         mkdir($path, '0777', true);
       }
