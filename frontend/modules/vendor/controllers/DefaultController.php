@@ -88,18 +88,19 @@ class DefaultController extends SdController
         $this->params['breadcrumbs'][] = ['label' => $vendor->name, 'url' => Help::href('/vendor/'.$vendor->route)];
 
         $storesData = [];
-        $dataBaseData = Product::find()
-            ->from(Product::tableName() . ' prod')
-            ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-            ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
-            ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
-            ->andWhere(['prod.vendor_id'=> $vendor->id])
-            ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
-                's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
-                's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
-                's.currency as currency', 's.action_end_date as action_end_date',
-                'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
-            ->orderBy([$sortDb => $order]);
+        $dataBaseData = Product::items()->andWhere(['prod.vendor_id'=> $vendor->id])->orderBy([$sortDb => $order]);
+//        $dataBaseData = Product::find()
+//            ->from(Product::tableName() . ' prod')
+//            ->innerJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
+//            ->innerJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+//            ->where(['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]])
+//            ->andWhere(['prod.vendor_id'=> $vendor->id])
+//            ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
+//                's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
+//                's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
+//                's.currency as currency', 's.action_end_date as action_end_date',
+//                'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
+//            ->orderBy([$sortDb => $order]);
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
