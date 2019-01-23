@@ -14,6 +14,7 @@ use frontend\modules\actions\models\ActionsActions;
 use common\models\Webgains;
 use common\models\Mycommerce;
 use frontend\modules\template\models\Template;
+use yii\sphinx\Query;
 
 class TestController extends Controller
 {
@@ -242,8 +243,9 @@ class TestController extends Controller
 
     public function actionSphinx($table = 'products'){
       if(empty($this->table))$this->table=$table;
-      $sSql = 'SELECT * FROM '.$this->table.' LIMIT 10';
-      $ids = Yii::$app->sphinx->createCommand($sSql)->queryAll();
-      ddd($ids);
+
+      $query_search = new Query();
+      $ids = $query_search->from($table)->match('a')->all();
+      ddd(count($ids));
     }
 }
