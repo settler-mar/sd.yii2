@@ -8,7 +8,7 @@
 
         {{ form.field(model, 'name').textInput({'maxlength':true})|raw }}
 
-        {{ form.field(model, 'synonym').textInput()|raw }}
+        {{ form.field(model, 'synonym').dropDownList(vendors, {'class': 'form-control select2'})|raw }}
 
         {{ form.field(model, 'status').dropDownList(model.statusLabels())|raw }}
 

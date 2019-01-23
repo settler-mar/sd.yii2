@@ -5,6 +5,7 @@ namespace frontend\modules\vendor\controllers;
 use Yii;
 use frontend\modules\vendor\models\Vendor;
 use frontend\modules\vendor\models\VendorSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -128,12 +129,22 @@ class AdminController extends Controller
         }
 
         $model = $this->findModel($id);
+        $vendors = [null=>'Выберите синоним'] + ArrayHelper::map(
+            Vendor::find()
+                ->select(['id', 'name'])
+                ->asArray()
+                ->where(['and', ['synonym' => null], ['<>', 'id', $model->id]])
+                ->all(),
+            'id',
+            'name'
+        );
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'vendors' => $vendors,
             ]);
         }
     }

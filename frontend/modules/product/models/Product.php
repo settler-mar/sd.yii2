@@ -271,6 +271,10 @@ class Product extends \yii\db\ActiveRecord
         if(!$vendor_db->save()){
           ddd($vendor_db->errors);
         };
+      } else {
+         if ($vendor_db->synonymVendor) {
+            $vendor_db = $vendor_db->synonymVendor;
+         }
       }
 
       return $vendor_db->id;
