@@ -184,6 +184,16 @@
     &-checkbox {
       display: flex;
       flex-direction: column;
+
+      &.collabsed {
+
+        .catalog_product_filter-checkbox_item {
+          &.checked {
+            order: -1;
+          }
+        }
+      }
+
     }
   }
   &-main {

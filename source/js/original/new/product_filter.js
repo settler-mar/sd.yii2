@@ -61,4 +61,12 @@
     textStart.on('change', priceStartChange);//при изменениии полей ввода цены
     textFinish.on('change', priceFinishChange);//при изменениии полей ввода цены
 
+    $('input.catalog_product_filter-checkbox_item-checkbox').on('change', function(){
+        if ($(this).prop('checked')) {
+            $(this).parent().addClass('checked');
+        } else {
+            $(this).parent().removeClass('checked');
+        }
+    });
+
 })();
