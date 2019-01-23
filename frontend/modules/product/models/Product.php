@@ -495,7 +495,7 @@ class Product extends \yii\db\ActiveRecord
 
 
         $category=$category->toArray();
-        if(!empty($category['synonym'])){
+        if (!empty($category['synonym'])) {
           $category=ProductsCategory::find()
               ->where(['id'=>$category['synonym']])
               ->asArray()

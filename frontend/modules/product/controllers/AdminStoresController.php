@@ -3,6 +3,8 @@ namespace frontend\modules\product\controllers;
 
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\product\models\CatalogStoresSearch;
+use frontend\modules\product\models\ProductsToCategory;
+use frontend\modules\product\models\Product;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
 use Yii;
@@ -132,6 +134,34 @@ class AdminStoresController extends Controller
           ],
       ]);
     }
+  }
+
+    /**
+     * удаление товаров каталога
+     * @param $id
+     * @return bool|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     * @throws \yii\web\ForbiddenHttpException
+     */
+  public function actionClear($id)
+  {
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('ProductEdit')) {
+          throw new \yii\web\ForbiddenHttpException('Просмотр данной страницы запрещен.');
+          return false;
+      }
+      $model = $this->findModel($id);
+      if ($model) {
+          $sql = 'DELETE FROM `' . ProductsToCategory::tableName() . '` WHERE `product_id` in (' .
+              'SELECT `id` FROM `' . Product::tableName() . '` WHERE `catalog_id` = ' . $id . ')';
+          Yii::$app->db->createCommand($sql)->execute();
+          $sql = 'DELETE FROM `' . Product::tableName() . '` WHERE `catalog_id` = ' . $id;
+          Yii::$app->db->createCommand($sql)->execute();
+          $model->product_count = 0;
+          $model->date_import = null;
+          $model->save();
+      }
+      return $this->redirect(['index']);
   }
   /**
    * Deletes an existing CatalogStores model.

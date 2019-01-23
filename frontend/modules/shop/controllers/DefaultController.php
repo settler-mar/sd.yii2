@@ -126,7 +126,7 @@ class DefaultController extends SdController
         if (isset($storeRequest)) {
             $where['store_id'] = $storeRequest;
         }
-        $f_res = Product::conditionValues(
+        $pricesResult = Product::conditionValues(
             'price',
             ['min','max'],
             [
@@ -134,8 +134,8 @@ class DefaultController extends SdController
                 'where' => $where,
             ]
         );
-        $filterPriceEndMax = (int)$f_res['max_price'];
-        $filterPriceStartMin=(int)$f_res['min_price'];
+        $filterPriceEndMax = (int)$pricesResult['max_price'];
+        $filterPriceStartMin=(int)$pricesResult['min_price'];
 
         $paginateParams = [
             'limit' => $limit,

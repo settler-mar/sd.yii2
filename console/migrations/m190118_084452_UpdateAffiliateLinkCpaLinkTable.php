@@ -12,6 +12,9 @@ class m190118_084452_UpdateAffiliateLinkCpaLinkTable extends Migration
      */
     public function safeUp()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $this->alterColumn('cw_cpa_link', 'affiliate_link', $this->text());
     }
 

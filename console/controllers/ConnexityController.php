@@ -242,7 +242,7 @@ class ConnexityController extends Controller
                         $product['modified_time'] = strtotime($link->date_download);
 
                         $result = null;
-                        $result = Product::addOrUpdate($product, $store);
+                        $result = Product::addOrUpdate($product, $store, $this->config);
 
                         if ($result['error']) {
                             d($result['product']->errors);
