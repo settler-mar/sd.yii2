@@ -205,7 +205,9 @@ class Sitemap
             if (method_exists($item, $method['method'])) {
                 $methodName = $method['method'];
                 $value = $item->$methodName(isset($method['argument']) ? $method['argument'] : null);
-                $url = str_replace('{{'.$key.'}}', $value, $url);
+                if (is_string($value)) {
+                    $url = str_replace('{{' . $key . '}}', $value, $url);
+                }
             }
         }
         //исключения для url (используем для meta)

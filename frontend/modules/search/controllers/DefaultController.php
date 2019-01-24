@@ -108,7 +108,7 @@ class DefaultController extends SdController
           foreach ($products as $k => $v) {
               $out["suggestions"][] = [
                   "value" => $v['name'],
-                  "cashback" => Yii::$app->help->cashback($v, "search_line"),
+                  "cashback" => Yii::$app->help->cashback($v, "search_line_product"),
                   "data" => [
                       'name' => $v['name'],
                       'route' => Yii::$app->help->href('/shop/product/'.$v['id']),

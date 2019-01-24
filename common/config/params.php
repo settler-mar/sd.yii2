@@ -33,6 +33,10 @@ $params = [
         'show_charity' => true,
         'view'  => 'search_line'
     ],
+    'search_line_product'=>[ // используется для результатов поиска в выпадашке для продуктов
+        'show_charity' => false,
+        'view'  => 'search_line'
+    ],
     'product'=>[ // Плитка каталога top Ali продуктов
         'show_charity' => true,
         'view'  => 'product'
