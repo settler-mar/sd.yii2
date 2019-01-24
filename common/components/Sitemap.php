@@ -12,7 +12,6 @@ class Sitemap
     ];
     protected $prefixes = [];
     protected $url = 'https://secretdiscouner.com';
-    protected $out = '';
     protected $map;
     protected $count = 0;
     protected $fileName;
@@ -21,6 +20,7 @@ class Sitemap
     protected $itemCount = 0;
     protected $replaces;
     protected $methods;
+    protected $fileHandler;
 
     /**
      * @param $map
@@ -128,9 +128,8 @@ class Sitemap
                     if (!isset($mapItem['asArray']) || $mapItem['asArray'] !== false) {
                         $model->asArray();
                     }
-                    $model = $model->all();
 
-                    foreach ($model as $item) {
+                    foreach ($model->each() as $item) {
                         $lastMod = isset($item['updated_at']) ? $item['updated_at'] : date('Y-m-d', time() - 3600 * 24 * 7);
 
                         $url = $itemUrl;
@@ -224,12 +223,12 @@ class Sitemap
             $urlFinal = $this->url . '/'. $prefix['prefix'] . $url;
             $this->count++;
             $this->itemCount++;
-            $this->out .= '<url>'.
+            fwrite($this->fileHandler, '<url>'.
                 '<loc>'.$urlFinal.'</loc>'.
                 '<lastmod>'.gmDate(\DateTime::W3C, strtotime($lastMod)).'</lastmod>'.
                 '<changefreq>'.$friquency.'</changefreq>'.
                 '<priority>'.$priority.'</priority>'.
-                '</url>';
+                '</url>');
             if ($this->count >= $this->config['file_count']) {
                 $this->endFile();
                 $this->startFile();
@@ -240,16 +239,18 @@ class Sitemap
     protected function startFile()
     {
         $this->count = 0;
-        $this->out = '<?xml version="1.0" encoding="UTF-8"?>'.
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+        $this->fileIndex++;
+        $fileName = $this->fileName .'.'. $this->fileIndex.'.xml';
+        $this->fileHandler =  fopen($fileName, 'w');
+        fwrite($this->fileHandler, '<?xml version="1.0" encoding="UTF-8"?>'.
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     }
 
     protected function endFile()
     {
-        $this->out .= '</urlset>';
-        $this->fileIndex++;
+        fwrite($this->fileHandler, '</urlset>');
+        fclose($this->fileHandler);
         $fileName = $this->fileName .'.'. $this->fileIndex.'.xml';
-        file_put_contents($fileName, $this->out);
         $this->files[] = $this->url.'/'.$this->config['path'].'/'.basename($fileName);
     }
 
