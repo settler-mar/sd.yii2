@@ -546,7 +546,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-    $casheName = 'products_category_top_' . implode('_', $params) . ($language ? '_' . $language : '');
+    $casheName = 'products_category_top_' . Help::multiImplode('_', $params) . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $categories = $cache->getOrSet($casheName, function () use ($params) {

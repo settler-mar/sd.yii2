@@ -39,14 +39,17 @@ class Sitemap
         foreach (Yii::$app->params['regions_list'] as $key => $regionItem) {
             foreach ($regionItem['langList'] as $langKey => $langActive) {
                 if (in_array($key, $regionItem['langListActive'])) {
+                    $conditions = [];
+                    //условия для запросов по отдельным префиксам
+                    if (isset(Yii::$app->params['coupons_languages_arrays'][$langKey])) {
+                        $conditions['coupon_languages'] = Yii::$app->params['coupons_languages_arrays'][$langKey];
+                    }
                     $this->prefixes[] = [
                         'prefix' => $key . ($langKey == $regionItem['langDefault'] ? '' :  '-' . $langKey),
                         'region' => $key,
                         'language' => $regionItem['langList'][$langKey],
                         'lang_code' => $langKey,
-                        'conditions' => [
-                            'coupon_languages' => Yii::$app->params['coupons_languages_arrays'][$langKey]
-                        ]
+                        'conditions' => $conditions,
                     ];
                 }
             }
@@ -85,9 +88,7 @@ class Sitemap
             $priority = isset($mapItem['priority']) ? $mapItem['priority'] : 1;
             $friquency = isset($mapItem['friquency']) ? $mapItem['friquency'] : 'daily';
             if (isset($mapItem['model'])) {
-
                 $itemUrl = $mapItem['url'];
-
 
                 $requestItems = [1];
                 if (!empty($mapItem['lang_request'])) {
