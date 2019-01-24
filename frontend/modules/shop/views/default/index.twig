@@ -8,11 +8,11 @@
 {#краткая информация категории#}
 <section class="gray-box wrap-round margin">
   <h1 class="page-header align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
-  {#{% if meta_upper_description %}#}
-    {#<div class="catalog_category-short-description laptop_hide catalog_category-content sd_content">#}
-        {#{{ meta_upper_description|raw }}#}
-    {#</div>#}
-  {#{% endif %}#}
+  {% if content %}
+    <div class="catalog_category-short-description laptop_hide catalog_category-content sd_content">
+        {{ content|raw }}
+    </div>
+  {% endif %}
 </section>
 
 <section class="catalog margin">
@@ -46,9 +46,9 @@
 
 
 
-        {% if meta_down_description %}
+        {% if additional_content %}
           <div class="catalog_category-down-description margin sd_content">
-              {{ meta_down_description|raw }}
+              {{ additional_content|raw }}
           </div>
         {% endif %}
 

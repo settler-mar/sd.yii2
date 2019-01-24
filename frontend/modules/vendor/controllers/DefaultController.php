@@ -183,6 +183,7 @@ class DefaultController extends SdController
         ]);
 
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(8, true);
+        $filterPriceEndMax = $filterPriceStartMin == $filterPriceEndMax ? $filterPriceEndMax + 1 : $filterPriceEndMax;
         $storesData['filter'] = [
             'price_start' => $filterPriceStartMin,
             'price_end' => $filterPriceEndMax,
@@ -194,6 +195,6 @@ class DefaultController extends SdController
             'store_user' => $storeRequest ? $storeRequest : [],
         ];
         $storesData['vendor'] = $vendor->name; //для мета
-        return $this->render('@frontend/modules/shop/views/default/index', $storesData);
+        return $this->render('@frontend/modules/shop/views/default/category', $storesData);
     }
 }

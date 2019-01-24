@@ -81,6 +81,7 @@ class SdViewBASE extends View
 
         if (isset($arr['title'])) $this->title = $arr['title'];
         if (isset($arr['content'])) $this->contentBD = $arr['content'];
+        if (isset($arr['additional_content'])) $this->contentBD = $arr['additional_content'];
         if (isset($arr['h1'])) $this->h1 = $arr['h1'];
         if (isset($arr['upper_description'])) $this->meta_upper_description = $arr['upper_description'];
         if (isset($arr['down_description'])) $this->meta_down_description = $arr['down_description'];

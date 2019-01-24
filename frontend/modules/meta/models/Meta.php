@@ -30,7 +30,7 @@ class Meta extends \yii\db\ActiveRecord
 
 
   protected static $translated_attributes = ['title', 'description', 'keywords', 'h1', 'h2', 'content',
-      'backgroundImageImage', 'backgroundImageClassName', 'head'];
+      'additional_content', 'backgroundImageImage', 'backgroundImageClassName', 'head'];
 
   /**
    * @inheritdoc
@@ -58,7 +58,8 @@ class Meta extends \yii\db\ActiveRecord
     return [
         [['page', 'title', 'description', 'keywords', 'h1'], 'required'],
         [['page', 'title', 'description', 'keywords', 'h1', 'h1_class'], 'trim'],
-        [['description', 'keywords', 'content', 'h1_class', 'h2', 'background_image', 'title', 'h1'], 'string'],
+        [['description', 'keywords', 'content', 'additional_content', 'h1_class', 'h2', 'background_image',
+            'title', 'h1'], 'string'],
         [['description', 'keywords', 'content'], 'trim'],
         [['page', 'h1_class', 'h2'], 'string', 'max' => 255],
         ['page', 'unique'],
@@ -89,6 +90,7 @@ class Meta extends \yii\db\ActiveRecord
         'backgroundImageAlt' => 'Alt для изображения заставки',
         'backgroundImageClassName' => 'Вид отображения',
         'content' => 'Content',
+        'additional_content' => 'Content дополнительно',
         'show_breadcrumbs' => 'Показывать крошки',
         'meta_tags_type' => 'Микроразметка',
         'metaTitle' => 'Title для микроразметки',

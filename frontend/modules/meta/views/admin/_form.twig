@@ -64,6 +64,8 @@
 
                             {{ form.field(loop_model, 'content').widget(TinyMce.className(),params('TinyMce'))|raw }}
 
+                            {{ form.field(loop_model, 'additional_content').widget(TinyMce.className(),params('TinyMce'))|raw }}
+
                             {{ form.field(loop_model, 'head').textInput({'maxlength':true})|raw }}
 
                             <h4>Изображение заставка</h4>
