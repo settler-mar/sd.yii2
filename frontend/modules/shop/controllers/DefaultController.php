@@ -26,6 +26,9 @@ class DefaultController extends SdController
         $request = \Yii::$app->request;
         Yii::$app->params['url_mask'] = 'category';
         $path = explode('/', $request->pathInfo);
+        if ($request->get('page')) {
+            $path = array_diff($path, ['page-'.$request->get('page')]);
+        }
         if (count($path) > 1 && $path[0] =='shop') {
             $category = ProductsCategory::byRoute(array_slice($path, 1));
             //нашли категорию

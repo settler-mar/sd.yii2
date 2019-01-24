@@ -16,7 +16,7 @@
                         {% if sortLink.active == 1 %}
                             <span>{{sortLink.title}}</span>
                         {% else %}
-                            <a href="{{ _href(sortLink.link) }}">{{sortLink.title}}</a>
+                            <a href="{{ sortLink.link|raw }}">{{sortLink.title}}</a>
                         {% endif %}
                     </li>
                 {% endfor %}

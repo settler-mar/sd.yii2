@@ -203,7 +203,6 @@ class SdController extends Controller
             }
             $paramsString = http_build_query($params);
             $result[] = [
-                //'link' => Url::toRoute(array_merge(['/' . $pageName], $params)),
                 'link' => Help::href($pageName).($paramsString ? '?' . $paramsString : ''),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
