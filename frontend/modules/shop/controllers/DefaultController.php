@@ -9,7 +9,7 @@ use frontend\modules\vendor\models\Vendor;
 use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersValues;
-use frontend\modules\stores\models\Stores;
+use frontend\modules\slider\models\Slider;
 use frontend\components\Pagination;
 use frontend\components\SdController;
 use common\components\Help;
@@ -32,7 +32,7 @@ class DefaultController extends SdController
             if ($category) {
                 $this->category = $category;
                 Yii::$app->params['url_mask'] = 'category/*';
-                echo $this->actionIndex();
+                echo $this->actionCategory();
                 exit;
             } else if (count($path) == 3 and $path[1] = 'product' and preg_match('/^\d+$/', $path[2])) {
                 $product = Product::findOne($path[2]);
@@ -48,6 +48,20 @@ class DefaultController extends SdController
     }
 
     public function actionIndex()
+    {
+        $data = [];
+        $data['slider_products'] = Slider::get(['place'=>'product']);
+        $data['category_top'] = ProductsCategory::top([
+            'count' => 8,
+            'order' => ['logo' => SORT_DESC, 'in_top' => SORT_DESC, 'count' => SORT_DESC],
+        ]);
+
+        //ddd($data);
+
+        return $this->render('index', $data);
+    }
+
+    public function actionCategory()
     {
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
@@ -235,7 +249,7 @@ class DefaultController extends SdController
 
         $vendors =  Vendor::items([
             'limit' => 20,
-            'sort'=>'v.name',
+            'sort'=>'name',
             'database' => $dataBaseData,
         ]);
 
@@ -257,7 +271,7 @@ class DefaultController extends SdController
             'action' => Yii::$app->help->href($paginatePath),//чтобы не попал page
             'limit' => $query ? $limit : false,
         ];
-        return $this->render('index', $storesData);
+        return $this->render('category', $storesData);
     }
 
     public function actionProduct()

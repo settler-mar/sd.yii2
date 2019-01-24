@@ -137,6 +137,11 @@ class AdminCategoryController extends Controller
                     ->where(['ptc.category_id' => $model->id])
                     ->count();
             },
+            'logo' => function ($model) {
+                if ($model->logo) {
+                    return '<img style="max-width: 100%;max-height:80px;" src="'.$model->imagePath.$model->logo.'"/>';
+                }
+            }
         ],
         'parents' => ['0' => 'Нет'] + $parentsFilter,
         'synonymFilter' => ['-1' => 'Нет', '0' => 'Любое значение'] + $synonymFilter,

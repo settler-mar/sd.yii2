@@ -3,6 +3,7 @@
 namespace frontend\modules\product\models;
 
 use common\components\Help;
+use common\components\SdImage;
 use frontend\modules\cache\models\Cache;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\Cpa;
@@ -24,10 +25,13 @@ class ProductsCategory extends \yii\db\ActiveRecord
   const PRODUCT_CATEGORY_ACTIVE_WAITING = 2;
 
   public $languagesArray;
+  public $imagePath = '/images/product_category/';
+  public $logoImage;
 
   protected $activeTree = false;
   protected $childCategoriesId = false;
   protected $parentTree = false;
+
 
   /**
    * @inheritdoc
@@ -45,9 +49,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return [
         [['name', 'route'], 'trim'],
       //[['name'], 'required'],
-        [['name', 'route'], 'string', 'max' => 255],
+        [['name', 'route', 'logo'], 'string', 'max' => 255],
         [['parent'], 'exist', 'targetAttribute' => 'id'],
-        [['active', 'synonym', 'store_id', 'cpa_id', 'menu_index'], 'integer'],
+        [['active', 'synonym', 'store_id', 'cpa_id', 'menu_index', 'in_top'], 'integer'],
         ['code', 'unique', 'targetAttribute' => ['code', 'store_id', 'cpa_id']],
         [['route'], 'filter', 'filter' => function ($value) {
           $value = $value === '' ? null : $value;
@@ -70,7 +74,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
         'parent' => 'Родительская категория',
         'synonym' => 'Является синонимом для',
         'active' => 'Активна',
-        'menu_index' => 'Позиция в меню'
+        'menu_index' => 'Позиция в меню',
+        'in_top' => 'Выводить в Toп',
+        'logo' => 'Логотип',
     ];
   }
 
@@ -452,6 +458,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
     }
     $this->clearCache();
     parent::afterSave($insert, $changedAttributes);
+
+    $this->saveImage();
   }
 
   /**
@@ -546,10 +554,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
       $count = isset($params['count']) ? $params['count'] : 5;
       $category = self::find()->from(self::tableName() . ' pc')
           ->innerJoin(ProductsToCategory::tablename() . ' ptc', 'ptc.category_id = pc.id')
-          ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'count(ptc.id) as count'])
+          ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'pc.logo', 'count(ptc.id) as count'])
           ->groupBy(['pc.id', 'pc.name', 'pc.route', 'pc.parent'])
           ->where(['active' => ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES])
-          ->orderBy(['count' => SORT_DESC])
+          ->orderBy(isset($params['order']) ? $params['order'] : ['count' => SORT_DESC])
           ->limit($count);
       if (isset($params['parent'])) {
         $category->andWhere(['pc.parent' => $params['parent']]);
@@ -652,5 +660,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
   public function getStore()
   {
     return $this->hasOne(Stores::className(), ['uid' => 'store_id']);
+  }
+
+    /**
+     * Сохранение изображения
+     */
+  public function saveImage()
+  {
+    $photo = \yii\web\UploadedFile::getInstance($this, 'logoImage');
+    if ($photo && $image = SdImage::save($photo, $this->imagePath, 300, $this->logo)) {
+      $this::getDb()
+        ->createCommand()
+        ->update($this->tableName(), ['logo' => $image], ['id' => $this->id])
+        ->execute();
+    }
   }
 }

@@ -64,6 +64,7 @@ class Slider extends \yii\db\ActiveRecord
       'index' => ['name' => 'Стартовая. залогиненый'],
       'online-shop' => ['name' => 'Шопы-онлайн'],
       'offline-shop' => ['name' => 'Шопы-оффлайн'],
+      'product' => ['name' => 'Товары. Стартовая'],
   ];
   public $regions_array = [];
   public $slide_places = [];

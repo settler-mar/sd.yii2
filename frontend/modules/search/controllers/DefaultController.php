@@ -118,7 +118,7 @@ class DefaultController extends SdController
           return json_encode($out);
       } else {
           Yii::$app->params['search_query'] = $query;
-          return \Yii::$app->runAction('shop/default/index');
+          return \Yii::$app->runAction('shop/default/category');
       }
   }
 }

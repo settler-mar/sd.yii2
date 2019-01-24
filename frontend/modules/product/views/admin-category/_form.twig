@@ -20,7 +20,6 @@
 
           {{ form.field(model, 'menu_index').textInput({'maxlength':true})|raw }}
 
-
           <div class="form-group field-productscategory-synonym">
             <label class="control-label" for="productscategory-synonym">Является синонимом для</label>
             <input class="category_tree_input" id="productscategory-synonym_hidden" type="hidden" name="ProductsCategory[synonym]" data-hide_on_no_empty = '.synonym_hide' value="{{ model.synonym }}" data-root="Самостоятельная категория"/>
@@ -41,6 +40,15 @@
 
 
             {{ form.field(model, 'active').dropDownList(activeFilter, {'prompt':'Выберите статус'})|raw }}
+
+            {{ form.field(model, 'in_top').checkBox({'selected': model.in_top})|raw }}
+
+            <p>
+              <span>Logo:</span>
+              <img for="ProductsCategory[logoImage]" style="max-height: 150px;" src="{{ model.imagePath }}{{ model.logo | raw }}">
+            </p>
+            {{ form.field(model, 'logoImage').fileInput().label(false)|raw }}
+
 
             <h3>Локальная информация</h3>
             <div class="tarif_select_blk">

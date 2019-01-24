@@ -1,0 +1,19 @@
+<section class="margin">
+    <h3>{{ t('shop', 'popular_categories') }}</h3>
+    <div class="catalog_products_categories">
+    {% for category in category_top %}
+        <div class="catalog_products_categories-category catalog_products_item hover-box">
+            <a class="" href="{{ _href('/shop/'~category.parentTree(1)) }}">
+                {% if category.logo %}
+                    <img class="no_optomize" src="{{ category.imagePath }}{{ category.logo }}" alt="{{ category.name|raw }}">
+                {% else %}
+                    <img class="no_optomize" src="/images/{{ app.params.lang_code }}-no-image.png" alt="{{ category.name|raw }}">
+                {% endif %}
+            </a>
+            <a class="" href="{{ _href('/shop/'~category.parentTree(1)) }}">
+                <span class="catalog_products_categories-category-title">{{ category.name }}</span>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+</section>

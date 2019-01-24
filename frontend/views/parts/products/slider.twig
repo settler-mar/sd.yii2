@@ -1,0 +1,9 @@
+<section class="products-slider slider  margin">
+    <section id="mega_slider" class="slider  margin"></section>
+    <script type="application/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) {
+            data =[{{ implode(',',slider_products) | raw }}];
+            megaslider.init(data);
+        });
+    </script>
+</section>
