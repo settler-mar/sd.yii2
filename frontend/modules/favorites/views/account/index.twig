@@ -13,12 +13,11 @@
                     {% set product = store %}
                     {% include template %}
                 {% endfor %}
-                <div class="shop shop-empty"></div>
-                <div class="shop shop-empty"></div>
-                <div class="shop shop-empty"></div>
-                <div class="shop shop-empty"></div>
-                <div class="shop shop-empty"></div>
-                <div class="shop shop-empty"></div>
+                <div class="{{ item_empty_class ? item_empty_class : 'shop shop-empty' }}"></div>
+                <div class="{{ item_empty_class ? item_empty_class : 'shop shop-empty' }}"></div>
+                <div class="{{ item_empty_class ? item_empty_class : 'shop shop-empty' }}"></div>
+                <div class="{{ item_empty_class ? item_empty_class : 'shop shop-empty' }}"></div>
+                <div class="{{ item_empty_class ? item_empty_class : 'shop shop-empty' }}"></div>
             </div>
 
 

@@ -145,7 +145,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
   public static function userFavorites($products = false)
   {
       $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-      $cacheName = 'account_favorites_'.($products ? 'products_':''). ($language ? '_' . $language : '') . \Yii::$app->user->id;
+      $cacheName = 'account_favorites_'.($products ? 'products_':''). ($language ? $language . '_' : '') . \Yii::$app->user->id;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'account_favorites';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
@@ -177,25 +177,28 @@ class UsersFavorites extends \yii\db\ActiveRecord
 
   public function afterSave($insert, $changedAttributes)
   {
-    //ключи
-    Cache::deleteName('account_favorite_stores_' . $this->user_id);
-    Cache::deleteName('account_favorites_' . $this->user_id);
-    Cache::deleteName('account_favorites_products_' . $this->user_id);
-    Cache::deleteName('account_favorites_count_user_' . $this->user_id);
-    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_online');
-    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_offline');
-    //зависимости
-    Cache::clearName('catalog_storesfavorite' . $this->user_id);
-
+    $this->clearCache();
   }
   public function afterDelete()
   {
-    Cache::deleteName('account_favorite_stores_' . $this->user_id);
-    Cache::deleteName('account_favorites_' . $this->user_id);
-    Cache::deleteName('account_favorites_count_user_' . $this->user_id);
-    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_online');
-    Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_offline');
-    //зависимости
-    Cache::clearName('catalog_storesfavorite' . $this->user_id);
+    $this->clearCache();
+  }
+
+  protected function clearCache()
+  {
+      Cache::deleteName('account_favorite_stores_' . $this->user_id);
+      Cache::deleteName('account_favorites_' . $this->user_id);
+      Cache::deleteName('account_favorites_count_user_' . $this->user_id);
+      Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_online');
+      Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_offline');
+      if (isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
+          foreach (Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'] as $language) {
+              $lang = $language == Yii::$app->params['base_lang'] ? '' : $language . '_';
+              $cacheName = 'account_favorites_products_' . $lang . $this->user_id;
+              Cache::deleteName($cacheName);
+          }
+      }
+      //зависимости
+      Cache::clearName('catalog_storesfavorite' . $this->user_id);
   }
 }

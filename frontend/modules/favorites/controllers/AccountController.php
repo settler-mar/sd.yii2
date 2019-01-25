@@ -41,9 +41,10 @@ class AccountController extends Controller
       $affiliate_id = (int) $request->post('affiliate_id');
       $user_id= (int) Yii::$app->user->id;
       $product_id = (int) $request->post('product_id');
-
       $fav = UsersFavorites::findOne(['store_id'=>$affiliate_id,'user_id'=>$user_id, 'product_id' => $product_id ? $product_id : null]);
-      $store=Stores::findOne(['uid'=>$affiliate_id,'is_active'=>[0,1]]);
+
+      //$store=Stores::findOne(['uid'=>$affiliate_id,'is_active'=>[0,1]]);
+      $store=Stores::findOne(['uid'=>$affiliate_id]);
 
       if(!$store){
         return json_encode(['error'=>[Yii::t('account', 'favorites_add_noshop')]]);
@@ -147,6 +148,7 @@ class AccountController extends Controller
       $contentData["favorites_ids"] = array_column($contentData["favorites"], 'id');
       $contentData['products_template'] = '@shop/views/parts/products/product.twig';
       $contentData['action_type'] = 'product';
+      $contentData['item_empty_class'] = 'catalog_products_item shop shop-empty';
 
       return $this->render('index', $contentData);
   }
@@ -167,6 +169,7 @@ class AccountController extends Controller
       $contentData["favorites_ids"] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
       $contentData['products_template'] = '@shop/views/parts/products/product.twig';
       $contentData['action_type'] = 'viewed-products';
+      $contentData['item_empty_class'] = 'catalog_products_item shop shop-empty';
 
       return $this->render('index', $contentData);
   }
