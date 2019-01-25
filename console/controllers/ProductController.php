@@ -18,6 +18,10 @@ use frontend\modules\product\models\ProductsToCategory;
 use frontend\modules\vendor\models\Vendor;
 use yii;
 use yii\console\Controller;
+use Spatie\ImageOptimizer\OptimizerChain;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
+use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
 
 class ProductController extends Controller
@@ -156,6 +160,15 @@ class ProductController extends Controller
 
     echo 'Product Images starts at ' . date('Y-m-d H:i:s', $startTime) . "\n";
 
+    //делать ли оптимизацию
+    $optimizer = false;
+    if (!empty(Yii::$app->params['products_import']['image_optimize'])) {
+          //$optimizer=OptimizerChainFactory::create();
+       $optimizer = (new OptimizerChain())
+         ->addOptimizer(new Jpegoptim(['--strip-all', '--all-progressive',]))
+         ->addOptimizer(new Pngquant(['--force']));
+    }
+
     $sql = 'SELECT `id`, `image`, `catalog_id`, `image_download_count` FROM `cw_product` WHERE `image_download_count` < ' .
         $imageDownloadMaxCount . ' AND (`image` LIKE \'http://%\' OR `image` LIKE \'https://%\') ORDER BY `catalog_id`';
 
@@ -184,7 +197,13 @@ class ProductController extends Controller
         try {
           $img = (new Image($file))
               ->bestFit($size, $size)
-              ->saveAs($fullPath . $name);
+              ->saveAs($fullPath . $name, 70);
+
+          if ($optimizer) {
+            $optimizer->optimize($fullPath .$name);
+          }
+
+
           $update['image'] = $path . $name;
           $downloads++;
         } catch (\Exception $e) {

@@ -49,7 +49,8 @@
     "mihaildev/yii2-ckeditor": "^1.0",
     "maybeworks/yii2-minify": "dev-master",
     "yiisoft/yii2-queue": "^2.1",
-    "2amigos/yii2-transliterator-helper": "*"
+    "2amigos/yii2-transliterator-helper": "*",
+    "spatie/image-optimizer": "^1.1"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

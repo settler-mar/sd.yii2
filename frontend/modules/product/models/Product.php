@@ -71,7 +71,7 @@ class Product extends \yii\db\ActiveRecord
         [['params'], 'safe'],
         [['modified_time'], 'safe'],
         [['old_price', 'price'], 'number'],
-        [['article', 'name', 'image', 'vendor'], 'string', 'max' => 255],
+        [['article', 'name', 'image', 'namesort'], 'string', 'max' => 255],
         ['vendor_id','integer'],
         [['url'], 'string'],
         [['currency'], 'string', 'max' => 3],
@@ -92,6 +92,7 @@ class Product extends \yii\db\ActiveRecord
         'store' => 'Магазин',
         'modified_time' => 'Modified Time',
         'name' => 'Наименование',
+        'namesort' => 'Наименование для сортировки',
         'old_price' => 'Старая цена',
         'price' => 'Цена',
         'params' => 'Параметры',
@@ -108,6 +109,7 @@ class Product extends \yii\db\ActiveRecord
   {
     return [
         'name' => [
+            'name' => 'namesort',
             "title" => Yii::t('main', 'sort_by_name'),
             "title_mobile" => Yii::t('main', 'sort_by_name_mobile'),
             'order' => SORT_ASC
@@ -281,6 +283,12 @@ class Product extends \yii\db\ActiveRecord
     });
     $this->vendor_id = $vendor_id;
     return $vendor_id;
+  }
+
+  public function beforeSave($insert)
+  {
+      $this->namesort = mb_strtolower(preg_replace('/[^\d\w]/u', '', $this->name));
+      return parent::beforeSave($insert);
   }
   /**
    * @param $product
