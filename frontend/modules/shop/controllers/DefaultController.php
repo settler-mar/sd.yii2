@@ -75,7 +75,7 @@ class DefaultController extends SdController
 
         if ($vendorRequest) {
             $vendorDb = array_column(Vendor::items([
-                'where' => ['v.route' => $vendorRequest], 'category' => $this->category ? $this->category->id : false
+                'where' => ['route' => $vendorRequest], 'category' => $this->category ? $this->category->childCategoriesId() : false
             ]), 'id');
             if (empty($vendorDb)) {
                 throw new \yii\web\NotFoundHttpException;
