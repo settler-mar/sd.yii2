@@ -58,6 +58,7 @@ class DefaultController extends SdController
             'count' => 8,
             'order' => ['logo' => SORT_DESC, 'in_top' => SORT_DESC, 'count' => SORT_DESC],
         ]);
+        $data["total_v"] = Product::find()->count();
 
         //ddd($data);
 

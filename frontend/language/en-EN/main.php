@@ -10,7 +10,7 @@ return [
     'share_about_us'  => 'Share with friends',
     'share_your_friends_url'  => 'Send the link to your friends',
     'link_to_shop' => 'Visit a store',
-    'find_shop' => 'For example, Aliexpress',
+    'find_shops' => 'For example, Aliexpress',
     'find_promocode' => 'For example, Aliexpress',
     'find_product' => 'For example, notebook',
     'how_it_works' => 'How it works',

@@ -97,7 +97,7 @@ class DefaultController extends SdController
           throw new \yii\web\NotFoundHttpException;
       };
 
-      if ($request->isAjax && $request->get('module') == 'product') {
+      if ($request->isAjax && $request->get('header') == '1') {
           $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . $limit;
           $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
 

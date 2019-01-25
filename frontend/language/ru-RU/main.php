@@ -12,7 +12,7 @@ return [
     'share_your_friends_url' => 'Отправьте друзьям ссылку',
     'link_to_shop' => 'Перейти в магазин',
     //'find_shop' => 'Найти магазин',
-    'find_shop' => 'Например, Aliexpress',
+    'find_shops' => 'Например, Aliexpress',
     //'find_promocode' => 'Найти промокод',
     'find_promocode' => 'Например, Aliexpress',
     'find_product' => 'Например, notebook',

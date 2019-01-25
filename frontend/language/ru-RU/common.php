@@ -102,4 +102,6 @@ return [
     'million' => 'млн',
     'billion' => 'млрд',
     'thousand' => 'тыс',
+    'coupon' => 'Промокоды',
+    'product' => 'Товары',
 ];
