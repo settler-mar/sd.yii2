@@ -34,13 +34,16 @@
 
             </div>
             {% if filter.vendors|length >0 %}
-            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half">
+            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half product-filter {% if filter.vendors|length >10 %}accordion{% endif %} ">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_vendor') }}
                 </div>
-                <div class="catalog_product_filter-vendor catalog_product_filter-checkbox">
+                {% if filter.vendors|length >10 %}
+                    <div class="accordion-control "><a href="">{{ svg('angle-down')|raw }}</a></div>
+                {% endif %}
+                <div class="catalog_product_filter-vendor catalog_product_filter-checkbox {% if filter.vendors|length >10 %}accordion-content-clickable{% endif %}">
                     {% for vendor in filter.vendors  %}
-                        <div class="catalog_product_filter-checkbox_item">
+                        <div class="catalog_product_filter-checkbox_item accordion-checkbox">
                             <input  class="catalog_product_filter-checkbox_item-checkbox" type="checkbox" id="label-filer-vendor{{ vendor.route }}" name="vendor[]" value="{{ vendor.route }}"
                                     {% if vendor.route in filter.vendors_user %} checked {% endif %} >
                             <label for="label-filer-vendor{{ vendor.route }}">{{ vendor.name }}</label>
@@ -56,9 +59,11 @@
                 </div>
                 <div class="catalog_product_filter-stores  catalog_product_filter-checkbox">
                     {% for store in filter.stores  %}
-                        <input type="checkbox" id="label-filer-store{{ store.uid }}" name="store_id[]" value="{{ store.uid }}"
-                                {% if store.uid in filter.store_user %} checked {% endif %} >
-                        <label for="label-filer-store{{ store.uid }}">{{ store.name }}</label>
+                        <div class="catalog_product_filter-checkbox_item">
+                            <input type="checkbox" id="label-filer-store{{ store.uid }}" name="store_id[]" value="{{ store.uid }}"
+                                    {% if store.uid in filter.store_user %} checked {% endif %} >
+                            <label for="label-filer-store{{ store.uid }}">{{ store.name }}</label>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

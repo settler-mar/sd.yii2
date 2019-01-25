@@ -176,8 +176,8 @@
 
         }
         &-checkbox {
-          margin-right: 5px;
-          margin-left: 15px;
+          //margin-right: 5px;
+          //margin-left: 15px;
         }
       }
     }
@@ -185,13 +185,8 @@
       display: flex;
       flex-direction: column;
 
-      &.collabsed {
-
-        .catalog_product_filter-checkbox_item {
-          &.checked {
-            order: -1;
-          }
-        }
+      &_item {
+        margin: 5px 0;
       }
 
     }

@@ -1,4 +1,56 @@
+@mixin product-filter {
+
+  &.open {
+
+    .accordion-content-clickable {
+      max-height: 9990px;
+      transition: max-height 0.4s cubic-bezier(1,.05,1,0);
+
+      .accordion-checkbox {
+        &.checked {
+          order: 0;
+        }
+      }
+    }
+
+    .accordion-control {
+
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .accordion-content-clickable {
+    max-height: 380px;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0,1,0,.95);
+
+    .accordion-checkbox {
+        &.checked {
+          order: -1;
+        }
+    }
+  }
+  .accordion-control {
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: $link_color;
+      fill: $link_color;
+      stroke: $link_color;
+    }
+  }
+}
+
 .accordion {
+
+  &.product-filter {
+    @include product-filter;
+  }
+
+
   text-align: left;
   margin-bottom: 3px;
   //max-width: 935px;

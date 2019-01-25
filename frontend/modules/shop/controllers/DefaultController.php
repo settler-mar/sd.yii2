@@ -251,7 +251,7 @@ class DefaultController extends SdController
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
         $vendors =  Vendor::items([
-            'limit' => 20,
+            'limit' => 100,
             'sort'=>'name',
             'database' => $dataBaseData,
         ]);
