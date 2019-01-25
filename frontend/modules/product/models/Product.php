@@ -870,6 +870,30 @@ class Product extends \yii\db\ActiveRecord
     return $products;
   }
 
+    /**
+     * просмотренные юсером
+     * @param $user_id
+     * @return mixed
+     */
+  public static function viewedByUser($user_id)
+  {
+      $cache = \Yii::$app->cache;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'catalog_product';
+      $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+      $casheName = 'products_viewed_by_user_' . ($language ? $language. '_' : '') . $user_id;
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+      return $cache->getOrSet($casheName, function () use ($user_id) {
+          return self::items()
+              ->orderBy(['uv.visit_date' => SORT_DESC])
+              ->limit(100)
+              ->innerJoin(UsersVisits::tableName(). ' uv', 'uv.product_id = prod.id')
+              ->andWhere(['uv.user_id' => $user_id])
+              ->all();
+      }, $cache->defaultDuration, $dependency);
+  }
+
   public static function items()
   {
     return self::find()->from(self::tableName() . ' prod')

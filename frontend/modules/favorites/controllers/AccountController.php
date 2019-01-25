@@ -162,12 +162,7 @@ class AccountController extends Controller
           throw new \yii\web\ForbiddenHttpException(Yii::t('common', 'page_is_forbidden'));
           return false;
       }
-      $contentData["favorites"] = Product::top([
-          'count' => 100,
-          'user_transition' => Yii::$app->user->id,
-          'sort' => 'uv.visit_date',
-          'order' => SORT_DESC
-      ]);
+      $contentData['favorites'] = Product::viewedByUser(Yii::$app->user->id);
 
       $contentData["favorites_ids"] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
       $contentData['products_template'] = '@shop/views/parts/products/product.twig';

@@ -110,7 +110,15 @@ class UsersVisits extends \yii\db\ActiveRecord
   {
     Cache::clearName('account_transitions' . $this->user_id);
     Cache::clearName('stores_visited');
+    if (isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
+      foreach (Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'] as $language) {
+        $lang = $language == Yii::$app->params['base_lang'] ? '' : $language . '_';
+        $cacheName = 'products_viewed_by_user_' . $lang . $this->user_id;
+        Cache::deleteName($cacheName);
+      }
+    }
   }
+
   public function afterDelete()
   {
     Cache::clearName('account_transitions' . $this->user_id);

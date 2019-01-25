@@ -75,6 +75,7 @@ return [
     'transition_type_2' => 'Партнёр',
     'transition_type_3' => 'Партнёр с проверкой',
     'transition_type_4' => 'Продукт',
+    'transition_type_5' => 'Товар каталога',
     'register_easy' => 'Зарегистрироваться в один клик',
     'find' => 'Найти',
     'continue' => 'Продолжить',

@@ -74,6 +74,7 @@ return [
     'transition_type_2' => 'Affiliate',
     'transition_type_3' => 'WL-partner with checking',
     'transition_type_4' => 'Product',
+    'transition_type_5' => 'Catalog Product',
     'register_easy' => 'Sign up in one click',
     'find' => 'Find',
     'continue' => 'Continue',
