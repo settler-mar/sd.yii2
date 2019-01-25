@@ -147,7 +147,7 @@ class DefaultController extends SdController
                 'label' => Yii::t('shop', 'filter_result'),
                 'url' => Help::href($paginatePath . '&' . http_build_query($paginateParams)),
             ];
-            Yii::$app->params['url_mask'] = 'category/filter';
+            Yii::$app->params['url_mask'] = 'shop/filter';
         }
 
         $pagination = new Pagination(

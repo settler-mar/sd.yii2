@@ -24,7 +24,7 @@ class DefaultController extends SdController
     public function createAction($id)
     {
         $request = \Yii::$app->request;
-        Yii::$app->params['url_mask'] = 'category';
+        Yii::$app->params['url_mask'] = 'shop';
         $path = explode('/', $request->pathInfo);
         if ($request->get('page')) {
             $path = array_diff($path, ['page-'.$request->get('page')]);
@@ -34,7 +34,7 @@ class DefaultController extends SdController
             //нашли категорию
             if ($category) {
                 $this->category = $category;
-                Yii::$app->params['url_mask'] = 'category/*';
+                Yii::$app->params['url_mask'] = 'shop/*';
                 echo $this->actionCategory();
                 exit;
             } else if (count($path) == 3 and $path[1] = 'product' and preg_match('/^\d+$/', $path[2])) {
@@ -43,7 +43,7 @@ class DefaultController extends SdController
                     throw new yii\web\NotFoundHttpException();
                 }
                 $this->product = $product;
-                Yii::$app->params['url_mask'] = 'category/product/*';
+                Yii::$app->params['url_mask'] = 'shop/product/*';
                 echo $this->actionProduct();
             }
         }
@@ -211,14 +211,14 @@ class DefaultController extends SdController
                 'label' => Yii::t('main', 'breadcrumbs_search'),
                 'url' => Help::href($paginatePath.'?limit=1000&query='.$query),
             ];
-            Yii::$app->params['url_mask'] = 'category/search';
+            Yii::$app->params['url_mask'] = 'shop/search';
         }
         if (!empty($filter)) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'filter_result'),
                 'url' => Help::href($paginatePath . '&' . http_build_query($paginateParams)),
             ];
-            Yii::$app->params['url_mask'] = 'category/filter';
+            Yii::$app->params['url_mask'] = 'shop/filter';
         }
         $pagination = new Pagination(
             $dataBaseData,
