@@ -749,7 +749,7 @@ class Product extends \yii\db\ActiveRecord
                 $dataBaseSelect->select(['prod.id']);
                 $dataBaseSelect->orderBy([]);
                 $dataBaseSelect->limit(null);
-                if (in_array('discount', $dataBaseSelect->having)) {
+                if (isset($dataBaseSelect->having) && in_array('discount', $dataBaseSelect->having)) {
                     $dataBaseSelect->addSelect(['if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`']);
                 }
                 $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
