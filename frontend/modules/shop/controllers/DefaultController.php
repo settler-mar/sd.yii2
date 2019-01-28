@@ -47,6 +47,7 @@ class DefaultController extends SdController
                 $this->product = $product;
                 Yii::$app->params['url_mask'] = 'shop/product/*';
                 echo $this->actionProduct();
+                exit;
             }
         }
         return parent::createAction($id);
@@ -298,7 +299,6 @@ class DefaultController extends SdController
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
         $vendors =  Vendor::items([
-            'limit' => 100,
             'sort'=>'name',
             'database' => $dataBaseData,
         ]);
@@ -314,6 +314,7 @@ class DefaultController extends SdController
             'price_start_user' => $priceStart && $priceStart > $filterPriceStartMin ? $priceStart : $filterPriceStartMin,
             'price_end_user' => $priceEnd && ($priceEnd < $filterPriceEndMax || $filterPriceEndMax ==0) ? $priceEnd : $filterPriceEndMax,
             'vendors' => $vendors,
+            //'vendors_json' => json_encode($vendors),
             'vendors_user' => $vendorRequest ? $vendorRequest : false,
             'stores' => $stores,
             'store_user' => $storeRequest ? $storeRequest : [],

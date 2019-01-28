@@ -80,6 +80,9 @@ return [
     'popular_stores' => 'Популярные магазины',
     'most_profitable' => 'Самые выгодные предложения',
     'breadcrumbs_produtct_with_profit' => 'Товары со скидками',
+    'show_all_vendors_({count})' => 'Показать все ({count})',
+    'show_all_vendors_close' => 'Скрыть все',
+    'filter_enter_3_chars' => 'Введите первые 3 буквы',
 
 
 ];

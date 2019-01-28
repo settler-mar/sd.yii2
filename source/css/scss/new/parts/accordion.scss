@@ -18,6 +18,13 @@
       svg {
         transform: rotate(180deg);
       }
+      &.close {
+        display: block !important;
+      }
+      &.open {
+        display: none !important;
+      }
+
     }
   }
 
@@ -27,19 +34,31 @@
     transition: max-height 0.4s cubic-bezier(0,1,0,.95);
 
     .accordion-checkbox {
-        &.checked {
-          order: -1;
-        }
+      &.checked {
+        order: -1;
+      }
+      &.hide {
+        display: none;
+      }
     }
   }
   .accordion-control {
-
     svg {
       width: 16px;
       height: 16px;
       color: $link_color;
       fill: $link_color;
       stroke: $link_color;
+    }
+
+    &.close {
+      display: none !important;
+    }
+  }
+  &.accordion_hide {
+
+    .accordion-control-wrap {
+      display: none;
     }
   }
 }

@@ -46,7 +46,10 @@
                     {{ t('shop','filter_vendor') }}
                 </div>
                 {% if filter.vendors|length >10 %}
-                    <div class="accordion-control "><a href="">{{ svg('angle-down')|raw }}</a></div>
+                    <div class="catalog_product_filter-input-wrap form-group">
+                        <label for="catalog_product_filter-input">{{ t('shop', 'filter_enter_3_chars') }}</label>
+                        <input class="form-control" type="text" id="catalog_product_filter-input" value="">
+                    </div>
                 {% endif %}
                 <div class="catalog_product_filter-vendor catalog_product_filter-checkbox {% if filter.vendors|length >10 %}accordion-content-clickable{% endif %}">
                     {% for vendor in filter.vendors  %}
@@ -57,6 +60,12 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if filter.vendors|length >10 %}
+                    <div class="accordion-control-wrap">
+                        <div class="accordion-control open"><a href="">{{ t('shop', 'show_all_vendors_({count})', {'count':filter.vendors|length}) }}</a></div>
+                        <div class="accordion-control close"><a href="">{{ t('shop', 'show_all_vendors_close') }}</a></div>
+                    </div>
+                {% endif %}
             </div>
             {% endif %}
           {% if filter.stores|length >0 %}

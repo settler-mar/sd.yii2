@@ -77,5 +77,8 @@ return [
     'popular_stores' => 'Popular stores',
     'most_profitable' => 'Most profitable offers',
     'breadcrumbs_produtct_with_profit' => 'Products with discount',
+    'show_all_vendors_({count})' => 'Show all ({count})',
+    'filter_enter_3_chars' => 'Type first 3 symbols',
+    'show_all_vendors_close' => 'Hide all',
 
 ];
