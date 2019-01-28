@@ -418,7 +418,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
         $task->save();
       }
 
-      $store = Stores::top12(12);
+      //$store = Stores::top12(12);
 
       try {
          // пока отключили письмо при регистрации

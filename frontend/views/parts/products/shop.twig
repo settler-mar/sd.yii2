@@ -1,0 +1,11 @@
+<div class="shop hover-box products">
+    {% set store_href =  _href(store.store_href~(store.is_offline ? '-offline':'')) %}
+    {% if store.action_id == 1 %}
+        <span class="shop_promo-label shop_promo-label_x2"></span>
+    {% endif %}
+    <div class="shop-logo">
+        <a class="shop-logo_link" href="{{ store_href|raw }}">
+            <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
+        </a>
+    </div>
+</div>

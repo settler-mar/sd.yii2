@@ -1,3 +1,21 @@
+@mixin products {
+
+  padding-bottom: 2px;
+
+  .shop-logo {
+    border-radius: 12px;
+
+    img {
+      filter: grayscale(100%);
+    }
+  }
+
+  &:hover {
+    .shop-logo img {
+        filter: grayscale(0);
+    }
+  }
+}
 /* Shops
 ------------------------------------*/
 .shops {
@@ -10,6 +28,11 @@
 }
 
 .shop{
+
+  &.products {
+    @include products;
+  }
+
   margin: 10px 5px;
   position: relative;
   max-width: 360px;

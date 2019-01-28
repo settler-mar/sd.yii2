@@ -735,7 +735,7 @@ $functionsList = [
     return '';
   },
   'top_store' => function($region = 'default') {
-    $stores = Stores::top12($region);
+    $stores = Stores::top12(10, $region);
     $layout = Yii::$app->viewPath . '/parts/stores/mail_top.twig';
     if (!file_exists($layout)) {
         return 'file not fount '.$layout;

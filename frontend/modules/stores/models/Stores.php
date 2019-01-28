@@ -392,7 +392,7 @@ class Stores extends \yii\db\ActiveRecord
    * теперь 10 шопов
    * @return mixed
    */
-  public static function top12($region = 'defaut')
+  public static function top12($limit = 12, $region = 'defaut')
   {
     $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? '' : '_' . Yii::$app->language;
     $cache = Yii::$app->cache;
@@ -400,8 +400,8 @@ class Stores extends \yii\db\ActiveRecord
     $dependencyName = 'top_12_stores';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $data = $cache->getOrSet('top_12_stores' . $language, function () {
-      return self::items()->orderBy('region_rating DESC')->limit(10)->all();
+    $data = $cache->getOrSet('top_12_stores_'.$limit.'_' . $language, function () use ($limit) {
+      return self::items()->orderBy('region_rating DESC')->limit($limit)->all();
     }, $cache->defaultDuration, $dependency);
      return $data;
   }

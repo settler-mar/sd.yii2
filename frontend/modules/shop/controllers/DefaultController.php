@@ -15,6 +15,7 @@ use frontend\components\SdController;
 use common\components\Help;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\sdblog\models\Posts;
+use frontend\modules\stores\models\Stores;
 use yii;
 
 class DefaultController extends SdController
@@ -66,6 +67,8 @@ class DefaultController extends SdController
             $data['posts'] = Posts::getLastPosts();
             $data['posts_count'] = Posts::find()->count();
         }
+        $data['stores'] = Stores::top12(25);
+        $data['stores_count'] = Stores::activeCount();
 
 
         return $this->render('index', $data);
