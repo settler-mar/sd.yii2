@@ -106,9 +106,9 @@ return [
         'ftp_password' => '!75CNGJYC%',
     ],
     'connexity' => [
-        'login' => '648186',
+        'publisher' => '648186',
         'password' => '2011odn',
-        'apikey' => '	9edbbb0626d119a67398c34aa1415482',
+        'apikey' => '9edbbb0626d119a67398c34aa1415482',
         'product_category_to_store' => false,//нет привязки категории продукта к шопу
     ],
     'pays_update_period' => 1,

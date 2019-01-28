@@ -146,7 +146,7 @@ class AccountController extends Controller
       $contentData["favorites"] = UsersFavorites::userFavorites(true);
 
       $contentData["favorites_ids"] = array_column($contentData["favorites"], 'id');
-      $contentData['products_template'] = '@shop/views/parts/products/product.twig';
+      $contentData['products_template'] = 'parts/products/product.twig';
       $contentData['action_type'] = 'product';
       $contentData['item_empty_class'] = 'catalog_products_item shop shop-empty';
 
@@ -167,7 +167,7 @@ class AccountController extends Controller
       $contentData['favorites'] = Product::viewedByUser(Yii::$app->user->id);
 
       $contentData["favorites_ids"] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
-      $contentData['products_template'] = '@shop/views/parts/products/product.twig';
+      $contentData['products_template'] = 'parts/products/product.twig';
       $contentData['action_type'] = 'viewed-products';
       $contentData['item_empty_class'] = 'catalog_products_item shop shop-empty';
 
