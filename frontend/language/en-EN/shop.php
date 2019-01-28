@@ -72,12 +72,6 @@ return [
     'products' => 'Products',
     'produtct_hits_in' => 'Best sellers in',
     'breadcrumbs_produtct_hits_in' => 'Best sellers in',
-    'view_all_({count})' => 'View all ({count})'
-
-
-
-
-
-
-
+    'view_all_({count})' => 'View all ({count})',
+    'best_in_blog' => 'Best in blog'
 ];

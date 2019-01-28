@@ -55,7 +55,7 @@
               <div class="catalog_products_item shop shop-empty"></div>
             </div>
             <div class="align-center">
-              <a href="{{ _href('/search/product?module=product&month=1')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }}</a>
+              <a href="{{ _href('/search/product?module=product&month=1')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
             </div>
           </section>
         {% endif %}
@@ -69,6 +69,22 @@
 
       </div>
     </div>
+
+    {% if posts|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'best_in_blog')|raw }}</h2>
+          <div class="flex-line flex-wrap tablets_flex-col instruction-list">
+              {% include '@frontend/views/parts/blog_posts.twig' %}
+          </div>
+          <div class="align-center">
+            <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">
+                {{ t('shop', 'view_all_({count})', {'count': posts_count})|raw }} →
+            </a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
 
 
   </div>

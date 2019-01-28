@@ -75,7 +75,8 @@ return [
     'products' => 'Товары',
     'produtct_hits_in' => 'Хиты продаж в',
     'breadcrumbs_produtct_hits_in' => 'Хиты продаж в',
-    'view_all_({count})' => 'Смотреть все ({count})'
+    'view_all_({count})' => 'Смотреть все ({count})',
+    'best_in_blog' => 'Лучшие обзоры'
 
 
 ];

@@ -14,6 +14,7 @@ use frontend\components\Pagination;
 use frontend\components\SdController;
 use common\components\Help;
 use frontend\modules\transitions\models\UsersVisits;
+use frontend\modules\sdblog\models\Posts;
 use yii;
 
 class DefaultController extends SdController
@@ -61,6 +62,10 @@ class DefaultController extends SdController
         $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
         $data['products_top_count'] = Product::top(['by_visit' => 1, 'count' => 1]);
         $data["total_v"] = Product::find()->count();
+        if (Yii::$app->language == 'ru-RU') {
+            $data['posts'] = Posts::getLastPosts();
+            $data['posts_count'] = Posts::find()->count();
+        }
 
 
         return $this->render('index', $data);
