@@ -749,6 +749,9 @@ class Product extends \yii\db\ActiveRecord
                 $dataBaseSelect->select(['prod.id']);
                 $dataBaseSelect->orderBy([]);
                 $dataBaseSelect->limit(null);
+                if (in_array('discount', $dataBaseSelect->having)) {
+                    $dataBaseSelect->addSelect(['if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`']);
+                }
                 $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
             }
             return $stores->all();
@@ -835,7 +838,7 @@ class Product extends \yii\db\ActiveRecord
 
 
     $products = $cache->getOrSet($casheName, function () use ($params) {
-      $count = isset($params['limit']) ? $params['limit'] : 5;
+      $count = !empty($params['count']) ? null : (isset($params['limit']) ? $params['limit'] : 5);
       $product = self::items()
           ->orderBy([
               isset($params['sort'])? $params['sort'] : 'modified_time' =>
@@ -871,6 +874,9 @@ class Product extends \yii\db\ActiveRecord
               ->groupBy(['product_id']);
           $product->innerJoin(['visits' => $visits], 'visits.product_id = prod.id')
               ->orderBy(['count'=>SORT_DESC]);
+      }
+      if (!empty($params['having'])) {
+          $product->having($params['having']);
       }
       return empty($params['count']) ? $product->all() : $product->count();
     }, $cache->defaultDuration, $dependency);
@@ -913,10 +919,10 @@ class Product extends \yii\db\ActiveRecord
             //['is not', 'prod.image', null],
         ])
         ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
-            's.displayed_cashback as displayed_cashback', 's.action_id as action_id', 's.uid as store_id',
+            's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
             's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
-            's.currency as currency', 's.action_end_date as action_end_date',
-            'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as discount'])
+            's.currency as store_currency', 's.action_end_date as action_end_date',
+            'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`'])
         ->asArray();
   }
 

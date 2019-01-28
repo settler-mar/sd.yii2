@@ -86,7 +86,7 @@
       </section>
     {% endif %}
 
-    {% if stores %}
+    {% if stores|length %}
       <section class="margin">
         <div class="page-wrap">
           <h2 class="content-header">{{ t('shop', 'popular_stores')|raw }}</h2>
@@ -103,6 +103,19 @@
           </div>
           <div class="align-center">
             <a href="{{ _href('/stores')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': stores_count})|raw }} →</a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if most_profitable|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'most_profitable')|raw }}</h2>
+            {% set products = most_profitable %}
+            {% include('parts/products/other_products.twig') %}
+          <div class="align-center">
+            <a href="{{ _href('/search/product?profit=1&sort=discount')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': most_profitable_count})|raw }} →</a>
           </div>
         </div>
       </section>

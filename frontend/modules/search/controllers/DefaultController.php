@@ -91,7 +91,8 @@ class DefaultController extends SdController
       $request = Yii::$app->request;
       $query = strip_tags($request->get('query'));
       $month = $request->get('month');
-      if (!$query && !$month) {
+      $profit = $request->get('profit');
+      if (!$query && !$month && !$profit) {
           throw new \yii\web\NotFoundHttpException;
       }
       $limit = !$request->isAjax ? 1000 :
@@ -123,6 +124,7 @@ class DefaultController extends SdController
       } else {
           Yii::$app->params['search_query'] = $query;
           Yii::$app->params['search_month'] = $month;
+          Yii::$app->params['search_profit'] = $profit;
           return \Yii::$app->runAction('shop/default/category');
       }
   }

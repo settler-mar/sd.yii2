@@ -170,6 +170,10 @@ class Vendor extends \yii\db\ActiveRecord
                 $dataBaseSelect->select(['prod.id']);
                 $dataBaseSelect->orderBy([]);
                 $dataBaseSelect->limit(null);
+                //ddd($dataBaseSelect, $dataBaseSelect->having, in_array('discount', $dataBaseSelect->having));
+                if (in_array('discount', $dataBaseSelect->having)) {
+                    $dataBaseSelect->addSelect(['if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`']);
+                }
                 $vendors->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
             }
             $vendors = $vendors->all();

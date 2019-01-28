@@ -78,6 +78,8 @@ return [
     'view_all_({count})' => 'Смотреть все ({count})',
     'best_in_blog' => 'Лучшие обзоры',
     'popular_stores' => 'Популярные магазины',
+    'most_profitable' => 'Самые выгодные предложения',
+    'breadcrumbs_produtct_with_profit' => 'Товары со скидками',
 
 
 ];

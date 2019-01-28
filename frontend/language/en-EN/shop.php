@@ -75,5 +75,7 @@ return [
     'view_all_({count})' => 'View all ({count})',
     'best_in_blog' => 'Best in blog',
     'popular_stores' => 'Popular stores',
+    'most_profitable' => 'Most profitable offers',
+    'breadcrumbs_produtct_with_profit' => 'Products with discount',
 
 ];
