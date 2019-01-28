@@ -58,7 +58,8 @@ class DefaultController extends SdController
             'count' => 8,
             'order' => ['logo' => SORT_DESC, 'in_top' => SORT_DESC, 'count' => SORT_DESC],
         ]);
-        $data['products_top'] = Product::top(['by_visit' => 1, 'count' => 12]);
+        $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
+        $data['products_top_count'] = Product::top(['by_visit' => 1, 'count' => 1]);
         $data["total_v"] = Product::find()->count();
 
 
@@ -72,6 +73,7 @@ class DefaultController extends SdController
         $storeRequest = $request->get('store_id');
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
+        $month =  isset(Yii::$app->params['search_month']) ? Yii::$app->params['search_month'] : false;//товары месяца
 
         if ($vendorRequest) {
             $vendorDb = array_column(Vendor::items([
@@ -134,7 +136,8 @@ class DefaultController extends SdController
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
-            ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '');
+            ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '') .
+            ($month ? '_month_' : '_month');
 
         $filter = [];
         $where = [];
@@ -160,6 +163,7 @@ class DefaultController extends SdController
             'sort' => $sort,
             'page' => $page,
             'query' => $query ? $query : null,
+            'module' => $query || $month ? 'product' : null,
         ];
         if ($priceStart && $priceStart != $filterPriceStartMin) {
             $filter[] = ['>=', 'price', $priceStart];
@@ -174,6 +178,14 @@ class DefaultController extends SdController
             $filter[] = ['vendor_id' => $vendorDb];
             $paginateParams['vendor'] = $vendorRequest;
         }
+        if ($month) {
+            $visits = UsersVisits::find()
+                ->select(['product_id', 'count(*) as count'])
+                ->where(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
+                ->groupBy(['product_id']);
+            $dataBaseData->innerJoin(['visits' => $visits], 'visits.product_id = prod.id');
+            $paginateParams['month'] = 1;
+        }
         if ($storeRequest) {
             $filter[] = ['store_id' => $storeRequest];
             $paginateParams['store_id'] = $storeRequest;
@@ -183,7 +195,7 @@ class DefaultController extends SdController
             $dataBaseData->andWhere(array_merge(['and'], $filter));
             $cacheName .= ('_' . Help::multiImplode('_', $filter));
         }
-        $paginatePath = '/shop';
+        $paginatePath = $query || $month ? '/search/product' : '/shop';
 
         if ($this->category) {
             //есть категория
@@ -210,14 +222,22 @@ class DefaultController extends SdController
             $paginatePath = '/search/product';
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('main', 'breadcrumbs_search'),
-                'url' => Help::href($paginatePath.'?limit=1000&query='.$query),
+                'url' => Help::href($paginatePath.'?module=product&limit=1000&query='.$query),
             ];
             Yii::$app->params['url_mask'] = 'shop/search';
+        }
+        if ($month) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('shop', 'breadcrumbs_produtct_hits_in').' '.
+                    Yii::t('common', 'month_in_'.date('m')),
+                'url' => Help::href($paginatePath . '?module=product&month=1'),
+            ];
+            //Yii::$app->params['url_mask'] = 'shop/filter';todo
         }
         if (!empty($filter)) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'filter_result'),
-                'url' => Help::href($paginatePath . '&' . http_build_query($paginateParams)),
+                'url' => Help::href($paginatePath . '?' . http_build_query($paginateParams)),
             ];
             Yii::$app->params['url_mask'] = 'shop/filter';
         }
@@ -274,6 +294,7 @@ class DefaultController extends SdController
             'query' => $query ? $query : false,
             'action' => Yii::$app->help->href($paginatePath),//чтобы не попал page
             'limit' => $query ? $limit : false,
+            'month' => $month,
         ];
         return $this->render('category', $storesData);
     }
@@ -296,13 +317,13 @@ class DefaultController extends SdController
         //продукты того же производителя
         $brandsProducts = $product->vendor_id ? Product::top([
             'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'prod.id', $product->id]],
-            'count' => 8
+            'limit' => 8
         ]) : [];
         //продукты той же категории другие бренды
         $categoryProducts = !empty($product->categories) ?
             Product::top([
                 'category_id' => $product->categories[0]->id,
-                'count' => 8,
+                'limit' => 8,
                 'multi_brands' => true,
                 'with_image' => true,
                 'where' => ['and', ['<>', 'prod.id', $product->id], ['<>', 'vendor_id', $product->vendor_id]],
@@ -314,7 +335,7 @@ class DefaultController extends SdController
                 'multi_brands' => true,
                 'category_id' => $product->categories[0]->id,
                 'with_image' => true,
-                'count' => 8
+                'limit' => 8
             ]) : [];
 
         //просмотренные товары

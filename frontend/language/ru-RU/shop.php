@@ -73,7 +73,9 @@ return [
     'menu_viewed' => 'Просмотренные товары',
     'view_all_visiteds' => 'Все просмотренные товары',
     'products' => 'Товары',
-    'produtct_hits_in' => 'Хиты продаж в'
+    'produtct_hits_in' => 'Хиты продаж в',
+    'breadcrumbs_produtct_hits_in' => 'Хиты продаж в',
+    'view_all_({count})' => 'Смотреть все ({count})'
 
 
 ];

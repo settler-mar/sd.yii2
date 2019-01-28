@@ -835,7 +835,7 @@ class Product extends \yii\db\ActiveRecord
 
 
     $products = $cache->getOrSet($casheName, function () use ($params) {
-      $count = isset($params['count']) ? $params['count'] : 5;
+      $count = isset($params['limit']) ? $params['limit'] : 5;
       $product = self::items()
           ->orderBy([
               isset($params['sort'])? $params['sort'] : 'modified_time' =>
@@ -872,7 +872,7 @@ class Product extends \yii\db\ActiveRecord
           $product->innerJoin(['visits' => $visits], 'visits.product_id = prod.id')
               ->orderBy(['count'=>SORT_DESC]);
       }
-      return $product->all();
+      return empty($params['count']) ? $product->all() : $product->count();
     }, $cache->defaultDuration, $dependency);
 
     return $products;

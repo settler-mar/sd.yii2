@@ -260,13 +260,13 @@ class DefaultController extends SdController
         //продукты того же производителя
         $brandsProducts = Product::top([
             'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'prod.id', $product->id]],
-            'count' => 8
+            'limit' => 8
         ]);
         //продукты той же категории другие бренды
         $categoryProducts = !empty($product->categories) ?
             Product::top([
                 'category_id' => $product->categories[0]->id,
-                'count' => 8,
+                'limit' => 8,
                 'multi_brands' => true,
                 'with_image' => true,
                 'where' => ['and', ['<>', 'prod.id', $product->id], ['<>', 'vendor_id', $product->vendor_id]],
@@ -278,7 +278,7 @@ class DefaultController extends SdController
                 'multi_brands' => true,
                 'category_id' => $product->categories[0]->id,
                 'with_image' => true,
-                'count' => 8
+                'limit' => 8
             ]) : [];
 
         //просмотренные товары

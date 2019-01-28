@@ -107,6 +107,6 @@ return [
     'million' => 'mln',
     'billion' => 'bln',
     'thousand' => 'th',
-    'promocodes' => 'Coupons',
-    'products' => 'Products',
+    'coupon' => 'Coupons',
+    'product' => 'Products',
 ];

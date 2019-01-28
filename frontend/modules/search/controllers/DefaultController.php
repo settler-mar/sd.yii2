@@ -86,10 +86,14 @@ class DefaultController extends SdController
     }
   }
 
-  public function actionProduct($query)
+  public function actionProduct()
   {
-      $query = strip_tags($query);
       $request = Yii::$app->request;
+      $query = strip_tags($request->get('query'));
+      $month = $request->get('month');
+      if (!$query && !$month) {
+          throw new \yii\web\NotFoundHttpException;
+      }
       $limit = !$request->isAjax ? 1000 :
           ($request->get('limit') ? $request->get('limit') : 10);
       $validator = new \yii\validators\NumberValidator();
@@ -118,6 +122,7 @@ class DefaultController extends SdController
           return json_encode($out);
       } else {
           Yii::$app->params['search_query'] = $query;
+          Yii::$app->params['search_month'] = $month;
           return \Yii::$app->runAction('shop/default/category');
       }
   }

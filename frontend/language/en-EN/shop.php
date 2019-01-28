@@ -70,7 +70,10 @@ return [
     'menu_viewed' => 'Viewed products',
     'view_all_visiteds' => 'All Viewed Products',
     'products' => 'Products',
-    'produtct_hits_in' => 'Best sellers in'
+    'produtct_hits_in' => 'Best sellers in',
+    'breadcrumbs_produtct_hits_in' => 'Best sellers in',
+    'view_all_({count})' => 'View all ({count})'
+
 
 
 

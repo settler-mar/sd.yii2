@@ -12,14 +12,6 @@ $currencyIcon = [
 //    'USD' => 'dollar',
 ];
 
-function mb_lcfirst($str){
-  $first = mb_substr($str,0,1);//первая буква
-  $last = mb_substr($str,1);//все кроме первой буквы
-  $first = mb_strtoupper($first);
-  $last = mb_strtolower($last);
-  return $first.$last;
-}
-
 function _hyphen_words_wbr(array &$m)
 {
   return _hyphen_words($m, true);
@@ -447,7 +439,7 @@ $functionsList = [
     if($nm<10)$nm="0".$nm;
     $nm = Yii::t('common',$month.$nm);
 
-    return $lcfirst ? mb_lcfirst($nm) : $nm;
+    return $lcfirst ? Yii::$app->help->mb_lcfirst($nm) : $nm;
   },
   'date' => function ($date, $format_time = false, $locate_month = true) {
     if ($date == 0) {

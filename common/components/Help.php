@@ -329,4 +329,12 @@ class Help extends Component
     //$name = preg_replace('/[\.\s]/','',$name);
     return substr($name, 0, 25);
   }
+
+  public function mb_lcfirst($str){
+      $first = mb_substr($str,0,1);//первая буква
+      $last = mb_substr($str,1);//все кроме первой буквы
+      $first = mb_strtoupper($first);
+      $last = mb_strtolower($last);
+      return $first.$last;
+  }
 }

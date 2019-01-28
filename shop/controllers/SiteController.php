@@ -81,7 +81,7 @@ class SiteController extends Controller
     $data['popular_categories'] = ProductsCategory::top();//todo по визитам
     $data['popular_products'] = Product::top([
         'with_image' => true,
-        'count' => 12,
+        'limit' => 12,
         'sort' => 'modified_time',
         'order' => SORT_DESC
     ]);//todo по визитам
