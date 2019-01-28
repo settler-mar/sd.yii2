@@ -434,11 +434,11 @@ $functionsList = [
     }
     return date('Y',$date);
   },
-  'month'=> function ($d = 0) {
+  'month'=> function ($d = 0, $lcfirst = true, $prepositional = false) {
 
     $m = date('m');
 
-    $month = "month_";
+    $month = "month_".($prepositional ? 'in_' : '');
 
     $nm=$m+$d;
     if($nm>12)$nm-=12;
@@ -446,9 +446,8 @@ $functionsList = [
 
     if($nm<10)$nm="0".$nm;
     $nm = Yii::t('common',$month.$nm);
-    //ddd($pm);
 
-    return mb_lcfirst($nm);
+    return $lcfirst ? mb_lcfirst($nm) : $nm;
   },
   'date' => function ($date, $format_time = false, $locate_month = true) {
     if ($date == 0) {

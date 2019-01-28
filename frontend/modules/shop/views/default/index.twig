@@ -43,8 +43,19 @@
           {% include 'parts/products/category_top.twig' %}
         {% endif %}
 
-
-
+        {% if products_top %}
+          <section class="margin">
+            <h2>{{ t('shop', 'produtct_hits_in')~' '~month(null, 0, 1) }}</h2>
+            <div class="catalog-stores_list shops">
+                {% for product in products_top %}
+                    {% include 'parts/products/product.twig' %}
+                {% endfor %}
+              <div class="catalog_products_item shop shop-empty"></div>
+              <div class="catalog_products_item shop shop-empty"></div>
+              <div class="catalog_products_item shop shop-empty"></div>
+            </div>
+          </section>
+        {% endif %}
 
         {% if additional_content %}
           <div class="catalog_category-down-description margin sd_content">

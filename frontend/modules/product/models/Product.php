@@ -864,6 +864,14 @@ class Product extends \yii\db\ActiveRecord
 
           //'SELECT vendor_id, count(id) as count, max(id) as id1, min(id) as id2  FROM `cw_product` `prod` where not vendor_id is null group by vendor_id order by count desc';
       }
+      if (!empty($params['by_visit'])) {
+          $visits = UsersVisits::find()
+              ->select(['product_id', 'count(*) as count'])
+              ->where(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
+              ->groupBy(['product_id']);
+          $product->innerJoin(['visits' => $visits], 'visits.product_id = prod.id')
+              ->orderBy(['count'=>SORT_DESC]);
+      }
       return $product->all();
     }, $cache->defaultDuration, $dependency);
 

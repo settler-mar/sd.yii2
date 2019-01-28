@@ -73,6 +73,7 @@ return [
     'menu_viewed' => 'Просмотренные товары',
     'view_all_visiteds' => 'Все просмотренные товары',
     'products' => 'Товары',
+    'produtct_hits_in' => 'Хиты продаж в'
 
 
 ];
