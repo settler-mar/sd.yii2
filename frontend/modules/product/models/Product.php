@@ -339,6 +339,9 @@ class Product extends \yii\db\ActiveRecord
         $new = 1;
       }
 
+      if (!isset($product['params_original'])) {
+          $product['params_original'] = null;
+      }
       $categories = $productDb->makeCategories($product['categoryId'], $product, $config);//массив ид категорий из строки с разделителямиы '/'
 
       $params = empty($product['params']) ? self::makeParams($product['params_original'], $categories) :
