@@ -76,6 +76,12 @@ class DefaultController extends SdController
             'sort'=>'discount',
             'order' => SORT_DESC,
         ]);
+        $data['brands'] = Vendor::items([
+            'limit' => 25,
+        ]);
+        $data['brands_count'] = Vendor::items([
+            'count' => true
+        ]);
         $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
 
         return $this->render('index', $data);

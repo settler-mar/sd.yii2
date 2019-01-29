@@ -1,0 +1,12 @@
+<div class="shop hover-box products vendor">
+    <div class="shop-logo">
+        <a class="shop-logo_link catalog_products_item_image-wrap" href="{{ _href('/vendor/'~vendor.route)|raw }}">
+            {% if vendor.logo %}
+                <img class="shop-logo_link-img" src="images/vendor/{{vendor.logo}}" alt="{{ _eol(vendor.name, 20) }}">
+            {% else %}
+                <img class="no_optomize" src="/images/{{ app.params.lang_code }}-no-image.png" alt="{{ vendor.name|raw }}">
+            {% endif %}
+            <div class="shop-logo_title">{{ vendor.name }}</div>
+        </a>
+    </div>
+</div>

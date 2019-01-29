@@ -80,5 +80,7 @@ return [
     'show_all_vendors_({count})' => 'Show all ({count})',
     'filter_enter_3_chars' => 'Type first 3 symbols',
     'show_all_vendors_close' => 'Hide all',
+    'popular_brand' => 'Popular Brands',
+
 
 ];

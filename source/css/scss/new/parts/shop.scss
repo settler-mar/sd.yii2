@@ -16,6 +16,27 @@
     }
   }
 }
+@mixin vendor {
+
+  .shop-logo {
+    height: auto;
+    padding: 5px 0;
+  }
+}
+@mixin category {
+
+  width: 22%;
+  max-width: none;
+  min-width: 0;
+
+  @include media($tablets) {
+    width: 45%;
+  }
+  @include media($phones) {
+    width: 100%;
+  }
+}
+
 /* Shops
 ------------------------------------*/
 .shops {
@@ -31,6 +52,12 @@
 
   &.products {
     @include products;
+  }
+  &.vendor {
+    @include vendor;
+  }
+  &.category {
+    @include category;
   }
 
   margin: 10px 5px;

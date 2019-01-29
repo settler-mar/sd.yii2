@@ -161,20 +161,19 @@ class Vendor extends \yii\db\ActiveRecord
             if (!empty($params['where'])) {
                 $vendors->andWhere($params['where']);
             }
-            if (!empty($params['count'])) {
-                return $vendors->count();
-            }
             if (isset($params['database'])) {
                 //связь с запросом к продуктам
                 $dataBaseSelect = clone $params['database'];
                 $dataBaseSelect->select(['prod.id']);
                 $dataBaseSelect->orderBy([]);
                 $dataBaseSelect->limit(null);
-                //ddd($dataBaseSelect, $dataBaseSelect->having, in_array('discount', $dataBaseSelect->having));
                 if (isset($dataBaseSelect->having) && in_array('discount', $dataBaseSelect->having)) {
                     $dataBaseSelect->addSelect(['if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`']);
                 }
                 $vendors->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
+            }
+            if (!empty($params['count'])) {
+                return $vendors->count();
             }
             $vendors = $vendors->all();
             if (!empty($params['sort'])) {

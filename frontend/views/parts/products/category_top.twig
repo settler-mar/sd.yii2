@@ -1,19 +1,22 @@
 <section class="margin">
     <h2>{{ t('shop', 'popular_categories') }}</h2>
-    <div class="catalog_products_categories">
-    {% for category in category_top %}
-        <div class="catalog_products_categories-category catalog_products_item hover-box">
-            <a class="" href="{{ _href('/shop/'~category.parentTree(1)) }}">
-                {% if category.logo %}
-                    <img class="no_optomize" src="{{ category.imagePath }}{{ category.logo }}" alt="{{ category.name|raw }}">
-                {% else %}
-                    <img class="no_optomize" src="/images/{{ app.params.lang_code }}-no-image.png" alt="{{ category.name|raw }}">
-                {% endif %}
-            </a>
-            <a class="" href="{{ _href('/shop/'~category.parentTree(1)) }}">
-                <span class="catalog_products_categories-category-title">{{ category.name }}</span>
-            </a>
-        </div>
-    {% endfor %}
+    <div class="catalog-stores_list shops margin-half">
+        {% for category in category_top %}
+            <div class="shop hover-box products vendor category">
+                <div class="shop-logo">
+                    <a class="shop-logo_link catalog_products_item_image-wrap" href="{{ _href('/shop/'~category.parentTree(1)) }}">
+                        {% if category.logo %}
+                            <img class="shop-logo_link-img" src="{{ category.imagePath }}{{ category.logo }}" alt="{{ _eol(category.name, 20) }}">
+                        {% else %}
+                            <img class="no_optomize" src="/images/{{ app.params.lang_code }}-no-image.png" alt="{{ _eol(category.name, 20) }}">
+                        {% endif %}
+                        <div class="shop-logo_title">{{ category.name }}</div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="catalog_products_item shop shop-empty"></div>
+        <div class="catalog_products_item shop shop-empty"></div>
+        <div class="catalog_products_item shop shop-empty"></div>
     </div>
 </section>
