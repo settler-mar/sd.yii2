@@ -892,22 +892,34 @@ class Product extends \yii\db\ActiveRecord
      * @param $user_id
      * @return mixed
      */
-  public static function viewedByUser($user_id)
+  public static function viewedByUser($user_id, $all = true, $count = false)
   {
+      if (!$user_id) {
+          return null;
+      }
+      //строгие значения для возможности чисить кэш
+      $limit = $all ? 100 : 4;//лимит
+      $count = $count ? 1 : 0;//нужно только количество или товары
       $cache = \Yii::$app->cache;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'catalog_product';
       $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-      $casheName = 'products_viewed_by_user_' . ($language ? $language. '_' : '') . $user_id;
+      $casheName = 'products_viewed_by_user_' . ($language ? $language. '_' : '') .
+          ($count ? 'count' : 'limit_' .$limit) . '_' . $user_id;
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-      return $cache->getOrSet($casheName, function () use ($user_id) {
-          return self::items()
-              ->orderBy(['uv.visit_date' => SORT_DESC])
-              ->limit(100)
-              ->innerJoin(UsersVisits::tableName(). ' uv', 'uv.product_id = prod.id')
-              ->andWhere(['uv.user_id' => $user_id])
-              ->all();
+      return $cache->getOrSet($casheName, function () use ($user_id, $limit, $count) {
+          $userVisits = UsersVisits::find()
+              ->select(['product_id', 'max(visit_date) as date'])
+              ->where(['user_id' => $user_id])
+              ->andWhere(['>', 'product_id', 0])
+              ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 3600 * 24 * 30)])
+              ->groupBy(['product_id'])  ;
+          $product = self::items()
+              ->limit($count ? null : $limit)
+              ->innerJoin(['visits' => $userVisits], 'visits.product_id = prod.id')
+              ->orderBy(['visits.date'=>SORT_DESC]);
+          return $count ? $product->count() : $product->all();
       }, $cache->defaultDuration, $dependency);
   }
 

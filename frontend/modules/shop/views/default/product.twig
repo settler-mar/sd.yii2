@@ -158,7 +158,7 @@
             {% set products = brands_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/category?vendor='~product.vendor)|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a class="btn btn-transform" href="{{ _href('/shop?vendor='~product.vendor)|raw }}">{{ t('shop','view_others')|raw }}</a>
             </div>
         </div>
     {% endif %}
@@ -171,7 +171,7 @@
             {% set products = category_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/category'~(category ? '/'~category.parentTree(1):''))|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a class="btn btn-transform" href="{{ _href('/shop'~(category_route ? '/'~category_route:''))|raw }}">{{ t('shop','view_others')|raw }}</a>
             </div>
         </div>
     {% endif %}
@@ -184,7 +184,7 @@
             {% set products = similar_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/category'~(category ? '/'~category.parentTree(1):'')~'?store='~product.store_id)|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a class="btn btn-transform" href="{{ _href('/shop'~(category_route ? '/'~category_route:'')~'?store='~product.store_id)|raw }}">{{ t('shop','view_others')|raw }}</a>
             </div>
         </div>
     {% endif %}

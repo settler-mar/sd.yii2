@@ -89,11 +89,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
                 $fav->andWhere(['product_id' => null]);
             }
             $fav = $fav->all();
-//      $out=[];
             $out = array_column($fav, $product ? 'product_id' : 'store_id');
-//      foreach ($fav as $item){
-//        $out[]=$product ? $item['product_id'] : $item['store_id'];
-//      }
             return $out;
         });
     }
@@ -194,8 +190,7 @@ class UsersFavorites extends \yii\db\ActiveRecord
       if (isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
           foreach (Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'] as $language) {
               $lang = $language == Yii::$app->params['base_lang'] ? '' : $language . '_';
-              $cacheName = 'account_favorites_products_' . $lang . $this->user_id;
-              Cache::deleteName($cacheName);
+              Cache::deleteName('account_favorites_products_' . $lang . $this->user_id);
           }
       }
       //зависимости

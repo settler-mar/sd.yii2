@@ -601,7 +601,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public static function getParentsArr($categories, $id, &$out)
   {
-    foreach ($categories as $category) {
+      foreach ($categories as $category) {
       if ($category['id'] == $id) {
         $out[] = $category;
         return $category['id'];

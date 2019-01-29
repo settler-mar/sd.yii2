@@ -76,13 +76,15 @@ class DefaultController extends SdController
             'sort'=>'discount',
             'order' => SORT_DESC,
         ]);
+        $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
         $data['brands'] = Vendor::items([
             'limit' => 25,
         ]);
         $data['brands_count'] = Vendor::items([
             'count' => true
         ]);
-        $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
+        $data['visited'] = Product::viewedByUser(Yii::$app->user->id, false);
+        $data['visited_count'] = Product::viewedByUser(Yii::$app->user->id, false, true);
 
         return $this->render('index', $data);
     }
@@ -159,7 +161,7 @@ class DefaultController extends SdController
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
             ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '') .
-            ($month ? '_month_' : '').($profit ? '_profit_' : '');
+            ($month ? '_month_' : '').($profit ? '_profit_' : '') . ($vendorRequest ? ' _vendor_' . $vendorRequest : '');
 
         $filter = [];
         $where = [];
@@ -347,6 +349,9 @@ class DefaultController extends SdController
             ];
         }
         $this->breadcrumbs_last_item_disable = false;
+        $category = isset($product->categories[0]) ? $product->categories[0] : false;//
+        $categoryRoute = $category ? $category->parentTree(1) : false;//только если категория активна, иначе нет
+        $category = $category && !empty($categoryRoute) ? $category : false;
 
         //продукты того же производителя
         $brandsProducts = $product->vendor_id ? Product::top([
@@ -354,7 +359,7 @@ class DefaultController extends SdController
             'limit' => 8
         ]) : [];
         //продукты той же категории другие бренды
-        $categoryProducts = !empty($product->categories) ?
+        $categoryProducts = $category ?
             Product::top([
                 'category_id' => $product->categories[0]->id,
                 'limit' => 8,
@@ -389,7 +394,8 @@ class DefaultController extends SdController
             'brands_products' => $brandsProducts,
             'category_products' => $categoryProducts,
             'similar_products' => $similarProducts,
-            'category' => !empty($product->categories) ? $product->categories[0] : false,
+            'category' => $category,
+            'category_route' => $categoryRoute,
             'visiteds' => !empty($visits) ? $visits : [],
         ]);
     }

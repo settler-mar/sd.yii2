@@ -84,6 +84,7 @@ return [
     'show_all_vendors_close' => 'Скрыть все',
     'filter_enter_3_chars' => 'Введите первые 3 буквы',
     'popular_brand' => 'Популярные бренды',
+    'viewed_products' => 'Просмотренные товары',
 
 
 ];

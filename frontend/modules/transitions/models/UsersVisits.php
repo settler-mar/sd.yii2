@@ -113,8 +113,11 @@ class UsersVisits extends \yii\db\ActiveRecord
     if (isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
       foreach (Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'] as $language) {
         $lang = $language == Yii::$app->params['base_lang'] ? '' : $language . '_';
-        $cacheName = 'products_viewed_by_user_' . $lang . $this->user_id;
-        Cache::deleteName($cacheName);
+        //Cache::deleteName('products_viewed_by_user_' . $lang . $this->user_id);
+        Cache::deleteName('products_viewed_by_user_' . $lang . 'limit_100_'.$this->user_id);//просмотренные товары много
+        Cache::deleteName('products_viewed_by_user_' . $lang . 'limit_4_'.$this->user_id);//просмотренные товары мало
+        Cache::deleteName('products_viewed_by_user_' . $lang . 'count_'.$this->user_id);//просмотренные товары количество
+
       }
     }
   }
