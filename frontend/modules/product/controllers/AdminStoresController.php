@@ -7,6 +7,7 @@ use frontend\modules\product\models\ProductsToCategory;
 use frontend\modules\product\models\Product;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Cpa;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -56,6 +57,14 @@ class AdminStoresController extends Controller
             ->all(),
         'uid', 'name'
     );
+    $cpaFilter = ArrayHelper::map(Cpa::find()
+        ->from(Cpa::tableName().' cpa')
+        ->innerJoin(CpaLink::tableName(). ' cl', 'cl.cpa_id = cpa.id')
+        ->innerJoin(CatalogStores::tableName(). ' c', 'c.cpa_link_id = cl.id')
+        ->orderBy(['cpa.name' => SORT_ASC])
+        ->asArray()
+        ->all(), 'id', 'name');
+
     $searchModel = new CatalogStoresSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     return $this->render('index.twig', [
@@ -79,6 +88,7 @@ class AdminStoresController extends Controller
             CatalogStores::CATALOG_STORE_ACTIVE_WAITING => 'Ожидает подтверждения'
         ],
         'storeFilter' => $storeFilter,
+        'cpaFilter' => $cpaFilter,
     ]);
   }
   /**

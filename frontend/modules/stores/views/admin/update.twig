@@ -94,6 +94,7 @@
                                         '1' : 'Выводить',
                                       }).label(false)|raw }}
                                     </p>
+                                    <p><span>Приоритет:</span> <br>{{ form.field(model, 'priority').textInput({'maxlength':true}).label(false)|raw }}</p>
                                 </div>
                             </div>
                             <p><span>Alias:</span> <br>{{ form.field(model, 'alias').textarea({'maxlength':true}).label(false)|raw }}</p>

@@ -3,6 +3,7 @@
 namespace frontend\modules\product\models;
 
 use frontend\modules\stores\models\CpaLink;
+use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\product\models\Product;
 use frontend\modules\cache\models\Cache;
@@ -30,6 +31,7 @@ class CatalogStores extends \yii\db\ActiveRecord
     const CATALOG_STORE_ACTIVE_YES = 1;
     const CATALOG_STORE_ACTIVE_WAITING = 2;
 
+    public $cpa_id;
 
     /**
      * @inheritdoc
@@ -78,6 +80,15 @@ class CatalogStores extends \yii\db\ActiveRecord
     public function getCpaLink()
     {
         return $this->hasOne(CpaLink::className(), ['id' => 'cpa_link_id']);
+    }
+
+    /**
+     * @return yii\db\ActiveQuery
+     */
+    public function getCpa()
+    {
+        return $this->hasOne(Cpa::className(), ['id' => 'cpa_id'])
+            ->viaTable(CpaLink::tableName(), ['id' => 'cpa_link_id']);
     }
 
     /**

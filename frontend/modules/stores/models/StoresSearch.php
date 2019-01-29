@@ -27,7 +27,7 @@ class StoresSearch extends Stores
     {
         return [
             [['uid', 'visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'charity',
-                'cpa_id', 'affiliate_id', 'action_end'], 'integer'],
+                'cpa_id', 'affiliate_id', 'action_end', 'priority'], 'integer'],
             [['name', 'route', 'alias', 'url', 'logo', 'description', 'currency', 'displayed_cashback', 'conditions',
                 'added', 'short_description', 'local_name', 'contact_name', 'contact_phone', 'contact_email',
                 'active_cpa_type', 'status_update_range'], 'safe'],
@@ -102,6 +102,7 @@ class StoresSearch extends Stores
             'percent' => $this->percent,
             'action_id' => $this->action_id,
             'is_offline' => $this->is_offline,
+            'priority' => $this->priority,
         ]);
 
         $query->andFilterWhere(['like', 'cw_stores.name', $this->name])

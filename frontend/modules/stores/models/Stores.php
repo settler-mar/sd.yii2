@@ -132,7 +132,7 @@ class Stores extends \yii\db\ActiveRecord
           'contact_email','video','network_name','coupon_description', 'region', 'description_extend'], 'trim'],
       [['added'], 'safe'],
       [['visit', 'hold_time', 'is_active', 'active_cpa', 'percent', 'action_id', 'is_offline', 'related',
-          'cash_number', 'show_notify','show_tracking', 'watch_transitions','test_link'], 'integer'],
+          'cash_number', 'show_notify','show_tracking', 'watch_transitions','test_link', 'priority'], 'integer'],
       [['name', 'route', 'url','url_alternative', 'logo', 'local_name', 'related_stores'], 'string', 'max' => 255],
       [['currency', 'settlement_currency'], 'string', 'max' => 3],
       [['displayed_cashback'], 'string', 'max' => 30],
@@ -177,7 +177,7 @@ class Stores extends \yii\db\ActiveRecord
       'displayed_cashback' => 'Displayed Cashback',
       'conditions' => 'Conditions',
       'added' => 'Added',
-      'visit' => 'Посщения',
+      'visit' => 'Посещения',
       'hold_time' => 'Hold Time',
       'is_active' => 'Активен',
       'short_description' => 'Short Description',
@@ -207,6 +207,7 @@ class Stores extends \yii\db\ActiveRecord
       'status_updated' => 'Изменение статуса',
       'test_link' => 'Блок теста ссылок',
       'hide_on_site' => 'Скрывать на основном сайте',
+      'priority' => 'Приоритет',
     ];
   }
 
