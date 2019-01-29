@@ -72,11 +72,11 @@ class DefaultController extends SdController
         $data['stores_count'] = Stores::activeCount();
         $data['most_profitable'] = Product::top([
             'limit' => 8,
-            'having' => ['>', 'discount', 0],
+            'having' => ['>', 'discount', 0.5],
             'sort'=>'discount',
             'order' => SORT_DESC,
         ]);
-        $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0], 'count' => 1]);
+        $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
 
         return $this->render('index', $data);
     }
@@ -203,7 +203,7 @@ class DefaultController extends SdController
             $paginateParams['month'] = 1;
         }
         if ($profit) {
-            $dataBaseData->having(['>', 'discount', 0]);
+            $dataBaseData->having(['>', 'discount', 0.5]);
             $paginateParams['profit'] = 1;
         }
         if ($storeRequest) {
