@@ -66,61 +66,63 @@ class ConnexityController extends Controller
             date('Y-m-d H:i:s');
 
         $response = $this->service->merchantFeed();
-        $stores = isset($response['merchant']) ? $response['merchant'] : [];
-        foreach ($stores as $merchant) {
-            $count++;
-            $affiliate_id = $merchant['mid'];
-            $info = $merchant['merchantInfo'];
-            $affiliate_list[] = $affiliate_id;
+        $stores = isset($response['merchant']) ? $response['merchant'] : false;
+        if ($stores) {
+            foreach ($stores as $merchant) {
+                $count++;
+                $affiliate_id = $merchant['mid'];
+                $info = $merchant['merchantInfo'];
+                $affiliate_list[] = $affiliate_id;
 
-            $newStore = [
-                'logo' => isset($info['logoUrl']) ? $info['logoUrl'] : null,
-                'cpa_id' => $this->cpa_id,
-                'affiliate_id' => $affiliate_id,
-                'url' => isset($info['merchantUrl']) ? $info['merchantUrl'] : null,
-                'name' => isset($info['name']) ? $info['name'] : null,
-                'currency' => 'USD',
-                'cashback' => "0",
-                'hold_time' => 30,
-                'affiliate_link' => isset($info['url']) ? $info['url'] : null,
-            ];
+                $newStore = [
+                    'logo' => isset($info['logoUrl']) ? $info['logoUrl'] : null,
+                    'cpa_id' => $this->cpa_id,
+                    'affiliate_id' => $affiliate_id,
+                    'url' => isset($info['merchantUrl']) ? $info['merchantUrl'] : null,
+                    'name' => isset($info['name']) ? $info['name'] : null,
+                    'currency' => 'USD',
+                    'cashback' => "0",
+                    'hold_time' => 30,
+                    'affiliate_link' => isset($info['url']) ? $info['url'] : null,
+                ];
 
-            $storeResult = Stores::addOrUpdate($newStore);
-            if (!$storeResult['result']) {
-                $errors++;
-            } else {
-                $catalog_db = CatalogStores::find()
-                    ->where([
-                        'cpa_link_id' => $storeResult['cpa_link']->id,
-                        'name' => $info['name'],
-                    ])
-                    ->one();
-                if (!$catalog_db) {
-                    $catalog_db = new CatalogStores();
-                    $catalog_db->cpa_link_id = $storeResult['cpa_link']->id;
-                    $catalog_db->name = $info['name'];
-                    $catalog_db->active = 2;
+                $storeResult = Stores::addOrUpdate($newStore);
+                if (!$storeResult['result']) {
+                    $errors++;
+                } else {
+                    $catalog_db = CatalogStores::find()
+                        ->where([
+                            'cpa_link_id' => $storeResult['cpa_link']->id,
+                            'name' => $info['name'],
+                        ])
+                        ->one();
+                    if (!$catalog_db) {
+                        $catalog_db = new CatalogStores();
+                        $catalog_db->cpa_link_id = $storeResult['cpa_link']->id;
+                        $catalog_db->name = $info['name'];
+                        $catalog_db->active = 2;
+                    }
+                    $catalog_db->date_download = $dateUpdate;
+                    $catalog_db->csv = '';
+
+                    $catalog_db->save();
                 }
-                $catalog_db->date_download = $dateUpdate;
-                $catalog_db->csv = '';
-
-                $catalog_db->save();
-            }
-            if ($storeResult['new']) {
-                $inserted++;
-            }
-            if ($storeResult['newCpa']) {
-                $insertedCpaLink++;
-                if (!$storeResult['resultCpa']) {
-                    $errorsCpaLink++;
+                if ($storeResult['new']) {
+                    $inserted++;
+                }
+                if ($storeResult['newCpa']) {
+                    $insertedCpaLink++;
+                    if (!$storeResult['resultCpa']) {
+                        $errorsCpaLink++;
+                    }
                 }
             }
+            $sql = "UPDATE `cw_stores` cws
+            LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
+            SET `is_active` = '0'
+            WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
+            Yii::$app->db->createCommand($sql)->execute();
         }
-        $sql = "UPDATE `cw_stores` cws
-        LEFT JOIN cw_cpa_link cpl on cpl.cpa_id=" . $this->cpa_id . " AND cws.`active_cpa`=cpl.id
-        SET `is_active` = '0'
-        WHERE cpl.affiliate_id NOT in(" . implode(',', $affiliate_list) . ") AND is_active!=-1";
-        Yii::$app->db->createCommand($sql)->execute();
         echo 'Stores ' . $count . "\n";
         echo 'Inserted ' . $inserted . "\n";
         if (!empty($errors)) {

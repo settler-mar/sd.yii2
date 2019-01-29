@@ -5,6 +5,15 @@
     .accordion-content-clickable {
       max-height: 9990px;
       transition: max-height 0.4s cubic-bezier(1,.05,1,0);
+      //display: block;
+      //columns: 250px 5;
+      //background-color: #fff;
+      //z-index: 100;
+      //border-radius: 18px;
+      //border: 1px solid #dedede;
+      //padding: 10px 20px;
+      //width: 320%;
+
 
       .accordion-checkbox {
         &.checked {
