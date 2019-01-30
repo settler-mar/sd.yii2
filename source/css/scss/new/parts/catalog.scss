@@ -559,6 +559,10 @@
       @include media($phones) {
         justify-content: space-around;
       }
+
+      &-product {
+        margin-top: 0;
+      }
     }
     &_sort {
       display: flex;

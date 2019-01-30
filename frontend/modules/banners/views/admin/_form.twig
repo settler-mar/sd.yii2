@@ -45,16 +45,31 @@
 
                                 <h4>Позиции</h4>
                                 {% for key, item in model.places_array %}
-                                    <div class="form-group field-banners-places">
-                                        <input type="checkbox" id="banner-banner-places-{{ key }}" name="Banners[banner_places][]" value="{{ key }}"
-                                               {% if item.checked %} checked {% endif %}
-                                        >
-                                        <label class="control-label" for="banner-banner-places-{{ key }}">{{ item.name }}</label>
-                                        <div class="help-block"></div>
+                                    <div class="{% if item.childs %}accordion categories{% endif %}">
+                                        <div class="form-group field-banners-places ">
+                                            <input type="checkbox" id="banner-banner-places-{{ key }}" name="Banners[banner_places][]" value="{{ key }}"
+                                                   {% if item.checked %} checked {% endif %}
+                                            >
+                                            <label class="control-label" for="banner-banner-places-{{ key }}">{{ item.name }}</label>
+                                            {% if item.childs %}{% endif %}
+                                            <div class="help-block"></div>
+                                        </div>
+                                        {% if item.childs %}
+                                            <div class="accordion-control accordion-title">Дочерние категории</div>
+                                            <div class="accordion-content">
+                                                {% for keychild, itemchild in item.childs %}
+                                                    <div class="form-group field-banners-places">
+                                                        <input type="checkbox" id="banner-banner-places-{{ keychild }}" name="Banners[banner_places][]" value="{{ keychild }}"
+                                                                {% if itemchild.checked %} checked {% endif %}
+                                                        >
+                                                        <label class="control-label" for="banner-banner-places-{{ keychild }}">{{ itemchild.name }}</label>
+                                                        <div class="help-block"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
-
-
                             </div>
                         </div>
                     <div class="form-group">

@@ -343,16 +343,29 @@ class Banners extends \yii\db\ActiveRecord
                 'name' => 'Магазины.Левое меню.' . $store['name'],
             ];
         };
-        $categoriesProducts = ProductsCategory::find()
+
+        $mainCategory = ProductsCategory::find()
             ->where(['parent' => null])
+            ->select(['id']);
+        $categoriesProducts = ProductsCategory::find()
+            ->from(ProductsCategory::tableName(). ' pc')
+            ->where(['or', ['parent' => null],['parent' => $mainCategory]])
+            ->andWhere(['active' => ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES])
             ->asArray()
             ->orderBy(['name' => SORT_ASC])
             ->all();
         foreach ($categoriesProducts as $category) {
             $key = 'product-category-' . $category['id'] . '-left-menu';
-            $this->places_array[$key] = [
-                'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
-            ];
+            if ($category['parent']) {
+                $keyParent = 'product-category-' . $category['parent'] . '-left-menu';
+                $this->places_array[$keyParent]['childs'][$key] = [
+                    'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
+                ];
+            } else {
+                $this->places_array[$key] = [
+                    'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
+                ];
+            }
         }
     }
 
