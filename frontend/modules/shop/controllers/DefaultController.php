@@ -16,6 +16,7 @@ use common\components\Help;
 use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\reviews\models\Reviews;
 use yii;
 
 class DefaultController extends SdController
@@ -85,6 +86,8 @@ class DefaultController extends SdController
         ]);
         $data['visited'] = Product::viewedByUser(Yii::$app->user->id, false);
         $data['visited_count'] = Product::viewedByUser(Yii::$app->user->id, false, true);
+        $data['top_reviews'] = Reviews::top();
+        $data['reviews_count'] = Reviews::find()->count();
 
         return $this->render('index', $data);
     }

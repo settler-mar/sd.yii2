@@ -146,7 +146,7 @@
     {% if visited|length %}
       <section class="margin">
         <div class="page-wrap">
-          <h2 class="content-header">{{ t('shop', 'viewed_products')|raw }}</h2>
+          <h2 class="content-header">{{ svg('eye')|raw }}{{ t('shop', 'viewed_products')|raw }}</h2>
           <div class="shops catalog-stores_list-product">
             {% for product in visited %}
               {% include 'parts/products/product.twig' %}
@@ -158,6 +158,23 @@
         </div>
       </section>
     {% endif %}
+
+    <section class="margin">
+      <div class="page-wrap gray-box round-box-mini">
+        <h2 class="content-header">{{ t('main', 'reviews_about_us')|raw }}</h2>
+        <div class="scroll_box ">
+            {% set not_admin_coment = true %}
+            {% for review in top_reviews %}
+                {% include 'parts/comment.twig' %}
+            {% endfor %}
+        </div>
+        <div class="align-center">
+          <a href="{{ _href('/reviews') }}" class="btn btn-transform">{{ t('shop', 'all_reviews_({count})', {'count':reviews_count})|raw }}</a>
+        </div>
+      </div>
+    </section>
+
+    {% include ('index/advantages_line_second.twig') %}
 
   </div>
 

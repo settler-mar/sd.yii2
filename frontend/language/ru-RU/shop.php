@@ -85,6 +85,6 @@ return [
     'filter_enter_3_chars' => 'Введите первые 3 буквы',
     'popular_brand' => 'Популярные бренды',
     'viewed_products' => 'Просмотренные товары',
-
+    'all_reviews_({count})' => 'Все отзывы&nbsp;({count})&nbsp;→',
 
 ];

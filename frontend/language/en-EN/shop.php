@@ -82,6 +82,6 @@ return [
     'show_all_vendors_close' => 'Hide all',
     'popular_brand' => 'Popular Brands',
     'viewed_products' => 'Viewed Products',
-
+    'all_reviews_({count})' => 'All reviews&nbsp;({count})&nbsp;→',
 
 ];

@@ -191,8 +191,8 @@
 
     {% if visiteds %}
         <div class="catalog_product-others margin-half">
-            <h3 class="catalog_product-others-header">
-                {{ t('shop', 'visiteds_products')|raw }}
+            <h3 class="catalog_product-others-header content-header">
+                {{ svg('eye')|raw }}{{ t('shop', 'visiteds_products')|raw }}
             </h3>
             {% set products = visiteds %}
             {% include('parts/products/other_products.twig') %}
