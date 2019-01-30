@@ -1,11 +1,14 @@
 {% if app.controller.params['breadcrumbs']  %}
+    {% set homeLink = app.controller.params['disable_breadcrumbs_home_link'] ? false : {'label':t('yii', 'Home'),'url': _href('/')} %}
     <section class=" page-wrap ">
         <div class="breadcrumbs breadcumbs_catalog {% if app.controller.params['breadcrumbs_class'] %}{{ app.controller.params['breadcrumbs_class'] }}{% endif %}">
             {{ use('yii\\widgets\\Breadcrumbs') }}
             {{ breadcrumbs_widget({
                 'links': app.controller.params['breadcrumbs'],
-                'options': {'class': 'breadcrumbs_list catalog'}
-            }) }}
+                'options': {'class': 'breadcrumbs_list catalog'},
+                'homeLink': homeLink,
+                })|raw
+            }}
         </div>
     </section>
 {% endif %}

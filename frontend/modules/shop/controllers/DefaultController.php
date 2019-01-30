@@ -26,6 +26,7 @@ class DefaultController extends SdController
 
     public function createAction($id)
     {
+        $this->params['disable_breadcrumbs_home_link'] = 1;//для виджета крошек
         $request = \Yii::$app->request;
         Yii::$app->params['url_mask'] = 'shop';
         $path = explode('/', $request->pathInfo);

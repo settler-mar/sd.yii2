@@ -17,6 +17,7 @@ class DefaultController extends SdController
 
     public function createAction($id)
     {
+        $this->params['disable_breadcrumbs_home_link'] = 1;//для виджета крошек
         $id = (string) $id;
         if ($id) {
             echo $this->actionIndex($id);
