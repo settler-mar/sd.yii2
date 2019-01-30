@@ -283,8 +283,8 @@ class Help extends Component
       if ($is_persent) {
         $value = !empty($params['float']) ? (float) $value : number_format((float) $value, 2, '.', '&nbsp;');
         $value_n = !empty($params['float']) ? (float) $value_n : number_format((float) $value_n, 2, '.', '&nbsp;');
-        $value = $value . "%";
-        $value_n = $value_n . "%";
+        $value = $value .(!isset($params['show_percent']) || $params['show_percent'] ? "%" : '');
+        $value_n = $value_n . (!isset($params['show_percent']) || $params['show_percent'] ? "%" : '');
       } else {
         $k = 2;//($this->round($value_n) == $this->round($value_n,2)) ? 0 : 2;
         $value = number_format($value, $k, '.', "&nbsp;") . "&nbsp;" . $currency;

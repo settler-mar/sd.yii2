@@ -1,7 +1,7 @@
 {% if filter %}
 <div class="catalog_product_filter margin-half">
     <form class="catalog_product_filter-form" method="get" {% if filter.action %}action="{{ filter.action }}" {% endif %}>
-        <div class="catalog_product_filter-items margin-half">
+        <div class="catalog_product_filter-items">
             {% if filter.query %}
                 <input type="hidden" name="query" value="{{ filter.query }}">
                 <input type="hidden" name="limit" value="{{ limit }}">
@@ -69,11 +69,11 @@
             </div>
             {% endif %}
           {% if filter.stores|length >0 %}
-            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half">
+            <div class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half product-filter {% if filter.stores|length >10 %}accordion{% endif %}">
                 <div class="catalog_product_filter-header">
                     {{ t('shop','filter_stores') }}
                 </div>
-                <div class="catalog_product_filter-stores  catalog_product_filter-checkbox">
+                <div class="catalog_product_filter-stores  catalog_product_filter-checkbox {% if filter.stores|length >10 %}accordion-content-clickable{% endif %}">
                     {% for store in filter.stores  %}
                         <div class="catalog_product_filter-checkbox_item">
                             <input type="checkbox" id="label-filer-store{{ store.uid }}" name="store_id[]" value="{{ store.uid }}"
@@ -82,6 +82,12 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if filter.stores|length >10 %}
+                    <div class="accordion-control-wrap">
+                        <div class="accordion-control open"><a href="">{{ t('shop', 'show_all_vendors_({count})', {'count':filter.stores|length}) }}</a></div>
+                        <div class="accordion-control close"><a href="">{{ t('shop', 'show_all_vendors_close') }}</a></div>
+                    </div>
+                {% endif %}
             </div>
           {% endif %}
         </div>

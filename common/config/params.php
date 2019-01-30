@@ -35,6 +35,7 @@ $params = [
     ],
     'search_line_product'=>[ // используется для результатов поиска в выпадашке для продуктов
         'show_charity' => false,
+        'show_percent' => false,
         'view'  => 'search_line'
     ],
     'product'=>[ // Плитка каталога top Ali продуктов
