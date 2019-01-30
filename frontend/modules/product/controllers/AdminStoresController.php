@@ -173,7 +173,14 @@ class AdminStoresController extends Controller
           $model->product_count = 0;
           $model->date_import = null;
           $model->save();
-          Yii::$app->session->addFlash('info', 'Удалено товаров '.$products);
+          if ($products) {
+              //есть удалённые, нужно убить фото, если есть
+              $path = Yii::getAlias('@frontend/web/images/product/' . $model->cpaLink->affiliate_id .
+                  '/' . $model->id);
+              $deleted = $this->deleteDirectory($path);
+          }
+          Yii::$app->session->addFlash('info', 'Удалено товаров '.$products.
+              (!empty($deleted) ? ', изображений товаров '.$deleted : ''));
       } else {
           Yii::$app->session->addFlash('error', 'Ошибка. Каталог не найден!');
       }
@@ -206,4 +213,28 @@ class AdminStoresController extends Controller
       throw new NotFoundHttpException('The requested page does not exist.');
     }
   }
+
+    /**
+     * удаление фото для каталога
+     * @param $dirname
+     * @return int
+     */
+    protected function deleteDirectory($dirname)
+    {
+        if (!file_exists($dirname) || !is_dir($dirname)) {
+            exit;
+        }
+
+        $files = array_diff(scandir($dirname), ['.', '..']);
+        $count = count($files);
+        foreach ($files as $file) {
+            if (!is_dir($dirname . "/" . $file)) {
+                unlink($dirname . "/" . $file);
+            } else {
+                $count += $this->deleteDirectory($dirname . '/' . $file);
+            }
+        }
+        rmdir($dirname);
+        return $count;
+    }
 }
