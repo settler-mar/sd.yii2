@@ -772,9 +772,15 @@ $functionsList = [
     if (is_callable($model, 'activeClass')) {
         return $model::activeClass($active);
     }
+  },
+  '_register' => function($title, $titleNoregister = '') {
+    if (Yii::$app->user->isGuest) {
+        $out = '<a class="modals_open" href="'.Yii::$app->help->href('#registration').'">'.$title.'</a>';
+    } else {
+        $out = $titleNoregister ? $titleNoregister : $title;
+    }
+    return $out;
   }
-
-
 
 ];
 

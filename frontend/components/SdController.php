@@ -243,7 +243,8 @@ class SdController extends Controller
 
     public function render($view, $params = [])
     {
-        if ($this->breadcrumbs_last_item_disable && isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
+        if ($this->breadcrumbs_last_item_disable && isset($this->params['breadcrumbs']) &&
+            isset($this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'])) {
             $this->params['breadcrumbs'][intval(count($this->params['breadcrumbs'])) - 1]['url'] = null;
         }
         if (isset($params['page'])) {

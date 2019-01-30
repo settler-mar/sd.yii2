@@ -344,18 +344,20 @@ class DefaultController extends SdController
         $product = $this->product;//Product::findOne($id);
         $path = '/shop';
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
-        $parents = isset($product->categories[0]) ? $product->categories[0]->parentTree() : [];
-        foreach ($parents as $parent) {
-            $path .= '/'.$parent['route'];
-            $this->params['breadcrumbs'][] = [
-                'label' => $parent['name'],
-                'url' => Help::href($path),
-            ];
-        }
         $this->breadcrumbs_last_item_disable = false;
         $category = isset($product->categories[0]) ? $product->categories[0] : false;//
         $categoryRoute = $category ? $category->parentTree(1) : false;//только если категория активна, иначе нет
         $category = $category && !empty($categoryRoute) ? $category : false;
+        if ($category) {
+            $parents = $category->parentTree();
+            foreach ($parents as $parent) {
+                $path .= '/'.$parent['route'];
+                $this->params['breadcrumbs'][] = [
+                    'label' => $parent['name'],
+                    'url' => Help::href($path),
+                ];
+            }
+        }
 
         //продукты того же производителя
         $brandsProducts = $product->vendor_id ? Product::top([
