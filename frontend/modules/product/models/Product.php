@@ -735,12 +735,14 @@ class Product extends \yii\db\ActiveRecord
             $stores = self::find()
                 ->from(self::tableName().' p')
                 ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
-                ->select(['s.name', 's.uid'])
-                ->groupBy(['s.name', 's.uid'])
-                ->orderBy(['s.name' => SORT_ASC])
+                ->select(['s.name', 's.uid', 's.priority'])
+                ->groupBy(['s.name', 's.uid', 's.priority'])
                 ->asArray();
             if (!empty($params['where'])) {
                 $stores->where($params['where']);
+            }
+            if (isset($params['sort'])) {
+                $stores->orderBy($params['sort']);
             }
             if (isset($params['category'])) {
                 $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')

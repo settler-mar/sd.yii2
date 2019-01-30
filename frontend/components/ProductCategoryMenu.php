@@ -27,7 +27,8 @@ class ProductCategoryMenu extends Widget
     {
         $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
             Yii::$app->controller->category->id : false;
-        $cacheName = 'product_category_menu' . ($current ? '_' . $current : '');
+        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $cacheName = 'product_category_menu' . ($current ? '_' . $current : '') . ($language ? '_'.$language : '');
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';

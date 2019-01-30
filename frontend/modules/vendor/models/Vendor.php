@@ -145,11 +145,10 @@ class Vendor extends \yii\db\ActiveRecord
         $out = $cache->getOrSet($casheName, function () use ($params) {
             $vendors = self::find()
                 ->from(self::tableName().' v')
-                ->leftJoin(Product::tableName(). ' p', 'p.vendor_id = v.id')
-                ->select(['v.id as id', 'v.name as name', 'v.route as route', 'v.logo as logo', 'count(p.id) as count'])
+                ->innerJoin(Product::tableName(). ' p', 'p.vendor_id = v.id')
+                ->select(['v.id as id', 'v.name as name', 'v.route as route', 'v.logo as logo', 'v.priority as priority'])
                 ->where(['v.status' => self::STATUS_ACTIVE])
-                ->groupBy(['id', 'name', 'route', 'logo'])
-                ->orderBy(['count' => SORT_DESC])
+                ->groupBy(['id', 'name', 'route', 'logo', 'priority'])
                 ->asArray();
             if (!empty($params['limit'])) {
                 $vendors->limit($params['limit']);
@@ -172,15 +171,10 @@ class Vendor extends \yii\db\ActiveRecord
                 }
                 $vendors->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
             }
-            if (!empty($params['count'])) {
-                return $vendors->count();
+            if (isset($params['sort'])) {
+                $vendors->orderBy($params['sort']);
             }
-            $vendors = $vendors->all();
-            if (!empty($params['sort'])) {
-                usort($vendors, function ($a, $b) use ($params) {
-                    return $a[$params['sort']]>$b[$params['sort']];
-                });
-            }
+            $vendors = !empty($params['count']) ? $vendors->count() : $vendors->all();
             return $vendors;
         }, $cache->defaultDuration, $dependency);
         return $out;

@@ -311,11 +311,12 @@ class DefaultController extends SdController
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
         $vendors =  Vendor::items([
-            'sort'=>'name',
+            'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
             'database' => $dataBaseData,
         ]);
 
         $stores = Product::usedStores([
+            'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
             'database' => $dataBaseData
         ]);
 

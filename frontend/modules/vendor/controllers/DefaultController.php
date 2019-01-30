@@ -180,6 +180,7 @@ class DefaultController extends SdController
 //            $this->getLimitLinks($paginatePath, $defaultSort, $paginateParams);
 
         $stores = Product::usedStores([
+            'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
             'database' => $dataBaseData
         ]);
 
