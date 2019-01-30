@@ -14,7 +14,7 @@
     {{ grid_view_widget({
             'dataProvider': dataProvider,
             'filterModel': searchModel,
-                'columns': [
+            'columns': [
                 {'class': '\\yii\\grid\\SerialColumn'},
 
                 'id',
@@ -38,7 +38,8 @@
 
                 {
                   'class': '\\yii\\grid\\ActionColumn',
-                  'template': '{update} {delete}'
+                  'template': '{update} {delete} {clear}',
+                    'buttons': {'clear': clear},
                 },
             ],
         })

@@ -151,14 +151,15 @@ class ProductController extends Controller
   /**
    * Закачка фото продуктов Каталога
    */
-  public function actionImages()
+  public function actionImages($catalog = false)
   {
+    $catalog = (int) $catalog > 0 ? (int) $catalog : false;
     $startTime = time();
     $processTime = isset(Yii::$app->params['image_download_time']) ? Yii::$app->params['image_download_time'] : 5;
     $imageDownloadMaxCount = isset(Yii::$app->params['image_download_attemps']) ? Yii::$app->params['image_download_attemps'] : 5;
     $size = isset(Yii::$app->params['image_size']) ? Yii::$app->params['image_size'] : 600;//требуемая ширина и высота
 
-    echo 'Product Images starts at ' . date('Y-m-d H:i:s', $startTime) . "\n";
+    echo 'Product Images starts at ' . date('Y-m-d H:i:s', $startTime) .($catalog ? ' catalog_id '.(int) $catalog : ''). "\n";
 
     //делать ли оптимизацию
     $optimizer = false;
@@ -170,7 +171,8 @@ class ProductController extends Controller
     }
 
     $sql = 'SELECT `id`, `image`, `catalog_id`, `image_download_count` FROM `cw_product` WHERE `image_download_count` < ' .
-        $imageDownloadMaxCount . ' AND (`image` LIKE \'http://%\' OR `image` LIKE \'https://%\') ORDER BY `catalog_id`';
+        $imageDownloadMaxCount . ' AND (`image` LIKE \'http://%\' OR `image` LIKE \'https://%\')'.
+        ($catalog > 0 ? ' AND `catalog_id` = ' . $catalog : '').' ORDER BY `catalog_id`';
 
     $command = Yii::$app->db->createCommand($sql)->query();
     $process = 0;
@@ -183,9 +185,7 @@ class ProductController extends Controller
       $path = $this->getPath($product['catalog_id']);//путь
       $fullPath = Yii::getAlias($this->imagesPath . $path);//полный путь
       $imageUrl = $product['image'];
-      $ext = explode('.', $imageUrl);
-      $ext = $ext[count($ext) - 1];
-      $name = preg_replace('/[^\d]/', '', microtime()) . '.' . $ext; // Название файла
+      $name = preg_replace('/[^\d]/', '', microtime());// Название файла
       $update = ['image_download_count' => $product['image_download_count'] + 1];
       try {
         //пробуем достать фото
@@ -195,8 +195,20 @@ class ProductController extends Controller
       }
       if ($file) {
         try {
-          $img = (new Image($file))
-              ->bestFit($size, $size)
+          $img = (new Image($file));
+          $info = $img->getInfo();
+          switch ($info['mime']) {
+              case 'image/png':
+                  $ext = '.png';
+                  break;
+              case 'image/gif':
+                  $ext = '.gif';
+                  break;
+              default:
+                  $ext = '.jpg';
+          }
+          $name .= $ext;
+          $img->bestFit($size, $size)
               ->saveAs($fullPath . $name, 70);
 
           if ($optimizer) {

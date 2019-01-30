@@ -89,6 +89,9 @@ class AdminStoresController extends Controller
         ],
         'storeFilter' => $storeFilter,
         'cpaFilter' => $cpaFilter,
+        'clear' => function($url, $model, $key) {
+            return '<a title="Delete products" href="/admin-stores/product/clear/id:'.$model->id.'"><i class="fa fa-eraser"></i></a>';
+        },
     ]);
   }
   /**
@@ -166,10 +169,13 @@ class AdminStoresController extends Controller
               'SELECT `id` FROM `' . Product::tableName() . '` WHERE `catalog_id` = ' . $id . ')';
           Yii::$app->db->createCommand($sql)->execute();
           $sql = 'DELETE FROM `' . Product::tableName() . '` WHERE `catalog_id` = ' . $id;
-          Yii::$app->db->createCommand($sql)->execute();
+          $products = Yii::$app->db->createCommand($sql)->execute();
           $model->product_count = 0;
           $model->date_import = null;
           $model->save();
+          Yii::$app->session->addFlash('info', 'Удалено товаров '.$products);
+      } else {
+          Yii::$app->session->addFlash('error', 'Ошибка. Каталог не найден!');
       }
       return $this->redirect(['index']);
   }
