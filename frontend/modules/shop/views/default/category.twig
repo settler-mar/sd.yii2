@@ -12,7 +12,7 @@
 {% endif %}
 {#краткая информация категории#}
 <section class="gray-box wrap-round margin">
-  <h1 class="page-header align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
+  <h1 id="catalog-products-h1" class="page-header align-center laptop-no-margin-bottom">{{ h1_final|raw }}</h1>
   {% if content %}
     <div class="catalog_category-short-description laptop_hide catalog_category-content sd_content">
         {{ content|raw }}
@@ -45,8 +45,8 @@
         {#выбор и отображение сортировки#}
         <div class="margin-half page-wrap-flex catalog-stores_sort catalog-stores_sort-products">
           {% include('parts/sort-links-products.twig') %}
-          <div class="catalog-stores_sort-info">
-            {{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_products + 1 : '0'), 'end': offset_products + show_products, 'total': total_v})|raw }}
+          <div id="catalog-products-info" class="catalog-stores_sort-info">
+            {#{{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_products + 1 : '0'), 'end': offset_products + show_products, 'total': total_v})|raw }}#}
           </div>
         </div>
 
@@ -54,29 +54,29 @@
         {#{% include 'parts/dropdown-limit-catalog.twig' %}#}
         {#</div>#}
 
-        <div class="catalog-stores_stores margin">
-          {% if products|length > 0 %}
-            <div class="catalog-stores_list shops margin">
-              {% for product in products %}
+        <div id="catalog-products-content" class="catalog-stores_stores margin">
+          {#{% if products|length > 0 %}#}
+            {#<div class="catalog-stores_list shops margin">#}
+              {#{% for product in products %}#}
                 {#<div class="col-sm-3 col-md-3">#}
-                {% include 'parts/products/product.twig' %}
+                {#{% include 'parts/products/product.twig' %}#}
                 {#</div>#}
-              {% endfor %}
-              <div class="catalog_products_item shop shop-empty"></div>
-              <div class="catalog_products_item shop shop-empty"></div>
-              <div class="catalog_products_item shop shop-empty"></div>
-            </div>
+              {#{% endfor %}#}
+              {#<div class="catalog_products_item shop shop-empty"></div>#}
+              {#<div class="catalog_products_item shop shop-empty"></div>#}
+              {#<div class="catalog_products_item shop shop-empty"></div>#}
+            {#</div>#}
 
-            {% if pagination %}
-              <div class="catalog_pagination products">
-                {{ pagination|raw }}
-              </div>
-            {% endif %}
+            {#{% if pagination %}#}
+              {#<div class="catalog_pagination products">#}
+                {#{{ pagination|raw }}#}
+              {#</div>#}
+            {#{% endif %}#}
 
 
-          {% else %}
-            <p class="catalog-stores alert">{{ t('main', 'not_found')|raw }}</p>
-          {% endif %}
+          {#{% else %}#}
+            {#<p class="catalog-stores alert">{{ t('main', 'not_found')|raw }}</p>#}
+          {#{% endif %}#}
         </div>
 
         {% if additional_content %}
@@ -98,4 +98,9 @@
 
 
 </section>
+
+<script>
+    var ajax_requests='{{ requests|raw }}';
+</script>
+
 
