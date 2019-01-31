@@ -1,11 +1,16 @@
-<div class="shop hover-box products">
-    {% set store_href =  _href(store.store_href~(store.is_offline ? '-offline':'')) %}
+<div class="shop hover-box products {#catalog_products_item_image-wrap#}">
+{% set store_href =  _href('/stores/'~store.route) %}
     {% if store.action_id == 1 %}
         <span class="shop_promo-label shop_promo-label_x2"></span>
     {% endif %}
     <div class="shop-logo">
         <a class="shop-logo_link" href="{{ store_href|raw }}">
-            <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
+            {% if store.logo %}
+                <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
+            {% else %}
+                {#<img class="no_optomize" src="/images/{{ app.params.lang_code }}-no-image.png" alt="{{ product.name|raw }}">#}
+                <span>{{ store.name|raw }}</span>
+            {% endif %}
         </a>
     </div>
 </div>

@@ -288,6 +288,7 @@ class Product extends \yii\db\ActiveRecord
   public function beforeSave($insert)
   {
       $this->namesort = mb_strtolower(preg_replace('/[^\d\w]/u', '', $this->name));
+      $this->discount = $this->old_price ?  (100 *($this->old_price - $this->price)) / $this->old_price :  0;
       return parent::beforeSave($insert);
   }
   /**
@@ -735,7 +736,7 @@ class Product extends \yii\db\ActiveRecord
             $stores = self::find()
                 ->from(self::tableName().' p')
                 ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
-                ->select(['s.name', 's.uid', 's.priority'])
+                ->select(['s.name', 's.uid', 's.priority', 's.logo', 's.route'])
                 ->groupBy(['s.name', 's.uid', 's.priority'])
                 ->asArray();
             if (!empty($params['where'])) {
@@ -758,6 +759,9 @@ class Product extends \yii\db\ActiveRecord
                     $dataBaseSelect->addSelect(['if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`']);
                 }
                 $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
+            }
+            if (isset($params['limit'])) {
+                $stores->limit($params['limit']);
             }
             return $stores->all();
         }, $cache->defaultDuration, $dependency);
@@ -872,8 +876,8 @@ class Product extends \yii\db\ActiveRecord
           do {
               $prod = Product::find()->from(Product::tableName(). ' p')
                   ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = p.id')
-                  ->select(['p.id as product_id', 'p.store_id', 'p.vendor_id', 'pc.category_id as category_id', '(if (p.old_price, (p.old_price - p.price)/p.old_price, 0)) as discount'])
-                  ->having(['>', 'discount', 0.01])
+                  ->select(['p.id as product_id', 'p.store_id', 'p.vendor_id', 'pc.category_id as category_id', 'discount'])
+                  ->where(['>', 'discount', 0.01])
                   ->orderBy(['discount' => SORT_DESC]);
               if (!empty($cats)) {
                   $prod->andWhere(['not in', 'category_id', $cats]);
@@ -884,7 +888,7 @@ class Product extends \yii\db\ActiveRecord
               if (!empty($shops)) {
                   $prod->andWhere(['not in', 'store_id', $shops]);
               }
-              $prod = $prod->asArray()->one();
+              $prod = $prod->asArray()->limit(1)->one();
               if ($prod) {
                  $ids[] = $prod['product_id'];
                  $cats[] = $prod['category_id'];
@@ -970,7 +974,7 @@ class Product extends \yii\db\ActiveRecord
             's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
             's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
             's.currency as store_currency', 's.action_end_date as action_end_date',
-            'if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`'])
+            'discount'])
         ->asArray();
   }
 

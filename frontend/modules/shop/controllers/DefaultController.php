@@ -70,15 +70,15 @@ class DefaultController extends SdController
             $data['posts'] = Posts::getLastPosts();
             $data['posts_count'] = Posts::find()->count();
         }
-        $data['stores'] = Stores::top12(25);
+        $data['stores']= Product::usedStores(['limit' => 25]);
         $data['stores_count'] = Stores::activeCount();
         $data['most_profitable'] = Product::top([
-            'limit' => 8,
+            'limit' => 4,//todo нужно 8, но если результ меньше 8, то долгий запрос, уменьшил пока до 4
             'by_category' => true,//по одной в категории
             'sort' => 'discount',
             'order' => SORT_DESC,
         ]);
-        $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
+        $data['most_profitable_count'] = Product::top(['where' => ['>', 'discount', 50], 'count' => 1]);
         $data['brands'] = Vendor::items([
             'limit' => 25,
         ]);
