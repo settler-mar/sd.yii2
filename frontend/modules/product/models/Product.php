@@ -866,22 +866,35 @@ class Product extends \yii\db\ActiveRecord
       }
       if (!empty($params['by_category'])) {
           //по одной в категории
-          $productAndCategory = Product::find()->from(Product::tableName(). ' p')
-              ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = p.id')
-              ->select(['p.id as product_id', 'pc.category_id as category_id', '(if (p.old_price, (p.old_price - p.price)/p.old_price, 0)) as discount'])
-              ->having(['>', 'discount', 0.5])
-              ->orderBy(['discount' => SORT_DESC])
-              ->limit(1000)->asArray()->all();
           $ids = [];
-          foreach ($productAndCategory as $products) {
-              if (!isset($ids[$products['category_id']])) {
-                  $ids[$products['category_id']] = $products['product_id'];
+          $cats =[];
+          $shops = [];
+          do {
+              $prod = Product::find()->from(Product::tableName(). ' p')
+                  ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = p.id')
+                  ->select(['p.id as product_id', 'p.store_id', 'p.vendor_id', 'pc.category_id as category_id', '(if (p.old_price, (p.old_price - p.price)/p.old_price, 0)) as discount'])
+                  ->having(['>', 'discount', 0.01])
+                  ->orderBy(['discount' => SORT_DESC]);
+              if (!empty($cats)) {
+                  $prod->andWhere(['not in', 'category_id', $cats]);
               }
-              if (count($ids)>$count) {
+              if (!empty($ids)) {
+                  $prod->andWhere(['not in', 'product_id', $ids]);
+              }
+              if (!empty($shops)) {
+                  $prod->andWhere(['not in', 'store_id', $shops]);
+              }
+              $prod = $prod->asArray()->one();
+              if ($prod) {
+                 $ids[] = $prod['product_id'];
+                 $cats[] = $prod['category_id'];
+                 $shops[] = $prod['store_id'];
+              }
+              if (count($ids) >= $count) {
                   break;
               }
-          }
-          $product->andWhere(['prod.id' => array_values($ids)]);
+          } while ($prod);
+          $product->andWhere(['prod.id' => $ids]);
       }
       if (!empty($params['multi_brands'])) {
 //          $vendors = Product::find()->from(Product::tableName().' .p')

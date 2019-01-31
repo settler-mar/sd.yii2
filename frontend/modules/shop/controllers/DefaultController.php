@@ -75,6 +75,8 @@ class DefaultController extends SdController
         $data['most_profitable'] = Product::top([
             'limit' => 8,
             'by_category' => true,//по одной в категории
+            'sort' => 'discount',
+            'order' => SORT_DESC,
         ]);
         $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
         $data['brands'] = Vendor::items([
