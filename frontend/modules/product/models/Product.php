@@ -864,13 +864,31 @@ class Product extends \yii\db\ActiveRecord
           $product->innerJoin(UsersVisits::tableName(). ' uv', 'uv.product_id = prod.id')
               ->andWhere(['uv.user_id' => $params['user_transition']]);
       }
+      if (!empty($params['by_category'])) {
+          //по одной в категории
+          $productAndCategory = Product::find()->from(Product::tableName(). ' p')
+              ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = p.id')
+              ->select(['p.id as product_id', 'pc.category_id as category_id', '(if (p.old_price, (p.old_price - p.price)/p.old_price, 0)) as discount'])
+              ->having(['>', 'discount', 0.5])
+              ->orderBy(['discount' => SORT_DESC])
+              ->limit(1000)->asArray()->all();
+          $ids = [];
+          foreach ($productAndCategory as $products) {
+              if (!isset($ids[$products['category_id']])) {
+                  $ids[$products['category_id']] = $products['product_id'];
+              }
+              if (count($ids)>$count) {
+                  break;
+              }
+          }
+          $product->andWhere(['prod.id' => array_values($ids)]);
+      }
       if (!empty($params['multi_brands'])) {
 //          $vendors = Product::find()->from(Product::tableName().' .p')
 //            ->select(['vendor_id', 'count(id) as count', 'max(id) as id1', 'min(id) as id2'])
 //            ->groupBy(['vendor_id'])
 //            ->orderBy(['count' => SORT_DESC]);
 
-          //'SELECT vendor_id, count(id) as count, max(id) as id1, min(id) as id2  FROM `cw_product` `prod` where not vendor_id is null group by vendor_id order by count desc';
       }
       if (!empty($params['by_visit'])) {
           $visits = UsersVisits::find()

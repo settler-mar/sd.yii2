@@ -60,7 +60,7 @@ class DefaultController extends SdController
         $data = [];
         $data['slider_products'] = Slider::get(['place'=>'product']);
         $data['category_top'] = ProductsCategory::top([
-            'count' => 8,
+            'count' => 12,
             'order' => ['logo' => SORT_DESC, 'in_top' => SORT_DESC, 'count' => SORT_DESC],
         ]);
         $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
@@ -74,9 +74,7 @@ class DefaultController extends SdController
         $data['stores_count'] = Stores::activeCount();
         $data['most_profitable'] = Product::top([
             'limit' => 8,
-            'having' => ['>', 'discount', 0.5],
-            'sort'=>'discount',
-            'order' => SORT_DESC,
+            'by_category' => true,//по одной в категории
         ]);
         $data['most_profitable_count'] = Product::top(['having' => ['>', 'discount', 0.5], 'count' => 1]);
         $data['brands'] = Vendor::items([

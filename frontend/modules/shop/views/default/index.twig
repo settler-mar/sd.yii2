@@ -43,32 +43,34 @@
           {% include 'parts/products/category_top.twig' %}
         {% endif %}
 
-        {% if products_top %}
-          <section class="margin">
-            <h2>{{ t('shop', 'produtct_hits_in')~' '~month(null, 0, 1) }}</h2>
-            <div class="catalog-stores_list shops margin-half">
-                {% for product in products_top %}
-                    {% include 'parts/products/product.twig' %}
-                {% endfor %}
-              <div class="catalog_products_item shop shop-empty"></div>
-              <div class="catalog_products_item shop shop-empty"></div>
-              <div class="catalog_products_item shop shop-empty"></div>
-            </div>
-            <div class="align-center">
-              <a href="{{ _href('/search/product?module=product&month=1')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
-            </div>
-          </section>
-        {% endif %}
 
-        {% if additional_content %}
-          <div class="catalog_category-down-description margin sd_content">
-              {{ additional_content|raw }}
-          </div>
-        {% endif %}
 
 
       </div>
     </div>
+
+    {% if products_top %}
+      <section class="margin">
+        <h2>{{ t('shop', 'produtct_hits_in')~' '~month(null, 0, 1) }}</h2>
+        <div class="shops catalog-stores_list-product">
+            {% for product in products_top %}
+                {% include 'parts/products/product.twig' %}
+            {% endfor %}
+          <div class="catalog_products_item shop shop-empty"></div>
+          <div class="catalog_products_item shop shop-empty"></div>
+          <div class="catalog_products_item shop shop-empty"></div>
+        </div>
+        <div class="align-center">
+          <a href="{{ _href('/search/product?module=product&month=1')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if additional_content %}
+      <div class="catalog_category-down-description margin sd_content">
+          {{ additional_content|raw }}
+      </div>
+    {% endif %}
 
     {% if posts|length %}
       <section class="margin">
@@ -151,6 +153,10 @@
             {% for product in visited %}
               {% include 'parts/products/product.twig' %}
             {% endfor %}
+            <div class="catalog_products_item shop shop-empty"></div>
+            <div class="catalog_products_item shop shop-empty"></div>
+            <div class="catalog_products_item shop shop-empty"></div>
+
           </div>
           <div class="align-center">
             <a href="{{ _href('/account/viewed-products')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': visited_count})|raw }} →</a>
