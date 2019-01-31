@@ -215,7 +215,7 @@ class DefaultController extends SdController
             $paginateParams['month'] = 1;
         }
         if ($profit) {
-            $dataBaseData->having(['>', 'discount', 0.5]);
+            $dataBaseData->andWhere(['>', 'discount', 0.5]);
             $paginateParams['profit'] = 1;
         }
         if ($storeRequest) {
