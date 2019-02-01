@@ -128,7 +128,7 @@ class AdminController extends Controller
                         $img = '<img height="100" src="'.$model->image.'">';
                     } else {
                         //$imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/' . $model->image)));
-                        $img = '<img height="100" src="/product/images/'.$model->image.'">';
+                        $img = '<img height="100" src="/images/product/'.$model->image.'">';
                     }
                     return '<a target="_blank" rel="nooper noreferrer nofollow" href="/admin/product/update/id:'.
                         $model->id.'">'.$img.'</a>';
@@ -255,7 +255,7 @@ class AdminController extends Controller
             } else {
                 //$imageData = base64_encode(file_get_contents(Yii::getAlias('@shop/web/images/product/'.$model->image)));
                 //$img = 'data: jpeg;base64,'.$imageData;
-                $img = '/product/images/'.$model->image;
+                $img = '/images/product/'.$model->image;
             }
             return $this->render('update.twig', [
                 'model' => $model,

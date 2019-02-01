@@ -49,6 +49,7 @@
 
   </head>
   <body>
+  <div>
 
   {{ void(this.beginBody()) }}
   {{ this.meta_head | raw }}
@@ -125,6 +126,7 @@
     {% if app.params.plugin_install_panel %} <div id="plugin-install-panel"></div>{% endif %}
 
     {% include 'base/lg.twig' %}
+  </div>
   </body>
 </html>
 {{ void(this.endPage()) }}

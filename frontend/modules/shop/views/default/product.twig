@@ -64,7 +64,7 @@
 
                     <div class="catalog_product-props margin-half">
                         <div class="catalog_product-props-item">
-                            <span class="title">{{ t('shop','product_store') }}:</span><a href="{{ _href('/shop?store='~product.store.route) }}" target="_blank" rel="nofollow nooper noreferrer"                               title="{{ t('shop','all_products_of_{store}',{'store':product.store.name})|raw }}">
+                            <span class="title">{{ t('shop','product_store') }}:</span><a href="{{ _href('/shop/'~product.store.route) }}" target="_blank" rel="nofollow nooper noreferrer"                               title="{{ t('shop','all_products_of_{store}',{'store':product.store.name})|raw }}">
                                 {{ product.store.name|raw }}
                             </a>
                         </div>

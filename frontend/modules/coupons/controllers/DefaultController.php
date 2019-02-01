@@ -325,7 +325,7 @@ class DefaultController extends SdController
     if ($json) {
       return json_encode([
         'coupons' => $contentData["coupons"],
-        'coupon_ended' => $contentData["coupon_ended"],
+        'coupon_ended' => isset($contentData["coupon_ended"]) ? $contentData["coupon_ended"] : [],
         'counts' => $contentData["counts"],
         'counts_all' => $contentData["counts_all"],
         'page' => $contentData["page"],

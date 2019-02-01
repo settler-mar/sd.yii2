@@ -1,6 +1,8 @@
 //избранное
 $(document).ready(function () {
-  $(".favorite-link").on('click', function (e) {
+
+  $('body').on('click', '.favorite-link', function(e) {
+  //$(".favorite-link").on('click', function (e) {
     e.preventDefault();
 
     var self = $(this);

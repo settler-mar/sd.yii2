@@ -104,7 +104,7 @@ $( document ).ready(function() {
 // !!!!!!
 // Нужно проверить. Вызывало глюки при авторзации через ФБ на сафари
 // !!!!!!
-$( document ).ready(function() {
+function imagesTest() {
   function img_load_finish(){
     var data=this;
     if(data.tagName){
@@ -178,4 +178,9 @@ $( document ).ready(function() {
   imgs = $('.catalog_products_item_image-wrap img');
   testImg(imgs, '/images/'+lang.key+'-no-image.png');
 
+}
+
+$(document).ready(function() {
+  imagesTest();
 });
+
