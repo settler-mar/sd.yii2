@@ -513,6 +513,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     if (isset(Yii::$app->params['cash']) && Yii::$app->params['cash'] == false) return;
     Cache::deleteName('product_category_menu');
     Cache::clearName('catalog_product');
+    Cache::clearName('catalog_product_by_visit');
   }
 
   public static function activeClass($active)

@@ -774,6 +774,7 @@ class Product extends \yii\db\ActiveRecord
     Cache::deleteName('product_category_menu');
     Cache::deleteName('products_active_count');
     Cache::clearName('catalog_product');
+    Cache::clearName('catalog_product_by_visit');
   }
 
   /**
@@ -841,6 +842,10 @@ class Product extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
+    if (!empty($params['by_visit'])) {
+        //именно для этого параметра отдельный dependency
+        $dependencyName = 'catalog_product_by_visit';
+    }
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $casheName = 'products_top_' . (!empty($params) ? Help::multiImplode('_', $params) : '') . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';

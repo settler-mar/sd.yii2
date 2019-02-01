@@ -4,7 +4,7 @@
         {% for category in category_top %}
             <div class="shop hover-box products vendor category">
                 <div class="shop-logo">
-                    <a class="shop-logo_link catalog_products_item_image-wrap" href="{{ _href('/shop/'~category.parentTree(1)) }}">
+                    <a class="shop-logo_link catalog_products_item_image-wrap" href="{{ _href('/shop'~(category.parentTree(1)? '/'~category.parentTree(1) : '')) }}">
                         {% if category.logo %}
                             <img class="shop-logo_link-img" src="{{ category.imagePath }}{{ category.logo }}" alt="{{ _eol(category.name, 20) }}">
                         {% else %}

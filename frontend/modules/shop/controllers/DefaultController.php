@@ -69,6 +69,7 @@ class DefaultController extends SdController
             'order' => ['logo' => SORT_DESC, 'in_top' => SORT_DESC, 'count' => SORT_DESC],
         ]);
         $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
+
         $data['products_top_count'] = Product::top(['by_visit' => 1, 'count' => 1]);
         $data["total_v"] = Product::find()->count();
         if (Yii::$app->language == 'ru-RU') {
