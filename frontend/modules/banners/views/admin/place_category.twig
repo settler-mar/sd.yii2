@@ -1,0 +1,27 @@
+<div class="{% if item.childs|length %}accordion categories{% endif %}">
+    <div class="form-group field-banners-places ">
+        <input type="checkbox" id="banner-banner-places-{{ key }}" name="Banners[banner_places][]" value="{{ key }}"
+                {% if item.checked %} checked {% endif %}
+        >
+        <label class="control-label" for="banner-banner-places-{{ key }}">{{ item.name }}</label>
+        {% if item.childs %}{% endif %}
+        <div class="help-block"></div>
+    </div>
+    {% if item.childs|length %}
+        <div class="accordion-control accordion-title">Дочерние категории</div>
+        <div class="accordion-content">
+            {% for keychild, itemchild in item.childs %}
+                {% set item = itemchild %}
+                {% set key = keychild %}
+                {% include 'place_category.twig' %}
+                {#<div class="form-group field-banners-places">#}
+                    {#<input type="checkbox" id="banner-banner-places-{{ keychild }}" name="Banners[banner_places][]" value="{{ keychild }}"#}
+                            {#{% if itemchild.checked %} checked {% endif %}#}
+                    {#>#}
+                    {#<label class="control-label" for="banner-banner-places-{{ keychild }}">{{ itemchild.name }}</label>#}
+                    {#<div class="help-block"></div>#}
+                {#</div>#}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

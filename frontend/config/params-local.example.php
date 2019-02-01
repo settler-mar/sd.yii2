@@ -66,5 +66,10 @@ return [
     'plugin_install_panel' => 1,
     'lang_select_active' => 1,
     'authorization_recaptcha' => 1,
+    'admin' => [ //в админке настойки
+        'banner_product_category_level_count'=>2, //уровень вложенности категорий товаров на форме баннеров. по умолчанию 2(нулевой и первый). 0 - все
+        'banner_product_category_only_active'=>1 //категорий товаров на форме баннеров - только активные. по умолчанию 1
+    ]
+
 
 ];

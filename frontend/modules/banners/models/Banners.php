@@ -35,9 +35,10 @@ class Banners extends \yii\db\ActiveRecord
     public $regions_array = [];
 
     protected $image_path = '/images/banners';
+    protected $places_possibles = [];//для валидатора
 
 
-    public $places_array = [
+    protected $places_array_default = [
         'account-left-menu' => ['name' => 'Аккаунт. Левое меню'],
         'shops-left-menu' => ['name' => 'Шопы. Левое меню'],
         'shops-catalog-left-menu' => ['name' => 'Шопы. Левое меню. Основной каталог'],
@@ -70,7 +71,7 @@ class Banners extends \yii\db\ActiveRecord
 
     public function init()
     {
-        $this->updatePlacesArray();
+        //$this->updatePlacesArray(); //убрал, т.к. вызывается многкратно в грид и много кушает
     }
 
     /**
@@ -87,8 +88,8 @@ class Banners extends \yii\db\ActiveRecord
                 'maxSize' => 4 * 1024 * 1024,
             ],
             [['new_window', 'is_active', 'order', 'show_desctop', 'show_mobile'], 'integer'],
-            [['picture', 'url', 'places'], 'string', 'max' => 255],
-            [['banner_places'], 'in', 'allowArray' => true, 'range' => array_keys($this->places_array)],
+            [['picture', 'url'], 'string', 'max' => 255],
+            [['places'], 'string'],
             [['language', 'regions'], 'trim'],
             [['language'], 'string', 'max' => 5],
             [['regions'], 'string'],
@@ -119,12 +120,17 @@ class Banners extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getPlacesArray()
+    {
+        $this->updatePlacesArray();
+        return $this->places_array_default;
+    }
+
     public function beforeValidate()
     {
         if (!parent::beforeValidate()) {
             return false;
         }
-
 
         $this->banner_places = method_exists(Yii::$app->request, 'post') &&
         isset(Yii::$app->request->post('Banners')['banner_places']) ?
@@ -138,15 +144,21 @@ class Banners extends \yii\db\ActiveRecord
         if ($this->banner_regions) {
             $this->regions = json_encode($this->banner_regions);
         }
+
+        $this->updatePlacesArray();
+        if ($this->banner_places) {
+            foreach ($this->banner_places as $place) {
+                if (!in_array($place, $this->places_possibles)) {
+                    $this->addError('banner_places', 'Неправильный banner_places');
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
     public function afterFind()
     {
-        $places = !empty($this->places) ? explode(',', $this->places) : [];
-        foreach ($this->places_array as $place_key => &$place) {
-            $place['checked'] = in_array($place_key, $places) ? 1 : 0;
-        }
         $regions = !empty($this->regions) ? json_decode($this->regions, 1) : [];
 
         foreach (Yii::$app->params['regions_list'] as $key => $value) {
@@ -321,13 +333,18 @@ class Banners extends \yii\db\ActiveRecord
 
     private function updatePlacesArray()
     {
+        $productCategoryLevelCount = isset(Yii::$app->params['admin']['banner_product_category_level_count']) ?
+            Yii::$app->params['admin']['banner_product_category_level_count'] : 2;
+        $productCategoryActiveOnly  = isset(Yii::$app->params['admin']['banner_product_category_only_active']) ?
+            Yii::$app->params['admin']['banner_product_category_only_active'] : true;
+
         $cupons = CategoriesCoupons::find()
             ->asArray()
             ->orderBy(['name' => SORT_ASC])
             ->all();
         foreach ($cupons as $cupon) {
             $key = 'coupons-' . $cupon['uid'] . '-left-menu';
-            $this->places_array[$key] = [
+            $this->places_array_default[$key] = [
                 'name' => 'Купоны.Левое меню.' . $cupon['name'],
             ];
         };
@@ -339,32 +356,58 @@ class Banners extends \yii\db\ActiveRecord
             ->all();
         foreach ($stores as $store) {
             $key = 'stores-' . $store['uid'] . '-left-menu';
-            $this->places_array[$key] = [
+            $this->places_array_default[$key] = [
                 'name' => 'Магазины.Левое меню.' . $store['name'],
             ];
         };
+        $places = !empty($this->places) ? explode(',', $this->places) : [];
+        foreach ($this->places_array_default as $place_key => &$place) {
+            $place['checked'] = in_array($place_key, $places) ? 1 : 0;
+        }
+        $this->places_possibles = array_keys($this->places_array_default);//в массив возможных для валидации
 
-        $mainCategory = ProductsCategory::find()
-            ->where(['parent' => null])
-            ->select(['id']);
-        $categoriesProducts = ProductsCategory::find()
-            ->from(ProductsCategory::tableName(). ' pc')
-            ->where(['or', ['parent' => null],['parent' => $mainCategory]])
-            ->andWhere(['active' => ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES])
-            ->asArray()
-            ->orderBy(['name' => SORT_ASC])
-            ->all();
-        foreach ($categoriesProducts as $category) {
+        //добавить категории товаров
+        $params = $productCategoryActiveOnly  ?
+            ['where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]] : null;
+        $categoriesProducts = ProductsCategory::tree($params);
+
+        $this->writeProductCategoriesPlaces(
+            $categoriesProducts,
+            $this->places_array_default,
+            -1,
+            $productCategoryLevelCount
+        );
+    }
+
+    /**
+     * запись в массив категорий продуктов деревом
+     * @param $categories
+     * @param $current
+     * @param $level
+     * @param $maxLevel
+     */
+    protected function writeProductCategoriesPlaces($categories, &$current, $level, $maxLevel)
+    {
+        $level++;
+        if ($maxLevel > 0 && $level >= $maxLevel) {
+            return;
+        }
+        foreach ($categories as $category) {
             $key = 'product-category-' . $category['id'] . '-left-menu';
-            if ($category['parent']) {
-                $keyParent = 'product-category-' . $category['parent'] . '-left-menu';
-                $this->places_array[$keyParent]['childs'][$key] = [
-                    'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
-                ];
-            } else {
-                $this->places_array[$key] = [
-                    'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
-                ];
+            $places = !empty($this->places) ? explode(',', $this->places) : [];
+            $current[$key] = [
+                'name' => 'Продукты. Левое меню. Категория ' . $category['name'],
+                'checked' => in_array($key, $places) ? 1 : 0,
+            ];
+            $this->places_possibles[] = $key;//в массив возможных для валидации
+            if (count($category['childs'])) {
+                $current[$key]['childs'] = [];
+                $this->writeProductCategoriesPlaces(
+                    $category['childs'],
+                    $current[$key]['childs'],
+                    $level,
+                    $maxLevel
+                );
             }
         }
     }
