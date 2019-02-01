@@ -8,7 +8,7 @@ class Facebook extends \nodge\eauth\services\FacebookOAuth2Service
 
   protected $scopes = [
       self::SCOPE_EMAIL,
-      self::SCOPE_USER_BIRTHDAY
+     // self::SCOPE_USER_BIRTHDAY
   ];
 
 
@@ -26,7 +26,7 @@ class Facebook extends \nodge\eauth\services\FacebookOAuth2Service
                 'first_name',
                 'last_name',
                 'gender',
-                'birthday',
+              // 'birthday',
               //   'hometown',
               //    'location',
               //    'locale',
