@@ -23,6 +23,7 @@ class DefaultController extends SdController
 {
     public $category = null;
     public $product = null;
+    public $store = null;
 
     public function createAction($id)
     {
@@ -39,14 +40,28 @@ class DefaultController extends SdController
             if ($category) {
                 $this->category = $category;
                 Yii::$app->params['url_mask'] = 'shop/*';
-                if ($request->isAjax){
+                if ($request->isAjax) {
                     //данные айаксом
                     echo $this->actionData();
                     exit;
                 }
                 echo $this->actionCategory();
                 exit;
-            } else if (count($path) == 3 and $path[1] = 'product' and preg_match('/^\d+$/', $path[2])) {
+            }
+            $store = Stores::byRoute($path[1]);
+            //нашли шоп по пути
+            if ($store) {
+                $this->store = $store;
+                Yii::$app->params['url_mask'] = 'shop/store/*';
+                if ($request->isAjax) {
+                    //данные айаксом
+                    echo $this->actionData();
+                    exit;
+                }
+                echo $this->actionCategory();
+                exit;
+            }
+            if (count($path) == 3 and $path[1] = 'product' and preg_match('/^\d+$/', $path[2])) {
                 $product = Product::findOne($path[2]);
                 if (!$product) {
                     throw new yii\web\NotFoundHttpException();
@@ -103,7 +118,12 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
         $vendorRequest = $request->get('vendor');
-        $storeRequest = $request->get('store_id');
+        if ($this->store) {
+            //шоп из роут
+            $storeRequest = $this->store->uid;
+        } else {
+            $storeRequest = $request->get('store_id');
+        }
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
         $month =  isset(Yii::$app->params['search_month']) ? Yii::$app->params['search_month'] : false;//товары месяца
@@ -227,14 +247,15 @@ class DefaultController extends SdController
         }
         if ($storeRequest) {
             $filter[] = ['store_id' => $storeRequest];
-            $paginateParams['store_id'] = $storeRequest;
+            $paginateParams['store_id'] = $this->store ? null : $storeRequest;
 
         }
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
             $cacheName .= ('_' . Help::multiImplode('_', $filter));
         }
-        $paginatePath = $query || $month || $profit ? '/search/product' : '/shop';
+        $paginatePath = $query || $month || $profit ? '/search/product' : '/shop' .
+            ($this->store ? '/' . $this->store->route : '');
 
         if ($this->category) {
             //есть категория
@@ -272,21 +293,29 @@ class DefaultController extends SdController
                 'url' => Help::href($paginatePath . '?module=product&month=1'),
             ];
             //Yii::$app->params['url_mask'] = 'shop/filter';todo
-        }
-        if ($profit) {
+        } elseif ($profit) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'breadcrumbs_produtct_with_profit'),
                 'url' => Help::href($paginatePath . '?module=product&profit=1'),
             ];
             //Yii::$app->params['url_mask'] = 'shop/filter';todo
+        } elseif ($this->store) {
+            $this->params['breadcrumbs'][] = [
+                'label' => $this->store->name,
+                'url' => Help::href($paginatePath),
+            ];
+            Yii::$app->params['url_mask'] ='shop/store/*';//todo
         }
-        if (!empty($filter)) {
+
+
+        if (!empty($filter) && !$this->store) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'filter_result'),
                 'url' => Help::href($paginatePath . '?' . http_build_query($paginateParams)),
             ];
             Yii::$app->params['url_mask'] = 'shop/filter';
         }
+
         $pagination = new Pagination(
             $dataBaseData,
             $cacheName,
@@ -322,7 +351,7 @@ class DefaultController extends SdController
             'database' => $dataBaseData,
         ]);
 
-        $stores = Product::usedStores([
+        $stores = $this->store ? [] : Product::usedStores([
             'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
             'database' => $dataBaseData
         ]);
@@ -344,6 +373,9 @@ class DefaultController extends SdController
             'month' => $month,
             'profit' => $profit,
         ];
+        $storeData['store'] = $this->store;
+
+        //какие блоки обновляются по каким адресам
         $storesData['requests'] = json_encode([
             [
                 'blocks'=> ["catalog-products-content","catalog-products-info","catalog-products-h1"],
@@ -429,7 +461,13 @@ class DefaultController extends SdController
             throw new yii\web\NotFoundHttpException();
         }
         $vendorRequest = $request->get('vendor');
-        $storeRequest = $request->get('store_id');
+
+        if ($this->store) {
+            //шоп из роут
+            $storeRequest = $this->store->uid;
+        } else {
+            $storeRequest = $request->get('store_id');
+        }
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
         $month =  isset(Yii::$app->params['search_month']) ? Yii::$app->params['search_month'] : false;//товары месяца
@@ -552,14 +590,15 @@ class DefaultController extends SdController
         }
         if ($storeRequest) {
             $filter[] = ['store_id' => $storeRequest];
-            $paginateParams['store_id'] = $storeRequest;
+            $paginateParams['store_id'] = $this->store ? null : $storeRequest;
 
         }
         if (!empty($filter)) {
             $dataBaseData->andWhere(array_merge(['and'], $filter));
             $cacheName .= ('_' . Help::multiImplode('_', $filter));
         }
-        $paginatePath = $query || $month || $profit ? '/search/product' : '/shop';
+        $paginatePath = $query || $month || $profit ? '/search/product' : '/shop' .
+            ($this->store ? '/' . $this->store->route : '');
 
         if ($this->category) {
             //есть категория
@@ -589,23 +628,28 @@ class DefaultController extends SdController
                 'url' => Help::href($paginatePath.'?module=product&limit=1000&query='.$query),
             ];
             Yii::$app->params['url_mask'] = 'shop/search';
-        }
-        if ($month) {
+        } elseif ($month) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'breadcrumbs_produtct_hits_in').' '.
                     Yii::t('common', 'month_in_'.date('m')),
                 'url' => Help::href($paginatePath . '?module=product&month=1'),
             ];
             //Yii::$app->params['url_mask'] = 'shop/filter';todo
-        }
-        if ($profit) {
+        } elseif ($profit) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'breadcrumbs_produtct_with_profit'),
                 'url' => Help::href($paginatePath . '?module=product&profit=1'),
             ];
             //Yii::$app->params['url_mask'] = 'shop/filter';todo
+        } elseif ($this->store) {
+            $this->params['breadcrumbs'][] = [
+                'label' => $this->store->name,
+                'url' => Help::href($paginatePath),
+            ];
+            Yii::$app->params['url_mask'] = 'shop/store/*';
         }
-        if (!empty($filter)) {
+
+        if (!empty($filter) && !$this->store) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'filter_result'),
                 'url' => Help::href($paginatePath . '?' . http_build_query($paginateParams)),
@@ -669,6 +713,8 @@ class DefaultController extends SdController
 //            'month' => $month,
 //            'profit' => $profit,
 //        ];
+
+        $storeData['store'] = $this->store;
 
         return $this->renderAjax('ajax/category', $storesData);
     }
