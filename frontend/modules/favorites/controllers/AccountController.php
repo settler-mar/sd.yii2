@@ -27,20 +27,20 @@ class AccountController extends Controller
     $request= Yii::$app->request;
 
     if($request->isAjax || $request->post('g') == 'plugin') {
+      $product_id = (int) $request->post('product_id');
       if(Yii::$app->user->isGuest){
         return json_encode([
           'error'=>Yii::t(
               'account',
-              'favorites_<a href="{href}">login</a>_to_add',
+              'favorites_'.($product_id ? 'product' : 'shop').'_<a href="{href}">login</a>_to_add',
               ['href' => Help::href('#login')]
           ),
           'title'=>Yii::t('common', 'error')]);
       }
-
       $type = $request->post('type');
       $affiliate_id = (int) $request->post('affiliate_id');
       $user_id= (int) Yii::$app->user->id;
-      $product_id = (int) $request->post('product_id');
+
       $fav = UsersFavorites::findOne(['store_id'=>$affiliate_id,'user_id'=>$user_id, 'product_id' => $product_id ? $product_id : null]);
 
       //$store=Stores::findOne(['uid'=>$affiliate_id,'is_active'=>[0,1]]);

@@ -155,7 +155,8 @@ return [
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add' =>
         'After adding stores from <a class="blue" href="{href}">our catalog</a> to your Favorites, they will be displayed on this page.',
     'favorites_empty' => 'At the moment, you don\'t have any favorites stores.',
-    'favorites_<a href="{href}">login</a>_to_add' => 'In order to add a store to Favorites, you must be <a href="{href}">authorized</a> on the site.',
+    'favorites_shop_<a href="{href}">login</a>_to_add' => 'In order to add a store to Favorites, you must be <a href="{href}">authorized</a> on the site.',
+    'favorites_product_<a href="{href}">login</a>_to_add' => 'In order to defer a product, you must be <a href="{href}">authorized</a> on the site.',
     'favorites_empty_viewed-products' => 'At the moment, you don\'t have any viewed product.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add_viewed-products' => 'After You go to product from <a class="blue" href="{href}">our catalog</a>, they will be displayed on this page.',
     'favorites_add_noshop' => 'Unable to find the chosen store.',

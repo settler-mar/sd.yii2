@@ -170,7 +170,8 @@ class DefaultController extends SdController
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
             ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '') .
-            ($month ? '_month_' : '').($profit ? '_profit_' : '') . ($vendorRequest ? ' _vendor_' . $vendorRequest : '');
+            ($month ? '_month_' : '').($profit ? '_profit_' : '') .
+            ($vendorRequest ? ' _vendor_' . Help::multiImplode('_', $vendorRequest) : '');
 
         $filter = [];
         $where = [];

@@ -4,6 +4,9 @@ search = function () {
   $('.search-form-input').on('input', function (e) {
     e.preventDefault();
     $this = $(this);
+    if ($this.data('popup') != 1) {
+      return;
+    }
     var query = $this.val();
     var data = $this.closest('form').serialize();
     var autocomplete = $this.closest('.stores_search').find('.autocomplete-wrap');// $('#autocomplete'),
@@ -76,6 +79,7 @@ search = function () {
     $('#'+searchtext).attr('placeholder', $(this).data('value3'));
     var limit = $(this).data('id4');
     $('#'+limit).attr('value', $(this).data('value4'));
+    $('#'+searchtext).data('popup', $(this).data('popup'));
 
     var action = $(this).data('action');
 
