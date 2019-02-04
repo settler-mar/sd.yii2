@@ -292,19 +292,19 @@ class DefaultController extends SdController
                     Yii::t('common', 'month_in_'.date('m')),
                 'url' => Help::href($paginatePath . '?module=product&month=1'),
             ];
-            //Yii::$app->params['url_mask'] = 'shop/filter';todo
+            Yii::$app->params['url_mask'] = 'shop/month';
         } elseif ($profit) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'breadcrumbs_produtct_with_profit'),
                 'url' => Help::href($paginatePath . '?module=product&profit=1'),
             ];
-            //Yii::$app->params['url_mask'] = 'shop/filter';todo
+            Yii::$app->params['url_mask'] = 'shop/profit';
         } elseif ($this->store) {
             $this->params['breadcrumbs'][] = [
                 'label' => $this->store->name,
                 'url' => Help::href($paginatePath),
             ];
-            Yii::$app->params['url_mask'] ='shop/store/*';//todo
+            Yii::$app->params['url_mask'] ='shop/store';
         }
 
 
@@ -373,12 +373,12 @@ class DefaultController extends SdController
             'month' => $month,
             'profit' => $profit,
         ];
-        $storeData['store'] = $this->store;
+        $storesData['store'] = $this->store;
 
         //какие блоки обновляются по каким адресам
         $storesData['requests'] = json_encode([
             [
-                'blocks'=> ["catalog-products-content","catalog-products-info","catalog-products-h1"],
+                'blocks'=> ["catalog-products-content", "catalog-products-info"]//catalog-products-h1"],
             ]
         ]);
         return $this->render('category', $storesData);
@@ -715,6 +715,8 @@ class DefaultController extends SdController
 //        ];
 
         $storeData['store'] = $this->store;
+
+        //ddd(Yii::$app->params['url_mask']);
 
         return $this->renderAjax('ajax/category', $storesData);
     }

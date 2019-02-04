@@ -95,14 +95,14 @@ class DefaultController extends SdController
       if (!$query && !$month && !$profit) {
           throw new \yii\web\NotFoundHttpException;
       }
-      $limit = !$request->isAjax ? 1000 :
+      $limit = !$request->isAjax || $request->get('g') == 'ajax_load' ? 1000 :
           ($request->get('limit') ? $request->get('limit') : 10);
       $validator = new \yii\validators\NumberValidator();
       if (!empty($limit) && !$validator->validate($limit)) {
           throw new \yii\web\NotFoundHttpException;
       };
 
-      if ($request->isAjax && $request->get('header') == '1') {
+      if ($request->isAjax && $request->get('header') == '1' && $request->get('g') != 'ajax_load') {
           $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . $limit;
           $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
 
@@ -125,6 +125,9 @@ class DefaultController extends SdController
           Yii::$app->params['search_query'] = $query;
           Yii::$app->params['search_month'] = $month;
           Yii::$app->params['search_profit'] = $profit;
+          if ($request->isAjax) {
+              return \Yii::$app->runAction('shop/default/data');
+          }
           return \Yii::$app->runAction('shop/default/category');
       }
   }
