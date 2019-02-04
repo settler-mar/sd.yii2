@@ -48,7 +48,10 @@ class DefaultController extends SdController
                 echo $this->actionCategory();
                 exit;
             }
-            $store = Stores::byRoute($path[1]);
+            $storesUsed = Product::usedStores([
+                'where' => ['s.route' => $path[1], 's.is_active'=> [0, 1]],
+            ]);
+            $store = count($storesUsed) ? Stores::byId($storesUsed[0]['uid']) : false;
             //нашли шоп по пути
             if ($store) {
                 $this->store = $store;
@@ -304,7 +307,7 @@ class DefaultController extends SdController
                 'label' => $this->store->name,
                 'url' => Help::href($paginatePath),
             ];
-            Yii::$app->params['url_mask'] ='shop/store';
+            Yii::$app->params['url_mask'] ='shops/store/*';
         }
 
 

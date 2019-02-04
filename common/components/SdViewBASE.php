@@ -70,7 +70,7 @@ class SdViewBASE extends View
       }
       $arr = $this->metaArr;
 
-      //ddd($request->pathInfo, $arr);
+      //ddd($request->pathInfo, Yii::$app->params['url_mask'], $arr);
       if ($arr && is_array($arr)) {
         if (isset($arr['description'])) {
           $this->registerMetaTag(["name" => "description", "content" => $arr['description']]);
