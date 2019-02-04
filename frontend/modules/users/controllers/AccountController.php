@@ -259,8 +259,6 @@ class AccountController extends Controller
       throw new NotFoundHttpException();
     }
 
-    //$path = !empty(Yii::$app->request->get('path')) ? Yii::$app->request->get('path') : false;
-
     $request = Yii::$app->request;
 
     $user = Users::findOne(Yii::$app->user->id);

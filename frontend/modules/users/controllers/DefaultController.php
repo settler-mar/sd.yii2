@@ -310,8 +310,12 @@ class DefaultController extends Controller
     }
 
     if ($user_id = $model->verifyEmail()) {
-      // Авторизируемся при успешной валидации
-      Yii::$app->user->login(Users::findIdentity($user_id));
+
+      // Авторизируемся при успешной валидации и если не залогинен
+      if (Yii::$app->user->isGuest) {
+          $user = Users::findIdentity($user_id);
+          Yii::$app->user->login($user, 3600 * 24 * 30);
+      }
 
       Yii::$app->session->addFlash('success', [
           'title' => Yii::t('common', 'thank_you').'!',
@@ -323,7 +327,7 @@ class DefaultController extends Controller
         return $this->redirect([Help::href('/store:' . intval($path) . '/goto')]);
       }
 
-      return $this->redirect([Help::href('/email-success/account')]);
+      return $this->redirect(Help::href('/account/email-success'));
     } else {
       return false;
     }

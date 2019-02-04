@@ -374,4 +374,5 @@ return [
     'account_payments_ref_id:_{id}_breadcrumbs' => 'История заказов друга ID:{id}',
     'favorites_viewed-products' => 'Просмотренные товары',
     'account_viewed-products_breadcrumbs' => 'Просмотренные товары',
+    'account_sendverifyemail_breadcrumbs' => 'Повторное письмо для потдверждения email',
 ];

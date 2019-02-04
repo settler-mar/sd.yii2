@@ -71,7 +71,16 @@ class SdUrlLocalisation implements UrlRuleInterface{
     }
 
     $prefix = $path[0];
-    if (in_array($prefix, ['admin', 'admin-categories', 'admin-values', 'admin-stores', 'admin-catalog', 'admin-category', 'manager'])) {
+    if (in_array($prefix, [//эти url не нужно редиректить
+        'admin',
+        'admin-categories',
+        'admin-values',
+        'admin-stores',
+        'admin-catalog',
+        'admin-category',
+        'manager',
+        'elfinder',
+    ])) {
         $this->region = $regions['ru'];
         Yii::$app->params['region'] = 'ru';
         Yii::$app->language = 'ru-RU';

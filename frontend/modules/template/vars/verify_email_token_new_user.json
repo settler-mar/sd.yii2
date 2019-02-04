@@ -15,6 +15,14 @@
       "items": {
         "user": "User"
       }
+    },
+    {
+      "name": "Links",
+      "prifix": "",
+      "items": {
+        "verifyemaillink|raw" : "Verify email link"
+      }
+
     }
 
   ]

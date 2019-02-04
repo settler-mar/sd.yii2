@@ -8,6 +8,7 @@ use Yii;
 use Yii\helpers\Url;
 use common\components\Help;
 use frontend\modules\template\models\Template;
+use yii\web\NotFoundHttpException;
 
 /**
  * Password reset form
@@ -28,7 +29,8 @@ class ValidateEmail extends Model
   {
     if ($token !== false) {
       if (empty($token) || !is_string($token)) {
-        Yii::$app->response->redirect('/404');
+        throw new NotFoundHttpException();
+//        Yii::$app->response->redirect('/404');
         throw new InvalidParamException(Yii::t('account', 'email_confirm_token_empty'));
       }
 
@@ -40,7 +42,8 @@ class ValidateEmail extends Model
               'title' => Yii::t('common', 'error') . '!',
               'message' => Yii::t('account', 'email_confirm_token_used_or_expired')
           ]);
-          Yii::$app->response->redirect('/404');
+          throw new NotFoundHttpException();
+//          Yii::$app->response->redirect('/404');
           return false;
         }
         if ($this->_user->email_verify_time == null || time() - strtotime($this->_user->email_verify_time) > 60 * 60 * 24) {
@@ -48,7 +51,7 @@ class ValidateEmail extends Model
               'title' => Yii::t('account', 'error') . '!',
               'message' => Yii::t('account', 'email_confirm_token_expired'),
           ]);
-          Yii::$app->response->redirect('/account/sendverifyemail');
+          Yii::$app->response->redirect(Yii::$app->help->href('/account/sendverifyemail'));
           return false;
         }
       }else{
@@ -60,7 +63,7 @@ class ValidateEmail extends Model
               'title' => Yii::t('common', 'info') . '!',
               'message' => Yii::t('account', 'email_confirmed')
           ]);
-          Yii::$app->response->redirect('/account');
+          Yii::$app->response->redirect(Yii::$app->help->href('/account'));
           return false;
         }
 
@@ -69,7 +72,8 @@ class ValidateEmail extends Model
               'title' => Yii::t('common', 'error') . '!',
               'message' => Yii::t('account', 'email_confirm_email_error')
           ]);
-          Yii::$app->response->redirect('/404');
+          throw new NotFoundHttpException();
+          //Yii::$app->response->redirect(Yii::$app->help->href('/404'));
           return false;
         }
 
@@ -78,7 +82,8 @@ class ValidateEmail extends Model
               'title' => Yii::t('common', 'error') . '!',
               'message' => Yii::t('account', 'email_confirm_token_expired')
           ]);
-          Yii::$app->response->redirect('/404');
+          throw new NotFoundHttpException();
+          //Yii::$app->response->redirect('/404');
           return false;
         }
         $this->_user=$user;
@@ -130,7 +135,6 @@ class ValidateEmail extends Model
   //public static function sentEmailValidation($user, $newUser = false, $validateSuccess = false, $path = false)
   public static function sentEmailValidation($user, $options = [])
   {
-
     $newUser = !empty($options['new_user']) ? $options['new_user'] : false;
     $validateSuccess = !empty($options['validate_success']) ? $options['validate_success'] : false;
     $path = !empty($options['path']) ? $options['path'] : false;
@@ -150,14 +154,16 @@ class ValidateEmail extends Model
         'title'=>Yii::t('common', 'error').'!',
         'message'=>Yii::t('account', 'email_confirm_email_wait')
       ]);
-      Yii::$app->response->redirect('/account');
+      Yii::$app->response->redirect(Yii::$app->help->href('/account'));
       return null;
     }
     Yii::$app->session->set($sessionVar, time());
 
     return Template::mail($templateName, $user->email, [
       'user' => $user,
-      'path' => $path
+      'path' => $path,
+      'verifyemaillink' =>
+          'https://secretdiscounter.com' . Yii::$app->help->href('/verifyemail?token=' . $user->email_verify_token . '&email=' . $user->email),
     ]);
   }
 

@@ -374,5 +374,6 @@ return [
     'account_payments_ref_id:_{id}_breadcrumbs' => 'Payments history of my user ID:{id}',
     'favorites_viewed-products' => 'Viewed products',
     'account_viewed-products_breadcrumbs' => 'Viewed products',
+    'account_sendverifyemail_breadcrumbs' => 'Repeat email verifying',
 
 ];
