@@ -61,7 +61,7 @@
           <div class="catalog_products_item shop shop-empty"></div>
         </div>
         <div class="align-center">
-          <a href="{{ _href('/search/product?module=product&month=1')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
+          <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/search/product?module=product&month=1')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
         </div>
       </section>
     {% endif %}
@@ -80,7 +80,7 @@
               {% include '@frontend/views/parts/blog_posts.twig' %}
           </div>
           <div class="align-center">
-            <a href="https://blog.secretdiscounter.ru/" class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">
+            <a target="_blank" rel="noopener noreferrer nofollow" href="https://blog.secretdiscounter.ru/" class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">
                 {{ t('shop', 'view_all_({count})', {'count': posts_count})|raw }} →
             </a>
           </div>
@@ -104,7 +104,7 @@
             <div class="shop shop-empty"></div>
           </div>
           <div class="align-center">
-            <a href="{{ _href('/stores')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': stores_count})|raw }} →</a>
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/stores')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': stores_count})|raw }} →</a>
           </div>
         </div>
       </section>
@@ -117,7 +117,7 @@
             {% set products = most_profitable %}
             {% include('parts/products/other_products.twig') %}
           <div class="align-center">
-            <a href="{{ _href('/search/product?profit=1&sort=discount')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': most_profitable_count})|raw }} →</a>
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/search/product?profit=1&sort=discount')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': most_profitable_count})|raw }} →</a>
           </div>
         </div>
       </section>
@@ -139,7 +139,7 @@
             <div class="shop shop-empty"></div>
           </div>
           <div class="align-center">
-            <a href="{{ _href('/vendor')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': brands_count})|raw }} →</a>
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/shop')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': brands_count})|raw }} →</a>
           </div>
         </div>
       </section>
@@ -159,7 +159,7 @@
 
           </div>
           <div class="align-center">
-            <a href="{{ _href('/account/viewed-products')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': visited_count})|raw }} →</a>
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/account/viewed-products')|raw }}" class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': visited_count})|raw }} →</a>
           </div>
         </div>
       </section>
@@ -175,7 +175,7 @@
             {% endfor %}
         </div>
         <div class="align-center">
-          <a href="{{ _href('/reviews') }}" class="btn btn-transform">{{ t('shop', 'all_reviews_({count})', {'count':reviews_count})|raw }}</a>
+          <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/reviews') }}" class="btn btn-transform">{{ t('shop', 'all_reviews_({count})', {'count':reviews_count})|raw }}</a>
         </div>
       </div>
     </section>

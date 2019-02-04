@@ -4,7 +4,7 @@
         <span class="shop_promo-label shop_promo-label_x2"></span>
     {% endif %}
     <div class="shop-logo">
-        <a class="shop-logo_link" href="{{ store_href|raw }}">
+        <a class="shop-logo_link" href="{{ store_href|raw }}" target="_blank" rel="noopener noreferrer nofollow">
             {% if store.logo %}
                 <img class="shop-logo_link-img" src="images/logos/{{store.logo}}" alt="{{ _eol(store.name, 20) }}">
             {% else %}
