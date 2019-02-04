@@ -148,7 +148,7 @@
     {% if visited|length %}
       <section class="margin">
         <div class="page-wrap">
-          <h2 class="content-header">{{ svg('eye')|raw }}{{ t('shop', 'viewed_products')|raw }}</h2>
+          <h2 class="content-header">{{ t('shop', 'viewed_products')|raw }}</h2>
           <div class="shops catalog-stores_list-product">
             {% for product in visited %}
               {% include 'parts/products/product.twig' %}
