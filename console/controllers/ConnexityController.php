@@ -84,6 +84,7 @@ class ConnexityController extends Controller
                     'cashback' => "0",
                     'hold_time' => 30,
                     'affiliate_link' => isset($info['url']) ? $info['url'] : null,
+                    'hide_on_site' => 1,
                 ];
 
                 $storeResult = Stores::addOrUpdate($newStore);

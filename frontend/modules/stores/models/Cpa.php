@@ -20,6 +20,7 @@ class Cpa extends \yii\db\ActiveRecord
      */
     public static $user_id_params = [
         'Admitad' =>'subid',
+        'Admitad-prod' =>'subid',
         'Shareasale' => 'afftrack',
         'Sellaction' => 'SubID1',
         'Doublertrade' => 'epi',
@@ -29,6 +30,7 @@ class Cpa extends \yii\db\ActiveRecord
         "Linkconnector"=>'atid',
         'Cj.com' => 'sid',
         'Webgains' => 'clickref',
+        'Connexity' => false, //для продуктов при фалсе вообще не добавляем параметр если null или нет в настройке, то subid
 
     ];
 
@@ -78,5 +80,18 @@ class Cpa extends \yii\db\ActiveRecord
     public function getActions()
     {
       return $this->hasMany(StoresActions::className(), ['cpa_link_id' => 'id']);
+    }
+
+    public function productClickUrl($productUrl, $userId = false)
+    {
+        $paramName = isset(self::$user_id_params[$this->name])
+            ? self::$user_id_params[$this->name] : null;
+        if ($paramName === false) {
+            return $productUrl;
+        }
+        $paramName = $paramName ? $paramName : 'subid';
+        $userId = $userId ? $userId : (Yii::$app->user->isGuest ? 0 : Yii::$app->user->id);
+
+        return $productUrl . (strpos($productUrl, '?') === false ? '?' : '&') . $paramName . '=' . $userId;
     }
 }

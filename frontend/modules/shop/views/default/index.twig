@@ -66,12 +66,6 @@
       </section>
     {% endif %}
 
-    {% if additional_content %}
-      <div class="catalog_category-down-description margin sd_content">
-          {{ additional_content|raw }}
-      </div>
-    {% endif %}
-
     {% if posts|length %}
       <section class="margin">
         <div class="page-wrap">
@@ -181,6 +175,13 @@
     </section>
 
     {% include ('index/advantages_line_second.twig') %}
+
+    {% if additional_content %}
+      <div class="catalog_category-down-description margin sd_content">
+            {{ additional_content|raw }}
+      </div>
+    {% endif %}
+
 
   </div>
 

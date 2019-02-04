@@ -401,7 +401,7 @@ class SiteController extends SdController
         $visit->cpa_link_id = $productDb->catalog->cpa_link_id;
         $visit->product_id = $productDb->id;
 
-        $data['link'] = $productDb->url;
+        $data['link'] = $productDb->cpa->productClickUrl($productDb->url);
         $data['store'] = $productDb->store;
         $data['store_route'] = $productDb->store->route;
     } else {
