@@ -56,10 +56,9 @@
     });
 
     function getData(url, blocks, success, fail) { //url, blocks, succesCollback, failCallback
-        console.log(url, blocks);
+        url += url.indexOf('?') > - 1 ? '&g=ajax_load' : '?g=ajax_load';
         $.get(url, {}, function (data) {
             for (var i = 0; i < blocks.length; i++) {
-                console.log(blocks[i], $('body').find('#' + blocks[i]),data, $(data).find('#' + blocks[i]));
                 $('body').find('#' + blocks[i]).html($(data).find('#' + blocks[i]).html());
             }
             if (success) {

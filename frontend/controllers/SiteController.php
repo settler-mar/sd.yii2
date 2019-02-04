@@ -91,7 +91,7 @@ class SiteController extends SdController
    */
   public function actionIndex()
   {
-    $stores = Stores::top12();
+    $stores = Stores::top12(10);
     $totalStores = Stores::activeCount();
 
     //$reg_form = new RegistrationForm();
