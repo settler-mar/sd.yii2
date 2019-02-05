@@ -132,6 +132,28 @@ return [
         'url' => '/shop/{{route-tree}}',
         'friquency' => 'daily'
     ],
+    [
+        //вендоры товаров
+        'model' => 'frontend\modules\vendor\models\Vendor',
+        'priority' => 1,
+        'condition' => ['and', ['status' => 1]],
+        'select' => ['route'],
+        'join' => [['cw_product p', 'p.vendor_id = cw_vendor.id']],
+        'group_by' => ['route'],
+        'url' => '/vendor/{{route}}',
+        'friquency' => 'daily'
+    ],
+    [
+        //магазины товаров
+        'model' => 'frontend\modules\product\models\Product',
+        'priority' => 1,
+        'condition' => ['and', ['available' => [1, 2]], ['s.is_active' => [0, 1]]],
+        'select' => ['route'],
+        'join' => [['cw_stores s', 's.uid = cw_product.store_id']],
+        'group_by' => ['route'],
+        'url' => '/shop/{{route}}',
+        'friquency' => 'daily'
+    ],
 //    [
 //        //товары
 //        'model' => 'frontend\modules\product\models\Product',
@@ -141,6 +163,12 @@ return [
 //        'url' => '/shop/product/{{id}}',
 //        'friquency' => 'daily'
 //    ],
+    [
+        //единичный юрл
+        'url' => '/search/product',
+        'friquency' => 'daily',
+        'priority' => 1,
+    ],
     [
         //единичный юрл
         'url' => '/reviews',
