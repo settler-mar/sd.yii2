@@ -427,7 +427,7 @@ class DefaultController extends SdController
         $similarProducts = $product->store_id ?
             Product::top([
                 'where' => ['and', ['store_id' => $product->store_id],['<>', 'prod.id', $product->id]],
-                    //указываем конкретный шоп какой ВЫВОДИТЬ, бренды сначала разные, потом для дополнения того без учёта бренда
+                    //указываем конкретный шоп какой ВЫВОДИТЬ, бренды сначала разные, потом для дополнения без учёта бренда
                 'other_brands_of' => ['product_id' =>$product->id, 'stores_id' => [$product->store_id], 'vendors_id' => []],
                 'category_id' => $product->categories[0]->id,
                 'with_image' => true,

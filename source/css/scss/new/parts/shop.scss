@@ -189,7 +189,7 @@
       padding-right: 0;
 
       &_cashback{
-        display: flex;
+        display: flex !important;
         align-items: center;
         margin-left: 3px;
         word-spacing: 1px;

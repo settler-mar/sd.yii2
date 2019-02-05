@@ -915,7 +915,6 @@ class Product extends \yii\db\ActiveRecord
           $noBrand = !empty($brands) ? $brands : false;
           $thisShop = !empty($stores) ? $stores : false;
           $ids = [];
-          //d($brands, $oneStore);
           for ($i = 0; $i < 2; $i++) {
               //если задан бренд какой НЕ ВЫВОДИТЬ проходим 2 раза: в первый раз по разным шопам, если не набрали limit то второй проход без учёта шопов
               //если задан шоп какой ВЫВОДИТЬ, проходим 2 раза: бренды сначала разные, потом для дополнения без учёта бренда
