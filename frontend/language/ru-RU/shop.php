@@ -86,5 +86,6 @@ return [
     'popular_brand' => 'Популярные бренды',
     'viewed_products' => 'Просмотренные товары',
     'all_reviews_({count})' => 'Все отзывы&nbsp;({count})&nbsp;→',
+    'how_it_works' => 'Как это работает',
 
 ];

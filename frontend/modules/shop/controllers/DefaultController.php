@@ -95,7 +95,7 @@ class DefaultController extends SdController
             $data['posts'] = Posts::getLastPosts();
             $data['posts_count'] = Posts::find()->count();
         }
-        $data['stores']= Product::usedStores(['limit' => 25]);
+        $data['stores']= Product::usedStores(['limit' => 15]);
         $data['stores_count'] = Stores::activeCount();
         $data['most_profitable'] = Product::top([
             'limit' => 4,//todo нужно 8, но если результ меньше 8, то долгий запрос, уменьшил пока до 4
@@ -114,6 +114,7 @@ class DefaultController extends SdController
         $data['visited_count'] = Product::viewedByUser(Yii::$app->user->id, false, true);
         $data['top_reviews'] = Reviews::top();
         $data['reviews_count'] = Reviews::find()->count();
+        $data["favorites_ids"] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
         return $this->render('index', $data);
     }
@@ -447,10 +448,11 @@ class DefaultController extends SdController
 
         //купоны
         $coupons = $product->store_id ? Coupons::top(['store' => $product->store_id, 'limit' => 4]) : [];
+        $favoritesIds = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
         return $this->render('product', [
             'product' => $product,
-            'favorites_ids' => UsersFavorites::getUserFav(8, true),
+            'favorites_ids' => $favoritesIds,
             'brands_products' => $brandsProducts,
             'category_products' => $categoryProducts,
             'similar_products' => $similarProducts,

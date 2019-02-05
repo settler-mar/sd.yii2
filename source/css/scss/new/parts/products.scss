@@ -504,3 +504,73 @@ $media3: $phones;
     }
   }
 }
+
+.shop-button-fixed {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  transform: rotate(-90deg) translate(150px, 90px);
+  background-color: #FDE261;
+
+  a {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    color: $text-color;
+    text-decoration: none;
+    &:hover {
+      color: $text-color;
+    }
+    margin-left: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .logo {
+    height: 24PX;
+    width: 24PX;
+    border-radius: 50%;
+    background-color: $text-color;
+    margin: 0 10PX;
+
+    svg {
+      padding: 2px;
+      width: 20px;
+      height: 20px;
+      //height: 80%;
+
+    }
+
+  }
+  .arrow {
+    background-color: #FDEA8E;
+    //height: 100%;
+    padding: 15px;
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      color: $text-color;
+      fill: $text-color;
+      stroke: $text-color;
+
+      &:hover {
+        color: $text-color;
+        fill: $text-color;
+        stroke: $text-color;
+      }
+    }
+  }
+  .text {
+    margin-right: 5px;
+  }
+
+
+}

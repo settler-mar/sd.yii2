@@ -85,5 +85,6 @@ return [
     'popular_brand' => 'Popular Brands',
     'viewed_products' => 'Viewed Products',
     'all_reviews_({count})' => 'All reviews&nbsp;({count})&nbsp;→',
+    'how_it_works' => 'How it works',
 
 ];
