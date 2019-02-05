@@ -865,7 +865,8 @@ class Product extends \yii\db\ActiveRecord
       if (!empty($params['with_image'])) {
           $product->andWhere(['is not', 'prod.image', null]);
       }
-      if (isset($params['category_id'])) {
+      if (isset($params['category_id']) && empty($params['other_brands_of'])) {
+          //если по другим брендам, то запрос по категории задан там
           $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = prod.id')
             ->andWhere(['ptc.category_id' => $params['category_id']]);
       }
@@ -905,12 +906,66 @@ class Product extends \yii\db\ActiveRecord
           } while ($prod);
           $product->andWhere(['prod.id' => $ids]);
       }
-      if (!empty($params['multi_brands'])) {
-//          $vendors = Product::find()->from(Product::tableName().' .p')
-//            ->select(['vendor_id', 'count(id) as count', 'max(id) as id1', 'min(id) as id2'])
-//            ->groupBy(['vendor_id'])
-//            ->orderBy(['count' => SORT_DESC]);
+      if (!empty($params['other_brands_of'])) {
+          //по брендам и/иши шопам
+          //если задан бренд - его НЕ ВЫВОДИТЬ, шопы вначале разные, потом для дополнения без учёта шопа
+          //задан шоп - выводить только для него ВЫВОДИТЬ, бренды сначала разные, потом для дополнения без учёта бренда
+          $brands = isset($params['other_brands_of']['vendors_id']) ? $params['other_brands_of']['vendors_id'] : [];//указанный бренд
+          $stores = isset($params['other_brands_of']['stores_id'])  ?  $params['other_brands_of']['stores_id'] : [];//указанный шоп
+          $noBrand = !empty($brands) ? $brands : false;
+          $thisShop = !empty($stores) ? $stores : false;
+          $ids = [];
+          //d($brands, $oneStore);
+          for ($i = 0; $i < 2; $i++) {
+              //если задан бренд какой НЕ ВЫВОДИТЬ проходим 2 раза: в первый раз по разным шопам, если не набрали limit то второй проход без учёта шопов
+              //если задан шоп какой ВЫВОДИТЬ, проходим 2 раза: бренды сначала разные, потом для дополнения без учёта бренда
+              do {
+                  $prods = Product::find()->from(Product::tableName() . ' p')
+                      ->select(['p.id', 'p.vendor_id', 'p.store_id'])
+                      //->where(['not in', 'vendor_id', $brands])
+                      ->andWhere(['not in', 'p.id', $ids])
+                      ->orderBy(['discount' => SORT_DESC])
+                      ->limit(1)
+                      ->asArray();
+                  if (isset($params['category_id'])) {
+                      $prods->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+                          ->andWhere(['ptc.category_id' => $params['category_id']]);
+                  }
+                  if (isset($params['other_brands_of']['product_id'])) {
+                      $prods->andWhere(['<>', 'p.id', $params['other_brands_of']['product_id']]);
+                  }
+                  //переменные условия запроса
+                  if (!empty($noBrand)) {
+                      $prods->andWhere(['not in', 'p.vendor_id', $noBrand]);
+                  }
+                  if (!empty($thisShop)) {
+                      $prods->andWhere(['p.store_id' => $thisShop]);
+                  }
+                  if ($i == 0 && !empty($noBrand)) {
+                      //по брендам первый проход - добавляем найденные шопы
+                      $prods->andWhere(['not in', 'p.store_id', $stores]);
+                  }
+                  if ($i == 0 && !empty($thisShop)) {
+                      //по шопам первый проход - добавляем найденные бренды
+                      $prods->andWhere(['not in', 'p.vendor_id', $brands]);
+                  }
+                  $prods = $prods->one();
+                  if ($prods) {
+                      $brands[] = $prods['vendor_id'];
+                      $ids[] = $prods['id'];
+                      $stores[] = $prods['store_id'];
+                  }
 
+                  if (count($ids) >= $count) {
+                      break;
+                  }
+
+              } while ($prods);
+              if (count($ids) >= $count) {
+                  break;
+              }
+          }
+          $product->andWhere(['prod.id' => $ids]);
       }
       if (!empty($params['by_visit'])) {
           $visits = UsersVisits::find()

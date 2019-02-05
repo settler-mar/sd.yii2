@@ -17,6 +17,7 @@ use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\reviews\models\Reviews;
+use frontend\modules\coupons\models\Coupons;
 use yii;
 
 class DefaultController extends SdController
@@ -412,20 +413,22 @@ class DefaultController extends SdController
             'where' =>  ['and', ['vendor_id' => $product->vendor_id], ['<>', 'prod.id', $product->id]],
             'limit' => 8
         ]) : [];
-        //продукты той же категории другие бренды
+        //продукты той же категории другие бренды, желательно другие шопы, если шопов мало, то дополняем тем же шопом
         $categoryProducts = $category ?
             Product::top([
                 'category_id' => $product->categories[0]->id,
                 'limit' => 8,
-                'multi_brands' => true,
+                     //указываем конкретного вендора какие НЕ ВЫВОДИТЬ, шопы вначале разные, потом для дополнения без учёта шопа
+                'other_brands_of' => ['product_id' =>$product->id, 'vendors_id' => [$product->vendor_id], 'stores_id' =>[]],
                 'with_image' => true,
-                'where' => ['and', ['<>', 'prod.id', $product->id], ['<>', 'vendor_id', $product->vendor_id]],
+                'where' => ['and', ['<>', 'prod.id', $product->id]],
             ]) : [];
-        //похожие - той же категории и того же шопа
+        //похожие - той же категории и того же шопа, разные бренды
         $similarProducts = $product->store_id ?
             Product::top([
                 'where' => ['and', ['store_id' => $product->store_id],['<>', 'prod.id', $product->id]],
-                'multi_brands' => true,
+                    //указываем конкретный шоп какой ВЫВОДИТЬ, бренды сначала разные, потом для дополнения того без учёта бренда
+                'other_brands_of' => ['product_id' =>$product->id, 'stores_id' => [$product->store_id], 'vendors_id' => []],
                 'category_id' => $product->categories[0]->id,
                 'with_image' => true,
                 'limit' => 8
@@ -442,6 +445,9 @@ class DefaultController extends SdController
             ]);
         }
 
+        //купоны
+        $coupons = $product->store_id ? Coupons::top(['store' => $product->store_id, 'limit' => 4]) : [];
+
         return $this->render('product', [
             'product' => $product,
             'favorites_ids' => UsersFavorites::getUserFav(8, true),
@@ -451,6 +457,7 @@ class DefaultController extends SdController
             'category' => $category,
             'category_route' => $categoryRoute,
             'visiteds' => !empty($visits) ? $visits : [],
+            'coupons' => $coupons,
         ]);
     }
 

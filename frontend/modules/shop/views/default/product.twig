@@ -15,6 +15,12 @@
 
             <div class="catalog_product-main margin-half">
                 <div class="catalog_product-main-image catalog_products_item_image-wrap">
+                    {% if product.price < product.old_price %}
+                        <span class="catalog_products_item_image-discount product">
+                             {% set discount = (((product.old_price - product.price) / product.old_price) * 100)|round(0, 'floor') %}
+                            -{{ discount }}%
+                         </span>
+                    {% endif %}
                     {% if product.image %}
                         <img class="no_optomize" {% if 'http' in product.image %} rel="nofollow" src="{{ product.image }}" {% else %} src="/images/product/{{ product.image }}" {% endif %} alt="{{ product.name|raw }}">
                     {% else %}
@@ -157,7 +163,7 @@
             {% set products = brands_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/shop?vendor='~product.vendor)|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a target="_blank" rel="nofollow noreferrer nooperer" class="btn btn-transform" href="{{ _href('/shop?vendor='~product.vendor)|raw }}">{{ t('shop','view_others')|raw }}</a>
             </div>
         </div>
     {% endif %}
@@ -170,7 +176,7 @@
             {% set products = category_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/shop'~(category_route ? '/'~category_route:''))|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a target="_blank" rel="nofollow noreferrer nooperer" class="btn btn-transform" href="{{ _href('/shop'~(category_route ? '/'~category_route:''))|raw }}">{{ t('shop','view_others')|raw }}</a>
             </div>
         </div>
     {% endif %}
@@ -178,12 +184,32 @@
     {% if similar_products %}
         <div class="catalog_product-others margin-half">
             <h3 class="catalog_product-others-header">
-                {{ t('shop', 'similar_products')|raw }}
+                {{ t('shop', 'similar_products_{shop}',{'shop':product.store.name})|raw }}
             </h3>
             {% set products = similar_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/shop'~(category_route ? '/'~category_route:'')~'?store='~product.store_id)|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a target="_blank" rel="nofollow noreferrer nooperer" class="btn btn-transform"  href="{{ _href('/shop/'~product.store.route)|raw }}">{{ t('shop','view_others')|raw }}</a>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {% if coupons %}
+        <div class="catalog_product-others margin-half">
+            <h3 class="catalog_product-others-header">{{ t('main', 'coupons_for_{store}', {'store': product.store.name})|raw }}</h3>
+            <div class="coupons-list coupons-list-stores narrow list-4 narrow_off">
+                {% for coupon in coupons %}
+                    {% include 'parts/coupon.twig' %}
+                {% endfor %}
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+                <div class="coupons coupons-empty"></div>
+            </div>
+            <div class="align-center">
+                <a href="{{ _href('/coupons/'~product.store.route)|raw }}" class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">
+                    {{ t('main', 'coupons_all_for_{store}_', {'store': product.store.name})|raw }}
+                </a>
             </div>
         </div>
     {% endif %}
@@ -196,7 +222,7 @@
             {% set products = visiteds %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a class="btn btn-transform" href="{{ _href('/account/viewed-products','https://secretdiscounter.com')|raw }}">{{ t('shop','view_all_visiteds')|raw }}</a>
+                <a target="_blank" rel="nofollow noreferrer nooperer" class="btn btn-transform" href="{{ _href('/account/viewed-products','https://secretdiscounter.com')|raw }}">{{ t('shop','view_all_visiteds')|raw }}</a>
             </div>
         </div>
     {% endif %}

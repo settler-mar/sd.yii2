@@ -42,7 +42,7 @@ return [
     'filter_vendor' => 'Производитель',
     'filter_stores' => 'Магазин',
     'view_others' => 'Показать ещё',
-    'similar_products' => 'Похожие товары',
+    'similar_products_{shop}' => 'Похожие товары магазина &laquo;{shop}&raquo;',
     'other_products_category_{category}' => 'Другие бренды категории &laquo;{category}&raquo;',
     'other_products_brand_{brand}' => 'Другие товары бренда &laquo;{brand}&raquo;',
 //    'add_to_favorites' => 'Отложить в Избранное',

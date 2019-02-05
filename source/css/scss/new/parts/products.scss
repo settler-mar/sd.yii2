@@ -55,25 +55,6 @@ $media3: $phones;
         align-items: center;
         justify-content: center;
       }
-      &-discount {
-        position: absolute;
-        color: #fff;
-        font-size: 22px;
-        background: red;
-        display: block;
-        top: 0;
-        left: 0;
-        padding: 2px 5px;
-        border-radius: 2px;
-        font-weight: bold;
-        line-height: 23px;
-        a {
-          text-decoration: none;
-          &:hover {
-            color: #fff;
-          }
-        }
-      }
 
       img {
         max-height: 200PX;
@@ -485,6 +466,39 @@ $media3: $phones;
     &_item {
       @include strait
 
+    }
+  }
+}
+
+.catalog_products_item,
+.catalog_product-main-image {
+  .catalog_products_item_image-discount {
+    position: absolute;
+    color: #fff;
+    font-size: 22px;
+    background: red;
+    display: block;
+    top: 0;
+    left: 0;
+    padding: 2px 5px;
+    border-radius: 2px;
+    font-weight: bold;
+    line-height: 23px;
+    a {
+      text-decoration: none;
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    &.product {
+
+      top: 10px;
+      left: 10px;
+      font-size: 40px;
+      padding: 2px 10px;
+      border-radius: 5px;
+      line-height: 1;
     }
   }
 }
