@@ -30,7 +30,8 @@ class Cpa extends \yii\db\ActiveRecord
         "Linkconnector"=>'atid',
         'Cj.com' => 'sid',
         'Webgains' => 'clickref',
-        'Connexity' => false, //для продуктов при фалсе вообще не добавляем параметр если null или нет в настройке, то subid
+        'Impact' => 'subId1',
+        'Connexity' => false, //для продуктов при фалсе вообще не добавляем параметр, если null или нет в настройке, то subid
 
     ];
 
