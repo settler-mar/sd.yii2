@@ -17,7 +17,7 @@
            {% for product in products %}
                <tr>
                    <td ><a target="_blank" rel="nooper nofollow noreferrer" href="/admin/product/update/id:{{ product.id }}">
-                           <img width="100" src="{{ product.image }}" alt=""></a>
+                           <img width="100" src="{{ product.image|slice(0,4) == 'http' ? product.image : '/images/product/'~product.image }}" alt=""></a>
                    </td>
                    <td >
                        <a target="_blank" rel="nooper nofollow noreferrer" href="/admin/product/update/id:{{ product.id }}">
