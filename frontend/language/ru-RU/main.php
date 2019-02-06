@@ -15,7 +15,7 @@ return [
     'find_shops' => 'Например, Aliexpress',
     //'find_promocode' => 'Найти промокод',
     'find_promocode' => 'Например, Aliexpress',
-    'find_product' => 'Например, notebook',
+    'find_product' => 'Например, кроссовки Adidas',
     'how_it_works' => 'Как это работает',
     'online_shops' => 'Интернет-магазины',
     'online_shops_low' => 'интернет-магазины',

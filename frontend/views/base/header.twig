@@ -26,60 +26,7 @@
         </div>
 
 
-        <div class="header-search stores_search">
-
-          {% if app.request.get.module == 'product' %}
-            <form action="{{ _href('/search/product')|raw }}" class="header-search_form" name="search" method="get">
-          {% elseif app.request.get.module == 'coupon' %}
-            <form action="{{ _href('/search/coupons')|raw }}" class="header-search_form" name="search" method="get">
-          {% else %}
-            <form action="{{ _href('/search')|raw }}" class="header-search_form" name="search" method="get">
-          {% endif %}
-            <div class="header-search_form-group">
-              <input type="hidden" id="header-search_form-module-hidden" name="module" value="{{ app.request.get.module }}">
-              <input type="hidden" id="header-search_form-limit-hidden" name="limit" value="">
-              <input type="hidden" name="header" value="1">
-              <label class="header-search_form-input-module-label" for="header-search_form-module-text">
-                <span  id="header-search_form-module-text" class="header-search_form-input header-search_form-input-module">{{ t('common', app.request.get.module ? app.request.get.module : 'shops') }}</span>
-              </label>
-
-              <div class="header-search_form-popup">
-                  <ul class="form-popup-select">
-                      <li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'shops') }}"
-                          data-id2="header-search_form-module-hidden" data-value2="store"
-                          data-id4="header-search_form-limit-hidden" data-value4=""
-                          data-id3="search" data-value3="{{ t('main', 'find_shops') }}"
-                          data-action="{{ _href('/search') }}" data-popup="1" >
-                          {{ t('common', 'shops') }}
-                      </li>
-                      <li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'coupon') }}"
-                          data-id2="header-search_form-module-hidden" data-value2="coupon"
-                          data-id4="header-search_form-limit-hidden" data-value4="30"
-                          data-id3="search" data-value3="{{ t('main', 'find_promocode') }}"
-                          data-action="{{ _href('/search/coupon') }}" data-popup="1">
-                          {{ t('common', 'coupon') }}
-                      </li>
-                      <li data-id1="header-search_form-module-text" data-value1="{{ t('common', 'product') }}"
-                          data-id2="header-search_form-module-hidden" data-value2="product"
-                          data-id4="header-search_form-limit-hidden" data-value4="1000"
-                          data-id3="search" data-value3="{{ t('main', 'find_product') }}"
-                          data-action="{{ _href('/search/product') }}" data-popup="0">
-                          {{ t('common', 'product') }}
-                      </li>
-                  </ul>
-              </div>
-
-                <input type="text" name="query" id="search" class="header-search_form-input header-search_form-input-query search-form-input" value=""
-                     placeholder="{{ t('main', 'find_'~(app.request.get.module ? app.request.get.module : 'shops')) }}"
-                     autocomplete="off"
-                     data-popup="{{ app.request.get.module != 'product' ? '1' : '0'}}">
-              {{ svg('search','header-search_form-button')|raw }}
-            </div>
-          </form>
-          <div class="header-autocomplete autocomplete-wrap">
-            <ul class="autocomplete_list"></ul>
-          </div>
-        </div>
+        {% include 'base/header_search_form.twig' %}
 
         {{ lang_select_widget() }}
 

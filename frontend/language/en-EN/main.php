@@ -12,7 +12,7 @@ return [
     'link_to_shop' => 'Visit a store',
     'find_shops' => 'For example, Aliexpress',
     'find_promocode' => 'For example, Aliexpress',
-    'find_product' => 'For example, notebook',
+    'find_product' => 'For example, Adidas sneakers',
     'how_it_works' => 'How it works',
     'online_shops' => 'Online Stores',
     'online_shops_low' => 'online stores',
