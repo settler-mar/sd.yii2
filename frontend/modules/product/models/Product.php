@@ -1026,7 +1026,6 @@ class Product extends \yii\db\ActiveRecord
     $query =  self::find()->from(self::tableName() . ' prod')
         ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
         ->leftJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
-        ->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = prod.catalog_id')
         ->where([
             'and',
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
@@ -1039,7 +1038,8 @@ class Product extends \yii\db\ActiveRecord
             'discount'])
         ->asArray();
     if ($regionArea) {
-        $query->andWhere(['or', ['is', 'cs.regions', null], 'JSON_CONTAINS(cs.regions,\'"'.$regionArea.'"\',"$")']);
+        $query->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = prod.catalog_id')
+            ->andWhere(['or', ['is', 'cs.regions', null], 'JSON_CONTAINS(cs.regions,\'"'.$regionArea.'"\',"$")']);
     }
     return $query;
 
