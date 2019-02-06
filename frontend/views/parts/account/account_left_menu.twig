@@ -203,11 +203,11 @@
               </ul>
           </li>
       {% endif %}
-        <li class="action-btn"> {{ get_menu_item({
-                'href':'/logout',
-                'title': t('common', 'logout'),
-                'left-icon': 'sign-out'
-            })|raw }}
-        </li>
+      <li class="action-btn">
+        <a  class="modals_open" href="{{ _href('#logout')|raw }}">
+          <span>{{ svg('sign-out', 'left-icon')|raw }} {{ t('common', 'logout') }}</span>
+        </a>
+      </li>
+
     </ul>
 </div>

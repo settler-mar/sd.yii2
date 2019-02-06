@@ -156,6 +156,8 @@ return [
     'favorites_empty' => 'На данный момент у Вас нет избранных магазинов.',
     'favorites_shop_<a href="{href}">login</a>_to_add' => 'Для того, чтобы добавить магазин в Избранное, вы должны быть <a href="{href}">авторизованы</a> на сайте.',
     'favorites_product_<a href="{href}">login</a>_to_add' => 'Для того, чтобы отложить товар, вы должны быть <a href="{href}">авторизованы</a> на сайте.',
+    'favorites_shop_<a href="{href}">login</a>_to_delete' => 'Для того, чтобы убрать магазин из Избранного, вы должны быть <a href="{href}">авторизованы</a> на сайте.',
+    'favorites_product_<a href="{href}">login</a>_to_delete' => 'Для того, чтобы убрать товар из отложенных, вы должны быть <a href="{href}">авторизованы</a> на сайте.',
     'favorites_empty_viewed-products' => 'На данный момент у Вас нет просмотренных товаров.',
     'favorites_empty_text_view_<a href="{href}">here</a>_after_add_viewed-products' => 'После переходов в товары из <a class="blue" href="{href}">нашего каталога</a> они будут отображаться на данной странице.',
     'favorites_add_noshop' => 'Невозможно найти выбранный магазин.',
@@ -375,4 +377,5 @@ return [
     'favorites_viewed-products' => 'Просмотренные товары',
     'account_viewed-products_breadcrumbs' => 'Просмотренные товары',
     'account_sendverifyemail_breadcrumbs' => 'Повторное письмо для потдверждения email',
+    'logout_success' => 'Вы вышли из системы.',
 ];

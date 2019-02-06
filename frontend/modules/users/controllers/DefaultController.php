@@ -87,6 +87,13 @@ class DefaultController extends Controller
     $session = Yii::$app->session;
     $session->remove('admin_id');
     Yii::$app->user->logout();
+
+    if (Yii::$app->request->isAjax) {
+      $data['html'] = '<div><p>'. Yii::t('account','logout_success').
+        '</p></div><script>login_redirect("'. Help::href('/').'");</script>';
+        return json_encode($data);
+    }
+
     return Yii::$app->getResponse()->redirect(Yii::$app->help->href('/'));
     //return $this->goHome();
   }

@@ -338,7 +338,7 @@
             </ul>
           </li>
           <li class="mobile">
-            {{ get_menu_item({'href': '/logout','title': t('common', 'do_logout')})|raw }}
+             <a class="modals_open" href="{{ _href('#logout')|raw }}">{{ t('common', 'do_logout') }}</span></a>
           </li>
         {% else %}
           <li>

@@ -11,7 +11,7 @@ objects = function (a, b) {
 
 function login_redirect(new_href) {
   href = location.href;
-  if (href.indexOf('store') > 0 || href.indexOf('coupon') > 0 || href.indexOf('url(') > 0) {
+  if (href.indexOf('store') > 0 || href.indexOf('shop')>0 || href.indexOf('coupon') > 0 || href.indexOf('url(') > 0) {
     location.reload();
   } else {
     location.href = new_href;

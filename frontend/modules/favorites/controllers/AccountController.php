@@ -25,6 +25,7 @@ class AccountController extends Controller
   public function actionIndex()
   {
     $request= Yii::$app->request;
+    $type = $request->post('type');
 
     if($request->isAjax || $request->post('g') == 'plugin') {
       $product_id = (int) $request->post('product_id');
@@ -32,12 +33,12 @@ class AccountController extends Controller
         return json_encode([
           'error'=>Yii::t(
               'account',
-              'favorites_'.($product_id ? 'product' : 'shop').'_<a href="{href}">login</a>_to_add',
+              'favorites_'.($product_id ? 'product' : 'shop') . '_<a href="{href}">login</a>_to'. '_' . $type,
               ['href' => Help::href('#login')]
           ),
           'title'=>Yii::t('common', 'error')]);
       }
-      $type = $request->post('type');
+
       $affiliate_id = (int) $request->post('affiliate_id');
       $user_id= (int) Yii::$app->user->id;
 
