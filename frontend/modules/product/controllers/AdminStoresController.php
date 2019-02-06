@@ -65,6 +65,15 @@ class AdminStoresController extends Controller
         ->asArray()
         ->all(), 'id', 'name');
 
+    $regionsList = [];
+      foreach (Yii::$app->params['regions_list'] as $key => $region) {
+          if (isset($region['regions'])) {
+              foreach ($region['regions'] as $area) {
+                  $regionsList[$area] = $area;
+              }
+          }
+      }
+
     $searchModel = new CatalogStoresSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     return $this->render('index.twig', [
@@ -92,6 +101,7 @@ class AdminStoresController extends Controller
         'clear' => function($url, $model, $key) {
             return '<a title="Delete products" href="/admin-stores/product/clear/id:'.$model->id.'"><i class="fa fa-eraser"></i></a>';
         },
+        'regionsList' => $regionsList,
     ]);
   }
   /**
@@ -138,6 +148,14 @@ class AdminStoresController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['index']);
     } else {
+      $regionsList = [];
+      foreach (Yii::$app->params['regions_list'] as $key => $region) {
+          if (isset($region['regions'])) {
+              foreach ($region['regions'] as $area) {
+                  $regionsList[$key][] = $area;
+              }
+          }
+      }
       return $this->render('update.twig', [
           'model' => $model,
           'activeFilter' => [
@@ -145,6 +163,7 @@ class AdminStoresController extends Controller
               CatalogStores::CATALOG_STORE_ACTIVE_NOT => 'Не активен',
               CatalogStores::CATALOG_STORE_ACTIVE_WAITING => 'Ожидает подтверждения'
           ],
+          'regionsList' => $regionsList,
       ]);
     }
   }

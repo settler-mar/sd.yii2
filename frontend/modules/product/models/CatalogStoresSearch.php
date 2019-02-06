@@ -23,7 +23,7 @@ class CatalogStoresSearch extends CatalogStores
   {
     return [
         [['id', 'cpa_link_id', 'products_count', 'product_count', 'active', 'cpa_id'], 'integer'],
-        [['name', 'csv', 'date_download', 'date_import', 'crated_at', 'store'], 'safe'],
+        [['name', 'csv', 'date_download', 'date_import', 'crated_at', 'store', 'regions'], 'safe'],
     ];
   }
 
@@ -88,6 +88,11 @@ class CatalogStoresSearch extends CatalogStores
 
     $query->andFilterWhere(['like', 'name', $this->name])
         ->andFilterWhere(['like', 'csv', $this->csv]);
+
+    if (!empty($this->regions)) {
+        $query->andWhere(['is not', 'region', null]);
+        $query->andWhere('JSON_CONTAINS(regions,\'"'.$this->regions.'"\',"$")');
+    }
 
     return $dataProvider;
   }

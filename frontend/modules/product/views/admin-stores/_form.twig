@@ -2,6 +2,8 @@
 <div class="catalog-stores-form">
   {% set form = active_form_begin() %}
 
+  {{ form.field(model, 'id').textInput({'disabled':true})|raw }}
+
   {{ form.field(model, 'cpa_link_id').textInput()|raw }}
   <div>
     <b>Магазин:</b>
@@ -18,9 +20,28 @@
 
   {{ form.field(model, 'date_import').textInput()|raw }}
 
-  {{ form.field(model, 'date_download').textInput()|raw }}
+  {{ form.field(model, 'date_download').textInput({'disabled':true})|raw }}
 
-  {{ form.field(model, 'crated_at').textInput()|raw }}
+  <div>
+    <h3>Регионы:</h3>
+      {% for region,areas in regionsList %}
+        <b>{{ region }}</b>
+          <div>
+          {% for area in areas %}
+            <div class="form-group field-banners-places">
+              <input type="checkbox" id="banner-region-{{ area }}" name="CatalogStores[catalog_regions][]" value="{{ area }}" {% if area in model.regions %}checked{% endif %}>
+              <label class="control-label" for="banner-region-{{ area }}">{{ area }}</label>
+              <div class="help-block"></div>
+            </div>
+          {% endfor %}
+          </div>
+      {% endfor %}
+  </div>
+
+
+  {{ form.field(model, 'crated_at').textInput({'disabled':true})|raw }}
+
+
 
   <div class="form-group">
     <input type="submit" value="{{ model.isNewRecord ? 'Create' : 'Update' }}"

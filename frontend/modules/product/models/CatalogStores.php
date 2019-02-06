@@ -32,6 +32,7 @@ class CatalogStores extends \yii\db\ActiveRecord
     const CATALOG_STORE_ACTIVE_WAITING = 2;
 
     public $cpa_id;
+    public $catalog_regions;
 
     /**
      * @inheritdoc
@@ -48,7 +49,7 @@ class CatalogStores extends \yii\db\ActiveRecord
     {
         return [
             [['cpa_link_id', 'products_count', 'product_count', 'active'], 'integer'],
-            [['date_import', 'date_download', 'crated_at'], 'safe'],
+            [['date_import', 'date_download', 'crated_at', 'regions', 'catalog_regions'], 'safe'],
             [['name', 'csv'], 'string', 'max' => 255],
             [['cpa_link_id'], 'exist', 'skipOnError' => true, 'targetClass' => CpaLink::className(), 'targetAttribute' => ['cpa_link_id' => 'id']],
         ];
@@ -71,7 +72,21 @@ class CatalogStores extends \yii\db\ActiveRecord
             'date_download' => 'Дата обновления',
             'crated_at' => 'Crated At',
             'store' => 'Магазин',
+            'regions' => 'Регионы',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->regions = $this->catalog_regions;
+        return parent::beforeSave($insert);
+    }
+
+    public function getRegionsList()
+    {
+        if ($this->regions) {
+            return implode(', ', $this->regions);
+        }
     }
 
     /**
