@@ -1021,20 +1021,28 @@ class Product extends \yii\db\ActiveRecord
 
   public static function items()
   {
-    return self::find()->from(self::tableName() . ' prod')
+    $regionArea = isset(Yii::$app->params['region_area']) ? Yii::$app->params['region_area'] : false;
+
+    $query =  self::find()->from(self::tableName() . ' prod')
         ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
         ->leftJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+        ->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = prod.catalog_id')
         ->where([
             'and',
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
-            //['is not', 'prod.image', null],
         ])
+
         ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
             's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
             's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
             's.currency as store_currency', 's.action_end_date as action_end_date',
             'discount'])
         ->asArray();
+    if ($regionArea) {
+        $query->andWhere(['or', ['is', 'cs.regions', null], 'JSON_CONTAINS(cs.regions,\'"'.$regionArea.'"\',"$")']);
+    }
+    return $query;
+
   }
 
   public static function topBy($field, $params = [])

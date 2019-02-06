@@ -13,7 +13,7 @@ return [
         ],
         'socialsShareList' => '1,0,2,4,3,5,6',//vk,fb,ok,g+,tw,mali.ru,lj
         'active' => 1,
-        'regions' => ['ru', 'bl', 'kz', 'ua'],
+        'areas' => ['ru', 'bl', 'kz', 'ua'],
     ],
     'en'=>[
         'name'=>'USA',
@@ -25,6 +25,6 @@ return [
         ],
         'socialsShareList' => '0,4,3,6',//fb,g+,tw,lj
         'active' => 1,
-        'regions' => ['us', 'eu', 'uk', 'au'],
+        'areas' => ['us', 'eu', 'uk', 'au'],
     ]
 ];

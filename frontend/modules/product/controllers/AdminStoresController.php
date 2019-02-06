@@ -67,8 +67,8 @@ class AdminStoresController extends Controller
 
     $regionsList = [];
       foreach (Yii::$app->params['regions_list'] as $key => $region) {
-          if (isset($region['regions'])) {
-              foreach ($region['regions'] as $area) {
+          if (isset($region['areas'])) {
+              foreach ($region['areas'] as $area) {
                   $regionsList[$area] = $area;
               }
           }
@@ -150,8 +150,8 @@ class AdminStoresController extends Controller
     } else {
       $regionsList = [];
       foreach (Yii::$app->params['regions_list'] as $key => $region) {
-          if (isset($region['regions'])) {
-              foreach ($region['regions'] as $area) {
+          if (isset($region['areas'])) {
+              foreach ($region['areas'] as $area) {
                   $regionsList[$key][] = $area;
               }
           }
