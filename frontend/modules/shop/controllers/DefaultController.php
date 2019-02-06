@@ -127,7 +127,7 @@ class DefaultController extends SdController
             //шоп из роут
             $storeRequest = $this->store->uid;
         } else {
-            $storeRequest = $request->get('store_id');
+            $storeRequest = $request->get('store_id') ? (int) $request->get('store_id') : null;
         }
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
@@ -142,9 +142,9 @@ class DefaultController extends SdController
                 throw new \yii\web\NotFoundHttpException;
             }
         }
-        $storesUsed = Product::usedStores([
-            'category' => $this->category,
-        ]);
+//        $storesUsed = Product::usedStores([
+//            'category' => $this->category,
+//        ]);
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -162,17 +162,17 @@ class DefaultController extends SdController
 
         $validator = new \yii\validators\NumberValidator();
         $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
-        $storeValidator = new \yii\validators\RangeValidator([
-            'range' => array_column($storesUsed, 'uid'),
-            'allowArray' => true
-        ]);
+//        $storeValidator = new \yii\validators\RangeValidator([
+//            'range' => array_column($storesUsed, 'uid'),
+//            'allowArray' => true
+//        ]);
 
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
             !empty($sort_request) && !$validatorIn->validate($sort_request) ||
             !empty($priceStart) && !$validator->validate($priceStart) ||
-            !empty($priceEnd) && !$validator->validate($priceEnd) ||
-            !empty($storeRequest) && !$storeValidator->validate($storeRequest)
+            !empty($priceEnd) && !$validator->validate($priceEnd)
+            // || !empty($storeRequest) && !$storeValidator->validate($storeRequest)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };
@@ -360,6 +360,7 @@ class DefaultController extends SdController
             'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
             'database' => $dataBaseData
         ]);
+        //ddd($stores, $dataBaseData);
 
         $filterPriceEndMax = $filterPriceStartMin == $filterPriceEndMax ? $filterPriceEndMax + 1 : $filterPriceEndMax;
         $storesData['filter'] = [
@@ -478,7 +479,7 @@ class DefaultController extends SdController
             //шоп из роут
             $storeRequest = $this->store->uid;
         } else {
-            $storeRequest = $request->get('store_id');
+            $storeRequest = $request->get('store_id') ? (int) $request->get('store_id') : null;
         }
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
@@ -493,9 +494,9 @@ class DefaultController extends SdController
                 throw new \yii\web\NotFoundHttpException;
             }
         }
-        $storesUsed = Product::usedStores([
-            'category' => $this->category,
-        ]);
+//        $storesUsed = Product::usedStores([
+//            'category' => $this->category,
+//        ]);
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -513,17 +514,17 @@ class DefaultController extends SdController
 
         $validator = new \yii\validators\NumberValidator();
         $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
-        $storeValidator = new \yii\validators\RangeValidator([
-            'range' => array_column($storesUsed, 'uid'),
-            'allowArray' => true
-        ]);
+//        $storeValidator = new \yii\validators\RangeValidator([
+//            'range' => array_column($storesUsed, 'uid'),
+//            'allowArray' => true
+//        ]);
 
         if (!empty($limit) && !$validator->validate($limit) ||
             !empty($page) && !$validator->validate($page) ||
             !empty($sort_request) && !$validatorIn->validate($sort_request) ||
             !empty($priceStart) && !$validator->validate($priceStart) ||
-            !empty($priceEnd) && !$validator->validate($priceEnd) ||
-            !empty($storeRequest) && !$storeValidator->validate($storeRequest)
+            !empty($priceEnd) && !$validator->validate($priceEnd)
+           //|| !empty($storeRequest) && !$storeValidator->validate($storeRequest)
         ) {
             throw new \yii\web\NotFoundHttpException;
         };

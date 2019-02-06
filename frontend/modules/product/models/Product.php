@@ -738,6 +738,7 @@ class Product extends \yii\db\ActiveRecord
                 ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
                 ->select(['s.name', 's.uid', 's.priority', 's.logo', 's.route'])
                 ->groupBy(['s.name', 's.uid', 's.priority'])
+                ->where(['s.is_active' => [0, 1]])
                 ->asArray();
             if (!empty($params['where'])) {
                 $stores->where($params['where']);
@@ -1029,6 +1030,7 @@ class Product extends \yii\db\ActiveRecord
         ->where([
             'and',
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
+            ['s.is_active' => [0, 1]],
         ])
 
         ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
