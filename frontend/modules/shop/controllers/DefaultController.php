@@ -105,7 +105,7 @@ class DefaultController extends SdController
         ]);
         $data['most_profitable_count'] = Product::top(['where' => ['>', 'discount', 50], 'count' => 1]);
         $data['brands'] = Vendor::items([
-            'limit' => 25,
+            'limit' => 15,
         ]);
         $data['brands_count'] = Vendor::items([
             'count' => true
@@ -547,7 +547,7 @@ class DefaultController extends SdController
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
         $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
             ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '') .
-            ($month ? '_month_' : '').($profit ? '_profit_' : '') . ($vendorRequest ? ' _vendor_' . $vendorRequest : '');
+            ($month ? '_month_' : '').($profit ? '_profit_' : '') . ($vendorRequest ? ' _vendor_' . Help::multiImplode('_', $vendorRequest) : '');
 
         $filter = [];
         $where = [];

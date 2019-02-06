@@ -1,0 +1,9 @@
+{% if app.request.pathInfo|slice(0, 7) != 'account' %}
+    <div class="howitworks-button-fixed">
+        <a href="{{ _href(app.request.pathInfo|slice(0,4) == 'shop' ? '/how-shop-works' : '/help')|raw }}" target="_blank" rel="noopener noreferrer nofollow">
+            <span class="logo">{{ svg('color/logo')|raw }}</span>
+            <span class="text">{{ t('main', 'how_it_works') }}</span>
+            <span class="arrow">{{ svg('angle-right', 'arrow')|raw }}</span>
+        </a>
+    </div>
+{% endif %}
