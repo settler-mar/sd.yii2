@@ -3,13 +3,14 @@
     <div class="catalog-stores_sort-all-select linked">
         <span class="catalog-stores_sort-all-title">{{ t('main', 'sort_by')|raw }}:</span>
             <div class="sd-select">
+            {% set first_item = '' %}
             {% for sortLink in sortlinks %}
                  {% if sortLink.active == 1 %}
-                     <span class="sd-select-selected">{{ sortLink.title }}
-                        {{ svg('angle-down','','@frontend')|raw }}
-                     </span>
+                     {% set first_item = '<span class="sd-select-selected">'~sortLink.title~svg('angle-down','','@frontend')~'</span>' %}
                  {% endif %}
             {% endfor %}
+            {% set first_item = first_item ? first_item : '<span class="sd-select-selected">'~sortlinks[0].title~svg('angle-down','','@frontend')~'</span>'  %}
+            {{ first_item|raw }}
             <ul class="sd-select-drop">
                 {% for sortLink in sortlinks%}
                     <li {% if sortLink.active == 1 %}class="active"{% endif %}>
