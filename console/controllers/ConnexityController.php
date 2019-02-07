@@ -234,7 +234,7 @@ class ConnexityController extends Controller
                         $product['image'] = isset($prod['images']['image'][0]['value']) ?
                             $prod['images']['image'][0]['value'] : null;
                         $product['id'] = isset($prod['id']) ? $prod['id'] : null;
-                        $product['description'] = $prod['description'];
+                        $product['description'] = isset($prod['description']) ? $prod['description'] : '';
                         $price = isset($prod['price']['value']) ? $prod['price']['value'] : null;
                         $priceOld = isset($prod['originalPrice']['value']) ? $prod['originalPrice']['value'] : null;
                         $product['price'] = $price;
