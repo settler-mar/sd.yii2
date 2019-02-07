@@ -1,4 +1,4 @@
-(function () {
+function product_filter() {
 
     var slider = $("#filter-slider-price");
     var textStart = $('#slider-price-start');
@@ -69,4 +69,5 @@
         }
     });
 
-})();
+}
+product_filter();

@@ -23,15 +23,15 @@ use yii;
 
 class DefaultController extends SdController
 {
-    public $category = null;
-    public $product = null;
-    public $store = null;
+    private $category = null;
+    private $product = null;
+    private $store = null;
 
 
-    private $requestData = [];
-    private $cacheName = '';
+    //private $requestData = [];
+    //private $cacheName = '';
     private $paginatePath = '';
-    private $paginateParams = [];
+    //private $paginateParams = [];
 
     public function createAction($id)
     {
@@ -48,7 +48,7 @@ class DefaultController extends SdController
             //нашли категорию
             if ($category) {
                 $this->category = $category;
-                Yii::$app->params['url_mask'] = 'shop/*';
+                //Yii::$app->params['url_mask'] = 'shop/*';
                 if ($request->isAjax) {
                     //данные айаксом
                     echo $this->actionData();
@@ -64,7 +64,7 @@ class DefaultController extends SdController
             //нашли шоп по пути
             if ($store) {
                 $this->store = $store;
-                Yii::$app->params['url_mask'] = 'shop/store/*';
+                //Yii::$app->params['url_mask'] = 'shop/store/*';
                 if ($request->isAjax) {
                     //данные айаксом
                     echo $this->actionData();
@@ -79,7 +79,7 @@ class DefaultController extends SdController
                     throw new yii\web\NotFoundHttpException();
                 }
                 $this->product = $product;
-                Yii::$app->params['url_mask'] = 'shop/product/*';
+                //Yii::$app->params['url_mask'] = 'shop/product/*';
                 echo $this->actionProduct();
                 exit;
             }
@@ -89,6 +89,7 @@ class DefaultController extends SdController
 
     public function actionIndex()
     {
+        Yii::$app->params['url_mask'] = 'shop';
         $data = [];
         $data['slider_products'] = Slider::get(['place'=>'product']);
         $data['category_top'] = ProductsCategory::top([
@@ -114,7 +115,7 @@ class DefaultController extends SdController
         ]);
         $data['most_profitable_count'] = Product::top(['where' => ['>', 'discount', 50], 'count' => 1]);
         $data['brands'] = Vendor::items([
-            'limit' => 15,
+            'limit' => 20,
         ]);
         $data['brands_count'] = Vendor::items([
             'count' => true
@@ -130,9 +131,11 @@ class DefaultController extends SdController
 
     public function actionCategory()
     {
-        $this->getRequestData();
+        Yii::$app->params['url_mask'] = 'shop/*';//изначально для категории, потом может измениться при обработке запроса
+        //для запросов получить параметры запроса
+        $requestData = self::getRequestData(['category' =>$this->category, 'store_id'=> $this->store]);
 
-        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
+        //$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
 
         $storesData = [];
 
@@ -142,16 +145,18 @@ class DefaultController extends SdController
 
         $storesData['sortlinks'] =
             $this->getSortLinks(
-                $this->paginatePath,
+                $requestData['request_data']['path'],
                 Product::sortvars(),
                 Product::$defaultSort,
-                $this->paginateParams
+                $requestData['paginate_params']
             );
 
+        $this->paginatePath = $requestData['request_data']['path'];
+
         //какие блоки обновляются по каким адресам
-        $params = array_merge(Yii::$app->request->get(), $this->requestData);
+        $params = array_merge(Yii::$app->request->get(), $requestData['request_data']);
+
         $params = http_build_query($params);
-        //ddd($this->requestData);
         //формируем новые гет-параметры
         $filterUrl = '/shop/filter' . ($params ? '?' . $params : '');
         $titleUrl = '/shop/title' . ($params ? '?' . $params : '');
@@ -160,11 +165,15 @@ class DefaultController extends SdController
             ['blocks' => ["catalog_products-filter"], 'url' => Yii::$app->help->href($filterUrl)],
             ['blocks' => ["catalog_products-title"], 'url' => Yii::$app->help->href($titleUrl)],
         ]);
+        if ($requestData['request_data']['page']> 1) {
+            $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $requestData['request_data']['page'];
+        }
         return $this->render('category', $storesData);
     }
 
     public function actionProduct()
     {
+        Yii::$app->params['url_mask'] = 'shop/product/*';
         $product = $this->product;//Product::findOne($id);
         $path = '/shop';
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
@@ -244,33 +253,32 @@ class DefaultController extends SdController
 
     public function actionData()
     {
-        $this->getRequestData();
+        //для запросов получить параметры запроса
+        $requestData = self::getRequestData(['category' =>$this->category, 'store_id'=> $this->store]);
+        //return json_encode([$requestData['query_db']->where,$requestData['query_db']->join ]);
 
         $pagination = new Pagination(
-            $this->getDatabaseData(),
-            $this->cacheName,
+            $requestData['query_db'],
+            $requestData['cache_name'],
             [
-                'limit' => $this->requestData['query'] ? 48 : $this->requestData['limit'],
-                'page' => $this->requestData['page'],
+                'limit' => $requestData['request_data']['query'] ? 48 : $requestData['request_data']['limit'],
+                'page' => $requestData['request_data']['page'],
                 'asArray'=> true
             ]
         );
 
-        $storesData['category'] = $this->category;
+        //$storesData['category'] = $requestData['request_data']['category'];
         $storesData['products'] = $pagination->data();
         $storesData["total_v"] = $pagination->count();
         $storesData["total_all_product"] = Product::activeCount();
-        $storesData["page"] = empty($this->requestData['page']) ? 1 : $this->requestData['page'];
+        $storesData["page"] = empty($requestData['request_data']['page']) ? 1 : $requestData['request_data']['page'];
         $storesData["show_products"] = count($storesData['products']);
         $storesData["offset_products"] = $pagination->offset();
         $storesData["limit"] = empty($limit) ? Product::$defaultLimit : $limit;
 
         if ($pagination->pages() > 1) {
-            $storesData["pagination"] = $pagination->getPagination($this->paginatePath, $this->paginateParams);
+            $storesData["pagination"] = $pagination->getPagination($this->paginatePath, $requestData['paginate_params']);
             //$this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
-        }
-        if ($this->requestData['page']> 1) {
-            $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $this->requestData['page'];
         }
 
         $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
@@ -284,16 +292,27 @@ class DefaultController extends SdController
      */
     public function actionTitle()
     {
-        $this->requestData = Yii::$app->request->get();
-        $pagination = new Pagination($this->getDatabaseData(), $this->cacheName, ['limit' => 1]);
-        $storesData['category'] = isset($this->requestData['category_id']) ?
-            ProductsCategory::findOne($this->requestData['category_id']) : null;
-        $storeData['store'] = isset($this->requestData['store_id']) ?
-            Stores::byId($this->requestData['store_id']) : null;
+        //для запросов получить параметры запроса
+        $savedRequest = self::getRequestData(['category' => $this->category, 'store_id'=> $this->store]);
+
+        $pagination = new Pagination(
+            $savedRequest['query_db'],
+            $savedRequest['cache_name'],
+            [
+                'limit' => $savedRequest['request_data']['query'] ? 48 : $savedRequest['request_data']['limit'],
+                'page' => $savedRequest['request_data']['page'],
+                'asArray'=> true
+            ]
+        );
+      //  return json_encode($savedRequest['request_data']);
+
+        $storesData['category'] = $savedRequest['category'];
+        $storeData['store'] = isset($savedRequest['request_data']['store_id']) ?
+            Stores::byId($savedRequest['request_data']['store_id']) : null;
 
         $storesData["total_v"] = $pagination->count();
 
-        $meta = Meta::findByUrl(urldecode($this->requestData['url_mask']));
+        $meta = Meta::findByUrl(urldecode($savedRequest['request_data']['url_mask']));
         $storesData['h1'] =  $meta && isset($meta['h1']) ? $meta['h1'] : null;
 
         $file = file_get_contents(Yii::getAlias('@frontend/modules/shop/views/default/ajax/title.twig'));
@@ -307,154 +326,84 @@ class DefaultController extends SdController
      */
     public function actionFilter()
     {
-        $this->requestData = Yii::$app->request->get();
+        $savedRequest = self::getRequestData();
 
         $where = [];
-        if (!empty($this->requestData['vendor_db'])) {
-            $where['vendor_id'] = $this->requestData['vendor_db'];
+        if (!empty($savedRequest['request_data']['vendor_db'])) {
+            $where['vendor_id'] = $savedRequest['request_data']['vendor_db'];
         }
-        if (isset($this->requestData['store_request'])) {
-            $where['store_id'] = $this->requestData['store_request'];
+        if (isset($savedRequest['request_data']['store_request'])) {
+            $where['store_id'] = $savedRequest['request_data']['store_request'];
         }
 
-        $this->category = isset($this->requestData['category_id']) ?
-             ProductsCategory::findOne($this->requestData['category_id']) : null;
+        $category = $savedRequest['category'];
 
         $pricesResult = Product::conditionValues(
             'price',
             ['min', 'max'],
             [
-                'category' => $this->category,
+                'category' => $category,
                 'where' => $where,
             ]
         );
         $filterPriceEndMax = (int)$pricesResult['max_price'];
         $filterPriceStartMin=(int)$pricesResult['min_price'];
 
-        if ($this->requestData['price_start'] && $this->requestData['price_start'] != $filterPriceStartMin) {
-            $filter[] = ['>=', 'price', $this->requestData['price_start']];
+        if ($savedRequest['request_data']['price_start'] && $savedRequest['request_data']['price_start'] != $filterPriceStartMin) {
+            $filter[] = ['>=', 'price', $savedRequest['request_data']['price_start']];
         }
 
-        if ($this->requestData['price_end'] && $this->requestData['price_end'] != $filterPriceEndMax) {
-            $priceEnd = $this->requestData['price_end'] < $this->requestData['price_start'] ?
-                $this->requestData['price_start'] : $this->requestData['price_end'];
+        if ($savedRequest['request_data']['price_end'] && $savedRequest['request_data']['price_end'] != $filterPriceEndMax) {
+            $priceEnd = $savedRequest['request_data']['price_end'] < $savedRequest['request_data']['price_start'] ?
+                $savedRequest['request_data']['price_start'] : $savedRequest['request_data']['price_end'];
             $filter[] = ['<=', 'price', $priceEnd];
         }
 
-        $dataBaseData = $this->getDatabaseData();
 
         $vendors =  Vendor::items([
             'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
-            'database' => $dataBaseData,
+            'database' => $savedRequest['query_db'],
         ]);
 
          $stores = isset($this->requestData['store_request']) ? [] : Product::usedStores([
              'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
-             'database' => $dataBaseData
+             'database' => $savedRequest['query_db']
          ]);
 
          $storesData['filter'] = [
              'price_start' => $filterPriceStartMin,
              'price_end' => $filterPriceEndMax,
-             'price_start_user' => $this->requestData['price_start'] && $this->requestData['price_start'] > $filterPriceEndMax
-                 ? $this->requestData['price_start'] : $filterPriceStartMin,
-             'price_end_user' => $this->requestData['price_end'] &&
-                ($this->requestData['price_end'] < $filterPriceEndMax || $filterPriceEndMax == 0) ?
-                 $this->requestData['price_end'] : $filterPriceEndMax,
+             'price_start_user' => $savedRequest['request_data']['price_start'] && $savedRequest['request_data']['price_start'] > $filterPriceEndMax
+                 ? $savedRequest['request_data']['price_start'] : $filterPriceStartMin,
+             'price_end_user' => $savedRequest['request_data']['price_end'] &&
+                ($savedRequest['request_data']['price_end'] < $filterPriceEndMax || $filterPriceEndMax == 0) ?
+                 $savedRequest['request_data']['price_end'] : $filterPriceEndMax,
              'vendors' => $vendors,
-             'vendors_user' => !empty($this->requestData['vendor_request']) ? $this->requestData['vendor_request'] : false,
+             'vendors_user' => !empty($savedRequest['request_data']['vendor_request']) ? $savedRequest['request_data']['vendor_request'] : false,
              'stores' => $stores,
-             'store_user' => isset($this->requestData['store_request']) ? $this->requestData['store_request'] : [],
-             'query' => !empty($this->requestData['query']) ? $this->requestData['query'] : false,
-             'action' => $this->requestData['path'],//чтобы не попал page
-             'limit' => !empty($this->requestData['query']) ? $this->requestData['limit'] : false,
-             'month' => !empty($this->requestData['month']) ? $this->requestData['month'] : false,
-             'profit' => !empty($this->requestData['profit']) ? $this->requestData['profit'] : false,
+             'store_user' => isset($savedRequest['request_data']['store_request']) ? $savedRequest['request_data']['store_request'] : [],
+             'query' => !empty($savedRequest['request_data']['query']) ?$savedRequest['request_data']['query'] : false,
+             'action' => $savedRequest['request_data']['path'],//чтобы не попал page
+             'limit' => !empty($savedRequest['request_data']['query']) ? $savedRequest['request_data']['limit'] : false,
+             'month' => !empty($savedRequest['request_data']['month']) ? $savedRequest['request_data']['month'] : false,
+             'profit' => !empty($savedRequest['request_data']['profit']) ? $savedRequest['request_data']['profit'] : false,
          ];
 
-         return $this->renderPartial('ajax/filter.twig', $storesData);
+         return $this->renderAjax('ajax/filter.twig', $storesData);
     }
-
-
-    //готовим запрос базы данных
-    protected function getDatabaseData()
-    {
-        $dataBaseData = Product::items()->orderBy([$this->requestData['sort_db'] => $this->requestData['order']]);
-
-        $filter = [];
-        $where = [];
-        if (!empty($this->requestData['vendor_db'])) {
-            $where['vendor_id'] = $this->requestData['vendor_db'];
-        }
-        if (isset($this->requestData['store_request'])) {
-            $where['store_id'] = $this->requestData['store_request'];
-        }
-        $pricesResult = Product::conditionValues(
-            'price',
-            ['min','max'],
-            [
-                'category' => $this->category,
-                'where' => $where,
-            ]
-        );
-        $filterPriceEndMax = (int)$pricesResult['max_price'];
-        $filterPriceStartMin=(int)$pricesResult['min_price'];
-
-        if ($this->requestData['price_start'] && $this->requestData['price_start'] != $filterPriceStartMin) {
-            $filter[] = ['>=', 'price', $this->requestData['price_start']];
-            $this->paginateParams['price-start'] = $this->requestData['price_start'];
-        }
-        if ($this->requestData['price_end'] && $this->requestData['price_end'] != $filterPriceEndMax) {
-            $priceEnd = $this->requestData['price_end'] < $this->requestData['price_start'] ?
-                $this->requestData['price_start'] : $this->requestData['price_end'];
-            $filter[] = ['<=', 'price', $priceEnd];
-            $this->paginateParams['price-end'] = $priceEnd;
-        }
-        if (isset($this->requestData['vendor_request']) && !empty($requestData['vendor_db'])) {
-            $filter[] = ['vendor_id' => $requestData['vendor_db']];
-        }
-        if (!empty($this->requestData['month'])) {
-            $visits = UsersVisits::find()
-                ->select(['product_id', 'count(*) as count'])
-                ->where(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
-                ->groupBy(['product_id']);
-            $dataBaseData->innerJoin(['visits' => $visits], 'visits.product_id = prod.id');
-        }
-        if (!empty($this->requestData['profit'])) {
-            $dataBaseData->andWhere(['>', 'discount', 0.5]);
-        }
-        if (!empty($this->requestData['store_request'])) {
-            $filter[] = ['store_id' => $this->requestData['store_request']];
-        }
-        if (!empty($filter)) {
-            $dataBaseData->andWhere(array_merge(['and'], $filter));
-        }
-        if ($this->category) {
-            //есть категория
-            //получить в т.ч. по дочерним категориям
-            $dataBaseData->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
-                ->andWhere(['pc.category_id' => $this->category->childCategoriesId()]);
-        }
-        if (!empty($this->requestData['query'])) {
-            $sql = 'SELECT * FROM products WHERE match(\'' . $this->requestData['query'] . '\') LIMIT ' . $this->requestData['limit'];
-            $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
-
-            $dataBaseData->andWhere(['prod.id' => $ids]);
-        }
-
-
-        return $dataBaseData;
-    }
-
 
     //формируем данные запроса
-    private function getRequestData()
+    public static function getRequestData($params = [])
     {
         $request = Yii::$app->request;
+        $category = isset($params['category']) ? $params['category'] : null;
+        $category = $category ? $category :
+            ($request->get('category_id') ? ProductsCategory::byId($request->get('category_id')) : null);
+
         $vendorRequest = $request->get('vendor');
-        if ($this->store) {
+        if (isset($params['store_id'])) {
             //шоп из роут
-            $storeRequest = $this->store->uid;
+            $storeRequest = $params['store_id'];
         } else {
             $storeRequest = $request->get('store_id') ? (int) $request->get('store_id') : null;
         }
@@ -463,12 +412,16 @@ class DefaultController extends SdController
         $month =  isset(Yii::$app->params['search_month']) ? Yii::$app->params['search_month'] : false;//товары месяца
         $profit =  isset(Yii::$app->params['search_profit']) ? Yii::$app->params['search_profit'] : false;//товары со скидкой
 
-        if ($vendorRequest) {
-            $vendorDb = array_column(Vendor::items([
-                'where' => ['route' => $vendorRequest], 'category' => $this->category ? $this->category->childCategoriesId() : false
-            ]), 'id');
-            if (empty($vendorDb)) {
-                throw new \yii\web\NotFoundHttpException;
+        if (isset($params['vendor_id'])) {
+            $vendorDb = [$params['vendor_id']];
+        } else {
+            if ($vendorRequest) {
+                $vendorDb = array_column(Vendor::items([
+                    'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId() : false
+                ]), 'id');
+                if (empty($vendorDb)) {
+                    throw new \yii\web\NotFoundHttpException;
+                }
             }
         }
         $page = $request->get('page');
@@ -512,7 +465,7 @@ class DefaultController extends SdController
         $priceEnd = $request->get('price-end');
         $priceEnd = $priceEnd == $priceEndMax ? false : $priceEnd;
 
-        $this->requestData = [
+        $requestData = [
             'limit' => $limit,
             'order' => $order,
             'sort_db' => $sortDb,
@@ -529,8 +482,8 @@ class DefaultController extends SdController
             'vendor_request' => $vendorRequest,
             'vendor_db' => isset($vendorDb) ? $vendorDb : null,
             'sort' => $sort,
-            'category_id' => $this->category ? $this->category->id : null,
-            'store_id' => $this->store ? $this->store->uid : null,
+            'category_id' => isset($params['category']) ? $params['category']->id : null,
+            'store_id' => isset($params['store_id']) ? $params['store_id'] : null,
             'path' => '/'. $request->pathInfo,
             'url_mask' => urlencode(
                 isset(Yii::$app->params['url_mask']) ? Yii::$app->params['url_mask'] : $request->pathInfo
@@ -543,14 +496,86 @@ class DefaultController extends SdController
             ($language ? '_' . $language : '') . ($region? '_' . $region : '') . ($query ? '_query_'.$query : '') .
             ($month ? '_month_' : '').($profit ? '_profit_' : '') .
             ($vendorRequest ? ' _vendor_' . Help::multiImplode('_', $vendorRequest) : '');
-        if ($this->category) {
-            $cacheName .= '_category_' . $this->category->route;
+        if (isset($params['category'])) {
+            $cacheName .= '_category_' . $params['category']->route;
         }
-        $this->cacheName = $cacheName;
-        $this->paginateParams = [
+        $paginateParams = [
            'limit' => $limit,
            'sort' => $sort,
            'page' => $page,
+        ];
+
+        //готовим данные запроса
+        $querydb = Product::items()->orderBy([$requestData['sort_db'] => $requestData['order']]);
+
+        $filter = [];
+        $where = [];
+        if (!empty($requestData['vendor_db'])) {
+            $where['vendor_id'] = $requestData['vendor_db'];
+        }
+        if (isset($requestData['store_request'])) {
+            $where['store_id'] = $requestData['store_request'];
+        }
+        $pricesResult = Product::conditionValues(
+            'price',
+            ['min','max'],
+            [
+                'category' => $category,
+                'where' => $where,
+            ]
+        );
+        $filterPriceEndMax = (int)$pricesResult['max_price'];
+        $filterPriceStartMin=(int)$pricesResult['min_price'];
+
+        if ($requestData['price_start'] && $requestData['price_start'] != $filterPriceStartMin) {
+            $filter[] = ['>=', 'price', $requestData['price_start']];
+            $paginateParams['price-start'] = $requestData['price_start'];
+        }
+        if ($requestData['price_end'] && $requestData['price_end'] != $filterPriceEndMax) {
+            $priceEnd = $requestData['price_end'] < $requestData['price_start'] ?
+                $requestData['price_start'] : $requestData['price_end'];
+            $filter[] = ['<=', 'price', $priceEnd];
+            $paginateParams['price-end'] = $priceEnd;
+        }
+        //if (isset($requestData['vendor_request']) && !empty($requestData['vendor_db'])) {
+        if (!empty($requestData['vendor_db'])) {
+            $filter[] = ['vendor_id' => $requestData['vendor_db']];
+        }
+        if (!empty($requestData['month'])) {
+            $visits = UsersVisits::find()
+                ->select(['product_id', 'count(*) as count'])
+                ->where(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
+                ->groupBy(['product_id']);
+            $querydb->innerJoin(['visits' => $visits], 'visits.product_id = prod.id');
+        }
+        if (!empty($requestData['profit'])) {
+            $querydb->andWhere(['>', 'discount', 0.5]);
+        }
+        if (!empty($requestData['store_request'])) {
+            $filter[] = ['store_id' => $requestData['store_request']];
+        }
+        if (!empty($filter)) {
+            $querydb->andWhere(array_merge(['and'], $filter));
+        }
+        if ($category) {
+            //есть категория
+            //получить в т.ч. по дочерним категориям
+            $querydb->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
+                ->andWhere(['pc.category_id' => $category->childCategoriesId()]);
+        }
+        if (!empty($requestData['query'])) {
+            $sql = 'SELECT * FROM products WHERE match(\'' . $requestData['query'] . '\') LIMIT ' . $requestData['limit'];
+            $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
+
+            $querydb->andWhere(['prod.id' => $ids]);
+        }
+
+        return [
+            'request_data' => $requestData,
+            'cache_name' => $cacheName,
+            'paginate_params' =>$paginateParams,
+            'query_db' => $querydb,
+            'category' => $category,
         ];
     }
 

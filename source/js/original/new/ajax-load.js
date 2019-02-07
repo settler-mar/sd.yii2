@@ -12,6 +12,8 @@
                 sdTooltip.setEvents();//работали тултипы
                 banner.refresh();//обновить баннер от гугл
                 imagesTest();//проверка картинок
+                sd_accordeon();//работал аккордеон
+                product_filter();//ползунок цены
             }, null);
         }
     }
@@ -49,6 +51,7 @@
             if (top > scrollTop) {
                 $('html, body').animate({scrollTop: scrollTop}, 500);
             }
+            sd_accordeon();
         },function(){
             $(that).removeClass('loading');
             notification.notifi({type:'err', 'title':lg('error'), 'message':lg('error_querying_data')});

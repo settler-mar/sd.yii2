@@ -1,143 +1,149 @@
-var accordionControl = $('.accordion .accordion-control');
+function sd_accordeon() {
 
-accordionControl.on('click', function (e) {
-  e.preventDefault();
-  $this = $(this);
-  $accordion = $this.closest('.accordion');
+    var accordionControl = $('.accordion .accordion-control');
 
-
-  if ($accordion.find('.accordion-title').hasClass('accordion-title-disabled'))return;
-
-  if ($accordion.hasClass('open')) {
-    /*if($accordion.hasClass('accordion-only_one')){
-     return false;
-     }*/
-    $accordion.find('.accordion-content').slideUp(300);
-    $accordion.removeClass('open')
-  } else {
-    if ($accordion.hasClass('accordion-only_one')) {
-      $other = $('.accordion-only_one');
-      $other.find('.accordion-content')
-        .slideUp(300)
-        .removeClass('accordion-content_last-open');
-      $other.removeClass('open');
-      $other.removeClass('last-open');
-
-      $accordion.find('.accordion-content').addClass('accordion-content_last-open');
-      $accordion.addClass('last-open');
-    }
-    $accordion.find('.accordion-content').slideDown(300);
-    $accordion.addClass('open');
-  }
-  return false;
-});
-accordionControl.show();
+    accordionControl.on('click', function (e) {
+        e.preventDefault();
+        $this = $(this);
+        $accordion = $this.closest('.accordion');
 
 
-$('.accordion-wrap.open_first .accordion:first-child').addClass('open');
-$('.accordion-wrap .accordion.accordion-slim:first-child').addClass('open');
-$('.accordion-slim').addClass('accordion-only_one');
+        if ($accordion.find('.accordion-title').hasClass('accordion-title-disabled')) return;
+
+        if ($accordion.hasClass('open')) {
+            /*if($accordion.hasClass('accordion-only_one')){
+             return false;
+             }*/
+            $accordion.find('.accordion-content').slideUp(300);
+            $accordion.removeClass('open')
+        } else {
+            if ($accordion.hasClass('accordion-only_one')) {
+                $other = $('.accordion-only_one');
+                $other.find('.accordion-content')
+                    .slideUp(300)
+                    .removeClass('accordion-content_last-open');
+                $other.removeClass('open');
+                $other.removeClass('last-open');
+
+                $accordion.find('.accordion-content').addClass('accordion-content_last-open');
+                $accordion.addClass('last-open');
+            }
+            $accordion.find('.accordion-content').slideDown(300);
+            $accordion.addClass('open');
+        }
+        return false;
+    });
+    accordionControl.show();
+
+
+    $('.accordion-wrap.open_first .accordion:first-child').addClass('open');
+    $('.accordion-wrap .accordion.accordion-slim:first-child').addClass('open');
+    $('.accordion-slim').addClass('accordion-only_one');
 
 //для симов открываем если есть пометка open то присваиваем все остальные класы
-accordionSlim = $('.accordion.accordion-only_one');
-if (accordionSlim.length > 0) {
-  accordionSlim.parent().find('.accordion.open')
-    .addClass('last-open')
-    .find('.accordion-content')
-    .show(300)
-    .addClass('accordion-content_last-open');
-}
+    accordionSlim = $('.accordion.accordion-only_one');
+    if (accordionSlim.length > 0) {
+        accordionSlim.parent().find('.accordion.open')
+            .addClass('last-open')
+            .find('.accordion-content')
+            .show(300)
+            .addClass('accordion-content_last-open');
+    }
 
-$('body').on('click', function () {
-  $('.accordion_fullscrean_close.open .accordion-control:first-child').click()
-});
-
-$('.accordion-content').on('click', function (e) {
-  if (e.target.tagName != 'A') {
-    $(this).closest('.accordion').find('.accordion-control.accordion-title').click();
-    e.preventDefault();
-    return false;
-  }
-});
-
-$('.accordion-content a').on('click', function (e) {
-  $this = $(this);
-  if ($this.hasClass('angle-up'))return;
-  e.stopPropagation()
-});
-
-(function(){
-  var els = $('.accordion_more');
-
-  function addButton(el, className, title) {
-      var buttons = $(el).find('.'+className);
-      if (buttons.length === 0) {
-          var button = $('<div>').addClass(className).addClass('accordion_more_button');
-          var a = $('<a>').attr('href', "").addClass('blue').html(title);
-          $(button).append(a);
-          $(el).append(button);
-      }
-  }
-  $('body').on('click', '.accordion_more_button_more', function(e){
-      e.preventDefault();
-      $(this).closest('.accordion_more').addClass('open');
-  });
-  $('body').on('click', '.accordion_more_button_less', function(e){
-      e.preventDefault();
-      $(this).closest('.accordion_more').removeClass('open');
-  });
-
-
-
-  function rebuild(){
-    $(els).each(function(key, item){
-      $(item).removeClass('open');
-      var content = item.querySelector('.accordion_more_content');
-      if (content.scrollHeight > content.clientHeight) {
-        addButton(item, 'accordion_more_button_more', 'Подробнее');
-        addButton(item, 'accordion_more_button_less', 'Скрыть');
-      } else {
-        $(item).find('.accordion_more_button').remove();
-      }
+    $('body').on('click', function () {
+        $('.accordion_fullscrean_close.open .accordion-control:first-child').click()
     });
 
-  }
+    $('.accordion-content').on('click', function (e) {
+        if (e.target.tagName != 'A') {
+            $(this).closest('.accordion').find('.accordion-control.accordion-title').click();
+            e.preventDefault();
+            return false;
+        }
+    });
 
-  $(window).resize(rebuild);
+    $('.accordion-content a').on('click', function (e) {
+        $this = $(this);
+        if ($this.hasClass('angle-up')) return;
+        e.stopPropagation()
+    });
 
-  document.addEventListener('language_loaded', function(){
-    rebuild();
-  }, false);
+    (function () {
+        var els = $('.accordion_more');
 
-})();
+        function addButton(el, className, title) {
+            var buttons = $(el).find('.' + className);
+            if (buttons.length === 0) {
+                var button = $('<div>').addClass(className).addClass('accordion_more_button');
+                var a = $('<a>').attr('href', "").addClass('blue').html(title);
+                $(button).append(a);
+                $(el).append(button);
+            }
+        }
+
+        $('body').on('click', '.accordion_more_button_more', function (e) {
+            e.preventDefault();
+            $(this).closest('.accordion_more').addClass('open');
+        });
+        $('body').on('click', '.accordion_more_button_less', function (e) {
+            e.preventDefault();
+            $(this).closest('.accordion_more').removeClass('open');
+        });
+
+
+        function rebuild() {
+            $(els).each(function (key, item) {
+                $(item).removeClass('open');
+                var content = item.querySelector('.accordion_more_content');
+                if (content.scrollHeight > content.clientHeight) {
+                    addButton(item, 'accordion_more_button_more', 'Подробнее');
+                    addButton(item, 'accordion_more_button_less', 'Скрыть');
+                } else {
+                    $(item).find('.accordion_more_button').remove();
+                }
+            });
+
+        }
+
+        $(window).resize(rebuild);
+
+        document.addEventListener('language_loaded', function () {
+            rebuild();
+        }, false);
+
+    })();
 
 //фильтр производителей - фильтрация элементов
-$('#catalog_product_filter-input').keyup(function(){
+    $('#catalog_product_filter-input').keyup(function () {
 
-  var val = $(this).val().length > 2 ? $(this).val().toUpperCase() : false;
-  var openCount = 0;
-  var list = $(this).closest('.catalog_product_filter-items-item-checkbox');
-  if (!val) {
-      $(list).removeClass('accordion_hide');
-  }
-  $('.catalog_product_filter-checkbox_item').each(function(index, item) {
-      var name = $(item).find('label').text();
-      if (!val) {
-        $(item).removeClass('hide');
-      } else {
-          name = name.substring(0, val.length).toUpperCase();
-          if (name == val) {
-              $(item).removeClass('hide');
-              openCount++;
-          } else {
-              $(item).addClass('hide');
-          }
-      }
-  });
-  if (val && openCount <= 10) {
-      $(list).addClass('accordion_hide');
-  }
+        var val = $(this).val().length > 2 ? $(this).val().toUpperCase() : false;
+        var openCount = 0;
+        var list = $(this).closest('.catalog_product_filter-items-item-checkbox');
+        if (!val) {
+            $(list).removeClass('accordion_hide');
+        }
+        $('.catalog_product_filter-checkbox_item').each(function (index, item) {
+            var name = $(item).find('label').text();
+            if (!val) {
+                $(item).removeClass('hide');
+            } else {
+                name = name.substring(0, val.length).toUpperCase();
+                if (name == val) {
+                    $(item).removeClass('hide');
+                    openCount++;
+                } else {
+                    $(item).addClass('hide');
+                }
+            }
+        });
+        if (val && openCount <= 10) {
+            $(list).addClass('accordion_hide');
+        }
 
-});
+    });
+
+}
+sd_accordeon();
+
 
 
