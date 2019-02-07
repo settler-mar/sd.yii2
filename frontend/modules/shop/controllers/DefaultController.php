@@ -93,7 +93,8 @@ class DefaultController extends SdController
         $data['slider_products'] = Slider::get(['place'=>'product']);
         $data['category_top'] = ProductsCategory::top([
             'count' => 12,
-            'order' => ['logo' => SORT_DESC, 'in_top' => SORT_DESC, 'count' => SORT_DESC],
+            'order' => ['in_top' => SORT_DESC, 'logo' => SORT_DESC],
+            'empty' => true,
         ]);
         $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
 

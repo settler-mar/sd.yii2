@@ -557,15 +557,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
       //пока для примера по количеству товара
       $count = isset($params['count']) ? $params['count'] : 5;
       $category = self::find()->from(self::tableName() . ' pc')
-          ->innerJoin(ProductsToCategory::tablename() . ' ptc', 'ptc.category_id = pc.id')
-          ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'pc.logo', 'count(ptc.id) as count'])
-          ->groupBy(['pc.id', 'pc.name', 'pc.route', 'pc.parent'])
+          ->select(['pc.id', 'pc.name', 'pc.route', 'pc.parent',  'pc.logo', 'in_top'])
           ->where(['active' => ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES])
-          ->orderBy(isset($params['order']) ? $params['order'] : ['count' => SORT_DESC])
+          ->orderBy(isset($params['order']) ? $params['order'] : ['in_top' => SORT_DESC])
           ->limit($count);
       if (isset($params['parent'])) {
         $category->andWhere(['pc.parent' => $params['parent']]);
       }
+//      if (!isset($params['empty']) || $params['empty'] === false) {
+//          $category->innerJoin(ProductsToCategory::tablename() . ' ptc', 'ptc.category_id = pc.id')
+//              ->groupBy(['pc.id', 'pc.name', 'pc.route', 'pc.parent', 'pc.logo', 'in_top'])
+//              ->addSelect(['count(ptc.id) as count'])
+//              ->orderBy(isset($params['order']) ? $params['order'] : ['in_top' => SORT_DESC]);
+//      }
       $category = $category->all();
       return $category;
     }, $cache->defaultDuration, $dependency);
