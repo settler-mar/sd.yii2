@@ -299,11 +299,15 @@ Storage.load(function () {
     console.log(appVersion);
   }
   if (!storageDataDate || !storageDataStores || !storageDataVersion|| !storageDataLanguage
-    || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+    //|| storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+    || (new Date().getTime() - storageDataDate)/(1000 * 3600) > 24 //больше 24 часов с момента загрузки
     || storageDataVersion !== appVersion
     || storageDataLanguage !== language
   ) {
-    //||storageData.date + 100 < new Date().getTime() ) {
+      if (debug) {
+        console.log('start load data from server');
+      }
+
     getData(findShop);
     //поиск шопа или после загрузки данных
   } else {

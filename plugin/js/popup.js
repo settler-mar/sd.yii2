@@ -278,10 +278,14 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             console.log('storage load');
         }
         if (!storageDataDate || !storageDataStores || !storageDataVersion
-            || storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+            //|| storageDataDate + 1000 * 60 * 60 * 24 < new Date().getTime()
+            || (new Date().getTime() - storageDataDate)/(1000 * 3600) > 24 //больше 24 часов с момента загрузки
             || storageDataVersion !== appVersion
             || storageDataLanguage !== language
         ) {
+            if (debug) {
+                console.log('start load data fron server');
+            }
             getData(refreshData());
             //поиск шопа и смена языка или после загрузки данных
         } else {
