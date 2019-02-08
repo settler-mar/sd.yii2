@@ -349,7 +349,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         implode('_', $areas);
 
     $areas_where = [];
-    if(!empty($areas)) {
+    if (!empty($areas)) {
       foreach ($areas as $area) {
         $areas_where[] = 'JSON_CONTAINS(cs.regions,\'"' . $area . '"\',"$")';
       }
@@ -363,7 +363,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $out = $cache->getOrSet(
         $cacheName,
         function () use ($params, $language, $dependency, $areas_where) {
-          return self::getChildrens(null, $language, $areas_where);
+          $t = self::getChildrens(null, $language, $areas_where);
+          if (empty($t)) return [];
+
+          $children = [];
+          foreach ($t as $el) {
+            if ($el['count'] > 0 && $el['active']) {
+              $children[] = $el;
+            }
+          }
+          if (!empty($children)) {
+            return $children;
+          }
+          return [];
         },
         $cache->defaultDuration,
         $dependency
@@ -371,9 +383,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     ddd($out);
   }
 
-  private static function getChildrens($parent, $language, $areas_where,$max_level=20)
+  private static function getChildrens($parent, $language, $areas_where, $max_level = 20)
   {
-    if($max_level==0)return false;
+    if ($max_level == 0) return false;
 
     $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
         ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC]);
@@ -383,7 +395,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
           ['parent' => 0],
           ['parent' => null]
       ]);
-    }else{
+    } else {
       $categoryArr->andWhere(['parent' => $parent]);
     }
     $categoryArr->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
@@ -392,27 +404,27 @@ class ProductsCategory extends \yii\db\ActiveRecord
         ->groupBy(['id', 'name', 'parent', 'pc.active', 'route'])
         ->addSelect(['count(ptc.id) as count']);
 
-    if(!empty($areas_where)) {
+    if (!empty($areas_where)) {
       $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
       $categoryArr->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $areas_where));
     }
 
     $categoryArr =
         $categoryArr->asArray()
-        ->all();
+            ->all();
 
-    foreach ($categoryArr as &$item){
-      $t = self::getChildrens($item['id'], $language, $areas_where,$max_level-1);
-      if(!empty($t)){
+    foreach ($categoryArr as &$item) {
+      $t = self::getChildrens($item['id'], $language, $areas_where, $max_level - 1);
+      if (!empty($t)) {
         $children = [];
-        foreach ($t as $el){
-          $item['count']+=$el['count'];
-          if($el['count']>0 && $el['active']){
-            $children[]=$el;
+        foreach ($t as $el) {
+          $item['count'] += $el['count'];
+          if ($el['count'] > 0 && $el['active']) {
+            $children[] = $el;
           }
         }
-        if(!empty($children)){
-          $item['children']=$children;
+        if (!empty($children)) {
+          $item['children'] = $children;
         }
       };
     }
