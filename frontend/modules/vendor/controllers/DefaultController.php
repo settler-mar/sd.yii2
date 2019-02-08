@@ -30,8 +30,6 @@ class DefaultController extends SdController
         $this->params['disable_breadcrumbs_home_link'] = 1;//для виджета крошек
         $id = (string) $id;
         if ($id) {
-            Yii::$app->params['url_mask'] = 'vendor';
-
             if ($id != \Yii::$app->help->makeRoute($id)) {
                 throw new \yii\web\NotFoundHttpException;
             }
@@ -107,7 +105,10 @@ class DefaultController extends SdController
     public function actionData()
     {
         //для запросов получить параметры запроса
-        $requestData = ShopController::getRequestData(['vendor_id' => $this->vendor->id]);
+        $requestData = ShopController::getRequestData([
+            'vendor_id' => $this->vendor->id,
+            'url_mask' => 'vendor',
+        ]);
 
         //return json_encode($requestData);
 

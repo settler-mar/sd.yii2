@@ -301,7 +301,8 @@ class DefaultController extends SdController
     public function actionTitle()
     {
         //для запросов получить параметры запроса
-        $savedRequest = self::getRequestData(['category' => $this->category, 'store_id'=> $this->store]);
+        $savedRequest = self::getRequestData();
+
 
         $pagination = new Pagination(
             $savedRequest['query_db'],
@@ -312,7 +313,10 @@ class DefaultController extends SdController
                 'asArray'=> true
             ]
         );
-      //  return json_encode($savedRequest['request_data']);
+
+        //а..turn json_encode([$savedRequest]);
+
+
 
         $storesData['category'] = $savedRequest['category'];
         $storeData['store'] = isset($savedRequest['request_data']['store_id']) ?
@@ -320,12 +324,16 @@ class DefaultController extends SdController
 
         $storesData["total_v"] = $pagination->count();
 
-        $meta = Meta::findByUrl(urldecode($savedRequest['request_data']['url_mask']));
+        $meta = Meta::findByUrl(urldecode(urldecode($savedRequest['request_data']['url_mask'])));
+
         $storesData['h1'] =  $meta && isset($meta['h1']) ? $meta['h1'] : null;
 
+        //Yii::$app->params['url_mask'] = urldecode(urldecode($savedRequest['request_data']['url_mask']));
         $file = file_get_contents(Yii::getAlias('@frontend/modules/shop/views/default/ajax/title.twig'));
         $str =  Yii::$app->TwigString->render($file, $storesData);
-        return  Yii::$app->TwigString->render($str, $storesData);
+        return Yii::$app->TwigString->render($str, $storesData);
+        //return $this->renderAjax('@frontend/modules/shop/views/default/ajax/title.twig', $storesData);
+        //return json_encode([$savedRequest['request_data'], Yii::$app->request->get(), $str,  Yii::$app->params['url_mask']]);
     }
 
 
@@ -496,6 +504,7 @@ class DefaultController extends SdController
             'vendor_db' => isset($vendorDb) ? $vendorDb : null,
             'sort' => $sort,
             'category_id' => isset($params['category']) ? $params['category']->id : null,
+            'category_request' => $category ? $category->id : null,
             'url_mask' => urlencode($request->get('url_mask') ? $request->get('url_mask') :
                 (isset($params['url_mask']) ? $params['url_mask'] : '/' . $request->pathInfo)
             ),
