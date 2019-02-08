@@ -546,7 +546,7 @@ class DefaultController extends SdController
           $fields = ['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency',
               'cws.displayed_cashback', 'cws.logo', 'cws.conditions', 'cws.url_alternative',
               'display_on_plugin as display'];
-          $stores = Stores::items([1])->select($fields)->all();
+          $stores = Stores::items([1])->andWhere(['>', 'display_on_plugin', 0])->select($fields)->all();
 
           $data = [
               "stores" => $stores,
