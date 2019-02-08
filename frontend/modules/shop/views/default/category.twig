@@ -34,7 +34,9 @@
       <div class="catalog-categories products">
         {% include('parts/products/left_menu.twig') %}
         <div id="catalog_products-filter" class="catalog_product_filter margin-half">
-
+            <div class="align-center">
+              {{ svg('color/preloader')|raw }}
+            </div>
         </div>
         {% include('parts/products/banner.twig') %}
       </div>

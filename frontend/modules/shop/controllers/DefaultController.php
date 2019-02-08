@@ -133,7 +133,13 @@ class DefaultController extends SdController
     {
         Yii::$app->params['url_mask'] = 'shop/*';//изначально для категории, потом может измениться при обработке запроса
         //для запросов получить параметры запроса
-        $requestData = self::getRequestData(['category' =>$this->category, 'store_id'=> $this->store]);
+        //ddd($this->store);
+        $requestData = self::getRequestData([
+            'category' =>$this->category,
+            'store_id'=> $this->store ? $this->store->uid : null,
+            'url_mask' => $this->category ? 'shop/*' : 'shops/store/*',
+            'path' => '/'.Yii::$app->request->pathInfo,
+        ]);
 
         //$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
 
@@ -156,6 +162,7 @@ class DefaultController extends SdController
         //какие блоки обновляются по каким адресам
         $params = array_merge(Yii::$app->request->get(), $requestData['request_data']);
 
+      // ddd($params);
         $params = http_build_query($params);
         //формируем новые гет-параметры
         $filterUrl = '/shop/filter' . ($params ? '?' . $params : '');
@@ -266,6 +273,7 @@ class DefaultController extends SdController
                 'asArray'=> true
             ]
         );
+        //return json_encode([$requestData['query_db'], $requestData['request_data']]);
 
         //$storesData['category'] = $requestData['request_data']['category'];
         $storesData['products'] = $pagination->data();
@@ -365,15 +373,17 @@ class DefaultController extends SdController
             'database' => $savedRequest['query_db'],
         ]);
 
-         $stores = isset($this->requestData['store_request']) ? [] : Product::usedStores([
+
+         $stores = !empty($savedRequest['request_data']['store_id']) ? [] : Product::usedStores([ //отключения фильтра, если задан шоп каталога (не в фильтре)
              'sort'=>['priority'=>SORT_ASC, 'name'=>SORT_ASC],
              'database' => $savedRequest['query_db']
          ]);
+         //return json_encode([$stores, $savedRequest['request_data']['store_id'], $savedRequest['request_data']['store_request']]);
 
          $storesData['filter'] = [
              'price_start' => $filterPriceStartMin,
              'price_end' => $filterPriceEndMax,
-             'price_start_user' => $savedRequest['request_data']['price_start'] && $savedRequest['request_data']['price_start'] > $filterPriceEndMax
+             'price_start_user' => $savedRequest['request_data']['price_start'] && $savedRequest['request_data']['price_start'] > $filterPriceStartMin
                  ? $savedRequest['request_data']['price_start'] : $filterPriceStartMin,
              'price_end_user' => $savedRequest['request_data']['price_end'] &&
                 ($savedRequest['request_data']['price_end'] < $filterPriceEndMax || $filterPriceEndMax == 0) ?
@@ -383,7 +393,7 @@ class DefaultController extends SdController
              'stores' => $stores,
              'store_user' => isset($savedRequest['request_data']['store_request']) ? $savedRequest['request_data']['store_request'] : [],
              'query' => !empty($savedRequest['request_data']['query']) ?$savedRequest['request_data']['query'] : false,
-             'action' => $savedRequest['request_data']['path'],//чтобы не попал page
+             'action' => urldecode(urldecode($savedRequest['request_data']['path'])),
              'limit' => !empty($savedRequest['request_data']['query']) ? $savedRequest['request_data']['limit'] : false,
              'month' => !empty($savedRequest['request_data']['month']) ? $savedRequest['request_data']['month'] : false,
              'profit' => !empty($savedRequest['request_data']['profit']) ? $savedRequest['request_data']['profit'] : false,
@@ -405,7 +415,9 @@ class DefaultController extends SdController
             //шоп из роут
             $storeRequest = $params['store_id'];
         } else {
-            $storeRequest = $request->get('store_id') ? (int) $request->get('store_id') : null;
+            //из гет может быть в 2 вариантах
+            $storeRequest = $request->get('store_id') ? $request->get('store_id')
+                : ($request->get('store_request') ? $request->get('store_request') : null) ;
         }
 
         $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
@@ -478,16 +490,19 @@ class DefaultController extends SdController
             'query' => $query,
             'month' => $month,
             'profit' => $profit,
-            'store_request' => $storeRequest,
+            'store_id' => isset($params['store_id']) ? $params['store_id'] : null, //из роуг
+            'store_request' => $storeRequest,//для поиски - или из гет или из роут
             'vendor_request' => $vendorRequest,
             'vendor_db' => isset($vendorDb) ? $vendorDb : null,
             'sort' => $sort,
             'category_id' => isset($params['category']) ? $params['category']->id : null,
-            'store_id' => isset($params['store_id']) ? $params['store_id'] : null,
-            'path' => '/'. $request->pathInfo,
-            'url_mask' => urlencode(
-                isset(Yii::$app->params['url_mask']) ? Yii::$app->params['url_mask'] : $request->pathInfo
-            )
+            'url_mask' => urlencode($request->get('url_mask') ? $request->get('url_mask') :
+                (isset($params['url_mask']) ? $params['url_mask'] : '/' . $request->pathInfo)
+            ),
+            'path' => urlencode($request->get('path') ? $request->get('path') :
+                (isset($params['path']) ? $params['path'] : '/' . $request->pathInfo)
+            ),
+
 
         ];
         $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
