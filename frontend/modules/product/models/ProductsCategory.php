@@ -337,6 +337,51 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param array $params
    * @return mixed
    */
+
+  public static function treeNew($params = []){
+    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $areas = Yii::$app->params['location']['areas'];
+
+    $cacheName =
+        'catalog_categories_menu_'.
+        Yii::$app->params['url_prefix'].':'.
+        implode('_',$areas);
+
+    $areas[]=null;
+    $areas[]='';
+
+    $cache = \Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'catalog_product';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $out = $cache->getOrSet(
+        $cacheName,
+        function () use ($params, $language, $dependency,$areas) {
+          $out=self::getChildrens(0,$language,$areas);
+        },
+        $cache->defaultDuration,
+        $dependency
+    );
+    ddd($out);
+  }
+
+  private static function getChildrens($parent,$language,$areas){
+    $categoryArr = self::translated($language, ['id', 'name', 'parent', 'active', 'route'])
+        ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
+        /*->where([
+            'parent'=>$parent
+        ])*/
+        ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
+        ->groupBy(['id', 'name', 'parent', 'active', 'route'])
+        ->addSelect(['count(ptc.id) as count'])
+        ->leftJoin(Product::tableName(). ' p', 'p.id = ptc.product_id')
+        ->asArray()
+        ->all();
+    ddd($categoryArr);
+    return $categoryArr;
+  }
+
   public static function tree($params = [])
   {
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
@@ -374,8 +419,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
                   $categoryArr->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
                       ->groupBy(['id', 'name', 'parent', 'active', 'route'])
                       ->addSelect(['count(ptc.id) as count'])
-                      ->innerJoin(Product::tableName(). ' p', 'p.id = ptc.product_id')
-                      ->innerJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
+                      ->leftJoin(Product::tableName(). ' p', 'p.id = ptc.product_id')
+                      ->leftJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
                       ->andWhere(['s.is_active' => [0, 1]]);
                 }
                 $categoryArr = $categoryArr->all();
@@ -392,6 +437,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $cache->defaultDuration,
         $dependency
     );
+    //ddd($out);
     return $out;
   }
 
