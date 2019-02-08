@@ -132,16 +132,69 @@ class DefaultController extends SdController
     public function actionCategory()
     {
         Yii::$app->params['url_mask'] = 'shop/*';//изначально для категории, потом может измениться при обработке запроса
+        $request = Yii::$app->request;
+
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
+        $paginatePath = '/shop';
+        $url_mask = 'shop/*';
+        if ($this->category) {
+            //есть категория
+            $parents = $this->category->parentTree();
+            foreach ($parents as $parent) {
+                $paginatePath .= '/'.$parent['route'];
+                $this->params['breadcrumbs'][] = [
+                    'label' => $parent['name'],
+                    'url' => Help::href($paginatePath),
+                ];
+            }
+        } else if ($request->get('query')) {
+            $paginatePath = '/search/product';
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('main', 'breadcrumbs_search'),
+                'url' => Help::href($paginatePath.'?module=product&limit=1000&query='.$request->get('query')),
+            ];
+            $url_mask = 'shop/search';
+        } else if($request->get('month')) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('shop', 'breadcrumbs_produtct_hits_in').' '.
+                    Yii::t('common', 'month_in_'.date('m')),
+                'url' => Help::href($paginatePath . '?module=product&month=1'),
+            ];
+            $url_mask = 'shop/month';
+        } elseif ($request->get('profit')) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('shop', 'breadcrumbs_produtct_with_profit'),
+                'url' => Help::href($paginatePath . '?module=product&profit=1'),
+            ];
+            $url_mask = 'shop/profit';
+        } elseif ($this->store) {
+            $this->params['breadcrumbs'][] = [
+                'label' => $this->store->name,
+                'url' => Help::href($paginatePath),
+            ];
+            $url_mask ='shops/store/*';
+        } elseif ($request->get('query')) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('main', 'breadcrumbs_search'),
+                'url' => Help::href('/search/product?module=product&limit=1000&query=' . $request->get('query')),
+            ];
+        }
+        $filter = $request->get() && !$request->get('month') && !$request->get('profit') && !$request->get('query');
+        if (!empty($filter)) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('shop', 'filter_result'),
+                'url' => Help::href($paginatePath . '?' . http_build_query($request->get())),
+            ];
+            $url_mask = 'shop/filter';
+        }
+
         //для запросов получить параметры запроса
-        //ddd($this->store);
         $requestData = self::getRequestData([
             'category' =>$this->category,
             'store_id'=> $this->store ? $this->store->uid : null,
-            'url_mask' => $this->category ? 'shop/*' : 'shops/store/*',
+            'url_mask' => $url_mask,
             'path' => '/'.Yii::$app->request->pathInfo,
         ]);
-
-        //$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
 
         $storesData = [];
 
@@ -262,7 +315,6 @@ class DefaultController extends SdController
     {
         //для запросов получить параметры запроса
         $requestData = self::getRequestData(['category' =>$this->category, 'store_id'=> $this->store]);
-        //return json_encode([$requestData['query_db']->where,$requestData['query_db']->join ]);
 
         $pagination = new Pagination(
             $requestData['query_db'],
@@ -303,7 +355,6 @@ class DefaultController extends SdController
         //для запросов получить параметры запроса
         $savedRequest = self::getRequestData();
 
-
         $pagination = new Pagination(
             $savedRequest['query_db'],
             $savedRequest['cache_name'],
@@ -313,10 +364,6 @@ class DefaultController extends SdController
                 'asArray'=> true
             ]
         );
-
-        //а..turn json_encode([$savedRequest]);
-
-
 
         $storesData['category'] = $savedRequest['category'];
         $storeData['store'] = isset($savedRequest['request_data']['store_id']) ?
@@ -328,12 +375,9 @@ class DefaultController extends SdController
 
         $storesData['h1'] =  $meta && isset($meta['h1']) ? $meta['h1'] : null;
 
-        //Yii::$app->params['url_mask'] = urldecode(urldecode($savedRequest['request_data']['url_mask']));
         $file = file_get_contents(Yii::getAlias('@frontend/modules/shop/views/default/ajax/title.twig'));
         $str =  Yii::$app->TwigString->render($file, $storesData);
         return Yii::$app->TwigString->render($str, $storesData);
-        //return $this->renderAjax('@frontend/modules/shop/views/default/ajax/title.twig', $storesData);
-        //return json_encode([$savedRequest['request_data'], Yii::$app->request->get(), $str,  Yii::$app->params['url_mask']]);
     }
 
 
@@ -428,9 +472,9 @@ class DefaultController extends SdController
                 : ($request->get('store_request') ? $request->get('store_request') : null) ;
         }
 
-        $query =  isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
-        $month =  isset(Yii::$app->params['search_month']) ? Yii::$app->params['search_month'] : false;//товары месяца
-        $profit =  isset(Yii::$app->params['search_profit']) ? Yii::$app->params['search_profit'] : false;//товары со скидкой
+        $query =  $request->get('query');//isset(Yii::$app->params['search_query']) ? Yii::$app->params['search_query'] : false;//поиск
+        $month =  $request->get('month');//isset(Yii::$app->params['search_month']) ? Yii::$app->params['search_month'] : false;//товары месяца
+        $profit =  $request->get('profit');//isset(Yii::$app->params['search_profit']) ? Yii::$app->params['search_profit'] : false;//товары со скидкой
 
         if (isset($params['vendor_id'])) {
             $vendorDb = [$params['vendor_id']];
@@ -588,7 +632,7 @@ class DefaultController extends SdController
                 ->andWhere(['pc.category_id' => $category->childCategoriesId()]);
         }
         if (!empty($requestData['query'])) {
-            $sql = 'SELECT * FROM products WHERE match(\'' . $requestData['query'] . '\') LIMIT ' . $requestData['limit'];
+            $sql = 'SELECT * FROM products WHERE match(\'' . $requestData['query'] . '\') LIMIT 1000';//;$requestData[1000];
             $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
 
             $querydb->andWhere(['prod.id' => $ids]);

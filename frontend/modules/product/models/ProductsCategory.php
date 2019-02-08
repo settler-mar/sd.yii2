@@ -371,12 +371,24 @@ class ProductsCategory extends \yii\db\ActiveRecord
                   $categoryArr->where($params['where']);
                 };
                 if (isset($params['counts'])) {
+                  //дополнить регионами товаров
+                  $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
+                        Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
+
                   $categoryArr->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
-                      ->groupBy(['id', 'name', 'parent', 'active', 'route'])
+                      ->groupBy(['id', 'name', 'parent', 'pc.active', 'route'])
                       ->addSelect(['count(ptc.id) as count'])
                       ->innerJoin(Product::tableName(). ' p', 'p.id = ptc.product_id')
                       ->innerJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
                       ->andWhere(['s.is_active' => [0, 1]]);
+                  if (!empty($regionAreas)) {
+                      $categoryArr->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = p.catalog_id');
+                      $where = [];
+                      foreach ($regionAreas as $area) {
+                         $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
+                      }
+                      $categoryArr->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $where));
+                    }
                 }
                 $categoryArr = $categoryArr->all();
                 return $categoryArr;

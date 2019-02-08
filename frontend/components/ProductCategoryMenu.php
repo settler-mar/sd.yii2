@@ -39,7 +39,7 @@ class ProductCategoryMenu extends Widget
                 'counts' => true,
                 'current' => $current,
                 'empty' => false,
-                'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
+                'where' => ['pc.active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
             ]);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,
