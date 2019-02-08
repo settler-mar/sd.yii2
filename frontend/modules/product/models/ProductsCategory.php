@@ -417,10 +417,17 @@ class ProductsCategory extends \yii\db\ActiveRecord
       $t = self::getChildrens($item['id'], $language, $areas_where, $max_level - 1);
       if (!empty($t)) {
         $children = [];
+        $item['children_id']=[];
         foreach ($t as $el) {
           $item['count'] += $el['count'];
           if ($el['count'] > 0 && $el['active']) {
             $children[] = $el;
+          }
+
+          if($el['count']>0){
+            $item['children_id'][]=$el['id'];
+            if(!empty($el['children_id']))$item['children_id']=
+                yii\helpers\ArrayHelper::merge($el['children_id'],$item['children_id']);
           }
         }
         if (!empty($children)) {
