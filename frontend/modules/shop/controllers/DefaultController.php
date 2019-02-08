@@ -366,8 +366,8 @@ class DefaultController extends SdController
         );
 
         $storesData['category'] = $savedRequest['category'];
-        $storesData['store'] = isset($savedRequest['request_data']['store_id']) ?
-            Stores::byId($savedRequest['request_data']['store_id']) : null;
+        $storesData['store'] = $savedRequest['category'] ? null :
+            (isset($savedRequest['request_data']['store_id']) ? Stores::byId($savedRequest['request_data']['store_id']) : null);
         $vendor =  !empty($savedRequest['request_data']['vendor_db']) ? Vendor::findOne($savedRequest['request_data']['vendor_db'][0]) : null;
         $storesData['vendor'] = $vendor ? $vendor->name : null;
 
