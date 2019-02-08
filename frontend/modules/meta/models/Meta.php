@@ -153,6 +153,7 @@ class Meta extends \yii\db\ActiveRecord
 
   public static function findByUrl($page, $model = false)
   {
+    $page = trim($page,'/');
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
 
     if (!isset(Yii::$app->params['region'])) return;
