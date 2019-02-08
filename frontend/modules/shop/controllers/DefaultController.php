@@ -371,7 +371,8 @@ class DefaultController extends SdController
 
         $storesData["total_v"] = $pagination->count();
 
-        $meta = Meta::findByUrl(urldecode(urldecode($savedRequest['request_data']['url_mask'])));
+        $url = urldecode(urldecode($savedRequest['request_data']['url_mask']));
+        $meta = Meta::findByUrl($url);
 
         $storesData['h1'] =  $meta && isset($meta['h1']) ? $meta['h1'] : null;
 

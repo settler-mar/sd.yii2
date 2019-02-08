@@ -87,5 +87,5 @@ return [
     'viewed_products' => 'Просмотренные товары',
     'all_reviews_({count})' => 'Все отзывы&nbsp;({count})&nbsp;→',
     'how_it_works' => 'Как это работает',
-
+    'product_review_h' => 'Отзывы о {name}',
 ];
