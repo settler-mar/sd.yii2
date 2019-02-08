@@ -39,7 +39,11 @@ class ProductCategoryMenu extends Widget
                 'counts' => true,
                 'current' => $current,
                 'empty' => false,
-                'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]
+                'where' => [
+                    'pc.active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES],
+                    's.is_active' => [0, 1],//шоп активен
+                ],
+                'regions' => 1,//количество товаров текущего региона
             ]);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,

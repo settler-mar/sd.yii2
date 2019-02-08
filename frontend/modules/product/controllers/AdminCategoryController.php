@@ -94,6 +94,8 @@ class AdminCategoryController extends Controller
         ->groupBy(['cpa.id', 'cpa.name'])
         ->asArray()->all();
 
+    $catTreeFlat = ProductsCategory::tree(['counts' => true, 'flat' => true]);
+
 
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
@@ -130,6 +132,9 @@ class AdminCategoryController extends Controller
                             $synonym->name . '</span></a>';
                 }
                 return implode(';', $out);
+            },
+            'products_all' => function ($model) use ($catTreeFlat) {
+                return  isset($catTreeFlat[$model->id]) ? $catTreeFlat[$model->id]['count_all'] : '';
             },
             'products' => function ($model) {
                 return  Product::find()->from(Product::tableName().' p')

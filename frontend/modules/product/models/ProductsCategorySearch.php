@@ -12,7 +12,7 @@ use frontend\modules\product\models\ProductsCategory;
  */
 class ProductsCategorySearch extends ProductsCategory
 {
-    /**
+        /**
      * @inheritdoc
      */
     public function rules()

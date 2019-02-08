@@ -27,6 +27,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   public $languagesArray;
   public $imagePath = '/images/product_category/';
   public $logoImage;
+  public $products_all;
 
   protected $activeTree = false;
   protected $childCategoriesId = false;
@@ -416,12 +417,23 @@ class ProductsCategory extends \yii\db\ActiveRecord
                   $categoryArr->where($params['where']);
                 };
                 if (isset($params['counts'])) {
+                  //дополнить регионами товаров
+                  $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
+                        Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
+
                   $categoryArr->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
-                      ->groupBy(['id', 'name', 'parent', 'active', 'route'])
+                      ->groupBy(['id', 'name', 'parent', 'pc.active', 'route'])
                       ->addSelect(['count(ptc.id) as count'])
                       ->leftJoin(Product::tableName(). ' p', 'p.id = ptc.product_id')
-                      ->leftJoin(Stores::tableName(). ' s', 's.uid = p.store_id')
-                      ->andWhere(['s.is_active' => [0, 1]]);
+                      ->leftJoin(Stores::tableName(). ' s', 's.uid = p.store_id');
+                  if (!empty($regionAreas) && !empty($params['regions'])) {
+                      $categoryArr->leftJoin(CatalogStores::tableName(). ' cs', 'cs.id = p.catalog_id');
+                      $where = [];
+                      foreach ($regionAreas as $area) {
+                         $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
+                      }
+                      $categoryArr->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $where));
+                  }
                 }
                 $categoryArr = $categoryArr->all();
                 return $categoryArr;
@@ -430,18 +442,18 @@ class ProductsCategory extends \yii\db\ActiveRecord
               $dependency
           );
 
-          $categories = static::childsCategories($categoryArr, false, $params);
+          $flat = [];//плоский вариант
+          $categories = static::childsCategories($categoryArr, false, $params, $flat);
 
-          return $categories;
+          return (empty($params['flat'])) ? $categories : $flat;
         },
         $cache->defaultDuration,
         $dependency
     );
-    //ddd($out);
     return $out;
   }
 
-  protected static function childsCategories($arr, $parent, $params = [])
+  protected static function childsCategories($arr, $parent, $params = [], &$flat)
   {
     $current = isset($params['current']) ? $params['current'] : false;
     $removeEmpty = isset($params['empty']) && $params['empty'] === false;
@@ -450,7 +462,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
       if ($cat['parent'] == ($parent ? $parent['id'] : null)) {
         $cat['full_route'] = $parent ? $parent['full_route'] . '/' . $cat['route'] : $cat['route'];
         $cat['current'] = $cat['id'] == $current;
-        $cat['childs'] = static::childsCategories($arr, $cat, $params);
+        $cat['childs'] = static::childsCategories($arr, $cat, $params, $flat);
         $cat['childs_ids'] = [$cat['id']];//в дочерние ид впишем свой ид
         $cat['count_all'] = isset($cat['count']) ? $cat['count'] : 0;//количество всего
 
@@ -469,6 +481,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
         if (!$removeEmpty || $cat['count_all']) {
           //если задано, то с пустым количеством товаров не выводим
           $out[] = $cat;
+        }
+        if (!empty($params['flat'])) {
+           $flat[$cat['id']] = $cat;
         }
       }
     }
