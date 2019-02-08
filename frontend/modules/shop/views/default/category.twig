@@ -14,9 +14,7 @@
 <section class="gray-box wrap-round margin">
   <h1 id="catalog_products-title" class="page-header align-center laptop-no-margin-bottom">
       {#{{ h1_final|raw }}#}
-    {#<div class="align-center">#}
-          {{ svg('color/preloader')|raw }}
-    {#</div>#}
+      <img src="/images/templates/preloader.gif" alt="">
   </h1>
 
   {% if content %}
@@ -35,7 +33,7 @@
         {% include('parts/products/left_menu.twig') %}
         <div id="catalog_products-filter" class="catalog_product_filter margin-half">
             <div class="align-center">
-              {{ svg('color/preloader')|raw }}
+              <img src="/images/templates/preloader.gif" alt="">
             </div>
         </div>
         {% include('parts/products/banner.twig') %}
@@ -62,7 +60,7 @@
 
         <div id="catalog-products-content" class="catalog-stores_stores margin">
           <div class="align-center">
-              {{ svg('color/preloader')|raw }}
+             <img src="/images/templates/preloader.gif" alt="">
           </div>
         </div>
 
