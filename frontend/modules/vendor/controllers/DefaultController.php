@@ -57,7 +57,7 @@ class DefaultController extends SdController
         $vendor = $this->vendor;
 
         //для запросов получить параметры запроса
-        $requestData = ShopController::getRequestData(['vendor_id' =>$vendor->id]);
+        $requestData = ShopController::getRequestData(['vendor_id' =>$vendor->id, 'url_mask' => 'vendor']);
 
         //$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
 
@@ -107,7 +107,6 @@ class DefaultController extends SdController
         //для запросов получить параметры запроса
         $requestData = ShopController::getRequestData([
             'vendor_id' => $this->vendor->id,
-            'url_mask' => 'vendor',
         ]);
 
         //return json_encode($requestData);
