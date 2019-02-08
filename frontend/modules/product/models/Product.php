@@ -653,7 +653,7 @@ class Product extends \yii\db\ActiveRecord
       $cache = \Yii::$app->cache;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'catalog_product';
-      $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+      $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
       $casheName = 'products_active_count'.(!empty($params) ? '_'.Help::multiImplode('_', $params) : '') .
           ($language ? '_' . $language : '');
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
@@ -673,7 +673,7 @@ class Product extends \yii\db\ActiveRecord
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
-        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         if(is_string($func))$func=[$func];
         $casheName = 'products_agregate_' . $field . '_' . implode('_',$func) .
             (!empty($params) ? Help::multiImplode('_', $params) : '') .
@@ -727,7 +727,7 @@ class Product extends \yii\db\ActiveRecord
         $cache = \Yii::$app->cache;
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
-        $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $casheName = 'product_used_stores_' . ($params ? '_'.Help::multiImplode('_', $params) : '') .
             ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
@@ -847,7 +847,7 @@ class Product extends \yii\db\ActiveRecord
         //именно для этого параметра отдельный dependency
         $dependencyName = 'catalog_product_by_visit';
     }
-    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $casheName = 'products_top_' . (!empty($params) ? Help::multiImplode('_', $params) : '') . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
@@ -1022,7 +1022,8 @@ class Product extends \yii\db\ActiveRecord
 
   public static function items()
   {
-    $regionArea = isset(Yii::$app->params['region_area']) ? Yii::$app->params['region_area'] : false;
+    $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
+        Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
 
     $query =  self::find()->from(self::tableName() . ' prod')
         ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
@@ -1032,16 +1033,19 @@ class Product extends \yii\db\ActiveRecord
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
             ['s.is_active' => [0, 1]],
         ])
-
         ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
             's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
             's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
             's.currency as store_currency', 's.action_end_date as action_end_date',
             'discount'])
         ->asArray();
-    if ($regionArea) {
-        $query->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = prod.catalog_id')
-            ->andWhere(['or', ['is', 'cs.regions', null], 'JSON_CONTAINS(cs.regions,\'"'.$regionArea.'"\',"$")']);
+    if (!empty($regionAreas)) {
+        $query->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = prod.catalog_id');
+        $where = [];
+        foreach ($regionAreas as $area) {
+            $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
+        }
+        $query->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $where));
     }
     return $query;
 
@@ -1052,7 +1056,7 @@ class Product extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
-    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $casheName = 'products_top_by_' . $field . Help::multiImplode('_', $params) . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 

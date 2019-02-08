@@ -78,7 +78,7 @@ class CatalogStores extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->regions = $this->catalog_regions;
+        $this->regions = !empty($this->catalog_regions) ? [$this->catalog_regions] : [];
         return parent::beforeSave($insert);
     }
 

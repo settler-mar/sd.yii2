@@ -114,7 +114,6 @@ class SdUrlLocalisation implements UrlRuleInterface{
         $request->url = '/'. $request->pathInfo . (isset($urlArr[1]) ? '?' . $urlArr[1] : '') ;
         //ddd($this->region, Yii::$app->params['region'], Yii::$app->language, $lang, $prefix, $request->pathinfo, $request->url);
 
-        //Yii::$app->params['region_area'] = 'ru';//пока для тестов
     }
 
     $host=$request->headers['host'];

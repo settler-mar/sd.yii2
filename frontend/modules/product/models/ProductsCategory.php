@@ -341,7 +341,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $cacheName = 'catalog_categories_menu' . (!empty($params) ? Help::multiImplode('_', $params) : '') .
-        ($language ? '_' . $language : '');
+        Yii::$app->params['url_prefix'];// ;
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
@@ -358,7 +358,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
             }
           }
           $cacheName = 'catalog_categories_menu' . (!empty($params_t) ? Help::multiImplode('_', $params_t) : '') .
-              ($language ? '_' . $language : '');
+              Yii::$app->params['url_prefix'];
 
           $cache = \Yii::$app->cache;
           $categoryArr = $cache->getOrSet(
@@ -475,7 +475,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-    $casheName = 'products_category_byroute_' . implode('_', $route) . ($language ? '_' . $language : '');
+    $casheName = 'products_category_byroute_' . implode('_', $route) . Yii::$app->params['url_prefix'];
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $category = $cache->getOrSet($casheName, function () use ($route, $language) {
@@ -501,7 +501,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
-    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $casheName = 'products_category_byid_' . $id . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
@@ -549,7 +549,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
-    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $casheName = 'products_category_top_' . Help::multiImplode('_', $params) . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 

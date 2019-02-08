@@ -152,7 +152,7 @@ class AdminStoresController extends Controller
       foreach (Yii::$app->params['regions_list'] as $key => $region) {
           if (isset($region['areas'])) {
               foreach ($region['areas'] as $area) {
-                  $regionsList[$key][] = $area;
+                  $regionsList[$area] = ucfirst($area);
               }
           }
       }
