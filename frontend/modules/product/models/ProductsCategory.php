@@ -346,7 +346,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $cacheName =
         'catalog_categories_menu_' .
         Yii::$app->params['url_prefix'] . ':' .
-        implode('_', $areas);
+        implode('_', $areas).
+        (!empty($params) ? ':'.Help::multiImplode('_', $params) : '')
+    ;
 
     $areas_where = [];
     if (!empty($areas)) {
@@ -380,7 +382,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $cache->defaultDuration,
         $dependency
     );
-    ddd($out);
+    return $out;
   }
 
   private static function getChildrens($parent, $language, $areas_where, $max_level = 20)
@@ -389,7 +391,10 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
         ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
-        ->andWhere(['synonym'=>null]);
+        ->andWhere([
+            'synonym'=>null,
+            's.is_active' => [0, 1],//шоп активен
+    ]);
 
     if (empty($parent)) {
       $categoryArr->andWhere(['or',
@@ -399,11 +404,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
     } else {
       $categoryArr->andWhere(['parent' => $parent]);
     }
-    $categoryArr->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
+    $categoryArr
+        ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
         ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
         ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
-        ->groupBy(['id', 'name', 'parent', 'pc.active', 'route'])
-        ->addSelect(['count(ptc.id) as count']);
+        ->groupBy(['id', 'name', 'parent', 'pc.active', 'route','s.is_active'])
+        ->addSelect(['count(ptc.id) as count','s.is_active']);
 
     if (!empty($areas_where)) {
       $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');

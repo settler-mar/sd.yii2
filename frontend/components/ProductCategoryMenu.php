@@ -36,15 +36,9 @@ class ProductCategoryMenu extends Widget
         $cache = Yii::$app->cache;
         $out = $cache->getOrSet($cacheName, function () use ($current) {
             $categoryTree = ProductsCategory::tree([
-                'counts' => true,
-                'current' => $current,
-                'empty' => false,
-                'where' => [
-                    'pc.active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES],
-                    's.is_active' => [0, 1],//шоп активен
-                ],
-                'regions' => 1,//количество товаров текущего региона
+
             ]);
+            ddd($categoryTree, $current);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,
                 'current' => $current,
