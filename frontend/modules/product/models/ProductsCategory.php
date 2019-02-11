@@ -369,7 +369,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
           $children = [];
           foreach ($t as $el) {
             if ($el['count'] > 0 && $el['active']) {
-              $children[] = $el;
+              $children[$el['route']] = $el;
             }
           }
           if (!empty($children)) {
@@ -388,7 +388,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
     if ($max_level == 0) return false;
 
     $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
-        ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC]);
+        ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
+        ->andWhere(['synonym'=>null]);
 
     if (empty($parent)) {
       $categoryArr->andWhere(['or',
@@ -421,7 +422,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
         foreach ($t as $el) {
           $item['count'] += $el['count'];
           if ($el['count'] > 0 && $el['active']) {
-            $children[] = $el;
+            $children[$el['route']] = $el;
           }
 
           if($el['count']>0){
