@@ -138,7 +138,14 @@ class ProductsCategory extends \yii\db\ActiveRecord
   public function childCategoriesId()
   {
     if ($this->childCategoriesId === false) {
-      ddd('Сделать генерацию на основе дерева');
+      if(!$this->full_path){
+        $this->full_path = self::getParents($this->id);
+      };
+      $path = [];
+      foreach ($this->full_path as $item){
+        $path[]=$item['route'];
+      }
+      self::byRoute($path,$this);
     }
     return $this->childCategoriesId;
   }
@@ -621,7 +628,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param $route - Array
    * @return mixed
    */
-  public static function byRoute($route) //обновил
+  public static function byRoute($route,$category_db = false) //обновил
   {
 
     $cache = \Yii::$app->cache;
@@ -648,7 +655,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     if (empty($category)) {
       return null;
     }
-    $category_db = self::translated($language)->where(['id' => $category['id']])->one();
+    if(!$category_db) {
+      $category_db = self::translated($language)->where(['id' => $category['id']])->one();
+    }
 
     $category_db->makeFromTreeData($category);
     return $category_db;
