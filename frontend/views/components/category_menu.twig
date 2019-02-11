@@ -13,6 +13,7 @@
                         {% endif %}
                     </span>
                 {% else %}
+
                     <a class="shops-category-menu_link" href="{{ _href('/shop/'~category.full_route)|raw }}">{{ category.name|raw }} {% if category.count_all %}({{ category.count_all }}){% endif %}
                         {% if category.children|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
@@ -25,7 +26,6 @@
                     lavel: lavel+1,
                     activ_parent: active
                   }) |raw }}
-
                 {% endif %}
             </li>
         {% endfor %}

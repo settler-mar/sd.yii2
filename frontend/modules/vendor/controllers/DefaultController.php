@@ -86,9 +86,9 @@ class DefaultController extends SdController
         $titleUrl = '/shop/title' . ($params ? '?' . $params : '');
         //$dataUrl = '/shop' . ($params ? '?' . $params : '');
         $storesData['requests'] = json_encode([
-            ['blocks'=> ["catalog-products-content", "catalog-products-info"]],
+            ['blocks'=> ["catalog-products-content", "catalog-products-info", "catalog-categories_count"]],
             ['blocks' => ["catalog_products-filter"], 'url' => Yii::$app->help->href($filterUrl)],
-            ['blocks' => ["catalog_products-title"], 'url' => Yii::$app->help->href($titleUrl)],
+            //['blocks' => ["catalog_products-title"], 'url' => Yii::$app->help->href($titleUrl)],
         ]);
         if ($requestData['request_data']['page']> 1) {
             $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $requestData['request_data']['page'];

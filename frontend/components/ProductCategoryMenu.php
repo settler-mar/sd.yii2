@@ -34,10 +34,9 @@ class ProductCategoryMenu extends Widget
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $cache = Yii::$app->cache;
-        //ddd($cacheName,$current,Yii::$app->controller);
+
         $out = $cache->getOrSet($cacheName, function () use ($current) {
             $categoryTree = ProductsCategory::tree([
-
             ]);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,

@@ -219,15 +219,16 @@ class DefaultController extends SdController
         $params = http_build_query($params);
         //формируем новые гет-параметры
         $filterUrl = '/shop/filter' . ($params ? '?' . $params : '');
-        $titleUrl = '/shop/title' . ($params ? '?' . $params : '');
+        //$titleUrl = '/shop/title' . ($params ? '?' . $params : '');
         $storesData['requests'] = json_encode([
-            ['blocks'=> ["catalog-products-content", "catalog-products-info"]],
-            ['blocks' => ["catalog_products-filter"], 'url' => Yii::$app->help->href($filterUrl)],
-            ['blocks' => ["catalog_products-title"], 'url' => Yii::$app->help->href($titleUrl)],
+            ['blocks'=> ["catalog-products-content", "catalog-products-info", "catalog-categories_count"]],
+            ['blocks' => ["catalog_products-filter"], 'url' => Yii::$app->help->href($filterUrl)]
+            //['blocks' => ["catalog_products-title"], 'url' => Yii::$app->help->href($titleUrl)],
         ]);
         if ($requestData['request_data']['page']> 1) {
             $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page').' ' . $requestData['request_data']['page'];
         }
+
         return $this->render('category', $storesData);
     }
 
@@ -346,46 +347,46 @@ class DefaultController extends SdController
         return $this->renderAjax('ajax/category', $storesData);
     }
 
-    /**
-     * выдача заголовка
-     * @return string
-     */
-    public function actionTitle()
-    {
-        //для запросов получить параметры запроса
-        $savedRequest = self::getRequestData();
-
-        $pagination = new Pagination(
-            $savedRequest['query_db'],
-            $savedRequest['cache_name'],
-            [
-                'limit' => $savedRequest['request_data']['query'] ? 48 : $savedRequest['request_data']['limit'],
-                'page' => $savedRequest['request_data']['page'],
-                'asArray'=> true
-            ]
-        );
-
-        $storesData['category'] = $savedRequest['category'];
-        $storesData['store'] = $savedRequest['category'] ? null :
-            (isset($savedRequest['request_data']['store_id']) ? Stores::byId($savedRequest['request_data']['store_id']) : null);
-        $vendor =  !empty($savedRequest['request_data']['vendor_db']) ? Vendor::findOne($savedRequest['request_data']['vendor_db'][0]) : null;
-        $storesData['vendor'] = $vendor ? $vendor->name : null;
-
-
-        $storesData["total_v"] = $pagination->count();
-
-        $url = urldecode(urldecode($savedRequest['request_data']['url_mask']));
-        $meta = Meta::findByUrl($url);
-
-        $storesData['h1'] =  $meta && isset($meta['h1']) ? $meta['h1'] : null;
-        $storesData['filter'] = [
-            'query' =>  isset($savedRequest['request_data']['query']) ? $savedRequest['request_data']['query'] : null,
-        ];
-
-        $file = file_get_contents(Yii::getAlias('@frontend/modules/shop/views/default/ajax/title.twig'));
-        $str =  Yii::$app->TwigString->render($file, $storesData);
-        return Yii::$app->TwigString->render($str, $storesData);
-    }
+//    /**
+//     * выдача заголовка
+//     * @return string
+//     */
+//    public function actionTitle()
+//    {
+//        //для запросов получить параметры запроса
+//        $savedRequest = self::getRequestData();
+//
+//        $pagination = new Pagination(
+//            $savedRequest['query_db'],
+//            $savedRequest['cache_name'],
+//            [
+//                'limit' => $savedRequest['request_data']['query'] ? 48 : $savedRequest['request_data']['limit'],
+//                'page' => $savedRequest['request_data']['page'],
+//                'asArray'=> true
+//            ]
+//        );
+//
+//        $storesData['category'] = $savedRequest['category'];
+//        $storesData['store'] = $savedRequest['category'] ? null :
+//            (isset($savedRequest['request_data']['store_id']) ? Stores::byId($savedRequest['request_data']['store_id']) : null);
+//        $vendor =  !empty($savedRequest['request_data']['vendor_db']) ? Vendor::findOne($savedRequest['request_data']['vendor_db'][0]) : null;
+//        $storesData['vendor'] = $vendor ? $vendor->name : null;
+//
+//
+//        $storesData["total_v"] = $pagination->count();
+//
+//        $url = urldecode(urldecode($savedRequest['request_data']['url_mask']));
+//        $meta = Meta::findByUrl($url);
+//
+//        $storesData['h1'] =  $meta && isset($meta['h1']) ? $meta['h1'] : null;
+//        $storesData['filter'] = [
+//            'query' =>  isset($savedRequest['request_data']['query']) ? $savedRequest['request_data']['query'] : null,
+//        ];
+//
+//        $file = file_get_contents(Yii::getAlias('@frontend/modules/shop/views/default/ajax/title.twig'));
+//        $str =  Yii::$app->TwigString->render($file, $storesData);
+//        return Yii::$app->TwigString->render($str, $storesData);
+//    }
 
 
     /** выдача фильтра
@@ -488,7 +489,7 @@ class DefaultController extends SdController
         } else {
             if ($vendorRequest) {
                 $vendorDb = array_column(Vendor::items([
-                    'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId() : false
+                    'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId : false
                 ]), 'id');
                 if (empty($vendorDb)) {
                     throw new \yii\web\NotFoundHttpException;

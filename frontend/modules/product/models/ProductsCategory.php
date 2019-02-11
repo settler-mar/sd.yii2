@@ -33,6 +33,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   protected $childCategoriesId = false;
   protected $parentTree = false;
 
+
   /**
    * @inheritdoc
    */
@@ -392,7 +393,6 @@ class ProductsCategory extends \yii\db\ActiveRecord
     );
     return $out;
   }
-
   private static function getChildrens($parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '')
   {
     if ($max_level == 0) return false;
@@ -648,10 +648,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     if (empty($category)) {
       return null;
     }
-
     $category_db = self::translated($language)->where(['id' => $category['id']])->one();
-    $category_db->makeFromTreeData($category);
 
+    $category_db->makeFromTreeData($category);
     return $category_db;
   }
 
