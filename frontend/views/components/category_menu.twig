@@ -1,22 +1,22 @@
 {% if categories|length %}
     <ul class="shops-category-menu_list" >
         {% for category in categories  %}
-            <li class="shops-category-menu_item {% if category.childs|length %} menu-group{% endif %} {% if category.current %}open{% endif %}">
+            <li class="shops-category-menu_item {% if category.children|length %} menu-group{% endif %} {% if category.current %}open{% endif %}">
                 {% if category.id == current %}
-                    <span class="active">{{ category.name|raw }} {% if category.count_all %}({{ category.count_all }}){% endif %}
-                        {% if category.childs|length %}
+                    <span class="active">{{ category.name|raw }} {% if category.count %}({{ category.count }}){% endif %}
+                        {% if category.children|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
                         {% endif %}
                     </span>
                 {% else %}
-                    <a class="shops-category-menu_link" href="{{ _href('/shop/'~category.full_route)|raw }}">{{ category.name|raw }} {% if category.count_all %}({{ category.count_all }}){% endif %}
-                        {% if category.childs|length %}
+                    <a class="shops-category-menu_link" href="{{ _href('/shop'~category.url)|raw }}">{{ category.name|raw }} {% if category.count %}({{ category.count }}){% endif %}
+                        {% if category.children|length %}
                             {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
                         {% endif %}
                     </a>
                 {% endif %}
-                {% if category.childs and category.childs|length %}
-                    {% set categories = category.childs %}
+                {% if category.children and category.children|length %}
+                    {% set categories = category.children %}
                     {% include('category_menu.twig') %}
                 {% endif %}
             </li>

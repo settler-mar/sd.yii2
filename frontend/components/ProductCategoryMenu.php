@@ -36,9 +36,8 @@ class ProductCategoryMenu extends Widget
         $cache = Yii::$app->cache;
         $out = $cache->getOrSet($cacheName, function () use ($current) {
             $categoryTree = ProductsCategory::tree([
-
             ]);
-            ddd($categoryTree, $current);
+            //ddd($categoryTree, $current);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,
                 'current' => $current,

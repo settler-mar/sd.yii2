@@ -385,7 +385,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  private static function getChildrens($parent, $language, $areas_where, $max_level = 20)
+  private static function getChildrens($parent, $language, $areas_where, $parent_route = '', $max_level = 20)
   {
     if ($max_level == 0) return false;
 
@@ -421,10 +421,13 @@ class ProductsCategory extends \yii\db\ActiveRecord
             ->all();
 
     foreach ($categoryArr as &$item) {
-      $t = self::getChildrens($item['id'], $language, $areas_where, $max_level - 1);
+      $url = $parent_route .'/'. $item['route'];
+      $item['url'] = $url;
+      $t = self::getChildrens($item['id'], $language, $areas_where, $url, $max_level - 1);
       if (!empty($t)) {
         $children = [];
         $item['children_id']=[];
+
         foreach ($t as $el) {
           $item['count'] += $el['count'];
           if ($el['count'] > 0 && $el['active']) {
