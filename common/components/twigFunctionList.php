@@ -586,6 +586,7 @@ $functionsList = [
   'str_replace' => 'str_replace',
   'in_array' => 'in_array',
   '_php_date' => 'date',
+  '_preg_replace' => 'preg_replace',
   '_file_get_contents' => function($path){
        return file_get_contents(Yii::getAlias($path));
   },

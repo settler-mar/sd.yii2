@@ -648,10 +648,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
     if (empty($category)) {
       return null;
     }
-
     $category_db = self::translated($language)->where(['id' => $category['id']])->one();
-    $category_db->makeFromTreeData($category);
 
+    $category_db->makeFromTreeData($category);
     return $category_db;
   }
 
