@@ -8,7 +8,7 @@
     {% else %}
         {% set h1_final = t('main', 'stores_default_h1') %}
     {% endif %}
-    {% set h1_final = h1_final~' <span>('~total_v~')</span>' %}
+    {% set h1_final = h1_final~' <span id="catalog_product-count">('~total_v~')</span>' %}
 {% endif %}
 {#краткая информация категории#}
 <section class="gray-box wrap-round margin">
