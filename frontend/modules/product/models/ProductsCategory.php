@@ -403,7 +403,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
       $dependencyName = 'catalog_product';
       $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-      Yii::$app->params['dir_children_list'] = $cache->getOrSet(
+      Yii::$app->params[$cacheName] = $cache->getOrSet(
           $cacheName,
           function () use ($language, $dependency, $areas_where) {
 
@@ -446,7 +446,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     }
 
     if (empty($parent)) $parent = 0;
-    $categoryArr = isset(Yii::$app->params['dir_children_list'][$parent]) ? Yii::$app->params['dir_children_list'][$parent] : [];
+    $categoryArr = isset(Yii::$app->params[$cacheName][$parent]) ? Yii::$app->params[$cacheName][$parent] : [];
 
     foreach ($categoryArr as &$item) {
       $item['full_route'] = trim($start_route . '/' . $item['route'], '/');
