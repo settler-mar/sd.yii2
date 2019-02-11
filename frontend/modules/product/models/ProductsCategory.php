@@ -397,7 +397,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     if ($max_level == 0) return false;
 
-    if (!isset(Yii::$app->params['dir_children_list'])) {
+    if (!isset(Yii::$app->params[$cacheName])) {
       $cache = \Yii::$app->cache;
       $dependency = new yii\caching\DbDependency;
       $dependencyName = 'catalog_product';
