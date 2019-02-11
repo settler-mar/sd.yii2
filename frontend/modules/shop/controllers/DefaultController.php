@@ -23,7 +23,7 @@ use yii;
 
 class DefaultController extends SdController
 {
-    public $category = null;//нужен доступ из меню к текущей категории
+    public $category = null;
     private $product = null;
     private $store = null;
 
