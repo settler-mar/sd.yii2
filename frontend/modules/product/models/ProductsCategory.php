@@ -33,7 +33,6 @@ class ProductsCategory extends \yii\db\ActiveRecord
   protected $childCategoriesId = false;
   protected $parentTree = false;
 
-
   /**
    * @inheritdoc
    */
@@ -127,12 +126,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return parent::beforeValidate();
   }
 
-  public function  makeFromTreeData($category)
+  public function makeFromTreeData($category)
   {
-    $this->childCategoriesId = isset($category['children_id'])?$category['children_id']:[];
+    $this->childCategoriesId = isset($category['children_id']) ? $category['children_id'] : [];
     $this->childCategoriesId[] = $category['id'];
 
-    $this->full_path=explode('/',$category['full_route']);
+    $this->full_path = explode('/', $category['full_route']);
   }
 
   public function childCategoriesId()
@@ -372,8 +371,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     $out = $cache->getOrSet(
         $cacheName,
-        function () use ($params, $language, $dependency, $areas_where) {
-          $t = self::getChildrens(null, $language, $areas_where);
+        function () use ($params, $language, $dependency, $areas_where, $cacheName) {
+          $cacheName = str_replace('catalog_categories_menu_', 'dir_children_list_', $cacheName);
+          $t = self::getChildrens(null, $language, $areas_where, $cacheName);
           if (empty($t)) return [];
 
           $children = [];
@@ -393,45 +393,64 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  private static function getChildrens($parent, $language, $areas_where, $max_level = 20,$start_route = '')
+  private static function getChildrens($parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '')
   {
     if ($max_level == 0) return false;
 
-    $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
-        ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
-      ->andWhere([
-          'synonym'=>null,
-          //'s.is_active' => [0, 1],//шоп активен
-      ]);
+    if (!isset(Yii::$app->params['dir_children_list'])) {
+      $cache = \Yii::$app->cache;
+      $dependency = new yii\caching\DbDependency;
+      $dependencyName = 'catalog_product';
+      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    if (empty($parent)) {
-      $categoryArr->andWhere(['or',
-          ['parent' => 0],
-          ['parent' => null]
-      ]);
-    } else {
-      $categoryArr->andWhere(['parent' => $parent]);
+      Yii::$app->params['dir_children_list'] = $cache->getOrSet(
+          $cacheName,
+          function () use ($language, $dependency, $areas_where) {
+
+            $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
+                ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
+                ->andWhere(['synonym' => null])
+                ->andWhere([
+                    'or',
+                    ['s.is_active' => [0, 1]],//шоп активен
+                    ['s.is_active' => null]
+                ]);
+
+            $categoryArr
+                ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
+                ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
+                ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
+                ->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'route','parent'])
+                ->addSelect(['count(ptc.id) as count_all', 'parent']);
+
+            if (!empty($areas_where)) {
+              $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
+              $categoryArr->andWhere($areas_where);
+            }
+
+            $categoryArr = $categoryArr->asArray()->all();
+
+            $out = [];
+            foreach ($categoryArr as $category) {
+              $parant_id = $category['parent'];
+              if (empty($parant_id)) $parant_id = 0;
+              if(!isset($out[$parant_id]))$out[$parant_id]=[];
+              unset($category['parent']);
+              $out[$parant_id][] = $category;
+            }
+            return $out;
+          },
+          $cache->defaultDuration,
+          $dependency
+      );
     }
 
-    $categoryArr
-        ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
-        ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
-        ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
-        ->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'route'])
-        ->addSelect(['count(ptc.id) as count_all']);
-
-    if (!empty($areas_where)) {
-      $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
-      $categoryArr->andWhere($areas_where);
-    }
-
-    $categoryArr =
-        $categoryArr->asArray()
-            ->all();
+    if (empty($parent)) $parent = 0;
+    $categoryArr = isset(Yii::$app->params['dir_children_list'][$parent]) ? Yii::$app->params['dir_children_list'][$parent] : [];
 
     foreach ($categoryArr as &$item) {
-      $item['full_route']=trim($start_route.'/'.$item['route'],'/');
-      $t = self::getChildrens($item['id'], $language, $areas_where, $max_level - 1,$item['full_route']);
+      $item['full_route'] = trim($start_route . '/' . $item['route'], '/');
+      $t = self::getChildrens($item['id'], $language, $areas_where, $cacheName, $max_level - 1, $item['full_route']);
       if (!empty($t)) {
         $children = [];
         $item['children_id'] = [];
@@ -615,18 +634,18 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $category = $cache->getOrSet($casheName, function () use ($route, $language) {
       $tree = self::tree();
       $category = null;
-      foreach ($route as $item_route){
-        if(!isset($tree[$item_route])) return null;
-        $category=$tree[$item_route];
+      foreach ($route as $item_route) {
+        if (!isset($tree[$item_route])) return null;
+        $category = $tree[$item_route];
 
-        $tree=isset($tree[$item_route]['children'])?
-            $tree[$item_route]['children']:
+        $tree = isset($tree[$item_route]['children']) ?
+            $tree[$item_route]['children'] :
             [];
       }
       return $category;
     }, $cache->defaultDuration, $dependency);
-    
-    if(empty($category)) {
+
+    if (empty($category)) {
       return null;
     }
 
@@ -738,7 +757,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public static function getCategoryChilds($categories, $id, $param = 'childs_ids')
   {
-    ddd($categories,$id);
+    ddd($categories, $id);
     foreach ($categories as $category) {
       if ($category['id'] == $id) {
         return $category[$param];
