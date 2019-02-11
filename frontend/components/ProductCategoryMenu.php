@@ -26,19 +26,19 @@ class ProductCategoryMenu extends Widget
     public function run()
     {
         $current = isset(Yii::$app->controller->category) && Yii::$app->controller->category ?
-            Yii::$app->controller->category->id : false;
+            Yii::$app->controller->category->full_path : false;
         $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $cacheName = 'product_category_menu' . ($current ? '_' . $current : '') . ($language ? '_'.$language : '');
+        $cacheName = 'product_category_menu' . ($current ? '_route:' . implode('|',$current) : '') . ($language ? '_'.$language : '');
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $cache = Yii::$app->cache;
+        //ddd($cacheName,$current,Yii::$app->controller);
         $out = $cache->getOrSet($cacheName, function () use ($current) {
             $categoryTree = ProductsCategory::tree([
 
             ]);
-            ddd($categoryTree, $current);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,
                 'current' => $current,

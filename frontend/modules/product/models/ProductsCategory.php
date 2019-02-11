@@ -28,6 +28,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   public $logoImage;
   public $products_all;
 
+  public $full_path = false;
   protected $activeTree = false;
   protected $childCategoriesId = false;
   protected $parentTree = false;
@@ -126,16 +127,18 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return parent::beforeValidate();
   }
 
+  public function  makeFromTreeData($category)
+  {
+    $this->childCategoriesId = isset($category['children_id'])?$category['children_id']:[];
+    $this->childCategoriesId[] = $category['id'];
+
+    $this->full_path=explode('/',$category['full_route']);
+  }
+
   public function childCategoriesId()
   {
     if ($this->childCategoriesId === false) {
-      if (!$this->activeTree) {
-        $this->activeTree = self::tree(['where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
-      }
-      $this->childCategoriesId = self::getCategoryChilds($this->activeTree, $this->id, 'childs_ids');
-      $out = [];
-      self::getParentsArr($this->activeTree, $this->id, $out);
-
+      ddd('Сделать генерацию на основе дерева');
     }
     return $this->childCategoriesId;
   }
@@ -346,9 +349,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $cacheName =
         'catalog_categories_menu_' .
         Yii::$app->params['url_prefix'] . ':' .
-        implode('_', $areas).
-        (!empty($params) ? ':'.Help::multiImplode('_', $params) : '')
-    ;
+        implode('_', $areas) .
+        (!empty($params) ? ':' . Help::multiImplode('_', $params) : '');
 
     $areas_where = [];
     if (!empty($areas)) {
@@ -362,6 +364,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $dependencyName = 'catalog_product';
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
+    $areas_where = array_merge([
+        'or',
+        ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
+        ['is', '`regions`', null],
+    ], $areas_where);
+
     $out = $cache->getOrSet(
         $cacheName,
         function () use ($params, $language, $dependency, $areas_where) {
@@ -370,7 +378,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
           $children = [];
           foreach ($t as $el) {
-            if ($el['count'] > 0 && $el['active']) {
+            if ($el['count_all'] > 0 && $el['active']) {
               $children[$el['route']] = $el;
             }
           }
@@ -385,16 +393,16 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  private static function getChildrens($parent, $language, $areas_where, $max_level = 20)
+  private static function getChildrens($parent, $language, $areas_where, $max_level = 20,$start_route = '')
   {
     if ($max_level == 0) return false;
 
     $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
         ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
-        ->andWhere([
-            'synonym'=>null,
-            's.is_active' => [0, 1],//шоп активен
-    ]);
+      ->andWhere([
+          'synonym'=>null,
+          //'s.is_active' => [0, 1],//шоп активен
+      ]);
 
     if (empty($parent)) {
       $categoryArr->andWhere(['or',
@@ -404,16 +412,17 @@ class ProductsCategory extends \yii\db\ActiveRecord
     } else {
       $categoryArr->andWhere(['parent' => $parent]);
     }
+
     $categoryArr
         ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
         ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
         ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
-        ->groupBy(['id', 'name', 'parent', 'pc.active', 'route','s.is_active'])
-        ->addSelect(['count(ptc.id) as count','s.is_active']);
+        ->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'route'])
+        ->addSelect(['count(ptc.id) as count_all']);
 
     if (!empty($areas_where)) {
       $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
-      $categoryArr->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $areas_where));
+      $categoryArr->andWhere($areas_where);
     }
 
     $categoryArr =
@@ -421,20 +430,21 @@ class ProductsCategory extends \yii\db\ActiveRecord
             ->all();
 
     foreach ($categoryArr as &$item) {
-      $t = self::getChildrens($item['id'], $language, $areas_where, $max_level - 1);
+      $item['full_route']=trim($start_route.'/'.$item['route'],'/');
+      $t = self::getChildrens($item['id'], $language, $areas_where, $max_level - 1,$item['full_route']);
       if (!empty($t)) {
         $children = [];
-        $item['children_id']=[];
+        $item['children_id'] = [];
         foreach ($t as $el) {
-          $item['count'] += $el['count'];
-          if ($el['count'] > 0 && $el['active']) {
+          $item['count_all'] += $el['count_all'];
+          if ($el['count_all'] > 0 && $el['active']) {
             $children[$el['route']] = $el;
           }
 
-          if($el['count']>0){
-            $item['children_id'][]=$el['id'];
-            if(!empty($el['children_id']))$item['children_id']=
-                yii\helpers\ArrayHelper::merge($el['children_id'],$item['children_id']);
+          if ($el['count_all'] > 0) {
+            $item['children_id'][] = $el['id'];
+            if (!empty($el['children_id'])) $item['children_id'] =
+                yii\helpers\ArrayHelper::merge($el['children_id'], $item['children_id']);
           }
         }
         if (!empty($children)) {
@@ -592,8 +602,9 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param $route - Array
    * @return mixed
    */
-  public static function byRoute($route)
+  public static function byRoute($route) //обновил
   {
+
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
@@ -602,17 +613,27 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $category = $cache->getOrSet($casheName, function () use ($route, $language) {
-      $parent = null;
-      foreach ($route as $routePart) {
-        $category = self::translated($language)->where(['route' => $routePart, 'parent' => $parent])->one();
-        if (!$category) {
-          return false;
-        }
-        $parent = $category->id;
+      $tree = self::tree();
+      $category = null;
+      foreach ($route as $item_route){
+        if(!isset($tree[$item_route])) return null;
+        $category=$tree[$item_route];
+
+        $tree=isset($tree[$item_route]['children'])?
+            $tree[$item_route]['children']:
+            [];
       }
       return $category;
     }, $cache->defaultDuration, $dependency);
-    return $category;
+    
+    if(empty($category)) {
+      return null;
+    }
+
+    $category_db = self::translated($language)->where(['id' => $category['id']])->one();
+    $category_db->makeFromTreeData($category);
+
+    return $category_db;
   }
 
   /**
@@ -717,6 +738,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public static function getCategoryChilds($categories, $id, $param = 'childs_ids')
   {
+    ddd($categories,$id);
     foreach ($categories as $category) {
       if ($category['id'] == $id) {
         return $category[$param];

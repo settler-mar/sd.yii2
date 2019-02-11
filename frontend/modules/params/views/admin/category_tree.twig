@@ -7,7 +7,7 @@
                        {% if category.id in model.categories %}checked{% endif %} >
                 {{ category.name }}
             </label>
-            {% set product_categories_tree = category.childs %}
+            {% set product_categories_tree = category.children %}
             {% include('category_tree.twig') %}
         </li>
     {% endfor %}
