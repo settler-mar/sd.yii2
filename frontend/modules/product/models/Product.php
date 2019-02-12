@@ -674,13 +674,16 @@ class Product extends \yii\db\ActiveRecord
         $dependency = new yii\caching\DbDependency;
         $dependencyName = 'catalog_product';
         $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+        $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
+            Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
         if(is_string($func))$func=[$func];
         $casheName = 'products_agregate_' . $field . '_' . implode('_',$func) .
             (!empty($params) ? Help::multiImplode('_', $params) : '') .
+            (!empty($regionAreas) ? Help::multiImplode('_', $regionAreas) : '') .
             ($language ? '_' . $language : '');
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $out = $cache->getOrSet($casheName, function () use ($field, $func, $params) {
+        $out = $cache->getOrSet($casheName, function () use ($field, $func, $params, $regionAreas) {
           $product = self::find()->asArray();
 
             if ($func[0]=='distinct') {
@@ -696,6 +699,15 @@ class Product extends \yii\db\ActiveRecord
                 }
                 if (!empty($params['where'])) {
                     $product->andWhere($params['where']);
+                }
+
+                if (!empty($regionAreas)) {
+                    $product->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = p.catalog_id');
+                    $where = [];
+                    foreach ($regionAreas as $area) {
+                        $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
+                    }
+                    $product->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $where));
                 }
 
                 return $product->all();

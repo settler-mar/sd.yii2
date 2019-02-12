@@ -29,6 +29,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   public $products_all;
 
   public $full_path = false;
+  public $parentNames = [];
   protected $activeTree = false;
   protected $childCategoriesId = false;
   protected $parentTree = false;
@@ -131,7 +132,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     $this->childCategoriesId = isset($category['children_id']) ? $category['children_id'] : [];
     $this->childCategoriesId[] = $category['id'];
-
+    $this->parentNames = $category['names'];
     $this->full_path = explode('/', $category['full_route']);
   }
 
@@ -400,7 +401,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     );
     return $out;
   }
-  private static function getChildrens($parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '')
+  private static function getChildrens($parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
   {
     if ($max_level == 0) return false;
 
@@ -457,7 +458,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     foreach ($categoryArr as &$item) {
       $item['full_route'] = trim($start_route . '/' . $item['route'], '/');
-      $t = self::getChildrens($item['id'], $language, $areas_where, $cacheName, $max_level - 1, $item['full_route']);
+      $item['names'] = array_merge($names, [$item['name']]);//Названия путей
+      $t = self::getChildrens($item['id'], $language, $areas_where, $cacheName, $max_level - 1, $item['full_route'], $item['names']);
       if (!empty($t)) {
         $children = [];
         $item['children_id'] = [];

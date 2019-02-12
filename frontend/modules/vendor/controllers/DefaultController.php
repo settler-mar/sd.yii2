@@ -54,12 +54,27 @@ class DefaultController extends SdController
 
     public function actionIndex()
     {
+        $request = Yii::$app->request;
         $vendor = $this->vendor;
 
         //для запросов получить параметры запроса
-        $requestData = ShopController::getRequestData(['vendor_id' =>$vendor->id, 'url_mask' => 'vendor']);
+        $requestData = ShopController::getRequestData([
+            'vendor_id' =>$vendor->id,
+            'url_mask' => 'vendor'
 
-        //$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
+        ]);
+
+        $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
+        $this->params['breadcrumbs'][] = ['label' => $this->vendor->name, 'url' => Help::href('/vendor/'.$this->vendor->route)];
+        Yii::$app->params['url_mask'] = 'vendor';
+        $filter = $request->get();
+        if (!empty($filter)) {
+            $this->params['breadcrumbs'][] = [
+                'label' => Yii::t('shop', 'filter_result'),
+                'url' => Help::href('/vendor/'.$this->vendor->route . '?' . http_build_query($filter)),
+            ];
+        }
+
 
         $storesData = [];
 

@@ -68,7 +68,7 @@ class SdUrlRule implements UrlRuleInterface
     Yii::$app->params['url_no_page']=implode('/', $parameters);
 
     //проверяем последний параметр на id
-    if (strpos($parameters[count($parameters) - 1], 'id:') !== false) {
+    if (count($parameters)>0 && strpos($parameters[count($parameters) - 1], 'id:') !== false) {
       $params['id'] = substr($parameters[count($parameters) - 1], 3);
       if (!empty($params['id']) && !$validator->validate($params['id'])) {
         throw new \yii\web\NotFoundHttpException;
@@ -77,7 +77,7 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     //проверяем последний параметр на store
-    if (strpos($parameters[count($parameters) - 1], 'store:') !== false) {
+    if (count($parameters)>0 && strpos($parameters[count($parameters) - 1], 'store:') !== false) {
       $params['store'] = substr($parameters[count($parameters) - 1], 6);
       if (!empty($params['store']) && !$validator->validate($params['store'])) {
         throw new \yii\web\NotFoundHttpException;
@@ -86,7 +86,7 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     //проверяем последний параметр на category
-    if (strpos($parameters[count($parameters) - 1], 'category:') !== false) {
+    if (count($parameters)>0 && strpos($parameters[count($parameters) - 1], 'category:') !== false) {
       $params['category'] = substr($parameters[count($parameters) - 1], 9);
       if (!empty($params['category']) && !$validator->validate($params['category'])) {
         throw new \yii\web\NotFoundHttpException;
@@ -95,7 +95,7 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     //проверяем последний параметр на coupon
-    if (strpos($parameters[count($parameters) - 1], 'coupon:') !== false) {
+    if (count($parameters)>0 && strpos($parameters[count($parameters) - 1], 'coupon:') !== false) {
       $params['coupon'] = substr($parameters[count($parameters) - 1], 7);
       if (!empty($params['id']) && !$validator->validate($params['coupon'])) {
         throw new \yii\web\NotFoundHttpException;
@@ -104,7 +104,7 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     //проверяем последний параметр на products
-    if (strpos($parameters[count($parameters) - 1], 'products:') !== false) {
+    if (count($parameters)>0 && strpos($parameters[count($parameters) - 1], 'products:') !== false) {
       $params['products'] = substr($parameters[count($parameters) - 1], 9);
       if (!empty($params['id']) && !$validator->validate($params['products'])) {
         throw new \yii\web\NotFoundHttpException;
@@ -112,7 +112,7 @@ class SdUrlRule implements UrlRuleInterface
       unset ($parameters[count($parameters) - 1]);
     }
     //проверяем последний параметр на product
-    if (strpos($parameters[count($parameters) - 1], 'product:') !== false) {
+    if (count($parameters)>0 && strpos($parameters[count($parameters) - 1], 'product:') !== false) {
       $params['product'] = substr($parameters[count($parameters) - 1], 8);
       if (!empty($params['id']) && !$validator->validate($params['product'])) {
         throw new \yii\web\NotFoundHttpException;
@@ -121,27 +121,25 @@ class SdUrlRule implements UrlRuleInterface
     }
 
     //проверяем последний параметр на expired
-    if ($parameters[count($parameters) - 1] == 'expired') {
+    if (count($parameters)>0 && $parameters[count($parameters) - 1] == 'expired') {
       $params['expired'] = 1;
       unset ($parameters[count($parameters) - 1]);
     }
     //проверяем последний параметр на offline
-    if ($parameters[count($parameters) - 1] == 'offline') {
+    if (count($parameters)>0 && $parameters[count($parameters) - 1] == 'offline') {
       $params['offline'] = 1;
       unset ($parameters[count($parameters) - 1]);
     }
 
     //проверяем что б это не был прямой заход в default
-    if ($parameters[0] == 'default') {
+    if (count($parameters)>0 && $parameters[0] == 'default') {
       unset ($parameters[0]);
       Yii::$app->getResponse()->redirect('/' . implode('/', $parameters), 301);
       return ['', $params];
     }
 
     //Проверем принадлежность 1-го элемента запроса модулю и при необходимости добавлем default
-    if (
-    array_key_exists($parameters[0], \Yii::$app->modules)
-    ) {
+    if (count($parameters)>0 && array_key_exists($parameters[0], \Yii::$app->modules)) {
       array_unshift($parameters, 'default');
     };
 
@@ -176,7 +174,7 @@ class SdUrlRule implements UrlRuleInterface
 
       //если есть лишние части пути (кроме модуль, контроллер, экшн), то 404
       //исключение админ часть
-      if ($parameters[0]=='admic' AND count($parameters)>3) {
+      if (count($parameters)>3 && $parameters[0]=='admic') {
         throw new \yii\web\NotFoundHttpException;
       }
       Yii::$app->params['clear_url']=implode('/', $parameters);

@@ -19,7 +19,7 @@ class SdView extends SdViewBASE
   public $user_id = false;
   public $user = [];
   public $balance = [];
-  public $site_rating;
+  public $site_rating = null;
   public $isWebMaster = false;
   public $sd_counter;
   public $favorites = false;//количество изрбанных
@@ -80,7 +80,9 @@ class SdView extends SdViewBASE
       $this->init_param();
     }
 
-    $this->site_rating = Reviews::storeRating(0);
+    if (!$this->site_rating) {
+        $this->site_rating = Reviews::storeRating(0);
+    }
 
     $this->all_params = array_merge($this->all_params, $params);
     if ($this->all_params && isset($this->all_params['exception'])) {
