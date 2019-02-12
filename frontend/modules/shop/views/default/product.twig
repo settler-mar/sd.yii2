@@ -163,7 +163,7 @@
             {% set products = brands_products %}
             {% include('parts/products/other_products.twig') %}
             <div class="align-center">
-                <a target="_blank" rel="nofollow noreferrer nooperer" class="btn btn-transform" href="{{ _href('/shop?vendor='~product.vendor)|raw }}">{{ t('shop','view_others')|raw }}</a>
+                <a target="_blank" rel="nofollow noreferrer nooperer" class="btn btn-transform" href="{{ _href('/vendor/'~product.vendorDb.route)|raw }}">{{ t('shop','view_others')|raw }}</a>
             </div>
         </div>
     {% endif %}
