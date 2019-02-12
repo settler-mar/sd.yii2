@@ -2,11 +2,11 @@
 
 namespace common\components;
 
+use dosamigos\transliterator\TransliteratorHelper;
 use kartik\daterange\DateRangePicker;
 use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use dosamigos\transliterator\TransliteratorHelper;
 
 /**
  * Class Help
@@ -191,10 +191,10 @@ class Help extends Component
 
     $prefix = Yii::$app->params['url_prefix'];
     if ($basePath) {
-        $basePath = substr($basePath, strlen($basePath) - 1, 1) == '/' ? $basePath : $basePath . '/';
+      $basePath = substr($basePath, strlen($basePath) - 1, 1) == '/' ? $basePath : $basePath . '/';
     }
     if (substr($href, 0, 1) == '#') {
-      $href =  substr($href, 1);
+      $href = substr($href, 1);
       return ($basePath != '' ? $basePath . '/' : '') . '#' . $prefix .
           (substr($href, 0, 1) != '/' ? '/' : '') . ($href == '/' ? '' : $href);
     } else {
@@ -221,7 +221,7 @@ class Help extends Component
 
   public function cashback($store, $params_id)
   {
-    if(!$store)return "";
+    if (!$store) return "";
     $params = Yii::$app->params['cashback_render'][$params_id];
     if (is_object($store)) $store = $store->getAttributes();
 
@@ -240,9 +240,9 @@ class Help extends Component
     $text = Yii::t('main', "action_description_not", ['url' => Help::href("/loyalty")]);
 
     if (isset($params['show_charity']) && $params['show_charity'] && $value == 0) {
-      if(isset($params['replace_charity'])){
+      if (isset($params['replace_charity'])) {
         $value = $params['replace_charity'];
-      }else{
+      } else {
         $value = Help::svg("heart", "heart-red shop-heart-red");
       }
       $value_n = $value;
@@ -254,9 +254,9 @@ class Help extends Component
         $text = "action_description_action";
         $text .= !empty($store['action_end_date']) ? '_to' : '';
         //if(isset($store['action_end_date'])){
-          $text = Yii::t('main', $text, [
-              'date' => date('d.m.Y', strtotime($store['action_end_date'])),
-          ]);
+        $text = Yii::t('main', $text, [
+            'date' => date('d.m.Y', strtotime($store['action_end_date'])),
+        ]);
         //}
       }
       if (!Yii::$app->user->isGuest) {
@@ -278,12 +278,12 @@ class Help extends Component
       }
     }
 
-    $params['only_number']=isset($params['only_number'])&&$params['only_number'];
+    $params['only_number'] = isset($params['only_number']) && $params['only_number'];
     if ($is_num && !$params['only_number']) {
       if ($is_persent) {
-        $value = !empty($params['float']) ? (float) $value : number_format((float) $value, 2, '.', '&nbsp;');
-        $value_n = !empty($params['float']) ? (float) $value_n : number_format((float) $value_n, 2, '.', '&nbsp;');
-        $value = $value .(!isset($params['show_percent']) || $params['show_percent'] ? "%" : '');
+        $value = !empty($params['float']) ? (float)$value : number_format((float)$value, 2, '.', '&nbsp;');
+        $value_n = !empty($params['float']) ? (float)$value_n : number_format((float)$value_n, 2, '.', '&nbsp;');
+        $value = $value . (!isset($params['show_percent']) || $params['show_percent'] ? "%" : '');
         $value_n = $value_n . (!isset($params['show_percent']) || $params['show_percent'] ? "%" : '');
       } else {
         $k = 2;//($this->round($value_n) == $this->round($value_n,2)) ? 0 : 2;
@@ -298,43 +298,58 @@ class Help extends Component
         'value_new' => $value_n,
         'has_up_to' => $has_up_to,
         'text' => $text,
-        'is_persent'=>$is_persent,
-        'is_num'=>$is_num,
+        'is_persent' => $is_persent,
+        'is_num' => $is_num,
     ]);
     //ddd($store);
   }
 
-    public static function multiImplode($glue, $array)
-    {
-        $out = '';
-        if (is_array($array)) {
-            foreach ($array as $key => $item) {
-                $out .= ($glue. $key . $glue . self::multiImplode($glue, $item));
-            }
-        } elseif (method_exists($array, 'className')) {
-            $out .= $array::className();
-            if (property_exists($array, 'where')) {
-                $out .= self::multiImplode($glue, $array->where);
-            }
-        }  else {
-            $out .= (str_replace(' ', '_', $array));
+  public static function multiImplode($glue, $array)
+  {
+    $out = '';
+    if (is_array($array)) {
+      foreach ($array as $key => $item) {
+        $out .= ($glue . $key . $glue . self::multiImplode($glue, $item));
+      }
+    } elseif (method_exists($array, 'className')) {
+      $out .= $array::className();
+      if (property_exists($array, 'where')) {
+        $out .= self::multiImplode($glue, $array->where);
+      }
+    } else {
+      $out .= (str_replace(' ', '_', $array));
 
-        }
-        return $out;
     }
+    return $out;
+  }
 
-  public function makeRoute($name){
+  public function makeRoute($name)
+  {
     $name = TransliteratorHelper::process($name, '', 'en');
     $name = strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', htmlentities($name, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '-'));
     //$name = preg_replace('/[\.\s]/','',$name);
     return substr($name, 0, 25);
   }
 
-  public function mb_lcfirst($str){
-      $first = mb_substr($str,0,1);//первая буква
-      $last = mb_substr($str,1);//все кроме первой буквы
-      $first = mb_strtoupper($first);
-      $last = mb_strtolower($last);
-      return $first.$last;
+  public function mb_lcfirst($str)
+  {
+    $first = mb_substr($str, 0, 1);//первая буква
+    $last = mb_substr($str, 1);//все кроме первой буквы
+    $first = mb_strtoupper($first);
+    $last = mb_strtolower($last);
+    return $first . $last;
+  }
+
+  public function arrayToFlat($array, $children_name)
+  {
+    $out = [];
+    foreach ($array as $k => $item) {
+      $out[$k] = $item;
+      if (isset($item[$children_name])) {
+        unset ($out[$k][$children_name]);
+        $out += $this->arrayToFlat($item[$children_name], $children_name);
+      }
+    }
+    return $out;
   }
 }

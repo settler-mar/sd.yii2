@@ -70,10 +70,9 @@ class AdminCategoryController extends Controller
     asort($synonymFilter);
 
     //категории, являющиеся родительскими
-    $childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);
-    $parentsFilter = ProductsCategory::forFilter(['where' => ['in', 'id', $childs]]);
+    //$childs = ProductsCategory::find()->select(['parent'])->where(['is not', 'parent', null]);
+    $parentsFilter = ProductsCategory::forFilter(true,['is_admin'=>true]);
     asort($parentsFilter);
-
 
     $storeFilter = ArrayHelper::map(
         Stores::find()
@@ -94,9 +93,8 @@ class AdminCategoryController extends Controller
         ->groupBy(['cpa.id', 'cpa.name'])
         ->asArray()->all();
 
-    $catTreeFlat = ProductsCategory::tree(['counts' => true, 'flat' => true]);
-
-
+    $catTreeFlat = ProductsCategory::tree(['flat' => true,'is_admin'=>true,'key'=>'id']);
+//ddd($catTreeFlat);
     return $this->render('index.twig', [
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
