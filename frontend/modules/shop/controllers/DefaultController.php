@@ -179,8 +179,9 @@ class DefaultController extends SdController
                 'url' => Help::href('/search/product?module=product&limit=1000&query=' . $request->get('query')),
             ];
         }
-        $filter = $request->get() && !$request->get('month') && !$request->get('profit') && !$request->get('query');
-        if (!empty($filter)) {
+        $filter = $request->get('store_id') || $request->get('vendor_id') || $request->get('price_start') ||
+            $request->get('price_end');
+        if ($filter) {
             $this->params['breadcrumbs'][] = [
                 'label' => Yii::t('shop', 'filter_result'),
                 'url' => Help::href($paginatePath . '?' . http_build_query($request->get())),
@@ -237,17 +238,18 @@ class DefaultController extends SdController
     public function actionProduct()
     {
         Yii::$app->params['url_mask'] = 'shop/product/*';
-        $product = $this->product;//Product::findOne($id);
+        $product = $this->product;
         $path = '/shop';
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
         $this->breadcrumbs_last_item_disable = false;
         $category = isset($product->categories[0]) ? $product->categories[0] : false;//
-        $categoryRoute = $category ? $category->parentTree(1) : false;//только если категория активна, иначе нет
-        $category = $category && !empty($categoryRoute) ? $category : false;
-        if ($category) {
-            $parents = $category->parentTree();
-            foreach ($parents as $parent) {
+        $category->childCategoriesId();
+        $categoryChildsIds = array_merge([$category->id], $category->childCategoriesId ? $category->childCategoriesId : []);
+        $categoryRoute = '/shop';
+        if ($category && $category->full_path) {
+            foreach ($category->full_path as $parent) {
                 $path .= '/'.$parent['route'];
+                $categoryRoute = $path;
                 $this->params['breadcrumbs'][] = [
                     'label' => $parent['name'],
                     'url' => Help::href($path),
@@ -263,7 +265,7 @@ class DefaultController extends SdController
         //продукты той же категории другие бренды, желательно другие шопы, если шопов мало, то дополняем тем же шопом
         $categoryProducts = $category ?
             Product::top([
-                'category_id' => $product->categories[0]->id,
+                'category_id' => $categoryChildsIds,
                 'limit' => 8,
                      //указываем конкретного вендора какие НЕ ВЫВОДИТЬ, шопы вначале разные, потом для дополнения без учёта шопа
                 'other_brands_of' => ['product_id' =>$product->id, 'vendors_id' => [$product->vendor_id], 'stores_id' =>[]],
@@ -276,7 +278,7 @@ class DefaultController extends SdController
                 'where' => ['and', ['store_id' => $product->store_id],['<>', 'prod.id', $product->id]],
                     //указываем конкретный шоп какой ВЫВОДИТЬ, бренды сначала разные, потом для дополнения без учёта бренда
                 'other_brands_of' => ['product_id' =>$product->id, 'stores_id' => [$product->store_id], 'vendors_id' => []],
-                'category_id' => $product->categories[0]->id,
+                'category_id' => $categoryChildsIds,
                 'with_image' => true,
                 'limit' => 8
             ]) : [];
