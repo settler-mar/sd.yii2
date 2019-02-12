@@ -44,7 +44,7 @@ class DefaultController extends SdController
             $path = array_diff($path, ['page-'.$request->get('page')]);
         }
         if (count($path) > 1 && $path[0] =='shop') {
-            $category = ProductsCategory::byRoute(array_slice($path, 1));
+            $category = ProductsCategory::byRoute(array_slice($path, 1), null, ['active_only' => true]);
             //нашли категорию
             if ($category) {
                 $this->category = $category;
@@ -195,6 +195,7 @@ class DefaultController extends SdController
             'shop_store'=> $this->store ? $this->store->uid : null,
             'url_mask' => $url_mask,
             'path' => '/'.Yii::$app->request->pathInfo,
+            'category_route' => $this->category ? implode('/', $this->category->full_path) : null,
         ]);
 
         $storesData = [];
@@ -363,28 +364,30 @@ class DefaultController extends SdController
             $where['store_id'] = $savedRequest['request_data']['store_request'];
         }
 
-        $category = $savedRequest['category'];
+        //$category = $savedRequest['category'];
+        //return json_encode($savedRequest);
 
-        $pricesResult = Product::conditionValues(
-            'price',
-            ['min', 'max'],
-            [
-                'category' => $category,
-                'where' => $where,
-            ]
-        );
-        $filterPriceEndMax = (int)$pricesResult['max_price'];
-        $filterPriceStartMin=(int)$pricesResult['min_price'];
+//        $pricesResult = Product::conditionValues(
+//            'price',
+//            ['min', 'max'],
+//            [
+//                'category' => $category,
+//                'where' => $where,
+//            ]
+//        );
 
-        if ($savedRequest['request_data']['price_start'] && $savedRequest['request_data']['price_start'] != $filterPriceStartMin) {
-            $filter[] = ['>=', 'price', $savedRequest['request_data']['price_start']];
-        }
+        $filterPriceEndMax = (int) $savedRequest['prices_result']['max_price'];
+        $filterPriceStartMin = (int) $savedRequest['prices_result']['min_price'];
 
-        if ($savedRequest['request_data']['price_end'] && $savedRequest['request_data']['price_end'] != $filterPriceEndMax) {
-            $priceEnd = $savedRequest['request_data']['price_end'] < $savedRequest['request_data']['price_start'] ?
-                $savedRequest['request_data']['price_start'] : $savedRequest['request_data']['price_end'];
-            $filter[] = ['<=', 'price', $priceEnd];
-        }
+//        if ($savedRequest['request_data']['price_start'] && $savedRequest['request_data']['price_start'] != $filterPriceStartMin) {
+//            $filter[] = ['>=', 'price', $savedRequest['request_data']['price_start']];
+//        }
+
+//        if ($savedRequest['request_data']['price_end'] && $savedRequest['request_data']['price_end'] != $filterPriceEndMax) {
+//            $priceEnd = $savedRequest['request_data']['price_end'] < $savedRequest['request_data']['price_start'] ?
+//                $savedRequest['request_data']['price_start'] : $savedRequest['request_data']['price_end'];
+//            $filter[] = ['<=', 'price', $priceEnd];
+//        }
 
         //если изначально vendor_id (для страницы vendors) вендроов не выводим
         $vendors =  !empty($savedRequest['request_data']['vendor_id']) ? [] : Vendor::items([
@@ -425,8 +428,9 @@ class DefaultController extends SdController
     {
         $request = Yii::$app->request;
         $category = isset($params['category']) ? $params['category'] : null;
-        $category = $category ? $category :
-            ($request->get('category_id') ? ProductsCategory::byId($request->get('category_id')) : null);
+        if (!$category && $request->get('category_route')) {
+            $category = ProductsCategory::byRoute(explode('/', $request->get('category_route')));
+        }
 
         $vendorRequest = $request->get('vendor');
         if (isset($params['store_id'])) {
@@ -523,6 +527,8 @@ class DefaultController extends SdController
             'path' => urlencode($request->get('path') ? $request->get('path') :
                 (isset($params['path']) ? $params['path'] : '/' . $request->pathInfo)
             ),
+            'category_route' => isset($params['category_route']) ? $params['category_route'] :
+                $request->get('category_route'),
         ];
         $language = Yii::$app->params['url_prefix'];// Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
         $region = Yii::$app->params['region']  == 'default' ? false : Yii::$app->params['region'];
@@ -610,6 +616,7 @@ class DefaultController extends SdController
             'paginate_params' =>$paginateParams,
             'query_db' => $querydb,
             'category' => $category,
+            'prices_result' => $pricesResult,
         ];
     }
 

@@ -37,6 +37,7 @@ class ProductCategoryMenu extends Widget
 
         $out = $cache->getOrSet($cacheName, function () use ($current) {
             $categoryTree = ProductsCategory::tree([
+                'active_only' => 1,
             ]);
             return $this->render('category_menu.twig', [
                 'categories' => $categoryTree,

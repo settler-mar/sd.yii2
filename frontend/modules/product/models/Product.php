@@ -684,7 +684,7 @@ class Product extends \yii\db\ActiveRecord
         $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
         $out = $cache->getOrSet($casheName, function () use ($field, $func, $params, $regionAreas) {
-          $product = self::find()->asArray();
+        $product = self::find()->asArray();
 
             if ($func[0]=='distinct') {
               $product->select([$field, 'count(*) as count'])
@@ -695,7 +695,7 @@ class Product extends \yii\db\ActiveRecord
                     ->limit(20);
                 if (!empty($params['category'])) {
                     $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                        ->where(['ptc.category_id' => $params['category']->childCategoriesId()]);
+                        ->where(['ptc.category_id' => $params['category']->childCategoriesId]);
                 }
                 if (!empty($params['where'])) {
                     $product->andWhere($params['where']);
@@ -707,7 +707,11 @@ class Product extends \yii\db\ActiveRecord
                     foreach ($regionAreas as $area) {
                         $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
                     }
-                    $product->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $where));
+                    $product->andWhere(array_merge([
+                        'or',
+                        ['is', 'cs.regions', null],
+                        ['=', 'JSON_LENGTH(`cs`.`regions`)', 0]
+                    ], $where));
                 }
 
                 return $product->all();
@@ -723,7 +727,7 @@ class Product extends \yii\db\ActiveRecord
                 ->where(['and', ['<>', $field, ""], ['is not', $field, null]]);
             if (!empty($params['category'])) {
                 $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId()]);
+                    ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId]);
             }
             if (!empty($params['where'])) {
                 $product->andWhere($params['where']);
@@ -1057,7 +1061,11 @@ class Product extends \yii\db\ActiveRecord
         foreach ($regionAreas as $area) {
             $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
         }
-        $query->andWhere(array_merge(['or', ['is', 'cs.regions', null]], $where));
+        $query->andWhere(array_merge([
+            'or',
+            ['is', 'cs.regions', null],
+            ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
+        ], $where));
     }
     return $query;
 

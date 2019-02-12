@@ -30,8 +30,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
   public $full_path = false;
   public $parentNames = [];
+  public $childCategoriesId = false;
   protected $activeTree = false;
-  protected $childCategoriesId = false;
   protected $parentTree = false;
 
 
@@ -382,12 +382,13 @@ class ProductsCategory extends \yii\db\ActiveRecord
         $cacheName,
         function () use ($params, $language, $dependency, $areas_where, $cacheName) {
           $cacheName = str_replace('catalog_categories_menu_', 'dir_children_list_', $cacheName);
-          $t = self::getChildrens(null, $language, $areas_where, $cacheName);
+          $t = self::getChildrens($params, null, $language, $areas_where, $cacheName);
           if (empty($t)) return [];
 
           $children = [];
           foreach ($t as $el) {
-            if ($el['count_all'] > 0 && $el['active']) {
+              $active = $el['active'] == self::PRODUCT_CATEGORY_ACTIVE_YES || empty($params['active_only']);
+              if ($el['count_all'] > 0 && $active) {
               $children[$el['route']] = $el;
             }
           }
@@ -401,7 +402,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     );
     return $out;
   }
-  private static function getChildrens($parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
+  private static function getChildrens($params, $parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
   {
     if ($max_level == 0) return false;
 
@@ -459,17 +460,18 @@ class ProductsCategory extends \yii\db\ActiveRecord
     foreach ($categoryArr as &$item) {
       $item['full_route'] = trim($start_route . '/' . $item['route'], '/');
       $item['names'] = array_merge($names, [$item['name']]);//Названия путей
-      $t = self::getChildrens($item['id'], $language, $areas_where, $cacheName, $max_level - 1, $item['full_route'], $item['names']);
+      $t = self::getChildrens($params, $item['id'], $language, $areas_where, $cacheName, $max_level - 1, $item['full_route'], $item['names']);
       if (!empty($t)) {
         $children = [];
         $item['children_id'] = [];
         foreach ($t as $el) {
-          $item['count_all'] += $el['count_all'];
-          if ($el['count_all'] > 0 && $el['active']) {
+          $active = $el['active'] == self::PRODUCT_CATEGORY_ACTIVE_YES || empty($params['active_only']);
+          $item['count_all'] += ($active ? $el['count_all'] : 0);
+          if ($el['count_all'] > 0  && $active) {
             $children[$el['route']] = $el;
           }
 
-          if ($el['count_all'] > 0) {
+          if ($el['count_all'] > 0 && $active) {
             $item['children_id'][] = $el['id'];
             if (!empty($el['children_id'])) $item['children_id'] =
                 yii\helpers\ArrayHelper::merge($el['children_id'], $item['children_id']);
@@ -630,18 +632,19 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param $route - Array
    * @return mixed
    */
-  public static function byRoute($route,$category_db = false) //обновил
+  public static function byRoute($route, $category_db = false, $params = []) //обновил
   {
 
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-    $casheName = 'products_category_byroute_' . implode('_', $route) . Yii::$app->params['url_prefix'];
+    $casheName = 'products_category_byroute_' . implode('_', $route) . Yii::$app->params['url_prefix'] .
+        (!empty($params)? '_' . Yii::$app->help->multiImplode('_', $params) : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-    $category = $cache->getOrSet($casheName, function () use ($route, $language) {
-      $tree = self::tree();
+    $category = $cache->getOrSet($casheName, function () use ($route, $language, $params) {
+      $tree = self::tree($params);
       $category = null;
       foreach ($route as $item_route) {
         if (!isset($tree[$item_route])) return null;
