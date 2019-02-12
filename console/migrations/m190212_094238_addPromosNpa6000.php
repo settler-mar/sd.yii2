@@ -14,6 +14,9 @@ class m190212_094238_addPromosNpa6000 extends Migration
      */
     public function safeUp()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         for ($i = 1; $i <= 6000; $i++) {
             $name = $this->nameStart . str_pad($i, 6, 0, STR_PAD_LEFT);
             if ($i < 10) {
@@ -44,6 +47,9 @@ class m190212_094238_addPromosNpa6000 extends Migration
      */
     public function safeDown()
     {
+        $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
+        $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
+
         $deleted = Promos::deleteAll(['like', 'name', $this->nameStart . '%', false]);
         echo 'Deleted Promo: ' . $deleted."\n";
     }
