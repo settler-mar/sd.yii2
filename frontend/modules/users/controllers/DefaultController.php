@@ -465,16 +465,16 @@ class DefaultController extends Controller
           $title = $model->dbPromo['title'];
           $days = $model->dbPromo['new_loyalty_status_end'] > 0 ? $model->dbPromo['new_loyalty_status_end'] : 0;
           if ($days == 0) {
-              $message = Yii::t('account', 'user_loyalty_reg_status_{title}_forever', ['title' => $title]);
+              $message = Yii::t('account', 'user_loyalty_reg_status_{title}_forever', ['title' => $title,'href'=>Yii::$app->help->href('#registration')]);
           } else {
-              $message = Yii::t('account', 'user_loyalty_reg_status_{title}_for_{days}_', ['title' => $title, 'days'=> $days]);
+              $message = Yii::t('account', 'user_loyalty_reg_status_{title}_for_{days}_', ['title' => $title, 'days'=> $days,'href'=>Yii::$app->help->href('#registration')]);
           }
           return json_encode([
               'title' => Yii::t('common', 'congratulations').'!',
               'message' => $message,
               'error' => false,
               'html' => '<div class="margin align-center"><div class="margin"><p>'.Yii::t('main','promocode_successfull').'</p></div>'.
-                  '<a class="btn modals_open" href="#registration">'.Yii::t('common', 'do_register').'</a>'.
+                  '<a class="btn modals_open" href="'.Yii::$app->help->href('#registration').'">'.Yii::t('common', 'do_register').'</a>'.
                   '</div>',
           ]);
       };

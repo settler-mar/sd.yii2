@@ -713,17 +713,6 @@ class ProductsCategory extends \yii\db\ActiveRecord
     }
     return $options;
   }
-
-  public static function getCategoryChilds($categories, $id, $param = 'children_id')
-  {
-    $data = isset($categories[$id]) &&
-    isset($categories[$id]['children_id']) ?
-        $categories[$id]['children_id'] : [];
-
-    $data[] = $id;
-    return $data;
-  }
-
   public static function getParentsArr($categories, $id, &$out)
   {
     foreach ($categories as $category) {
