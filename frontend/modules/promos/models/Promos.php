@@ -64,7 +64,24 @@ class Promos extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
+    public static function findByCode($code,$params=[])
+    {
+      $code=str_replace(' ','',$code);
+      $promo = Promos::find()->where(['name' => $code]);
+
+      if(!empty($params['isForm'])&&$params['isForm']){
+        $promo->andWhere(['on_form' => 1]);
+      }
+
+      if(!empty($params['asArray'])&&$params['asArray']){
+        $promo->asArray();
+      }
+
+
+      return $promo->one();
+    }
+
+  /**
      * текстовый результат от применения промокода
      * @param $promo
      * @return string

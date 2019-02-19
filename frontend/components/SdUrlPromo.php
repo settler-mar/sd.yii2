@@ -77,7 +77,7 @@ class SdUrlPromo implements UrlRuleInterface
 
       if (isset($params['promo'])) {
         $promo = trim($params['promo']);
-        $dbPromo = Promos::find()->where(['name' => $promo])->one();
+        $dbPromo = Promos::findByCode($promo);
         if ($dbPromo) {
           Yii::$app->session->set('referrer_promo', $promo);
         }

@@ -22,11 +22,10 @@ class Promo extends Model
       [['promo'], 'required'],
       ['promo', 'trim'],
       ['promo', function ($attribute) {
-        $query = DbPromo::find()->where(['name'=>$this->promo])->asArray();
-        if ($this->form) {
-            $query->andWhere(['on_form' => 1]);
-        }
-        $this->dbPromo = $query->one();
+        $this->dbPromo = DbPromo::findByCode($this->promo,[
+            'isForm'=>$this->form,
+            'asArray'=>true,
+        ]);
         if (!$this->dbPromo) {
             $this->addError($attribute, Yii::t('main', 'wrong_promocode'));
         }
