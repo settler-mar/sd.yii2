@@ -1,1 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="49.652" height="49.652" viewBox="0 0 49.652 49.652"><path d="M24.826 0C11.137 0 0 11.137 0 24.826c0 13.688 11.137 24.826 24.826 24.826 13.688 0 24.826-11.138 24.826-24.826C49.652 11.137 38.516 0 24.826 0zM31 25.7h-4.039v14.396h-5.985V25.7h-2.845v-5.088h2.845v-3.291c0-2.357 1.12-6.04 6.04-6.04l4.435.017v4.939h-3.219c-.524 0-1.269.262-1.269 1.386v2.99h4.56L31 25.7z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="49.652"
+   height="49.652"
+   viewBox="0 0 49.652 49.652"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="facebook-round.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1368"
+     inkscape:window-height="691"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="4.7531"
+     inkscape:cx="12.672"
+     inkscape:cy="29.811"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     d="M 24.826,0 C 11.137,0 0,11.137 0,24.826 0,38.514 11.137,49.652 24.826,49.652 38.514,49.652 49.652,38.514 49.652,24.826 49.652,11.137 38.516,0 24.826,0 Z M 37,25.7 H 32.961 V 40.096 H 26.976 V 25.7 H 24.131 V 20.612 H 26.976 V 17.321 C 26.976,14.964 28.096,11.281 33.016,11.281 L 37.451,11.298 V 16.237 H 34.232 C 33.708,16.237 32.963,16.499 32.963,17.623 V 20.613 H 37.523 Z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="sssssccccccccscccssccc" />
+</svg>
