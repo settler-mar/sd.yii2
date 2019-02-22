@@ -2,5 +2,5 @@
   {{ t('main',"loyalty_status_bay_yes_content",data) }}
 </p>
 <div class="align-center">
-  <a class="btn modals_open" href="#account/bay-loyalty/{{ code }}/yes">{{ t('main',"buy") }}</a>
+  <a class="btn modals_open" href="#{{ _href('account/bay-loyalty/'~code~'/yes') }}">{{ t('main',"buy") }}</a>
 </div>
