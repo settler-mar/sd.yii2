@@ -9,6 +9,7 @@
     {% set form = active_form_begin({
     'id':'user_setting',
     'layout' : 'horizontal',
+      'action': _href('/account/settings'),
     'fieldConfig':{
     'horizontalCssClasses':{
     'wrapper':'form-input-group form-input-group-fl',
@@ -110,6 +111,7 @@
     {% set form = active_form_begin({
     'id':'user_setting_password',
     'layout' : 'horizontal',
+    'action': _href('/account/settings'),
     'fieldConfig':{
     'horizontalCssClasses':{
     'wrapper':'form-input-group form-input-group-fl',

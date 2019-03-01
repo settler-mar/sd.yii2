@@ -29,6 +29,11 @@
     background-color: #FDE261;
     z-index: 100;
 
+    @include media($phones) {
+      top: auto;
+      bottom: 25PX;
+    }
+
     a {
       display: flex;
       flex-direction: column;
@@ -36,12 +41,14 @@
       justify-content: flex-start;
       color: $text-color;
       text-decoration: none;
+      text-transform: uppercase;
+      font-weight: bold;
+
       &:hover {
         color: $text-color;
       }
-      text-transform: uppercase;
-      font-weight: bold;
     }
+
     .logo {
       height: 24PX;
       width: 24PX;
@@ -50,18 +57,33 @@
       margin: 10PX 0;
       transform: rotate(-90deg);
 
+      @include media($phones) {
+        height: 18PX;
+        width: 18PX;
+      }
+
       svg {
         padding: 2px;
         width: 20px;
         height: 20px;
+
+        @include media($phones) {
+          height: 14PX;
+          width: 14PX;
+        }
       }
     }
+
     .arrow {
       background-color: #FDEA8E;
       padding: 13PX;
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @include media($phones) {
+        padding: 8PX;
+      }
 
       svg {
         width: 16px;
@@ -73,14 +95,19 @@
         fill: $text-color;
         stroke: $text-color;
 
+        @include media($phones) {
+          height: 12PX;
+          width: 12PX;
+        }
+
         &:hover {
           color: $text-color;
           fill: $text-color;
           stroke: $text-color;
         }
       }
-
     }
+
     .text {
       margin-top: 10PX;
       writing-mode: tb-rl;
