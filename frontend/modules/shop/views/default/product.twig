@@ -92,14 +92,14 @@
                     {% set href_class = user_id ? '' : 'catalog_product_link' %}
                     <div class="catalog_product-buttons margin-half">
                         {% if  product.store.displayed_cashback and product.store.is_active == 1 %}
-                            <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn btn-transform margin-half">
+                            <a href="{{ _href('/goto/product:'~product.id~'?n=1')|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn btn-transform margin-half">
                                 <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_without_cashback')|raw }}
                             </a>
                             <a href="{{ _href('/goto/product:'~product.id)|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn {{ href_class }}">
                                 <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_with_cashback')|raw }}
                             </a>
                         {% else %}
-                            <a href="{{ product.url|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn">
+                            <a href="{{ _href('/goto/product:'~product.id~'?n=1')|raw }}" target="_blank" rel="nofollow nooper noreferrer" class="btn">
                                 <span class="icon">{{ svg('exit-top-right', '', '@frontend')|raw }}</span>{{ t('shop', 'buy_the_product_now')|raw }}
                             </a>
                         {% endif %}

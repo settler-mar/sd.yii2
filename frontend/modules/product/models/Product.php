@@ -905,9 +905,9 @@ class Product extends \yii\db\ActiveRecord
               if (!empty($cats)) {
                   $prod->andWhere(['not in', 'category_id', $cats]);
               }
-              if (!empty($ids)) {
+              /*if (!empty($ids)) {
                   $prod->andWhere(['not in', 'product_id', $ids]);
-              }
+              }*/
               if (!empty($shops)) {
                   $prod->andWhere(['not in', 'store_id', $shops]);
               }

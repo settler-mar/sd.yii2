@@ -159,15 +159,20 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     if ($this->parentTree === false) {
       if (!$this->activeTree) {
-        $this->activeTree = self::tree(['where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]]]);
+        $this->activeTree = self::tree([
+            'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]],
+            'flat'=>true
+            ]);
       }
       $parents = [];
       self::getParentsArr($this->activeTree, $this->id, $parents);
       $this->parentTree = array_reverse($parents);
     }
+
     if (!$mode || !$this->parentTree) {
       return $this->parentTree;
     }
+
     foreach ($this->parentTree as $category) {
       if (empty($category)) continue;
       switch ($mode) {
@@ -185,6 +190,20 @@ class ProductsCategory extends \yii\db\ActiveRecord
       }
     }
     return implode($mode == 1 ? '/' : ' / ', $out);
+  }
+
+  public function getFullRoute(){
+    if ($this->parentTree === false) {
+      if (!$this->activeTree) {
+        $this->activeTree = self::tree([
+            'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]],
+            'flat'=>true
+        ]);
+      }
+    }
+    return isset($this->activeTree[$this->id])?
+        $this->activeTree[$this->id]['full_route']:
+        '';
   }
 
   public function beforeSave($insert)
@@ -354,6 +373,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $areas = isset($params['is_admin']) && $params['is_admin'] ? [] : Yii::$app->params['location']['areas'];
 
+    if(!empty($params['flat'])&&$params['flat'])$params['key']='id';
     if(!isset($params['key']))$params['key']='route';
 
     $cacheName =
@@ -369,16 +389,16 @@ class ProductsCategory extends \yii\db\ActiveRecord
       }
     }
 
-    $cache = \Yii::$app->cache;
-    $dependency = new yii\caching\DbDependency;
-    $dependencyName = 'catalog_product';
-    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-
     $areas_where = array_merge([
         'or',
         ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
         ['is', '`regions`', null],
     ], $areas_where);
+
+    $cache = \Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'catalog_product';
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
     $out = $cache->getOrSet(
         $cacheName,
@@ -409,9 +429,13 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  private static function getChildrens($params, $parent, $language, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
+  private static function getChildrens($params=null, $parent, $language=false, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
   {
     if ($max_level == 0) return false;
+
+    $language = $language?$language:(
+        Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language
+    );
 
     if (!isset(Yii::$app->params[$cacheName])) {
       $cache = \Yii::$app->cache;
@@ -430,9 +454,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
                     'or',
                     ['s.is_active' => [0, 1]],//шоп активен
                     ['s.is_active' => null]
-                ]);
-
-            $categoryArr
+                ])
                 ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
                 ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
                 ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
@@ -445,13 +467,12 @@ class ProductsCategory extends \yii\db\ActiveRecord
             }
 
             $categoryArr = $categoryArr->asArray()->all();
-
             $out = [];
             foreach ($categoryArr as $category) {
               $parant_id = $category['parent'];
               if (empty($parant_id)) $parant_id = 0;
               if (!isset($out[$parant_id])) $out[$parant_id] = [];
-              unset($category['parent']);
+              //unset($category['parent']);
               $out[$parant_id][] = $category;
             }
             return $out;
@@ -571,7 +592,6 @@ class ProductsCategory extends \yii\db\ActiveRecord
    */
   public static function byRoute($route, $category_db = false, $params = []) //обновил
   {
-
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
@@ -582,9 +602,15 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
     $category = $cache->getOrSet($casheName, function () use ($route, $language, $params) {
       $tree = self::tree($params);
+
+      if(!isset($tree[$route[0]])&&isset($tree[$route[count($route)-1]])){
+        $route = array_reverse($route);
+      }
+
       $category = null;
       foreach ($route as $item_route) {
         if (!isset($tree[$item_route])) return null;
+
         $category = $tree[$item_route];
 
         $tree = isset($tree[$item_route]['children']) ?
@@ -715,7 +741,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
   }
   public static function getParentsArr($categories, $id, &$out)
   {
-    foreach ($categories as $category) {
+    while(isset($categories[$id])){
+      $out[]=$categories[$id];
+      $id = $categories[$id]['parent'];
+    }
+    /*foreach ($categories as $category) {
       if ($category['id'] == $id) {
         $out[] = $category;
         return $category['id'];
@@ -727,7 +757,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
           return $childs;
         }
       }
-    }
+    }*/
   }
 
   /**
