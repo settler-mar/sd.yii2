@@ -110,7 +110,8 @@ class DefaultController extends SdController
         'sort' => 'discount',
         'order' => SORT_DESC,
     ]);
-    $data['most_profitable_count'] = Product::top(['where' => ['>', 'discount', 50], 'count' => 1]);
+
+    $data['most_profitable_count'] = Product::top(['where' => ['>', 'discount', Yii::$app->params['most_profitable_min_discount']], 'count' => 1]);
     $data['brands'] = Vendor::items([
         'limit' => 20,
     ]);

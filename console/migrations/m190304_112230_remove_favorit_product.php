@@ -17,6 +17,8 @@ class m190304_112230_remove_favorit_product extends Migration
           ['user_id'=>5],
         ['not',['product_id'=>null]]
       ]);
+
+      $this->execute('UPDATE `cw_product` SET `discount` = CAST(100*(1-price/old_price) AS DECIMAL(7,4))');
     }
 
     /**
@@ -25,8 +27,6 @@ class m190304_112230_remove_favorit_product extends Migration
     public function safeDown()
     {
         echo "m190304_112230_remove_favorit_product cannot be reverted.\n";
-
-        return false;
     }
 
     /*

@@ -624,7 +624,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
       return null;
     }
     if (!$category_db) {
-      $category_db = self::translated($language)->where(['id' => $category['id']])->one();
+      $category_db = self::translated($language)->where(['pc.id' => $category['id']])->one();
     }
 
     $category_db->makeFromTreeData($category);

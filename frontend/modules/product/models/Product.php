@@ -854,7 +854,7 @@ class Product extends \yii\db\ActiveRecord
     return $data;
   }
 
-  public static function top($params = [])
+  public static function top($params = [],$debug = false)
   {
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
@@ -868,7 +868,7 @@ class Product extends \yii\db\ActiveRecord
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
 
-    $products = $cache->getOrSet($casheName, function () use ($params) {
+    $products = $cache->getOrSet($casheName, function () use ($params,$debug) {
       $count = !empty($params['count']) ? null : (isset($params['limit']) ? $params['limit'] : 5);
       $product = self::items()
           ->orderBy([
@@ -994,6 +994,7 @@ class Product extends \yii\db\ActiveRecord
       if (!empty($params['having'])) {
           $product->having($params['having']);
       }
+
       return empty($params['count']) ? $product->all() : $product->count();
     }, $cache->defaultDuration, $dependency);
 
