@@ -361,7 +361,7 @@ class DefaultController extends SdController
    */
   public function actionFilter()
   {
-    $savedRequest = self::getRequestData();
+    $savedRequest = self::getRequestData([], true);
 
     $where = [];
     if (!empty($savedRequest['request_data']['vendor_db'])) {
@@ -417,6 +417,8 @@ class DefaultController extends SdController
         ($savedRequest['request_data']['price_end'] < $filterPriceEndMax || $filterPriceEndMax == 0) ?
             $savedRequest['request_data']['price_end'] : $filterPriceEndMax,
         'vendors' => $vendors,
+        'vendor_get'=>$savedRequest['request_data']['vendor_get'],
+        'store_get'=>$savedRequest['request_data']['store_get'],
         'vendors_user' => !empty($savedRequest['request_data']['vendor_request']) ? $savedRequest['request_data']['vendor_request'] : false,
         'stores' => $stores,
         'store_user' => isset($savedRequest['request_data']['store_request']) ? $savedRequest['request_data']['store_request'] : [],
@@ -431,7 +433,7 @@ class DefaultController extends SdController
   }
 
   //формируем данные запроса
-  public static function getRequestData($params = [])
+  public static function getRequestData($params = [], $is_filter = false)
   {
     $request = Yii::$app->request;
     $category = isset($params['category']) ? $params['category'] : null;
@@ -440,31 +442,47 @@ class DefaultController extends SdController
     }
 
     $vendorRequest = $request->get('vendor');
+
     if (isset($params['store_id'])) {
       //шоп из роут
       $storeRequest = $params['store_id'];
+      $storeGet=[];
     } else {
-      //из гет может быть в 2 вариантах
-      $storeRequest = $request->get('store_id') ? $request->get('store_id')
-          : ($request->get('store_request') ? $request->get('store_request') : null);
+        //из гет может быть в 2 вариантах
+        $storeGet = $request->get('store_id') ? $request->get('store_id')
+            : ($request->get('store_request') ? $request->get('store_request') : null);
+
+      if($is_filter){
+        $storeRequest =  [];
+      }else{
+        $storeRequest = $storeGet;
+      }
     }
 
     $query = $request->get('query');//поиск
     $month = $request->get('month');//товары месяца
     $profit = $request->get('profit');//товары со скидкой
 
+
     if (isset($params['vendor_id'])) {
       $vendorDb = [$params['vendor_id']];
+      $vendorGet = [];
     } else {
-      if ($vendorRequest) {
-        $vendorDb = array_column(Vendor::items([
-            'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId : false
-        ]), 'id');
-        if (empty($vendorDb)) {
-          throw new \yii\web\NotFoundHttpException;
+      $vendorGet=[];
+        if ($vendorRequest) {
+          $vendorDb = array_column(Vendor::items([
+              'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId : false
+          ]), 'id');
+          if (empty($vendorDb)) {
+            throw new \yii\web\NotFoundHttpException;
+          }
+
+          $vendorGet = $vendorRequest;
+          $vendorRequest = $is_filter?[]:$vendorRequest;
+          $vendorDb = $is_filter?[]:$vendorDb;
         }
-      }
     }
+
     $page = $request->get('page');
     $limit = $request->get('limit');
     $sort_request = $request->get('sort');
@@ -474,7 +492,6 @@ class DefaultController extends SdController
     $priceEndMax = $request->get('price-end-max');
     $priceStart = $priceStart == $priceStartMin ? false : $priceStart;
     $priceEnd = $priceEnd == $priceEndMax ? false : $priceEnd;
-
 
     $sortvars = Product::sortvars();
 
@@ -522,7 +539,9 @@ class DefaultController extends SdController
         'store_id' => isset($params['shop_store']) ? $params['shop_store'] : $storeRequest,//для запроса
         'shop_store' => isset($params['shop_store']) ? $params['shop_store'] : $request->get('shop_store'),//знать откуда шоп - из роут или фильтра
         'store_request' => $storeRequest,//для поиска - или из гет или из роут
+        'store_get'=>$storeGet, //только то что пришло из гета
         'vendor_request' => $vendorRequest,
+        'vendor_get' => $vendorGet,
         'vendor_id' => isset($params['vendor_id']) ? $params['vendor_id'] : $request->get('vendor_id'),
         'vendor_db' => isset($vendorDb) ? $vendorDb : null,
         'sort' => $sort,
