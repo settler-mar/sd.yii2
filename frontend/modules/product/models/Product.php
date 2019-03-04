@@ -897,10 +897,10 @@ class Product extends \yii\db\ActiveRecord
           $cats =[];
           $shops = [];
           do {
-              $prod = Product::find()->from(Product::tableName(). ' p')
-                  ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = p.id')
-                  ->select(['p.id as product_id', 'p.store_id', 'p.vendor_id', 'pc.category_id as category_id', 'discount'])
-                  ->where(['>', 'discount', 0.01])
+              $prod = self::items()
+                  ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = prod.id')
+                  ->select(['prod.id as product_id', 'prod.store_id', 'prod.vendor_id', 'pc.category_id as category_id', 'discount'])
+                  ->andWhere(['>', 'discount', 0.01])
                   ->orderBy(['discount' => SORT_DESC]);
               if (!empty($cats)) {
                   $prod->andWhere(['not in', 'category_id', $cats]);
@@ -921,6 +921,9 @@ class Product extends \yii\db\ActiveRecord
                   break;
               }
           } while ($prod);
+          /*if($debug){
+            d($ids,Yii::$app->params['regions_list']);
+          }*/
           $product->andWhere(['prod.id' => $ids]);
       }
       if (!empty($params['other_brands_of'])) {
@@ -936,34 +939,34 @@ class Product extends \yii\db\ActiveRecord
               //если задан бренд какой НЕ ВЫВОДИТЬ проходим 2 раза: в первый раз по разным шопам, если не набрали limit то второй проход без учёта шопов
               //если задан шоп какой ВЫВОДИТЬ, проходим 2 раза: бренды сначала разные, потом для дополнения без учёта бренда
               do {
-                  $prods = Product::find()->from(Product::tableName() . ' p')
-                      ->select(['p.id', 'p.vendor_id', 'p.store_id'])
+                  $prods = self::items()
+                      ->select(['prod.id', 'prod.vendor_id', 'prod.store_id'])
                       //->where(['not in', 'vendor_id', $brands])
-                      ->andWhere(['not in', 'p.id', $ids])
+                      ->andWhere(['not in', 'prod.id', $ids])
                       ->orderBy(['discount' => SORT_DESC])
                       ->limit(1)
                       ->asArray();
                   if (isset($params['category_id'])) {
-                      $prods->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+                      $prods->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = prod.id')
                           ->andWhere(['ptc.category_id' => $params['category_id']]);
                   }
                   if (isset($params['other_brands_of']['product_id'])) {
-                      $prods->andWhere(['<>', 'p.id', $params['other_brands_of']['product_id']]);
+                      $prods->andWhere(['<>', 'prod.id', $params['other_brands_of']['product_id']]);
                   }
                   //переменные условия запроса
                   if (!empty($noBrand)) {
-                      $prods->andWhere(['not in', 'p.vendor_id', $noBrand]);
+                      $prods->andWhere(['not in', 'prod.vendor_id', $noBrand]);
                   }
                   if (!empty($thisShop)) {
-                      $prods->andWhere(['p.store_id' => $thisShop]);
+                      $prods->andWhere(['prod.store_id' => $thisShop]);
                   }
                   if ($i == 0 && !empty($noBrand)) {
                       //по брендам первый проход - добавляем найденные шопы
-                      $prods->andWhere(['not in', 'p.store_id', $stores]);
+                      $prods->andWhere(['not in', 'prod.store_id', $stores]);
                   }
                   if ($i == 0 && !empty($thisShop)) {
                       //по шопам первый проход - добавляем найденные бренды
-                      $prods->andWhere(['not in', 'p.vendor_id', $brands]);
+                      $prods->andWhere(['not in', 'prod.vendor_id', $brands]);
                   }
                   $prods = $prods->one();
                   if ($prods) {
@@ -986,7 +989,7 @@ class Product extends \yii\db\ActiveRecord
       if (!empty($params['by_visit'])) {
           $visits = UsersVisits::find()
               ->select(['product_id', 'count(*) as count'])
-              ->where(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
+              ->andWhere(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
               ->groupBy(['product_id']);
           $product->innerJoin(['visits' => $visits], 'visits.product_id = prod.id')
               ->orderBy(['count'=>SORT_DESC]);
@@ -997,7 +1000,9 @@ class Product extends \yii\db\ActiveRecord
 
       return empty($params['count']) ? $product->all() : $product->count();
     }, $cache->defaultDuration, $dependency);
-
+    /*if($debug){
+      ddd($products);
+    }*/
     return $products;
   }
 
