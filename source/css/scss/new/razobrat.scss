@@ -264,3 +264,35 @@ b, strong {
     }
   }
 }
+
+.cashback{
+  &-box{
+    display: flex;
+    align-items: center;
+  }
+
+  &_col{
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_row{
+    display: flex;
+  }
+
+  .old{
+    color: #999;
+    text-decoration: line-through;
+    font-size: 1em;
+  }
+
+  &_plus{
+    position: relative !important;
+    margin-right: 5px;
+    font-size: 1.6em;
+  }
+}
+
+.shop-cashback_old_cash{
+  color: #999;
+}

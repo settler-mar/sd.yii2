@@ -245,7 +245,7 @@ class DefaultController extends SdController
     $categoryChildsIds = array_merge([$category->id], $category->childCategoriesId ? $category->childCategoriesId : []);
     $categoryRoute = '/shop';
     $parentTree = $category->parentTree();
-
+//ddd($parentTree);
     if ($category && $parentTree) {
       //$this->params['breadcrumbs'] = [];
       //$category->full_path=array_reverse($category->full_path);
