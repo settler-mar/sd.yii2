@@ -570,8 +570,8 @@ class DefaultController extends SdController
     $cacheName = 'catalog_product:' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
         ($language ? '_' . $language : '') . ($region ? '_' . $region : '') . ($query ? '_query_' . $query : '') .
         ($month ? '_month:' : '') . ($profit ? '_profit_' : '') .
-        ($vendorCash ? ' _vendor:' . implode('_', $vendorCash) : '').
-        ($storeCash ? ' _shop:' . implode('_', $storeCash) : '');
+        ($vendorCash ? ' _vendor:' . Help::multiImplode('_', $vendorCash) : '').
+        ($storeCash ? ' _shop:' . Help::multiImplode('_', $storeCash) : '');
     //ddd($cacheName,$storeCash,$requestData);
     if (isset($params['category'])) {
       $cacheName .= '_category_' . $params['category']->route;
