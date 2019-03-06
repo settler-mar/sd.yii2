@@ -57,16 +57,19 @@ class DefaultController extends SdController
         $request = Yii::$app->request;
         $vendor = $this->vendor;
 
+        if(empty($vendor->id)){
+          throw new \yii\web\NotFoundHttpException;
+        }
         //для запросов получить параметры запроса
         $requestData = ShopController::getRequestData([
             'vendor_id' =>$vendor->id,
-            'url_mask' => 'vendor'
+            'url_mask' => 'vendor/*'
 
         ]);
 
         $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
         $this->params['breadcrumbs'][] = ['label' => $this->vendor->name, 'url' => Help::href('/vendor/'.$this->vendor->route)];
-        Yii::$app->params['url_mask'] = 'vendor';
+        Yii::$app->params['url_mask'] = 'vendor/*';
         $filter = $request->get();
         if (!empty($filter)) {
             $this->params['breadcrumbs'][] = [

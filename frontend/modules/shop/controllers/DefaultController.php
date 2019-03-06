@@ -417,8 +417,8 @@ class DefaultController extends SdController
         ($savedRequest['request_data']['price_end'] < $filterPriceEndMax || $filterPriceEndMax == 0) ?
             $savedRequest['request_data']['price_end'] : $filterPriceEndMax,
         'vendors' => $vendors,
-        'vendor_get'=>$savedRequest['request_data']['vendor_get'],
-        'store_get'=>$savedRequest['request_data']['store_get'],
+        'vendor_get' => $savedRequest['request_data']['vendor_get'],
+        'store_get' => $savedRequest['request_data']['store_get'],
         'vendors_user' => !empty($savedRequest['request_data']['vendor_request']) ? $savedRequest['request_data']['vendor_request'] : false,
         'stores' => $stores,
         'store_user' => isset($savedRequest['request_data']['store_request']) ? $savedRequest['request_data']['store_request'] : [],
@@ -443,20 +443,26 @@ class DefaultController extends SdController
 
     $vendorRequest = $request->get('vendor');
 
+    if (isset($params['shop_store'])) {
+      $params['store_id']=$params['shop_store'];//приходит в таком виде при переходе /ru/shop/svyaznoy
+    }
+
     if (isset($params['store_id'])) {
       //шоп из роут
       $storeRequest = $params['store_id'];
-      $storeGet=[];
+      $storeGet = [];
+      $storeCash=[$params['store_id']];
     } else {
-        //из гет может быть в 2 вариантах
-        $storeGet = $request->get('store_id') ? $request->get('store_id')
-            : ($request->get('store_request') ? $request->get('store_request') : null);
+      //из гет может быть в 2 вариантах
+      $storeGet = $request->get('store_id') ? $request->get('store_id')
+          : ($request->get('store_request') ? $request->get('store_request') : null);
 
-      if($is_filter){
-        $storeRequest =  [];
-      }else{
+      if ($is_filter) {
+        $storeRequest = [];
+      } else {
         $storeRequest = $storeGet;
       }
+      $storeCash=$storeGet;
     }
 
     $query = $request->get('query');//поиск
@@ -468,20 +474,23 @@ class DefaultController extends SdController
       $vendorDb = [$params['vendor_id']];
       $vendorGet = [];
     } else {
-      $vendorGet=[];
-        if ($vendorRequest) {
-          $vendorDb = array_column(Vendor::items([
-              'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId : false
-          ]), 'id');
-          if (empty($vendorDb)) {
-            throw new \yii\web\NotFoundHttpException;
-          }
-
-          $vendorGet = $vendorRequest;
-          $vendorRequest = $is_filter?[]:$vendorRequest;
-          $vendorDb = $is_filter?[]:$vendorDb;
+      $vendorGet = [];
+      $vendorDb = [];
+      if ($vendorRequest) {
+        $vendorDb = array_column(Vendor::items([
+            'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId : false
+        ]), 'id');
+        if (empty($vendorDb)) {
+          throw new \yii\web\NotFoundHttpException;
         }
+
+        $vendorGet = $vendorRequest;
+        $vendorRequest = $is_filter ? [] : $vendorRequest;
+        $vendorDb = $is_filter ? [] : $vendorDb;
+      }
     }
+    $vendorCash = $vendorDb + $vendorGet;
+
 
     $page = $request->get('page');
     $limit = $request->get('limit');
@@ -539,7 +548,7 @@ class DefaultController extends SdController
         'store_id' => isset($params['shop_store']) ? $params['shop_store'] : $storeRequest,//для запроса
         'shop_store' => isset($params['shop_store']) ? $params['shop_store'] : $request->get('shop_store'),//знать откуда шоп - из роут или фильтра
         'store_request' => $storeRequest,//для поиска - или из гет или из роут
-        'store_get'=>$storeGet, //только то что пришло из гета
+        'store_get' => $storeGet, //только то что пришло из гета
         'vendor_request' => $vendorRequest,
         'vendor_get' => $vendorGet,
         'vendor_id' => isset($params['vendor_id']) ? $params['vendor_id'] : $request->get('vendor_id'),
@@ -558,10 +567,12 @@ class DefaultController extends SdController
     ];
     $language = Yii::$app->params['url_prefix'];// Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $region = Yii::$app->params['region'] == 'default' ? false : Yii::$app->params['region'];
-    $cacheName = 'catalog_product_' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
+    $cacheName = 'catalog_product:' . $page . '_' . $limit . '_' . $sortDb . '_' . $order .
         ($language ? '_' . $language : '') . ($region ? '_' . $region : '') . ($query ? '_query_' . $query : '') .
-        ($month ? '_month_' : '') . ($profit ? '_profit_' : '') .
-        ($vendorRequest ? ' _vendor_' . Help::multiImplode('_', $vendorRequest) : '');
+        ($month ? '_month:' : '') . ($profit ? '_profit_' : '') .
+        ($vendorCash ? ' _vendor:' . implode('_', $vendorCash) : '').
+        ($storeCash ? ' _shop:' . implode('_', $storeCash) : '');
+    //ddd($cacheName,$storeCash,$requestData);
     if (isset($params['category'])) {
       $cacheName .= '_category_' . $params['category']->route;
     }
