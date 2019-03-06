@@ -34,7 +34,7 @@ class AccountController extends Controller
           'error'=>Yii::t(
               'account',
               'favorites_'.($product_id ? 'product' : 'shop') . '_<a href="{href}">login</a>_to'. '_' . $type,
-              ['href' => Help::href('#login')]
+              ['href' => Help::href('#login').'" class="modals_open']
           ),
           'title'=>Yii::t('common', 'error')]);
       }
