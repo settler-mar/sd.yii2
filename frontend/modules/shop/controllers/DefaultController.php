@@ -450,12 +450,15 @@ class DefaultController extends SdController
     if (isset($params['store_id'])) {
       //шоп из роут
       $storeRequest = $params['store_id'];
-      $storeGet = [$params['store_id']];
+      $storeGet = [];
       $storeCash=[$params['store_id']];
-    } else {
+    } else if($request->get('store_id')) {
+      $storeGet = $request->get('store_request');
+      $storeRequest = $storeGet;
+      $storeCash=$storeGet;
+    }else{
       //из гет может быть в 2 вариантах
-      $storeGet = $request->get('store_id') ? $request->get('store_id')
-          : ($request->get('store_request') ? $request->get('store_request') : null);
+      $storeGet = $request->get('store_id') ? $request->get('store_id'):null;
 
       if ($is_filter) {
         $storeRequest = [];
@@ -469,12 +472,15 @@ class DefaultController extends SdController
     $month = $request->get('month');//товары месяца
     $profit = $request->get('profit');//товары со скидкой
 
-
     if (isset($params['vendor_id'])) {
       $vendorDb = [$params['vendor_id']];
+      $vendorGet = [];
+      $vendorCash = $vendorDb;
+    } else if($request->get('vendor_id')) {
+      $vendorDb = [$request->get('vendor_id')];
       $vendorGet = $vendorDb;
       $vendorCash = $vendorDb;
-    } else {
+    }else{
       $vendorGet = [];
       $vendorDb = [];
       $vendorCash = [];

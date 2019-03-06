@@ -2,18 +2,16 @@
 
 namespace frontend\modules\product\models;
 
+use common\components\Help;
 use frontend\modules\cache\models\Cache;
 use frontend\modules\params\models\ProductParameters;
 use frontend\modules\params\models\ProductParametersProcessing;
-use frontend\modules\product\models\CatalogStores;
 use frontend\modules\stores\models\Cpa;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\transitions\models\UsersVisits;
-use JBZoo\Image\Image;
-use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\vendor\models\Vendor;
+use JBZoo\Image\Image;
 use yii;
-use common\components\Help;
 
 /**
  * This is the model class for table "cw_admitad_products".
@@ -72,7 +70,7 @@ class Product extends \yii\db\ActiveRecord
         [['modified_time'], 'safe'],
         [['old_price', 'price'], 'number'],
         [['article', 'name', 'image', 'namesort'], 'string', 'max' => 255],
-        ['vendor_id','integer'],
+        ['vendor_id', 'integer'],
         [['url'], 'string'],
         [['currency'], 'string', 'max' => 3],
     ];
@@ -241,10 +239,11 @@ class Product extends \yii\db\ActiveRecord
     return $out;
   }
 
-  public function getVendor(){
-    if(empty($this->vendor_id))return '';
+  public function getVendor()
+  {
+    if (empty($this->vendor_id)) return '';
     $vendor = Vendor::find()
-        ->where(['id'=>$this->vendor_id])
+        ->where(['id' => $this->vendor_id])
         ->one();
     return $vendor->name;
   }
@@ -252,31 +251,32 @@ class Product extends \yii\db\ActiveRecord
   public function getVendorDb()
   {
     if (empty($this->vendor_id)) {
-        return null;
+      return null;
     }
     return $this->hasOne(Vendor::className(), ['id' => 'vendor_id']);
   }
 
 
-  public function setVendor($vendor){
+  public function setVendor($vendor)
+  {
     $cache = Yii::$app instanceof Yii\console\Application ? Yii::$app->cache_console : Yii::$app->cache;
-    $path = 'vendor_by_name_'.$vendor;
-    if(empty($vendor))return null;
+    $path = 'vendor_by_name_' . $vendor;
+    if (empty($vendor)) return null;
     $vendor_id = $cache->getOrSet($path, function () use ($vendor) {
       $vendor_db = Vendor::find()
-          ->where(['name'=>$vendor])
+          ->where(['name' => $vendor])
           ->one();
 
-      if(!$vendor_db){
+      if (!$vendor_db) {
         $vendor_db = new Vendor();
         $vendor_db->name = $vendor;
-        if(!$vendor_db->save()){
+        if (!$vendor_db->save()) {
           ddd($vendor_db->errors);
         };
       } else {
-         if ($vendor_db->synonymVendor) {
-            $vendor_db = $vendor_db->synonymVendor;
-         }
+        if ($vendor_db->synonymVendor) {
+          $vendor_db = $vendor_db->synonymVendor;
+        }
       }
 
       return $vendor_db->id;
@@ -287,10 +287,11 @@ class Product extends \yii\db\ActiveRecord
 
   public function beforeSave($insert)
   {
-      $this->namesort = mb_strtolower(preg_replace('/[^\d\w]/u', '', $this->name));
-      $this->discount = $this->old_price ?  (100 *($this->old_price - $this->price)) / $this->old_price :  0;
-      return parent::beforeSave($insert);
+    $this->namesort = mb_strtolower(preg_replace('/[^\d\w]/u', '', $this->name));
+    $this->discount = $this->old_price ? (100 * ($this->old_price - $this->price)) / $this->old_price : 0;
+    return parent::beforeSave($insert);
   }
+
   /**
    * @param $product
    * @return array
@@ -341,7 +342,7 @@ class Product extends \yii\db\ActiveRecord
       }
 
       if (!isset($product['params_original'])) {
-          $product['params_original'] = null;
+        $product['params_original'] = null;
       }
       $categories = $productDb->makeCategories($product['categoryId'], $product, $config);//массив ид категорий из строки с разделителямиы '/'
 
@@ -510,10 +511,10 @@ class Product extends \yii\db\ActiveRecord
         //временно для определения тех категорий что есть. Убрать конец
 
 
-        $category=$category->toArray();
+        $category = $category->toArray();
         if (!empty($category['synonym'])) {
-          $category=ProductsCategory::find()
-              ->where(['id'=>$category['synonym']])
+          $category = ProductsCategory::find()
+              ->where(['id' => $category['synonym']])
               ->asArray()
               ->one();
         }
@@ -650,140 +651,149 @@ class Product extends \yii\db\ActiveRecord
 
   public static function activeCount($params = [])
   {
-      $cache = \Yii::$app->cache;
-      $dependency = new yii\caching\DbDependency;
-      $dependencyName = 'catalog_product';
-      $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-      $casheName = 'products_active_count'.(!empty($params) ? '_'.Help::multiImplode('_', $params) : '') .
-          ($language ? '_' . $language : '');
-      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $cache = \Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'catalog_product';
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $casheName = 'products_active_count' . (!empty($params) ? '_' . Help::multiImplode('_', $params) : '') .
+        ($language ? '_' . $language : '');
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-      return $cache->getOrSet($casheName, function () use ($params) {
-          $products = self::find()
-              ->where(['available' => [self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]]);
-          if (!empty($params['where'])) {
-              $products->andWhere($params['where']);
-          }
-          return $products->count();
-      }, $cache->defaultDuration, $dependency);
+    return $cache->getOrSet($casheName, function () use ($params) {
+      $products = self::find()
+          ->where(['available' => [self::PRODUCT_AVAILABLE_YES, self::PRODUCT_AVAILABLE_REQUEST]]);
+      if (!empty($params['where'])) {
+        $products->andWhere($params['where']);
+      }
+      return $products->count();
+    }, $cache->defaultDuration, $dependency);
   }
 
-    public static function conditionValues($field, $func, $params=[])
-    {
-        $cache = \Yii::$app->cache;
-        $dependency = new yii\caching\DbDependency;
-        $dependencyName = 'catalog_product';
-        $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
-            Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
-        if(is_string($func))$func=[$func];
-        $casheName = 'products_agregate_' . $field . '_' . implode('_',$func) .
-            (!empty($params) ? Help::multiImplode('_', $params) : '') .
-            (!empty($regionAreas) ? Help::multiImplode('_', $regionAreas) : '') .
-            ($language ? '_' . $language : '');
-        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
-
-        $out = $cache->getOrSet($casheName, function () use ($field, $func, $params, $regionAreas) {
-        $product = self::find()->asArray();
-
-            if ($func[0]=='distinct') {
-              $product->select([$field, 'count(*) as count'])
-                    ->from(self::tableName(). ' p')
-                    ->groupBy($field)
-                    ->orderBy(['count' => SORT_DESC])
-                    ->andWhere(['and', ['<>', $field, ""], ['is not', $field, null]])
-                    ->limit(20);
-                if (!empty($params['category'])) {
-                    $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                        ->where(['ptc.category_id' => $params['category']->childCategoriesId]);
-                }
-                if (!empty($params['where'])) {
-                    $product->andWhere($params['where']);
-                }
-
-                if (!empty($regionAreas)) {
-                    $product->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = p.catalog_id');
-                    $where = [];
-                    foreach ($regionAreas as $area) {
-                        $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
-                    }
-                    $product->andWhere(array_merge([
-                        'or',
-                        ['is', 'cs.regions', null],
-                        ['=', 'JSON_LENGTH(`cs`.`regions`)', 0]
-                    ], $where));
-                }
-
-                return $product->all();
-            }
-
-            $select = [];
-            foreach ($func as $f){
-              $select[]=$f.'('.$field.') as '.$f.'_'.$field;
-            }
-            $product
-                ->from(self::tableName(). ' p')
-                ->select($select)
-                ->where(['and', ['<>', $field, ""], ['is not', $field, null]]);
-            if (!empty($params['category'])) {
-                $product->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId]);
-            }
-            if (!empty($params['where'])) {
-                $product->andWhere($params['where']);
-            }
-            $product = $product->all();
-            return isset($product[0]) ? $product[0] : 0;
-        }, $cache->defaultDuration, $dependency);
-        return $out;
+  public static function conditionValues($field, $func, $params = [])
+  {
+    if(isset($params['where'])){
+      foreach ($params['where'] as $key=>$item){
+        if(is_array($item) && count($item)==0){
+          unset($params['where'][$key]);
+        }
+      }
     }
 
-    public static function usedStores($params = [])
-    {
-        $cache = \Yii::$app->cache;
-        $dependency = new yii\caching\DbDependency;
-        $dependencyName = 'catalog_product';
-        $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-        $casheName = 'product_used_stores_' . ($params ? '_'.Help::multiImplode('_', $params) : '') .
-            ($language ? '_' . $language : '');
-        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    $cache = \Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'catalog_product';
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
+        Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
+    if (is_string($func)) $func = [$func];
+    $casheName = 'products_agregate_' . $field . '_' . implode('_', $func) .
+        (!empty($params) ? Help::multiImplode('_', $params) : '') .
+        (!empty($regionAreas) ? Help::multiImplode('_', $regionAreas) : '') .
+        ($language ? '_' . $language : '');
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-        $out = $cache->getOrSet($casheName, function () use ($params) {
-            $stores = self::find()
-                ->from(self::tableName().' p')
-                ->innerJoin(Stores::tableName(). ' s', 's.uid=p.store_id')
-                ->select(['s.name', 's.uid', 's.priority', 's.logo', 's.route'])
-                ->groupBy(['s.name', 's.uid', 's.priority'])
-                ->where(['s.is_active' => [0, 1]])
-                ->asArray();
-            if (!empty($params['where'])) {
-                $stores->where($params['where']);
-            }
-            if (isset($params['sort'])) {
-                $stores->orderBy($params['sort']);
-            }
-            if (isset($params['category'])) {
-                $stores->innerJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = p.id')
-                    ->andWhere(['ptc.category_id' =>  $params['category']->childCategoriesId()]);
-            }
-            if (isset($params['database'])) {
-                //связь с запросом к продуктам
-                $dataBaseSelect = clone $params['database'];
-                $dataBaseSelect->select(['prod.id']);
-                $dataBaseSelect->orderBy([]);
-                $dataBaseSelect->limit(null);
+    $out = $cache->getOrSet($casheName, function () use ($field, $func, $params, $regionAreas) {
+      $product = self::find()->asArray();
+
+      if ($func[0] == 'distinct') {
+        $product->select([$field, 'count(*) as count'])
+            ->from(self::tableName() . ' p')
+            ->groupBy($field)
+            ->orderBy(['count' => SORT_DESC])
+            ->andWhere(['and', ['<>', $field, ""], ['is not', $field, null]])
+            ->limit(20);
+        if (!empty($params['category'])) {
+          $product->innerJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+              ->where(['ptc.category_id' => $params['category']->childCategoriesId]);
+        }
+        if (!empty($params['where'])) {
+          $product->andWhere($params['where']);
+        }
+
+        if (!empty($regionAreas)) {
+          $product->innerJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
+          $where = [];
+          foreach ($regionAreas as $area) {
+            $where[] = 'JSON_CONTAINS(cs.regions,\'"' . $area . '"\',"$")';
+          }
+          $product->andWhere(array_merge([
+              'or',
+              ['is', 'cs.regions', null],
+              ['=', 'JSON_LENGTH(`cs`.`regions`)', 0]
+          ], $where));
+        }
+
+        return $product->all();
+      }
+
+      $select = [];
+      foreach ($func as $f) {
+        $select[] = $f . '(' . $field . ') as ' . $f . '_' . $field;
+      }
+      $product
+          ->from(self::tableName() . ' p')
+          ->select($select)
+          ->where(['and', ['<>', $field, ""], ['is not', $field, null]]);
+      if (!empty($params['category'])) {
+        $product->innerJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+            ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId]);
+      }
+      if (!empty($params['where'])) {
+        $product->andWhere($params['where']);
+      }
+      $product = $product->all();
+      return isset($product[0]) ? $product[0] : 0;
+    }, $cache->defaultDuration, $dependency);
+    return $out;
+  }
+
+  public static function usedStores($params = [])
+  {
+    $cache = \Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'catalog_product';
+    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $casheName = 'product_used_stores_' . ($params ? '_' . Help::multiImplode('_', $params) : '') .
+        ($language ? '_' . $language : '');
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+
+    $out = $cache->getOrSet($casheName, function () use ($params) {
+      $stores = self::find()
+          ->from(self::tableName() . ' p')
+          ->innerJoin(Stores::tableName() . ' s', 's.uid=p.store_id')
+          ->select(['s.name', 's.uid', 's.priority', 's.logo', 's.route'])
+          ->groupBy(['s.name', 's.uid', 's.priority'])
+          ->where(['s.is_active' => [0, 1]])
+          ->asArray();
+      if (!empty($params['where'])) {
+        $stores->where($params['where']);
+      }
+      if (isset($params['sort'])) {
+        $stores->orderBy($params['sort']);
+      }
+      if (isset($params['category'])) {
+        $stores->innerJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = p.id')
+            ->andWhere(['ptc.category_id' => $params['category']->childCategoriesId()]);
+      }
+      if (isset($params['database'])) {
+        //связь с запросом к продуктам
+        $dataBaseSelect = clone $params['database'];
+        $dataBaseSelect->select(['prod.id']);
+        $dataBaseSelect->orderBy([]);
+        $dataBaseSelect->limit(null);
 //                if (isset($dataBaseSelect->hafi) && in_array('discount', $dataBaseSelect->having)) {
 //                    $dataBaseSelect->addSelect(['if (prod.old_price, (prod.old_price - prod.price)/prod.old_price, 0) as `discount`']);
 //                }
-                $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
-            }
-            if (isset($params['limit'])) {
-                $stores->limit($params['limit']);
-            }
-            return $stores->all();
-        }, $cache->defaultDuration, $dependency);
-        return $out;
-    }
+        $stores->innerJoin(['product' => $dataBaseSelect], 'product.id = p.id');
+      }
+      if (isset($params['limit'])) {
+        $stores->limit($params['limit']);
+      }
+      //var_dump($stores);exit();
+      return $stores->all();
+    }, $cache->defaultDuration, $dependency);
+    return $out;
+  }
 
   protected function clearCache()
   {
@@ -854,148 +864,148 @@ class Product extends \yii\db\ActiveRecord
     return $data;
   }
 
-  public static function top($params = [],$debug = false)
+  public static function top($params = [], $debug = false)
   {
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
     if (!empty($params['by_visit'])) {
-        //именно для этого параметра отдельный dependency
-        $dependencyName = 'catalog_product_by_visit';
+      //именно для этого параметра отдельный dependency
+      $dependencyName = 'catalog_product_by_visit';
     }
     $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $casheName = 'products_top_' . (!empty($params) ? Help::multiImplode('_', $params) : '') . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
 
-    $products = $cache->getOrSet($casheName, function () use ($params,$debug) {
+    $products = $cache->getOrSet($casheName, function () use ($params, $debug) {
       $count = !empty($params['count']) ? null : (isset($params['limit']) ? $params['limit'] : 5);
       $product = self::items()
           ->orderBy([
-              isset($params['sort'])? $params['sort'] : 'modified_time' =>
+              isset($params['sort']) ? $params['sort'] : 'modified_time' =>
                   isset($params['order']) ? $params['order'] : SORT_ASC
           ])
           ->limit($count);
       if (isset($params['where'])) {
-          $product->andWhere($params['where']);
+        $product->andWhere($params['where']);
       }
       if (!empty($params['with_image'])) {
-          $product->andWhere(['is not', 'prod.image', null]);
+        $product->andWhere(['is not', 'prod.image', null]);
       }
       if (isset($params['category_id']) && empty($params['other_brands_of'])) {
-          //если по другим брендам, то запрос по категории задан там
-          $product->leftJoin(ProductsToCategory::tableName(). ' ptc', 'ptc.product_id = prod.id')
+        //если по другим брендам, то запрос по категории задан там
+        $product->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = prod.id')
             ->andWhere(['ptc.category_id' => $params['category_id']]);
       }
       if (!empty($params['user_transition'])) {
-          $product->innerJoin(UsersVisits::tableName(). ' uv', 'uv.product_id = prod.id')
-              ->andWhere(['uv.user_id' => $params['user_transition']]);
+        $product->innerJoin(UsersVisits::tableName() . ' uv', 'uv.product_id = prod.id')
+            ->andWhere(['uv.user_id' => $params['user_transition']]);
       }
       if (!empty($params['by_category'])) {
-          //по одной в категории
-          $ids = [];
-          $cats =[];
-          $shops = [];
-          do {
-              $prod = self::items()
-                  ->innerJoin(ProductsToCategory::tableName().' pc', 'pc.product_id = prod.id')
-                  ->select(['prod.id as product_id', 'prod.store_id', 'prod.vendor_id', 'pc.category_id as category_id', 'discount'])
-                  ->andWhere(['>', 'discount', 0.01])
-                  ->orderBy(['discount' => SORT_DESC]);
-              if (!empty($cats)) {
-                  $prod->andWhere(['not in', 'category_id', $cats]);
-              }
-              /*if (!empty($ids)) {
-                  $prod->andWhere(['not in', 'product_id', $ids]);
-              }*/
-              if (!empty($shops)) {
-                  $prod->andWhere(['not in', 'store_id', $shops]);
-              }
-              $prod = $prod->asArray()->limit(1)->one();
-              if ($prod) {
-                 $ids[] = $prod['product_id'];
-                 $cats[] = $prod['category_id'];
-                 $shops[] = $prod['store_id'];
-              }
-              if (count($ids) >= $count) {
-                  break;
-              }
-          } while ($prod);
-          /*if($debug){
-            d($ids,Yii::$app->params['regions_list']);
+        //по одной в категории
+        $ids = [];
+        $cats = [];
+        $shops = [];
+        do {
+          $prod = self::items()
+              ->innerJoin(ProductsToCategory::tableName() . ' pc', 'pc.product_id = prod.id')
+              ->select(['prod.id as product_id', 'prod.store_id', 'prod.vendor_id', 'pc.category_id as category_id', 'discount'])
+              ->andWhere(['>', 'discount', 0.01])
+              ->orderBy(['discount' => SORT_DESC]);
+          if (!empty($cats)) {
+            $prod->andWhere(['not in', 'category_id', $cats]);
+          }
+          /*if (!empty($ids)) {
+              $prod->andWhere(['not in', 'product_id', $ids]);
           }*/
-          $product->andWhere(['prod.id' => $ids]);
+          if (!empty($shops)) {
+            $prod->andWhere(['not in', 'store_id', $shops]);
+          }
+          $prod = $prod->asArray()->limit(1)->one();
+          if ($prod) {
+            $ids[] = $prod['product_id'];
+            $cats[] = $prod['category_id'];
+            $shops[] = $prod['store_id'];
+          }
+          if (count($ids) >= $count) {
+            break;
+          }
+        } while ($prod);
+        /*if($debug){
+          d($ids,Yii::$app->params['regions_list']);
+        }*/
+        $product->andWhere(['prod.id' => $ids]);
       }
       if (!empty($params['other_brands_of'])) {
-          //по брендам и/иши шопам
-          //если задан бренд - его НЕ ВЫВОДИТЬ, шопы вначале разные, потом для дополнения без учёта шопа
-          //задан шоп - выводить только для него ВЫВОДИТЬ, бренды сначала разные, потом для дополнения без учёта бренда
-          $brands = isset($params['other_brands_of']['vendors_id']) ? $params['other_brands_of']['vendors_id'] : [];//указанный бренд
-          $stores = isset($params['other_brands_of']['stores_id'])  ?  $params['other_brands_of']['stores_id'] : [];//указанный шоп
-          $noBrand = !empty($brands) ? $brands : false;
-          $thisShop = !empty($stores) ? $stores : false;
-          $ids = [];
-          for ($i = 0; $i < 2; $i++) {
-              //если задан бренд какой НЕ ВЫВОДИТЬ проходим 2 раза: в первый раз по разным шопам, если не набрали limit то второй проход без учёта шопов
-              //если задан шоп какой ВЫВОДИТЬ, проходим 2 раза: бренды сначала разные, потом для дополнения без учёта бренда
-              do {
-                  $prods = self::items()
-                      ->select(['prod.id', 'prod.vendor_id', 'prod.store_id'])
-                      //->where(['not in', 'vendor_id', $brands])
-                      ->andWhere(['not in', 'prod.id', $ids])
-                      ->orderBy(['discount' => SORT_DESC])
-                      ->limit(1)
-                      ->asArray();
-                  if (isset($params['category_id'])) {
-                      $prods->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = prod.id')
-                          ->andWhere(['ptc.category_id' => $params['category_id']]);
-                  }
-                  if (isset($params['other_brands_of']['product_id'])) {
-                      $prods->andWhere(['<>', 'prod.id', $params['other_brands_of']['product_id']]);
-                  }
-                  //переменные условия запроса
-                  if (!empty($noBrand)) {
-                      $prods->andWhere(['not in', 'prod.vendor_id', $noBrand]);
-                  }
-                  if (!empty($thisShop)) {
-                      $prods->andWhere(['prod.store_id' => $thisShop]);
-                  }
-                  if ($i == 0 && !empty($noBrand)) {
-                      //по брендам первый проход - добавляем найденные шопы
-                      $prods->andWhere(['not in', 'prod.store_id', $stores]);
-                  }
-                  if ($i == 0 && !empty($thisShop)) {
-                      //по шопам первый проход - добавляем найденные бренды
-                      $prods->andWhere(['not in', 'prod.vendor_id', $brands]);
-                  }
-                  $prods = $prods->one();
-                  if ($prods) {
-                      $brands[] = $prods['vendor_id'];
-                      $ids[] = $prods['id'];
-                      $stores[] = $prods['store_id'];
-                  }
+        //по брендам и/иши шопам
+        //если задан бренд - его НЕ ВЫВОДИТЬ, шопы вначале разные, потом для дополнения без учёта шопа
+        //задан шоп - выводить только для него ВЫВОДИТЬ, бренды сначала разные, потом для дополнения без учёта бренда
+        $brands = isset($params['other_brands_of']['vendors_id']) ? $params['other_brands_of']['vendors_id'] : [];//указанный бренд
+        $stores = isset($params['other_brands_of']['stores_id']) ? $params['other_brands_of']['stores_id'] : [];//указанный шоп
+        $noBrand = !empty($brands) ? $brands : false;
+        $thisShop = !empty($stores) ? $stores : false;
+        $ids = [];
+        for ($i = 0; $i < 2; $i++) {
+          //если задан бренд какой НЕ ВЫВОДИТЬ проходим 2 раза: в первый раз по разным шопам, если не набрали limit то второй проход без учёта шопов
+          //если задан шоп какой ВЫВОДИТЬ, проходим 2 раза: бренды сначала разные, потом для дополнения без учёта бренда
+          do {
+            $prods = self::items()
+                ->select(['prod.id', 'prod.vendor_id', 'prod.store_id'])
+                //->where(['not in', 'vendor_id', $brands])
+                ->andWhere(['not in', 'prod.id', $ids])
+                ->orderBy(['discount' => SORT_DESC])
+                ->limit(1)
+                ->asArray();
+            if (isset($params['category_id'])) {
+              $prods->leftJoin(ProductsToCategory::tableName() . ' ptc', 'ptc.product_id = prod.id')
+                  ->andWhere(['ptc.category_id' => $params['category_id']]);
+            }
+            if (isset($params['other_brands_of']['product_id'])) {
+              $prods->andWhere(['<>', 'prod.id', $params['other_brands_of']['product_id']]);
+            }
+            //переменные условия запроса
+            if (!empty($noBrand)) {
+              $prods->andWhere(['not in', 'prod.vendor_id', $noBrand]);
+            }
+            if (!empty($thisShop)) {
+              $prods->andWhere(['prod.store_id' => $thisShop]);
+            }
+            if ($i == 0 && !empty($noBrand)) {
+              //по брендам первый проход - добавляем найденные шопы
+              $prods->andWhere(['not in', 'prod.store_id', $stores]);
+            }
+            if ($i == 0 && !empty($thisShop)) {
+              //по шопам первый проход - добавляем найденные бренды
+              $prods->andWhere(['not in', 'prod.vendor_id', $brands]);
+            }
+            $prods = $prods->one();
+            if ($prods) {
+              $brands[] = $prods['vendor_id'];
+              $ids[] = $prods['id'];
+              $stores[] = $prods['store_id'];
+            }
 
-                  if (count($ids) >= $count) {
-                      break;
-                  }
+            if (count($ids) >= $count) {
+              break;
+            }
 
-              } while ($prods);
-              if (count($ids) >= $count) {
-                  break;
-              }
+          } while ($prods);
+          if (count($ids) >= $count) {
+            break;
           }
-          $product->andWhere(['prod.id' => $ids]);
+        }
+        $product->andWhere(['prod.id' => $ids]);
       }
       if (!empty($params['by_visit'])) {
-          $visits = UsersVisits::find()
-              ->select(['product_id', 'count(*) as count'])
-              ->andWhere(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
-              ->groupBy(['product_id']);
-          $product->innerJoin(['visits' => $visits], 'visits.product_id = prod.id')
-              ->orderBy(['count'=>SORT_DESC]);
+        $visits = UsersVisits::find()
+            ->select(['product_id', 'count(*) as count'])
+            ->andWhere(['and', ['>', 'product_id', 0], ['>', 'visit_date', time() - 3600 * 24 * 30]])
+            ->groupBy(['product_id']);
+        $product->innerJoin(['visits' => $visits], 'visits.product_id = prod.id')
+            ->orderBy(['count' => SORT_DESC]);
       }
       if (!empty($params['having'])) {
-          $product->having($params['having']);
+        $product->having($params['having']);
       }
 
       return empty($params['count']) ? $product->all() : $product->count();
@@ -1006,40 +1016,40 @@ class Product extends \yii\db\ActiveRecord
     return $products;
   }
 
-    /**
-     * просмотренные юсером
-     * @param $user_id
-     * @return mixed
-     */
+  /**
+   * просмотренные юсером
+   * @param $user_id
+   * @return mixed
+   */
   public static function viewedByUser($user_id, $all = true, $count = false)
   {
-      if (!$user_id) {
-          return null;
-      }
-      //строгие значения для возможности чисить кэш
-      $limit = $all ? 100 : 4;//лимит
-      $count = $count ? 1 : 0;//нужно только количество или товары
-      $cache = \Yii::$app->cache;
-      $dependency = new yii\caching\DbDependency;
-      $dependencyName = 'catalog_product';
-      $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-      $casheName = 'products_viewed_by_user_' . ($language ? $language. '_' : '') .
-          ($count ? 'count' : 'limit_' .$limit) . '_' . $user_id;
-      $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
+    if (!$user_id) {
+      return null;
+    }
+    //строгие значения для возможности чисить кэш
+    $limit = $all ? 100 : 4;//лимит
+    $count = $count ? 1 : 0;//нужно только количество или товары
+    $cache = \Yii::$app->cache;
+    $dependency = new yii\caching\DbDependency;
+    $dependencyName = 'catalog_product';
+    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $casheName = 'products_viewed_by_user_' . ($language ? $language . '_' : '') .
+        ($count ? 'count' : 'limit_' . $limit) . '_' . $user_id;
+    $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-      return $cache->getOrSet($casheName, function () use ($user_id, $limit, $count) {
-          $userVisits = UsersVisits::find()
-              ->select(['product_id', 'max(visit_date) as date'])
-              ->where(['user_id' => $user_id])
-              ->andWhere(['>', 'product_id', 0])
-              ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 3600 * 24 * 30)])
-              ->groupBy(['product_id'])  ;
-          $product = self::items()
-              ->limit($count ? null : $limit)
-              ->innerJoin(['visits' => $userVisits], 'visits.product_id = prod.id')
-              ->orderBy(['visits.date'=>SORT_DESC]);
-          return $count ? $product->count() : $product->all();
-      }, $cache->defaultDuration, $dependency);
+    return $cache->getOrSet($casheName, function () use ($user_id, $limit, $count) {
+      $userVisits = UsersVisits::find()
+          ->select(['product_id', 'max(visit_date) as date'])
+          ->where(['user_id' => $user_id])
+          ->andWhere(['>', 'product_id', 0])
+          ->andWhere(['>', 'visit_date', date('Y-m-d H:i:s', time() - 3600 * 24 * 30)])
+          ->groupBy(['product_id']);
+      $product = self::items()
+          ->limit($count ? null : $limit)
+          ->innerJoin(['visits' => $userVisits], 'visits.product_id = prod.id')
+          ->orderBy(['visits.date' => SORT_DESC]);
+      return $count ? $product->count() : $product->all();
+    }, $cache->defaultDuration, $dependency);
   }
 
   public static function items()
@@ -1047,31 +1057,31 @@ class Product extends \yii\db\ActiveRecord
     $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
         Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
 
-    $query =  self::find()->from(self::tableName() . ' prod')
-        ->leftJoin(Stores::tableName(). ' s', 's.uid = prod.store_id')
-        ->leftJoin(Vendor::tableName(). ' v', 'v.id = prod.vendor_id')
+    $query = self::find()->from(self::tableName() . ' prod')
+        ->leftJoin(Stores::tableName() . ' s', 's.uid = prod.store_id')
+        ->leftJoin(Vendor::tableName() . ' v', 'v.id = prod.vendor_id')
         ->where([
             'and',
             ['prod.available' => [Product::PRODUCT_AVAILABLE_YES, Product::PRODUCT_AVAILABLE_REQUEST]],
             ['s.is_active' => [0, 1]],
         ])
-        ->select(['prod.*', 'prod.currency as product_currency','s.name as store_name', 's.route as store_route',
+        ->select(['prod.*', 'prod.currency as product_currency', 's.name as store_name', 's.route as store_route',
             's.displayed_cashback as displayed_cashback', 's.action_id as action_id',
             's.is_active as store_active', 'v.name as vendor', 'v.route as vendor_route',
             's.currency as store_currency', 's.action_end_date as action_end_date',
             'discount'])
         ->asArray();
     if (!empty($regionAreas)) {
-        $query->innerJoin(CatalogStores::tableName(). ' cs', 'cs.id = prod.catalog_id');
-        $where = [];
-        foreach ($regionAreas as $area) {
-            $where[] = 'JSON_CONTAINS(cs.regions,\'"'.$area.'"\',"$")';
-        }
-        $query->andWhere(array_merge([
-            'or',
-            ['is', 'cs.regions', null],
-            ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
-        ], $where));
+      $query->innerJoin(CatalogStores::tableName() . ' cs', 'cs.id = prod.catalog_id');
+      $where = [];
+      foreach ($regionAreas as $area) {
+        $where[] = 'JSON_CONTAINS(cs.regions,\'"' . $area . '"\',"$")';
+      }
+      $query->andWhere(array_merge([
+          'or',
+          ['is', 'cs.regions', null],
+          ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
+      ], $where));
     }
     return $query;
 
