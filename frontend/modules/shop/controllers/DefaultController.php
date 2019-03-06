@@ -450,7 +450,7 @@ class DefaultController extends SdController
     if (isset($params['store_id'])) {
       //шоп из роут
       $storeRequest = $params['store_id'];
-      $storeGet = [];
+      $storeGet = [$params['store_id']];
       $storeCash=[$params['store_id']];
     } else {
       //из гет может быть в 2 вариантах
@@ -472,7 +472,7 @@ class DefaultController extends SdController
 
     if (isset($params['vendor_id'])) {
       $vendorDb = [$params['vendor_id']];
-      $vendorGet = [];
+      $vendorGet = $vendorDb;
       $vendorCash = $vendorDb;
     } else {
       $vendorGet = [];
@@ -487,9 +487,9 @@ class DefaultController extends SdController
         }
 
         $vendorGet = $vendorRequest;
-        $vendorCash = $vendorRequest;
         $vendorRequest = $is_filter ? [] : $vendorRequest;
         $vendorDb = $is_filter ? [] : $vendorDb;
+        $vendorCash = $vendorRequest;
       }
     }
 
