@@ -473,9 +473,11 @@ class DefaultController extends SdController
     if (isset($params['vendor_id'])) {
       $vendorDb = [$params['vendor_id']];
       $vendorGet = [];
+      $vendorCash = $vendorDb;
     } else {
       $vendorGet = [];
       $vendorDb = [];
+      $vendorCash = [];
       if ($vendorRequest) {
         $vendorDb = array_column(Vendor::items([
             'where' => ['route' => $vendorRequest], 'category' => $category ? $category->childCategoriesId : false
@@ -485,12 +487,11 @@ class DefaultController extends SdController
         }
 
         $vendorGet = $vendorRequest;
+        $vendorCash = $vendorRequest;
         $vendorRequest = $is_filter ? [] : $vendorRequest;
         $vendorDb = $is_filter ? [] : $vendorDb;
       }
     }
-    $vendorCash = $vendorDb + $vendorGet;
-
 
     $page = $request->get('page');
     $limit = $request->get('limit');
