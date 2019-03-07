@@ -9,6 +9,7 @@ use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductsToCategory;
 use frontend\modules\product\models\CatalogStores;
+use frontend\modules\stores\models\Stores;
 
 
 class ProductCacheController extends Controller
@@ -25,6 +26,7 @@ class ProductCacheController extends Controller
 
     protected $areasWhere;
     protected $treeByRoute;
+    protected $categoryList;
 
 
     public function beforeAction($action)
@@ -64,12 +66,7 @@ class ProductCacheController extends Controller
             $this->areasWhere = $this->makeAreasWhere($region['areas']);
 
             try {
-                $categories = ProductsCategory::tree([
-                    'flat' => true,
-                    'is_admin'=>true,
-                    'key'=>'id',
-                    'areas' => $region['areas']
-                ]);
+                $categories = $this->categoryTree(['flat' => true]);
                 $resultCategories = [];
                 foreach ($categories as $categoryId => $category) {
                     $newCategory = [
@@ -78,7 +75,7 @@ class ProductCacheController extends Controller
                         'parent' => $category['parent'],
                         'store_id' => $category['store_id'],
                         'active' => $category['active'],
-                        'children' => isset($category['direct_children_id']) ? $category['direct_children_id'] : null,
+                        'children_ids_direct' => isset($category['direct_children_id']) ? $category['direct_children_id'] : null,
 
                     ];
                     if ($category['active'] == ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES) {
@@ -125,10 +122,8 @@ class ProductCacheController extends Controller
             $this->areasWhere = $this->makeAreasWhere($region['areas']);
 
             try {
-                $categories = ProductsCategory::tree([
-                    'is_admin'=>true,
-                    'areas' => $region['areas']
-                ]);
+                $categories = $this->categoryTree();
+
                 $this->treeByRoute = [];
                 $this->makeTreeByRoute($categories);
 
@@ -314,6 +309,114 @@ class ProductCacheController extends Controller
             ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
             ['is', '`regions`', null],
         ], $areasWhere);
+    }
+
+    /** дерево категорий (или список при $params['flat'] => true)
+     * @param null $params
+     * @return array
+     */
+    protected function categoryTree($params = null)
+    {
+        $categories = $this->getChildrens($params, null, '');
+        if (empty($categories)) {
+            return [];
+        }
+        $children = [];
+        foreach ($categories as $category) {
+            $active = $category['active'] == ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES;
+            if ($active) {
+                $children[$category['id']] = $category;
+            }
+        }
+        if (!empty($children)) {
+            if (!empty($params['flat'])) {
+                return Yii::$app->help->arrayToFlat($children, 'children');
+            }
+            return $children;
+        }
+    }
+
+    /**
+     * @param null $params
+     * @param null $parent
+     * @param string $startRoute
+     * @param array $names
+     * @return array|mixed
+     */
+    protected function getChildrens($params = null, $parent = null, $startRoute = '', $names = [])
+    {
+        $categoryArrays = $this->productsCategoryList();
+        $parent =  (empty($parent)) ? 0 : $parent;
+        $categoryArr = isset($categoryArrays[$parent]) ? $categoryArrays[$parent] : [];
+
+        foreach ($categoryArr as &$item) {
+            $item['full_route'] = trim($startRoute . '/' . $item['route'], '/');
+            $item['names'] = array_merge($names, [$item['name']]);//Названия путей
+            $childs = self::getChildrens($params, $item['id'], $item['full_route'], $item['names']);
+            if (!empty($childs)) {
+                $children = [];
+                $item['children_id'] = []; //все дочерние
+                $item['direct_children_id'] = []; //прямые дочерние
+                foreach ($childs as $child) {
+                    $item['count_all'] += $child['count_all'];
+                    $children[$child['id']] = $child;
+                    $item['children_id'][] = $child['id'];
+                    $item['direct_children_id'][] = $child['id'];
+                    if (!empty($child['children_id'])) {
+                        $item['children_id'] = //дополнили дочерние
+                            yii\helpers\ArrayHelper::merge($child['children_id'], $item['children_id']);
+                    }
+                }
+                if (!empty($children)) {
+                    $item['children'] = $children;
+                }
+            };
+        }
+        return $categoryArr;
+    }
+
+    /**
+     * список родительских категорий
+     * @return array
+     */
+    protected function productsCategoryList()
+    {
+        if (empty($this->categoryList)) {
+            $language = '';
+
+            $categoryArr = ProductsCategory::translated($language, ['id', 'name', 'active', 'route', 'store_id'])
+                ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
+                ->andWhere(['synonym' => null])
+                ->andWhere([
+                    'or',
+                    ['s.is_active' => [0, 1]],//шоп активен
+                    ['s.is_active' => null]
+                ])
+                ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
+                ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
+                ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
+                ->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'route', 'parent'])
+                ->addSelect(['count(ptc.id) as count_all', 'parent']);
+
+            if (!empty($this->areasWhere)) {
+                $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
+                $categoryArr->andWhere($this->areasWhere);
+            }
+
+            $categoryArr = $categoryArr->asArray()->all();
+
+            $out = [];
+            foreach ($categoryArr as $category) {
+                $parentId = !empty($category['parent']) ? $category['parent'] : 0;
+                if (!isset($out[$parentId])) {
+                    $out[$parentId] = [];
+                }
+                $out[$parentId][] = $category;
+            }
+            //массив всех родительских категорий, внутри - его дочерние
+            $this->categoryList = $out;
+        }
+        return $this->categoryList;
     }
 
 }
