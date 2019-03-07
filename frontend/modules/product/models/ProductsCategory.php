@@ -372,13 +372,14 @@ class ProductsCategory extends \yii\db\ActiveRecord
   {
     $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
     $areas = isset($params['is_admin']) && $params['is_admin'] ? [] : Yii::$app->params['location']['areas'];
+    $areas = isset($params['areas']) ? $params['areas'] : $areas;//из админки - прямо задавать
 
     if(!empty($params['flat'])&&$params['flat'])$params['key']='id';
     if(!isset($params['key']))$params['key']='route';
 
     $cacheName =
         'catalog_categories_menu_' .
-        Yii::$app->params['url_prefix'] . ':' .
+        (isset(Yii::$app->params['url_prefix']) ? Yii::$app->params['url_prefix'] : '') . ':' .
         implode('_', $areas) .
         (!empty($params) ? ':' . Help::multiImplode('_', $params) : '');
 
@@ -447,7 +448,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
           $cacheName,
           function () use ($language, $dependency, $areas_where) {
 
-            $categoryArr = self::translated($language, ['id', 'name', 'active', 'route'])
+            $categoryArr = self::translated($language, ['id', 'name', 'active', 'route', 'store_id'])
                 ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
                 ->andWhere(['synonym' => null])
                 ->andWhere([
@@ -492,6 +493,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
       if (!empty($t)) {
         $children = [];
         $item['children_id'] = [];
+        $item['direct_children_id'] = [];
         foreach ($t as $el) {
           $active = $el['active'] == self::PRODUCT_CATEGORY_ACTIVE_YES || empty($params['active_only']);
           $item['count_all'] += ($active ? $el['count_all'] : 0);
@@ -501,6 +503,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
 
           if ($el['count_all'] > 0 && $active) {
             $item['children_id'][] = $el['id'];
+            $item['direct_children_id'][] = $el['id'];
             if (!empty($el['children_id'])) $item['children_id'] =
                 yii\helpers\ArrayHelper::merge($el['children_id'], $item['children_id']);
           }
@@ -768,7 +771,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
   protected static function translated($lang, $attributes = [])
   {
     //общие для всех языков
-    $selectAttributes = ['id', 'route', 'active', 'parent', 'crated_at'];
+    $selectAttributes = ['id', 'route', 'active', 'parent', 'crated_at', 'store_id'];
     //переводимые
     $translatedAttributes = ['name'];
     //атрибуты в запрос

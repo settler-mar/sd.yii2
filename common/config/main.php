@@ -49,6 +49,10 @@ $config = [
         'cache' => [
             'keyPrefix' => 'sd', // уникальный префикс ключей кэша
         ],
+        'cache_shop' => [ //отдельный кэш разделов товаров
+            'class' => 'yii\caching\FileCache',
+            'keyPrefix' => 'shop',
+        ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,

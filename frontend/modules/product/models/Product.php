@@ -682,8 +682,8 @@ class Product extends \yii\db\ActiveRecord
     $cache = \Yii::$app->cache;
     $dependency = new yii\caching\DbDependency;
     $dependencyName = 'catalog_product';
-    $language = Yii::$app->params['url_prefix'];// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
-    $regionAreas = isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
+    $language = isset(Yii::$app->params['url_prefix']) ? Yii::$app->params['url_prefix'] : '';// Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $regionAreas = isset(Yii::$app->params['region']) && isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas']) ?
         Yii::$app->params['regions_list'][Yii::$app->params['region']]['areas'] : false;
     if (is_string($func)) $func = [$func];
     $casheName = 'products_agregate_' . $field . '_' . implode('_', $func) .
