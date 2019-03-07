@@ -4,6 +4,7 @@ namespace frontend\modules\cache\controllers;
 
 use yii;
 use frontend\modules\cache\models\Cache;
+use console\components\ProductCacheMake;
 
 /**
  * Class AdminController
@@ -40,6 +41,9 @@ class AdminController extends \yii\web\Controller
             throw new yii\web\notFoundHTTPException;
         } else {
             Cache::clear();
+
+            Yii::$app->queue->push(new ProductCacheMake());
+
             return json_encode(['html' =>
               '
               <center>

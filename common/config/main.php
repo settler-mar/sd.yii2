@@ -51,6 +51,7 @@ $config = [
         ],
         'cache_shop' => [ //отдельный кэш разделов товаров
             'class' => 'yii\caching\FileCache',
+            'cachePath' => '@common/runtime/cache',
             'keyPrefix' => 'shop',
         ],
         'urlManager' => [

@@ -41,6 +41,7 @@ class ProductCacheController extends Controller
      */
     public function actionIndex()
     {
+        echo "Создание кеш товаров\n";
         $this->actionCategory();
         $this->actionCategoryRoutes();
         $this->actionStore();
