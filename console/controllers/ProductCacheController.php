@@ -18,9 +18,11 @@ class ProductCacheController extends Controller
 
     protected $cacheNames = [
         'products_category' => 'Категории по ID',
+        'products_category_route' => 'Категории по route',
     ];
 
     protected $areasWhere;
+    protected $treeByRoute;
 
 
     public function beforeAction($action)
@@ -90,6 +92,61 @@ class ProductCacheController extends Controller
 
         }
     }
+
+    /**
+     * Кэш - категории продуктов по route
+     */
+    public function actionCategoryRoutes()
+    {
+        $cacheProducts = 'products_category_route';
+        if (!in_array($cacheProducts, array_keys($this->cacheNames))) {
+            ddd('Имя кэш неверно');
+        }
+        $regions = $this->getRegions();
+        foreach ($regions as $regionKey => $region) {
+            $cacheName = $cacheProducts . '_region_'.$regionKey;
+
+            $this->areasWhere = $this->makeAreasWhere($region['areas']);
+
+            try {
+                $categories = ProductsCategory::tree([
+                    'is_admin'=>true,
+                    'areas' => $region['areas']
+                ]);
+                $this->treeByRoute = [];
+                $this->makeTreeByRoute($categories);
+
+                $this->cache->set($cacheName, $this->treeByRoute, $this->cacheDuration);
+                echo $this->cacheNames[$cacheProducts] . ' Регион ' . $region['name'] . ' - ok'."\n";
+            } catch (\Exception $e) {
+                d($e->getMessage(). ' in '.$e->getFile().' on line '.$e->getLine());
+            }
+        }
+    }
+
+    /**
+     * в $this->treeByRoute пишем линейный массив, елементы которого - все узлы дерева категорий со своими дочерними
+     * ключ - полный роут
+     * @param $categories
+     * @return array
+     */
+    protected function makeTreeByRoute($categories)
+    {
+        $newCategories = [];
+        foreach ($categories as $category) {
+            if ($category['active'] != ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES) {
+                continue;
+            }
+            $newCategory = [
+                'id' => $category['id'],
+                'children' => !empty($category['children']) ? $this->makeTreeByRoute($category['children']) : null,
+            ];
+            $this->treeByRoute[$category['full_route']] = $newCategory;
+            $newCategories[$category['full_route']] = $newCategory;
+        }
+        return $newCategories;
+    }
+
 
     /**
      * отдельный метод - на случай если нужно будет что-то изменить
