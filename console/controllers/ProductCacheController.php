@@ -19,6 +19,8 @@ class ProductCacheController extends Controller
     protected $cacheNames = [
         'products_category' => 'Категории по ID',
         'products_category_route' => 'Категории по route',
+        'products_vendors' => 'Список вендоров',
+        'products_stores' => 'Список шопов',
     ];
 
     protected $areasWhere;
@@ -32,6 +34,17 @@ class ProductCacheController extends Controller
         }
         $this->cache = Yii::$app->cache_shop;
         return parent::beforeAction($action);
+    }
+
+    /**
+     * Кеш - все
+     */
+    public function actionIndex()
+    {
+        $this->actionCategory();
+        $this->actionCategoryRoutes();
+        $this->actionStore();
+        $this->actionVendor();
     }
 
      /**
@@ -73,10 +86,12 @@ class ProductCacheController extends Controller
                         $newCategory['full_route'] = $category['full_route'];
                         $newCategory['count'] = $category['count_all'];
                         $newCategory['children_ids'] = isset($category['children_id']) ? $category['children_id'] : null;
-                        $categoryProps = $this->categoryProperties(array_merge(
-                            [$category['id']],
-                            isset($category['children_id']) ? $category['children_id'] : []
-                        ));
+                        $categoryProps = $this->productsProperties([
+                            'category' => array_merge(
+                                [$category['id']],
+                                isset($category['children_id']) ? $category['children_id'] : []
+                            )
+                        ]);
                         $newCategory['price_min'] = $categoryProps['prices']['min'];
                         $newCategory['price_max'] = $categoryProps['prices']['max'];
                         $newCategory['vendor_list'] = $categoryProps['vendors'];
@@ -125,6 +140,92 @@ class ProductCacheController extends Controller
     }
 
     /**
+     * Кэш - список шопов
+     */
+    public function actionStore()
+    {
+        $cacheStores = 'products_stores';
+        if (!in_array($cacheStores, array_keys($this->cacheNames))) {
+            ddd('Имя кэш неверно');
+        }
+        $regions = $this->getRegions();
+        foreach ($regions as $regionKey => $region) {
+            $cacheName = $cacheStores . '_region_' . $regionKey;
+
+            $this->areasWhere = $this->makeAreasWhere($region['areas']);
+
+            try {
+                $storesResult = [];
+                $query = Product::find()
+                    ->from(Product::tableName() . ' p')
+                    ->select(['store_id'])
+                    ->groupBy('store_id')
+                    ->asArray();
+                if (!empty($this->areasWhere)) {
+                    $query->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id')
+                        ->andWhere($this->areasWhere);
+                }
+                $stores = $query->all();
+                foreach ($stores as $store) {
+                    $properties = $this->productsProperties(['store_id' => $store['store_id']]);
+                    $storesResult[$store['store_id']] = [
+                        'price_min' => $properties['prices']['min'],
+                        'price_max' => $properties['prices']['max'],
+                        'vendor_list' => $properties['vendors']
+                    ];
+                }
+                $this->cache->set($cacheName, $storesResult, $this->cacheDuration);
+                echo $this->cacheNames[$cacheStores] . ' Регион ' . $region['name'] . ' - ok'."\n";
+            } catch (\Exception $e) {
+                d($e->getMessage(). ' in '.$e->getFile().' on line '.$e->getLine());
+            }
+        }
+    }
+
+    /**
+     * Кэш - список вендоров
+     */
+    public function actionVendor()
+    {
+        $cacheStores = 'products_vendors';
+        if (!in_array($cacheStores, array_keys($this->cacheNames))) {
+            ddd('Имя кэш неверно');
+        }
+        $regions = $this->getRegions();
+        foreach ($regions as $regionKey => $region) {
+            $cacheName = $cacheStores . '_region_' . $regionKey;
+
+            $this->areasWhere = $this->makeAreasWhere($region['areas']);
+
+            try {
+                $vendorsResult = [];
+                $query = Product::find()
+                    ->from(Product::tableName() . ' p')
+                    ->select(['vendor_id'])
+                    ->groupBy('vendor_id')
+                    ->asArray();
+                if (!empty($this->areasWhere)) {
+                    $query->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id')
+                        ->andWhere($this->areasWhere);
+                }
+                $vendors = $query->all();
+                foreach ($vendors as $vendor) {
+                    $properties = $this->productsProperties(['vendor_id' => $vendor['vendor_id']]);
+                    $vendorsResult[$vendor['vendor_id']] = [
+                        'price_min' => $properties['prices']['min'],
+                        'price_max' => $properties['prices']['max'],
+                        'stores_list' => $properties['stores'],
+                    ];
+                }
+                $this->cache->set($cacheName, $vendorsResult, $this->cacheDuration);
+                echo $this->cacheNames[$cacheStores] . ' Регион ' . $region['name'] . ' - ok'."\n";
+            } catch (\Exception $e) {
+                d($e->getMessage(). ' in '.$e->getFile().' on line '.$e->getLine());
+            }
+        }
+    }
+
+    /**
      * в $this->treeByRoute пишем линейный массив, елементы которого - все узлы дерева категорий со своими дочерними
      * ключ - полный роут
      * @param $categories
@@ -158,31 +259,38 @@ class ProductCacheController extends Controller
     }
 
     /**
-     * для каждой активной категории
      * @param $categories
      * @return array
      */
-    protected function categoryProperties($categories)
+    protected function productsProperties($params = [])
     {
-        $queryStore = Product::find()
+        $query = Product::find()
             ->from(Product::tableName().' p')
-            ->leftJoin(ProductsToCategory::tableName().' pc', 'p.id = pc.product_id')
-            ->where(['pc.category_id' => $categories])
-            ->asArray();
 
+            ->asArray();
+        if (!empty($params['category'])) {
+            $query->leftJoin(ProductsToCategory::tableName().' pc', 'p.id = pc.product_id')
+            ->andWhere(['pc.category_id' => $params['category']]);
+        }
+        if (!empty($params['store_id'])) {
+            $query->andWhere(['p.store_id' => $params['store_id']]);
+        }
+        if (!empty($params['vendor_id'])) {
+            $query->andWhere(['p.vendor_id' => $params['vendor_id']]);
+        }
         if (!empty($this->areasWhere)) {
-            $queryStore->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id')
+            $query->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id')
                 ->andWhere($this->areasWhere);
         }
-        $queryCount = clone $queryStore;
-        $queryVendor = clone $queryStore;
-        $queryCount = $queryCount->select(['max(price) as max', 'min(price) as min'])->all();
-        $queryStore = $queryStore->select(['store_id'])->groupBy('store_id')->all();
-        $queryVendor = $queryVendor->select(['vendor_id'])->groupBy('vendor_id')->all();
+        $queryCount = clone $query;
+        $queryVendor = clone $query;
+        $resultCount = $queryCount->select(['max(price) as max', 'min(price) as min'])->all();
+        $resultStore = $query->select(['store_id'])->groupBy('store_id')->all();
+        $resultVendor = $queryVendor->select(['vendor_id'])->groupBy('vendor_id')->all();
         return [
-            'prices' => $queryCount[0],
-            'stores' => array_column($queryStore, 'store_id'),
-            'vendors' => array_column($queryVendor, 'vendor_id'),
+            'prices' => $resultCount[0],
+            'stores' => array_column($resultStore, 'store_id'),
+            'vendors' => array_diff(array_column($resultVendor, 'vendor_id'), [null]),
         ];
     }
 
