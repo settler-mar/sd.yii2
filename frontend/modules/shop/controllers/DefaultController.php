@@ -229,6 +229,7 @@ class DefaultController extends SdController
     if ($requestData['request_data']['page'] > 1) {
       $this->params['breadcrumbs'][] = Yii::t('main', 'breadcrumbs_page') . ' ' . $requestData['request_data']['page'];
     }
+    $storesData['filter']['query'] = isset($requestData['request_data']['query']) ? $requestData['request_data']['query'] : '';
 
     return $this->render('category', $storesData);
   }
@@ -453,12 +454,12 @@ class DefaultController extends SdController
       $storeGet = [];
       $storeCash=[$params['store_id']];
     } else if($request->get('store_id')) {
-      $storeGet = $request->get('store_request');
+      $storeGet = $request->get('store_id');
       $storeRequest = $storeGet;
       $storeCash=$storeGet;
-    }else{
+    } else {
       //из гет может быть в 2 вариантах
-      $storeGet = $request->get('store_id') ? $request->get('store_id'):null;
+      $storeGet = $request->get('store_id') ? $request->get('store_id') : null;
 
       if ($is_filter) {
         $storeRequest = [];
@@ -600,6 +601,14 @@ class DefaultController extends SdController
     if (isset($requestData['store_request'])) {
       $where['store_id'] = $requestData['store_request'];
     }
+    if (!empty($requestData['profit'])) {
+          $where[] = ['>', 'discount', 0.5];
+    }
+    if (!empty($requestData['query'])) {
+       $sql = 'SELECT * FROM products WHERE match(\'' . $requestData['query'] . '\') LIMIT 1000';//;$requestData[1000];
+       $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
+       $where['id'] = $ids;
+    }
     $pricesResult = Product::conditionValues(
         'price',
         ['min', 'max'],
@@ -648,9 +657,7 @@ class DefaultController extends SdController
           ->andWhere(['pc.category_id' => $category->childCategoriesId()]);
     }
     if (!empty($requestData['query'])) {
-      $sql = 'SELECT * FROM products WHERE match(\'' . $requestData['query'] . '\') LIMIT 1000';//;$requestData[1000];
       $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
-
       $querydb->andWhere(['prod.id' => $ids]);
     }
 

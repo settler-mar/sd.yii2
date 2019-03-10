@@ -47,7 +47,7 @@
             </div>
           {% endif %}
 
-          {% if filter.vendors|length >1 %}
+          {% if filter.vendors|length >0 %}
             {% set show_filter = true %}
             <div
                 class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half product-filter {% if filter.vendors|length >10 %}accordion{% endif %} ">
@@ -81,7 +81,7 @@
             </div>
           {% endif %}
 
-          {% if filter.stores|length >1 %}
+          {% if filter.stores|length > 0 %}
             {% set show_filter = true %}
             <div
                 class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half product-filter {% if filter.stores|length >10 %}accordion{% endif %}">
