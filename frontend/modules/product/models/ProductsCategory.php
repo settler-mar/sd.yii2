@@ -429,7 +429,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  private static function getChildrens($params=null, $parent, $language=false, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
+  private static function getChildrens($params=null, $parent, $language=false, $areas_where, $cacheName, $max_level = 200, $start_route = '', $names = [])
   {
     if ($max_level == 0) return false;
 
