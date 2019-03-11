@@ -1,0 +1,142 @@
+{% if products_top %}
+  <section class="margin">
+    <h2>{{ t('shop', 'produtct_hits_in')~' '~month(null, 0, 1) }}</h2>
+    <div class="shops catalog-stores_list-product">
+      {% for product in products_top %}
+        {% include 'parts/products/product.twig' %}
+      {% endfor %}
+      <div class="catalog_products_item shop shop-empty"></div>
+      <div class="catalog_products_item shop shop-empty"></div>
+      <div class="catalog_products_item shop shop-empty"></div>
+    </div>
+    <div class="align-center">
+      <a target="_blank" rel="noopener noreferrer nofollow"
+         href="{{ _href('/search/product?module=product&month=1')|raw }}"
+         class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
+    </div>
+  </section>
+{% endif %}
+
+    {% if posts|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'best_in_blog')|raw }}</h2>
+          <div class="flex-line flex-wrap tablets_flex-col instruction-list">
+            {% include '@frontend/views/parts/blog_posts.twig' %}
+          </div>
+          <div class="align-center">
+            <a target="_blank" rel="noopener noreferrer nofollow" href="https://blog.secretdiscounter.ru/"
+               class="btn btn-transform" target="_blank" rel="nofollow noopener noreferrer">
+              {{ t('shop', 'view_all_({count})', {'count': posts_count})|raw }} →
+            </a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if stores|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'popular_stores')|raw }}</h2>
+          <div class="shops">
+            {% for store in stores %}
+              {% include 'parts/products/shop.twig' %}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+          </div>
+          <div class="align-center">
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/stores')|raw }}"
+               class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': stores_count})|raw }} →</a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if most_profitable|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'most_profitable')|raw }}</h2>
+          {% set products = most_profitable %}
+          {% include('parts/products/other_products.twig') %}
+          <div class="align-center">
+            <a target="_blank" rel="noopener noreferrer nofollow"
+               href="{{ _href('/search/product?profit=1&sort=discount')|raw }}"
+               class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': most_profitable_count})|raw }}
+              →</a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if brands|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'popular_brand')|raw }}</h2>
+          <div class="shops">
+            {% for vendor in brands %}
+              {% include 'parts/products/vendor.twig' %}
+            {% endfor %}
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+            <div class="shop shop-empty"></div>
+          </div>
+          <div class="align-center">
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/shop')|raw }}"
+               class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': brands_count})|raw }} →</a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if visited|length %}
+      <section class="margin">
+        <div class="page-wrap">
+          <h2 class="content-header">{{ t('shop', 'viewed_products')|raw }}</h2>
+          <div class="shops catalog-stores_list-product">
+            {% for product in visited %}
+              {% include 'parts/products/product.twig' %}
+            {% endfor %}
+            <div class="catalog_products_item shop shop-empty"></div>
+            <div class="catalog_products_item shop shop-empty"></div>
+            <div class="catalog_products_item shop shop-empty"></div>
+
+          </div>
+          <div class="align-center">
+            <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/account/viewed-products')|raw }}"
+               class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': visited_count})|raw }} →</a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+<section class="margin">
+  <div class="page-wrap gray-box round-box-mini">
+    <h2 class="content-header">{{ t('main', 'reviews_about_us')|raw }}</h2>
+    <div class="scroll_box ">
+      {% set not_admin_coment = true %}
+      {% for review in top_reviews %}
+        {% include 'parts/comment.twig' %}
+      {% endfor %}
+    </div>
+    <div class="align-center">
+      <a target="_blank" rel="noopener noreferrer nofollow" href="{{ _href('/reviews') }}"
+         class="btn btn-transform">{{ t('shop', 'all_reviews_({count})', {'count':reviews_count})|raw }}</a>
+    </div>
+  </div>
+</section>
+
+{% include ('index/advantages_line_second.twig') %}
+
+    {% if additional_content %}
+      <div class="catalog_category-down-description sd_content">
+        {{ additional_content|raw }}
+      </div>
+    {% endif %}

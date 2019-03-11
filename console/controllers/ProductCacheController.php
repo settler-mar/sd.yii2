@@ -14,7 +14,6 @@ use yii\helpers\Console;
 class ProductCacheController extends Controller
 {
   protected $cache;
-  protected $cacheDuration = 2592000;//1 месяц
 
   protected $cacheNames = [
       'products_category' => 'Категории по ID',
@@ -22,6 +21,8 @@ class ProductCacheController extends Controller
       'products_vendors' => 'Список вендоров',
       'products_stores' => 'Список шопов',
   ];
+
+  protected $cacheDuration = 2592000;//1 месяц
 
     protected $areasWhere;
     protected $treeByRoute;
@@ -60,42 +61,57 @@ class ProductCacheController extends Controller
     }
     $regions = $this->getRegions();
     foreach ($regions as $regionKey => $region) {
-      $cacheName = $cacheProducts . '_region_' . $regionKey;
+      $cacheName = $cacheProducts . (!empty($regionKey)?'_region_' . $regionKey:'');
       $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
+      try {
+        if(true) {
+          $categories=[];
+          ProductsCategory::flat([
+              'areas' => empty($region['areas']) ? [] : $region['areas'],
+              'language' => 'ru'
+          ],$categories);
+        }else {
+          $categories = ProductsCategory::tree([
+              'flat' => true,
+              'is_admin' => true,
+              'key' => 'id',
+              'areas' => empty($region['areas']) ? [] : $region['areas'],
+              'language' => empty($region['langDefault']) ? 'ru' : $region['langDefault']
+          ]);
+        }
 
-            try {
-                $categories = $this->categoryTree(['flat' => true]);
-                $resultCategories = [];
-                foreach ($categories as $categoryId => $category) {
-                    $newCategory = [
-                        'id' => $category['id'],
-                        'name' => $category['name'],
-                        'parent' => $category['parent'],
-                        'store_id' => $category['store_id'],
-                        'active' => $category['active'],
-                        'children_ids_direct' => isset($category['direct_children_id']) ? $category['direct_children_id'] : null,
-
+        $resultCategories = [];
+        foreach ($categories as $categoryId => $category) {
+          $newCategory = [
+              'id' => $category['id'],
+              'name' => $category['name'],
+              'parent' => $category['parent'],
+              'store_id' => $category['store_id'],
+              'active' => $category['active'],
+              'children' => isset($category['children']) ? $category['children'] : null,
           ];
           if ($category['active'] == ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES) {
             $newCategory['route'] = $category['route'];
             $newCategory['names'] = $category['names'];
             $newCategory['full_route'] = $category['full_route'];
             $newCategory['count'] = $category['count_all'];
-            $newCategory['children_ids'] = isset($category['children_id']) ? $category['children_id'] : null;
+            $newCategory['children_ids'] = isset($category['children_ids']) ? $category['children_ids'] : null;
+
+            $doc_ids=isset($category['children_id']) ? $category['children_id'] : [];
+            $doc_ids[]=$category['id'];
             $categoryProps = $this->productsProperties([
-                'category' => array_merge(
-                    [$category['id']],
-                    isset($category['children_id']) ? $category['children_id'] : []
-                )
+                'category' => $doc_ids
             ]);
             $newCategory['price_min'] = $categoryProps['prices']['min'];
             $newCategory['price_max'] = $categoryProps['prices']['max'];
+            $newCategory['count'] = $categoryProps['prices']['count'];
             $newCategory['vendor_list'] = $categoryProps['vendors'];
             $newCategory['stores_list'] = $categoryProps['stores'];
           }
           $resultCategories[$categoryId] = $newCategory;
         }
         $this->cache->set($cacheName, $resultCategories, $this->cacheDuration);
+
         echo $this->timeStamp().$this->cacheNames[$cacheProducts] . ' Регион ' . $region['name'] . ' - ok' . "\n";
       } catch (\Exception $e) {
         d($e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
@@ -114,7 +130,7 @@ class ProductCacheController extends Controller
     }
     $regions = $this->getRegions();
     foreach ($regions as $regionKey => $region) {
-      $cacheName = $cacheProducts . '_region_' . $regionKey;
+      $cacheName = $cacheProducts . (!empty($regionKey)?'_region_' . $regionKey:'');
 
       $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
 
@@ -122,11 +138,13 @@ class ProductCacheController extends Controller
         $categories = ProductsCategory::tree([
             'is_admin' => true,
             'areas' => empty($region['areas']) ? [] : $region['areas'],
+            'language' => empty($region['langDefault']) ? 'ru' : $region['langDefault']
         ]);
         $this->treeByRoute = [];
-        $this->makeTreeByRoute($categories);
+        $data = $this->makeTreeByRoute($categories);
 
-        $this->cache->set($cacheName, $this->treeByRoute, $this->cacheDuration);
+        $this->cache->set($cacheName, $data, $this->cacheDuration);
+        //$this->cache->set($cacheName, $this->treeByRoute, $this->cacheDuration);
         echo $this->timeStamp().$this->cacheNames[$cacheProducts] . ' Регион ' . $region['name'] . ' - ok' . "\n";
       } catch (\Exception $e) {
         d($e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
@@ -148,7 +166,7 @@ class ProductCacheController extends Controller
     }
     $regions = $this->getRegions();
     foreach ($regions as $regionKey => $region) {
-      $cacheName = $cacheStores . '_region_' . $regionKey;
+      $cacheName = $cacheStores . (!empty($regionKey)?'_region_' . $regionKey:'');
 
       $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
 
@@ -169,11 +187,12 @@ class ProductCacheController extends Controller
           $storesResult[$store['store_id']] = [
               'price_min' => $properties['prices']['min'],
               'price_max' => $properties['prices']['max'],
+              'count' => $properties['prices']['count'],
               'vendor_list' => $properties['vendors']
           ];
         }
         $this->cache->set($cacheName, $storesResult, $this->cacheDuration);
-        echo $this->timeStamp().$this->cacheNames[$cacheStores] . ' Регион ' . $region['name'] . ' - ok' . "\n";
+        echo $this->timeStamp().$this->cacheNames[$cacheStores] .' Регион ' . $region['name'] . ' - ok' . "\n";
       } catch (\Exception $e) {
         d($e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
       }
@@ -191,7 +210,7 @@ class ProductCacheController extends Controller
     }
     $regions = $this->getRegions();
     foreach ($regions as $regionKey => $region) {
-      $cacheName = $cacheStores . '_region_' . $regionKey;
+      $cacheName = $cacheStores . (empty($regionKey)?'_region_' . $regionKey:'');
 
       $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
 
@@ -241,7 +260,7 @@ class ProductCacheController extends Controller
           'children' => !empty($category['children']) ? $this->makeTreeByRoute($category['children']) : null,
       ];
       $this->treeByRoute[$category['full_route']] = $newCategory;
-      $newCategories[$category['full_route']] = $newCategory;
+      $newCategories[$category['route']] = $newCategory;
     }
     return $newCategories;
   }
@@ -287,7 +306,7 @@ class ProductCacheController extends Controller
     }
     $queryCount = clone $query;
     $queryVendor = clone $query;
-    $resultCount = $queryCount->select(['max(price) as max', 'min(price) as min'])->all();
+    $resultCount = $queryCount->select(['max(price) as max', 'min(price) as min','count(p.id) as count'])->all();
     $resultStore = $query->select(['store_id'])->groupBy('store_id')->all();
     $resultVendor = $queryVendor->select(['vendor_id'])->groupBy('vendor_id')->all();
     return [

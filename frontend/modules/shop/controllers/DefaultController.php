@@ -124,7 +124,8 @@ class DefaultController extends SdController
     $data['reviews_count'] = Reviews::find()->count();
     $data["favorites_ids"] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
-    return $this->render('index', $data);
+    $data["content_tpl"] = '_index';
+    return $this->render('base', $data);
   }
 
   public function actionCategory()

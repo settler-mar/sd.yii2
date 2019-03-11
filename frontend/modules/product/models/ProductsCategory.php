@@ -161,8 +161,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
       if (!$this->activeTree) {
         $this->activeTree = self::tree([
             'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]],
-            'flat'=>true
-            ]);
+            'flat' => true
+        ]);
       }
       $parents = [];
       self::getParentsArr($this->activeTree, $this->id, $parents);
@@ -192,17 +192,18 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return implode($mode == 1 ? '/' : ' / ', $out);
   }
 
-  public function getFullRoute(){
+  public function getFullRoute()
+  {
     if ($this->parentTree === false) {
       if (!$this->activeTree) {
         $this->activeTree = self::tree([
             'where' => ['active' => [ProductsCategory::PRODUCT_CATEGORY_ACTIVE_YES]],
-            'flat'=>true
+            'flat' => true
         ]);
       }
     }
-    return isset($this->activeTree[$this->id])?
-        $this->activeTree[$this->id]['full_route']:
+    return isset($this->activeTree[$this->id]) ?
+        $this->activeTree[$this->id]['full_route'] :
         '';
   }
 
@@ -367,15 +368,14 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param array $params
    * @return mixed
    */
-
   public static function tree($params = [])
   {
-    $language = Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+    $language = !empty($params['language']) ? $params['language'] :
+        (Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language);
     $areas = isset($params['is_admin']) && $params['is_admin'] ? [] : Yii::$app->params['location']['areas'];
     $areas = isset($params['areas']) ? $params['areas'] : $areas;//из админки - прямо задавать
-
-    if(!empty($params['flat'])&&$params['flat'])$params['key']='id';
-    if(!isset($params['key']))$params['key']='route';
+    if (!empty($params['flat']) && $params['flat']) $params['key'] = 'id';
+    if (!isset($params['key'])) $params['key'] = 'route';
 
     $cacheName =
         'catalog_categories_menu_' .
@@ -416,8 +416,8 @@ class ProductsCategory extends \yii\db\ActiveRecord
             }
           }
           if (!empty($children)) {
-            if(isset($params['flat'])&&$params['flat']){
-              return Yii::$app->help->arrayToFlat($children,'children');
+            if (isset($params['flat']) && $params['flat']) {
+              return Yii::$app->help->arrayToFlat($children, 'children');
               //return $categoryArr;
             }
             return $children;
@@ -430,12 +430,109 @@ class ProductsCategory extends \yii\db\ActiveRecord
     return $out;
   }
 
-  private static function getChildrens($params=null, $parent, $language=false, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
+  /**
+   * список категорий
+   * @param array $params
+   * @return mixed
+   */
+  public static function flat($params = [],  &$out = [], $parent = 0, $areas_where = false,$language='',$path='')
+  {
+
+    if($areas_where==false) {
+      $language = !empty($params['language']) ? $params['language'] :
+          (Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language);
+      if ($language == 'ru') $language = false;
+
+      $areas = isset($params['areas']) ? $params['areas'] : [];//из админки - прямо задавать
+
+      $areas_where = [];
+      if (!empty($areas)) {
+        foreach ($areas as $area) {
+          $areas_where[] = 'JSON_CONTAINS(cs.regions,\'"' . $area . '"\',"$")';
+        }
+      }
+
+      $areas_where = array_merge([
+          'or',
+          ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
+          ['is', '`regions`', null],
+      ], $areas_where);
+    }
+
+    $categoryArr = self::translated($language, ['id', 'name', 'active', 'route', 'store_id'])
+        ->orderBy(['menu_index' => SORT_ASC, 'name' => SORT_ASC])
+        ->andWhere(['synonym' => null])
+        ->andWhere([
+            'or',
+            ['s.is_active' => [0, 1]],//шоп активен
+            ['s.is_active' => null]
+        ])
+        ->leftJoin(ProductsToCategory::tableName() . ' ptc', 'pc.id = ptc.category_id')
+        ->leftJoin(Product::tableName() . ' p', 'p.id = ptc.product_id')
+        ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
+        ->groupBy(['pc.id', 'pc.name', 'pc.parent', 'pc.active', 'route', 'parent'])
+        ->addSelect(['count(ptc.id) as count_all', 'pc.parent']);
+
+    if(!$parent){
+      $categoryArr->andWhere([
+          'or',
+          ['pc.parent'=>$parent],
+          ['pc.parent'=>null]
+      ]);
+    }else{
+      $categoryArr->andWhere(['pc.parent'=>$parent]);
+    }
+
+    if (!empty($areas_where)) {
+      $categoryArr->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id');
+      $categoryArr->andWhere($areas_where);
+    }
+
+    $categoryArr = $categoryArr->asArray()->all();
+    //$categoryArr = yii\helpers\ArrayHelper::index($categoryArr, 'id');
+
+    $categorySum = [
+        'children' =>[],
+        'children_ids' =>[],
+        'count'=>0,
+    ];
+    foreach ($categoryArr as $category){
+      $category['full_route']=trim($path.'/'.$category['route'],'/');
+      $cat = self::flat($params = [], $out , $category['id'], $areas_where,$language,$category['full_route']);
+      $category['count_all']=$category['count_all']*1+$cat['count'];
+
+      $categorySum['count']+=$category['count_all'];
+
+      $categorySum['children'][]=$category['id'];
+      $categorySum['children_ids'][]=$category['id'];
+      $categorySum['children_ids']=array_merge($categorySum['children_ids'],$cat['children_ids']);
+
+      $category['children']=$cat['children'];
+      $category['children_ids']=$cat['children_ids'];
+      $category+=$cat;
+
+      $category['names'] = yii\helpers\ArrayHelper::map(
+          LgProductsCategory::find()
+          ->where(['category_id'=>$category['id']])
+          ->select(['language','name'])
+          ->asArray()
+          ->all(),
+          'language',
+          'name'
+          );
+
+      $out[$category['id']]=$category;
+    }
+
+    return $parent==0?$out:$categorySum;
+  }
+
+  private static function getChildrens($params = null, $parent, $language = false, $areas_where, $cacheName, $max_level = 20, $start_route = '', $names = [])
   {
     if ($max_level == 0) return false;
 
-    $language = $language?$language:(
-        Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language
+    $language = $language ? $language : (
+    Yii::$app->language == Yii::$app->params['base_lang'] ? false : Yii::$app->language
     );
 
     if (!isset(Yii::$app->params[$cacheName])) {
@@ -606,7 +703,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
     $category = $cache->getOrSet($casheName, function () use ($route, $language, $params) {
       $tree = self::tree($params);
 
-      if(!isset($tree[$route[0]])&&isset($tree[$route[count($route)-1]])){
+      if (!isset($tree[$route[0]]) && isset($tree[$route[count($route) - 1]])) {
         $route = array_reverse($route);
       }
 
@@ -742,10 +839,11 @@ class ProductsCategory extends \yii\db\ActiveRecord
     }
     return $options;
   }
+
   public static function getParentsArr($categories, $id, &$out)
   {
-    while(isset($categories[$id])){
-      $out[]=$categories[$id];
+    while (isset($categories[$id])) {
+      $out[] = $categories[$id];
       $id = $categories[$id]['parent'];
     }
     /*foreach ($categories as $category) {
@@ -768,7 +866,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param array $attributes
    * @return yii\db\ActiveQuery
    */
-  public static function translated($lang, $attributes = [])
+  protected static function translated($lang, $attributes = [])
   {
     //общие для всех языков
     $selectAttributes = ['id', 'route', 'active', 'parent', 'crated_at', 'store_id'];
