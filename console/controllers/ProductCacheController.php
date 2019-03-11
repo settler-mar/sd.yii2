@@ -6,6 +6,7 @@ use frontend\modules\product\models\CatalogStores;
 use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\product\models\ProductsToCategory;
+use frontend\modules\stores\models\Stores;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -97,7 +98,7 @@ class ProductCacheController extends Controller
             $newCategory['count'] = $category['count_all'];
             $newCategory['children_ids'] = isset($category['children_ids']) ? $category['children_ids'] : null;
 
-            $doc_ids=isset($category['children_id']) ? $category['children_id'] : [];
+            $doc_ids=!empty($category['children_ids']) ? $category['children_ids'] : [];
             $doc_ids[]=$category['id'];
             $categoryProps = $this->productsProperties([
                 'category' => $doc_ids
@@ -187,7 +188,7 @@ class ProductCacheController extends Controller
           $storesResult[$store['store_id']] = [
               'price_min' => $properties['prices']['min'],
               'price_max' => $properties['prices']['max'],
-              'count' => $properties['prices']['count'],
+              //'count' => $properties['prices']['count'],
               'vendor_list' => $properties['vendors']
           ];
         }
@@ -231,6 +232,7 @@ class ProductCacheController extends Controller
           $vendorsResult[$vendor['vendor_id']] = [
               'price_min' => $properties['prices']['min'],
               'price_max' => $properties['prices']['max'],
+              'count' => $properties['prices']['count'],
               'stores_list' => $properties['stores'],
           ];
         }
@@ -290,6 +292,7 @@ class ProductCacheController extends Controller
     $query = Product::find()
         ->from(Product::tableName() . ' p')
         ->asArray();
+
     if (!empty($params['category'])) {
       $query->leftJoin(ProductsToCategory::tableName() . ' pc', 'p.id = pc.product_id')
           ->andWhere(['pc.category_id' => $params['category']]);

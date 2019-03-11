@@ -35,8 +35,8 @@
 
 .block_show{
   animation-name: box_hide;
-  animation-delay: .15s;
-  animation-duration: .15s;
+  animation-delay: .25s;
+  animation-duration: .25s;
   animation-fill-mode: both;
   animation-direction: reverse;
 }
@@ -45,7 +45,7 @@
   0%{
     opacity: 1;
     //height: 100vh;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 0vmax 0vmin inset;
+    box-shadow: rgba(255, 255, 0, 0.5) 0px 0px 0vmax 0vmin inset;
   }
 
   99%{

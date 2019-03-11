@@ -866,7 +866,7 @@ class ProductsCategory extends \yii\db\ActiveRecord
    * @param array $attributes
    * @return yii\db\ActiveQuery
    */
-  protected static function translated($lang, $attributes = [])
+  static function translated($lang, $attributes = [])
   {
     //общие для всех языков
     $selectAttributes = ['id', 'route', 'active', 'parent', 'crated_at', 'store_id'];

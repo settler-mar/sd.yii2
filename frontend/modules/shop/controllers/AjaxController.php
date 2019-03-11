@@ -12,14 +12,18 @@ class AjaxController extends SdController
   private $region;
   private $lang;
 
+  public function beforeAction($action) {
+    $this->enableCsrfValidation = false;
+    return parent::beforeAction($action);
+  }
+
   public function createAction($id)
   {
     $request = Yii::$app->request;
 
     $this->cache = Yii::$app->cache_shop;
     $this->region = Yii::$app->params['region'];
-    $this->lang = Yii::$app->params['regions_list'][$this->region]['langDefault'] == Yii::$app->params['lang_code'] ?
-        false : Yii::$app->params['lang_code'];
+    $this->lang = Yii::$app->params['lang_code']=='ru' ? false : Yii::$app->params['lang_code'];
 
     if (!$request->isAjax) {
       //throw new \yii\web\NotFoundHttpException();
@@ -32,8 +36,10 @@ class AjaxController extends SdController
     $data_tree = $this->cache->get('products_category_route_region_' . $this->region);
     $data_list = $this->cache->get('products_category_region_' . $this->region);
     $data = $this->buildTree($data_tree, $data_list);
-    ddd($data_tree, $data_list, $data);
-    return 1;
+
+    return $this->renderAjax('left_menu.twig',[
+        'categories'=> $data
+    ]);
   }
 
   private function buildTree($data_tree, $data_list)
@@ -51,12 +57,22 @@ class AjaxController extends SdController
         continue;
       }
 
+      $store['count_all'] = $store['count'];
       unset($store['children_ids']);
       unset($store['price_min']);
       unset($store['price_max']);
       unset($store['vendor_list']);
       unset($store['stores_list']);
       unset($store['children']);
+      unset($store['parent']);
+      unset($store['active']);
+      unset($store['store_id']);
+      unset($store['count']);
+
+      $store['name'] = $this->lang && !empty($item['names'][$this->lang])?
+          $store['names'][$this->lang]:$store['name'];
+
+      unset($store['names']);
 
       if (!empty($item['children'])) {
         $store['children'] = $this->buildTree($item['children'], $data_list);
