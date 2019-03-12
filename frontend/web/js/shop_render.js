@@ -128,10 +128,8 @@ var shopRender = (function () {
     if(innerData.length>0){
       innerData
         .removeClass('block_show')
-        .on(animationEnd, function () {
-          $(this).remove();
-        });
       setTimeout('innerData.addClass(\'block_hide\')',1,innerData);
+      setTimeout('innerData.remove()',300,innerData);
     }
 
     if(!delay) {

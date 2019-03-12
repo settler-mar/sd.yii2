@@ -33,12 +33,18 @@
 .loading_process{
   background: url(/images/preloader.gif) no-repeat 50% 30px;
 
+  *>{
+    opacity: 1;
+    transition: all .25s ease;
+  }
+
   .block_hide{
-    animation-name: box_hide;
+    opacity: 0;
+    //animation-name: box_hide;
     //animation-delay: .10s;
-    animation-duration: .4s;
-    animation-fill-mode: both;
-    min-height: 1px;
+    //animation-duration: .4s;
+    //animation-fill-mode: both;
+    //min-height: 1px;
   }
 }
 
