@@ -38,11 +38,14 @@ var shopRender = (function () {
     params = {
       'url':getUrl()
     };
+
     //если не стартовая то:
     if(!is_main){
       //убираем блоки идущие после основного блока рендера
       $('#content').closest('.page-wrap-flex').nextAll().remove();
+
       //грузим блок контента
+      loadHtmlBlock('content',0,'content');
     }
 
     //часть действий зависят от того первый раз страница отрисовавается или уже повторно
@@ -58,6 +61,8 @@ var shopRender = (function () {
 
     //загрузка блока под меню
 
+
+    is_main = false;
   }
 
   function menu_active(){
@@ -121,10 +126,12 @@ var shopRender = (function () {
       .find('>*');
 
     if(innerData.length>0){
-      innerData.on(animationEnd, function () {
-        $(this).remove();
-      });
-      innerData.addClass('block_hide')
+      innerData
+        .removeClass('block_show')
+        .on(animationEnd, function () {
+          $(this).remove();
+        });
+      setTimeout('innerData.addClass(\'block_hide\')',10,innerData);
     }
 
     if(delay){

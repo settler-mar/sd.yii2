@@ -22,6 +22,14 @@
   }
 }
 
+.block_show{
+  animation-name: box_hide;
+  animation-delay: .25s;
+  animation-duration: .25s;
+  animation-fill-mode: both;
+  animation-direction: reverse;
+}
+
 .loading_process{
   background: url(/images/preloader.gif) no-repeat 50% 30px;
 
@@ -30,16 +38,11 @@
     animation-delay: .15s;
     animation-duration: .15s;
     animation-fill-mode: both;
+    min-height: 1px;
   }
 }
 
-.block_show{
-  animation-name: box_hide;
-  animation-delay: .25s;
-  animation-duration: .25s;
-  animation-fill-mode: both;
-  animation-direction: reverse;
-}
+
 
 @keyframes box_hide {
   0%{
