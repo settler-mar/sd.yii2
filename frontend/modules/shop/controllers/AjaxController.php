@@ -6,6 +6,8 @@ use frontend\components\Pagination;
 use frontend\components\SdController;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\product\models\Product;
+use frontend\modules\stores\models\Stores;
+use frontend\modules\vendor\models\Vendor;
 use Yii;
 
 class AjaxController extends SdController
@@ -15,6 +17,7 @@ class AjaxController extends SdController
   private $region;
   private $lang;
   private $url;
+  private $path;
 
   private $data_tree;
   private $data_list;
@@ -28,7 +31,8 @@ class AjaxController extends SdController
   private $priceStartDB;
   private $priceEndDB;
 
-  public function beforeAction($action) {
+  public function beforeAction($action)
+  {
     $this->enableCsrfValidation = false;
     return parent::beforeAction($action);
   }
@@ -37,46 +41,47 @@ class AjaxController extends SdController
   {
     $request = Yii::$app->request;
 
-    if (!$request->isAjax && ! YII_DEBUG) {
+    if (!$request->isAjax && !YII_DEBUG) {
       throw new \yii\web\NotFoundHttpException();
     }
 
     $this->cache = Yii::$app->cache_shop;
     $this->region = Yii::$app->params['region'];
-    $this->lang = Yii::$app->params['lang_code']=='ru' ? false : Yii::$app->params['lang_code'];
+    $this->lang = Yii::$app->params['lang_code'] == 'ru' ? false : Yii::$app->params['lang_code'];
 
     $this->data_tree = $this->cache->get('products_category_route_region_' . $this->region);
     $this->data_list = $this->cache->get('products_category_region_' . $this->region);
 
     $this->url = $request->post('url');
     //$this->url = '/ru/shop/zaschitnye-plenki/zaschitnye-plenki-dlya-planshetov';
-    $this->url = trim($this->url,'/');
+    $this->path = $this->url;
+    $this->url = trim($this->url, '/');
 
     //Чистим адрес от префикса региона/языка если надо
-    $prefix=Yii::$app->params['url_prefix'];
-    if(substr($this->url, 0, mb_strlen($prefix)+1)==$prefix.'/'){
-      $this->url = substr($this->url, mb_strlen($prefix)+1);
+    $prefix = Yii::$app->params['url_prefix'];
+    if (substr($this->url, 0, mb_strlen($prefix) + 1) == $prefix . '/') {
+      $this->url = substr($this->url, mb_strlen($prefix) + 1);
     }
 
     //Если  запрос прилетел не из магазина то ошибка
     $prefix = 'shop';
-    if(
-        $this->url==$prefix ||
-        substr($this->url, 0, mb_strlen($prefix)+1)==$prefix.'/'
-    ){
-      $this->url = substr($this->url, mb_strlen($prefix)+1);
-    }else{
+    if (
+        $this->url == $prefix ||
+        substr($this->url, 0, mb_strlen($prefix) + 1) == $prefix . '/'
+    ) {
+      $this->url = substr($this->url, mb_strlen($prefix) + 1);
+    } else {
       throw new \yii\web\NotFoundHttpException();
     }
 
     //Проверка спец адресов
-    if(in_array($this->url,[
+    if (in_array($this->url, [
         'query',
         'month',
         'profit',
-    ])){
-      $this->mode=$this->url;
-    }else {
+    ])) {
+      $this->mode = $this->url;
+    } else {
       //Если в адресе что то есть то проверяем его на путь
       if (!empty($this->url)) {
         $url = explode('/', $this->url);
@@ -95,7 +100,7 @@ class AjaxController extends SdController
           'category_id'=>$this->data_list[$this->category_id]
       ];*/
 
-      if($this->category_id){
+      if ($this->category_id) {
         $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
         $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
       }
@@ -107,12 +112,12 @@ class AjaxController extends SdController
 
   public function actionMenu()
   {
-    $data = Yii::$app->cache->getOrSet('shop_menu_'.Yii::$app->params['url_prefix'],function(){
+    $data = Yii::$app->cache->getOrSet('shop_menu_' . Yii::$app->params['url_prefix'], function () {
       return $this->buildTree($this->data_tree, $this->data_list);
     });
 
-    return $this->renderAjax('left_menu.twig',[
-        'categories'=> $data
+    return $this->renderAjax('left_menu.twig', [
+        'categories' => $data
     ]);
   }
 
@@ -143,8 +148,8 @@ class AjaxController extends SdController
       unset($store['store_id']);
       unset($store['count']);
 
-      $store['name'] = $this->lang && !empty($item['names'][$this->lang])?
-          $store['names'][$this->lang]:$store['name'];
+      $store['name'] = $this->lang && !empty($item['names'][$this->lang]) ?
+          $store['names'][$this->lang] : $store['name'];
 
       unset($store['names']);
 
@@ -158,7 +163,8 @@ class AjaxController extends SdController
     return $out;
   }
 
-  private function getProductsDB(){
+  private function getProductsDB()
+  {
     $request = Yii::$app->request;
 
     $sortvars = Product::sortvars();
@@ -201,7 +207,7 @@ class AjaxController extends SdController
     ];
 
     $cashName =
-        ':page:'.$page .
+        ':page:' . $page .
         ':limit:' . $limit .
         ':order:' . $sortDb . '_' . $order .
         ':catalog:' . $this->category_id;
@@ -219,7 +225,7 @@ class AjaxController extends SdController
             $sortDb => $order
         ]);
 
-    if(!$this->mode && $this->category_id){
+    if (!$this->mode && $this->category_id) {
       $category = $this->data_list[$this->category_id]['children_ids'];
       $category[] = $this->category_id;
       $querydb->innerJoin('cw_products_to_category pc', 'prod.id = pc.product_id')
@@ -229,23 +235,51 @@ class AjaxController extends SdController
     $where = [];
     if (!empty($this->where_filter['vendor'])) {
       $where['vendor_id'] = $this->where_filter['vendor'];
-      $cashName.=':vendor:'.implode('|',$this->where_filter['vendor']);
+      $cashName .= ':vendor:' . implode('|', $this->where_filter['vendor']);
     }
     if (isset($this->where_filter['store'])) {
       $where['store_id'] = $this->where_filter['store'];
-      $cashName.=':store:'.implode('|',$this->where_filter['store']);
+      $cashName .= ':store:' . implode('|', $this->where_filter['store']);
     }
+
+    $requestData['cashCodeFilter'] = $cashName;
 
     $filter = ['and'];
     if ($priceStart && $priceStart > $this->priceStartDB) {
       $filter[] = ['>=', 'price', $priceStart];
-      $cashName.=':price_min:'.$priceStart;
+      $cashName .= ':price_min:' . $priceStart;
       $paginateParams['price-start'] = $priceStart;
+      $requestData['price_start_user']=$priceStart;
     }
     if ($priceEnd && $priceEnd < $this->priceEndDB) {
       $filter[] = ['<=', 'price', $priceEnd];
-      $cashName.=':price_max:'.$priceEnd;
+      $cashName .= ':price_max:' . $priceEnd;
       $paginateParams['price-end'] = $priceEnd;
+      $requestData['price_end_user']=$priceEnd;
+    }
+
+    if (empty($where['vendor_id'])) {
+      $requestVendor =
+          !empty($request->post('vendor')) ? $request->post('vendor') :
+              (!empty($request->get('vendor')) ? $request->get('vendor') : false);
+      if ($requestVendor) {
+        $requestData['vendor_get']=$requestVendor;
+        $paginateParams['vendor'] = $requestVendor;
+        $cashName .= ':vendors:' . implode(',', $requestVendor);
+        $where['v.route'] = $requestVendor;
+      }
+    }
+
+    if (empty($where['store_id'])) {
+      $requestStore =
+          !empty($request->post('stores')) ? $request->post('stores') :
+              (!empty($request->get('stores')) ? $request->get('stores') : false);
+      if ($requestStore) {
+        $paginateParams['stores'] = $requestStore;
+        $cashName .= ':stores:' . implode(',', $requestStore);
+        $where['s.route'] = $requestStore;
+        $requestData['store_get']=$requestStore;
+      }
     }
 
     $querydb->andWhere([
@@ -256,16 +290,17 @@ class AjaxController extends SdController
 
     $requestData['cashCode'] = $cashName;
     $requestData['querydb'] = $querydb;
-    $requestData['paginate_params']=$paginateParams;
+    $requestData['paginate_params'] = $paginateParams;
     return $requestData;
   }
 
-  public function actionContent(){
+  public function actionContent()
+  {
     $requestData = $this->getProductsDB();
 
     $pagination = new Pagination(
         $requestData['querydb'],
-        'shop_content_'.$requestData['cashCode'],
+        'shop_content_' . $requestData['cashCode'],
         [
             'limit' => $requestData['limit'],
             'page' => $requestData['page'],
@@ -273,22 +308,96 @@ class AjaxController extends SdController
         ]
     );
 
-    $data=[
+    $data = [
         'products' => $pagination->data(),
         "total_v" => $pagination->count(),
         "total_all_product" => Product::activeCount(),
-        "page"=>$requestData['page'],
+        "page" => $requestData['page'],
         "offset_products" => $pagination->offset(),
         "limit" => $requestData['limit'],
+        "sortlinks" => $this->getSortLinks(
+            $this->path,
+            Product::sortvars(),
+            Product::$defaultSort,
+            $requestData['paginate_params']
+        )
     ];
     $data["show_products"] = count($data['products']);
 
     if ($pagination->pages() > 1) {
-      $data["pagination"] = $pagination->getPagination($this->url, $requestData['paginate_params']);
+      $data["pagination"] = $pagination->getPagination($this->path, $requestData['paginate_params']);
     }
 
     $data['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
     return $this->renderAjax('content', $data);
+  }
+
+  public function actionFilter()
+  {
+    $requestData = $this->getProductsDB();
+
+    $filter = [
+        'store_get'=>isset($requestData['store_get'])?$requestData['store_get']:[],
+        'vendor_get'=>isset($requestData['vendor_get'])?$requestData['vendor_get']:[],
+    ];
+
+    $pre_data = [];
+
+    if ($this->mode == false) {
+      if ($this->category_id == 0) return;
+
+      $pre_data = $this->data_list[$this->category_id];
+    } else {
+
+    }
+
+    if (!empty($pre_data['vendor_list'])) {
+      $filter['vendors'] = $pre_data['vendor_list'];
+    };
+    if (!empty($pre_data['stores_list'])) {
+      $filter['stores'] = $pre_data['stores_list'];
+    };
+    if (!empty($pre_data['price_min'])) {
+      $filter['price_start'] = $pre_data['price_min'];
+    };
+    if (!empty($pre_data['price_max'])) {
+      $filter['price_end'] = $pre_data['price_max'];
+    };
+
+
+    if (!empty($filter['vendors']) && count($filter['vendors']) > 1) {
+      $filter['vendors'] = Vendor::items([
+          'sort' => [
+              'priority' => SORT_ASC,
+              'name' => SORT_ASC
+          ],
+          'where' => [
+              'v.id' => $filter['vendors']
+          ]
+      ]);
+    } else {
+      unset($filter['vendor']);
+    }
+
+    if (!empty($filter['stores']) && count($filter['stores']) > 1) {
+      $filter['stores'] = Stores::toFilter([
+          'sort' => [
+              'priority' => SORT_ASC,
+              'name' => SORT_ASC
+          ],
+          'where' => [
+              'cws.uid' => $filter['stores']
+          ]
+      ], 'shop_filter_' . $requestData['cashCodeFilter']);
+      //ddd($filter['stores']);
+    } else {
+      unset($filter['stores']);
+    }
+
+    $data = [
+        'filter' => $filter,
+    ];
+    return $this->renderAjax('filter', $data);
   }
 }

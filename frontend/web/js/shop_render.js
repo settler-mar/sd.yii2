@@ -33,11 +33,31 @@ var shopRender = (function () {
     renderPage();
   }
 
+  function parseURLParams(url) {
+    var queryStart = url.indexOf("?") + 1,
+      queryEnd   = url.indexOf("#") + 1 || url.length + 1,
+      query = url.slice(queryStart, queryEnd - 1),
+      pairs = query.replace(/\+/g, " ").split("&"),
+      parms = {}, i, n, v, nv;
+
+    if (query === url || query === "") return;
+
+    for (i = 0; i < pairs.length; i++) {
+      nv = pairs[i].split("=", 2);
+      n = decodeURIComponent(nv[0]);
+      v = decodeURIComponent(nv[1]);
+
+      if (!parms.hasOwnProperty(n)) parms[n] = [];
+      parms[n].push(nv.length === 2 ? v : null);
+    }
+    return parms;
+  }
+
   function renderPage(){
     console.log('Start render');
-    params = {
-      'url':getUrl()
-    };
+    params = parseURLParams(location.search);
+    params.url = getUrl();
+
 
     //если не стартовая то:
     if(!is_main){
@@ -52,7 +72,7 @@ var shopRender = (function () {
     if(first_render){
       first_render=false;
       //грузим меню
-      loadHtmlBlock('menu',is_main?0:100,'left_menu',menu_active);
+      loadHtmlBlock('menu',is_main?0:80,'left_menu',menu_active);
     }else{
       //активируем пункт в меню
       menu_active();
@@ -60,7 +80,7 @@ var shopRender = (function () {
     }
 
     //загрузка блока под меню
-
+    loadHtmlBlock('filter',100,'left_filter');
 
     is_main = false;
   }
@@ -76,8 +96,8 @@ var shopRender = (function () {
     }
 
     active=active
-      .replaceWithTag('span')
-      .addClass('active');
+      .addClass('active')
+      .replaceWithTag('span');
 
     var wrap = active.closest('li');
     while (wrap.hasClass('menu-group') && !wrap.hasClass('open')){
@@ -113,6 +133,7 @@ var shopRender = (function () {
       .find('>*')
       .addClass('block_show')
       .off(animationEnd);
+
     wrap.find('meta').remove();
     if(callback){
       callback();
@@ -129,7 +150,7 @@ var shopRender = (function () {
       innerData
         .removeClass('block_show')
       setTimeout('innerData.addClass(\'block_hide\')',1,innerData);
-      setTimeout('innerData.remove()',300,innerData);
+      setTimeout('innerData.remove()',350,innerData);
     }
 
     if(!delay) {
