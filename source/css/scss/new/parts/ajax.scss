@@ -33,7 +33,7 @@
 .loading_process{
   background: url(/images/preloader.gif) no-repeat 50% 30px;
 
-  *>{
+  >*{
     opacity: 1;
     transition: all .25s ease;
   }
