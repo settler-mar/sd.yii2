@@ -131,14 +131,14 @@ var shopRender = (function () {
         .on(animationEnd, function () {
           $(this).remove();
         });
-      setTimeout('innerData.addClass(\'block_hide\')',10,innerData);
+      setTimeout('innerData.addClass(\'block_hide\')',1,innerData);
     }
 
-    if(delay){
-      setTimeout(toLoadingHtml,delay,type,block_id,callback)
-    }else{
-      toLoadingHtml(type,block_id,callback);
+    if(!delay) {
+      delay = 5;
     }
+    setTimeout(toLoadingHtml,delay,type,block_id,callback)
+
   }
 
   function getUrl(){

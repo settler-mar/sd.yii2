@@ -91,12 +91,14 @@ class AjaxController extends SdController
         }
       }
 
-      $this->where = [
+      /*$this->where = [
           'category_id'=>$this->data_list[$this->category_id]
-      ];
+      ];*/
 
-      $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
-      $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+      if($this->category_id){
+        $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
+        $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+      }
     }
 
     //ddd($this->data_list[$this->category_id]);

@@ -24,8 +24,8 @@
 
 .block_show{
   animation-name: box_hide;
-  animation-delay: .25s;
-  animation-duration: .25s;
+  //animation-delay: .10s;
+  animation-duration: .4s;
   animation-fill-mode: both;
   animation-direction: reverse;
 }
@@ -35,8 +35,8 @@
 
   .block_hide{
     animation-name: box_hide;
-    animation-delay: .15s;
-    animation-duration: .15s;
+    //animation-delay: .10s;
+    animation-duration: .4s;
     animation-fill-mode: both;
     min-height: 1px;
   }
