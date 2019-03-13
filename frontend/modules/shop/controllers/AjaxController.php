@@ -28,6 +28,7 @@ class AjaxController extends SdController
   private $where_filter = [];
 
   private $mode = false;
+  private $modeData = false;
   private $priceStartDB;
   private $priceEndDB;
 
@@ -64,46 +65,71 @@ class AjaxController extends SdController
     }
     $this->path = $this->url;
 
-    //Если  запрос прилетел не из магазина то ошибка
-    $prefix = 'shop';
+    //Если  запрос прилетел из вендора
+    $prefix = 'vendor';
     if (
-        $this->url == $prefix ||
         substr($this->url, 0, mb_strlen($prefix) + 1) == $prefix . '/'
     ) {
       $this->url = substr($this->url, mb_strlen($prefix) + 1);
+      //тут обработчик вендора делаем
     } else {
-      throw new \yii\web\NotFoundHttpException();
-    }
 
-    //Проверка спец адресов
-    if (in_array($this->url, [
-        'query',
-        'month',
-        'profit',
-    ])) {
-      $this->mode = $this->url;
-    } else {
-      //Если в адресе что то есть то проверяем его на путь
-      if (!empty($this->url)) {
-        $url = explode('/', $this->url);
-        $paths = $this->data_tree;
-        //проверяем пошгово путь. если есть ошибка то выдаем 404
-        for ($i = 0; $i < count($url); $i++) {
-          if (empty($paths) || !isset($paths[$url[$i]])) {
-            throw new \yii\web\NotFoundHttpException();
-          }
-          $this->category_id = $paths[$url[$i]]['id'];
-          $paths = $paths[$url[$i]]['children'];
-        }
+      //Если  запрос прилетел не из магазина то ошибка
+      $prefix = 'shop';
+      if (
+          $this->url == $prefix ||
+          substr($this->url, 0, mb_strlen($prefix) + 1) == $prefix . '/'
+      ) {
+        $this->url = substr($this->url, mb_strlen($prefix) + 1);
+      } else {
+        throw new \yii\web\NotFoundHttpException();
       }
 
-      /*$this->where = [
-          'category_id'=>$this->data_list[$this->category_id]
-      ];*/
+      $url = explode('/', $this->url);
+      //проверка на магазин
+      $storesUsed = $this->cache->get('products_stores');
+      if (count($url)==1 && isset($storesUsed[$url[0]])) {
+        $this->mode='store';
+        $storesUsed = $storesUsed[$url[0]];
 
-      if ($this->category_id) {
-        $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
-        $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+        $this->where_filter['store']=$storesUsed['id'];
+        $this->priceStartDB = $storesUsed['price_min'];
+        $this->priceEndDB = $storesUsed['price_max'];
+
+        $this->modeData = $storesUsed;
+      }
+    }
+
+    if(!$this->mode) {
+      //Проверка спец адресов
+      if (in_array($this->url, [
+          'query',
+          'month',
+          'profit',
+      ])) {
+        $this->mode = $this->url;
+      } else {
+        //Если в адресе что то есть то проверяем его на путь
+        if (!empty($this->url)) {
+          $paths = $this->data_tree;
+          //проверяем пошгово путь. если есть ошибка то выдаем 404
+          for ($i = 0; $i < count($url); $i++) {
+            if (empty($paths) || !isset($paths[$url[$i]])) {
+              throw new \yii\web\NotFoundHttpException();
+            }
+            $this->category_id = $paths[$url[$i]]['id'];
+            $paths = $paths[$url[$i]]['children'];
+          }
+        }
+
+        /*$this->where = [
+            'category_id'=>$this->data_list[$this->category_id]
+        ];*/
+
+        if ($this->category_id) {
+          $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
+          $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+        }
       }
     }
 
@@ -239,11 +265,11 @@ class AjaxController extends SdController
     $where = [];
     if (!empty($this->where_filter['vendor'])) {
       $where['vendor_id'] = $this->where_filter['vendor'];
-      $cashName .= ':vendor:' . implode('|', $this->where_filter['vendor']);
+      $cashName .= ':vendor:' . $this->where_filter['vendor'];
     }
-    if (isset($this->where_filter['store'])) {
+    if (!empty($this->where_filter['store'])) {
       $where['store_id'] = $this->where_filter['store'];
-      $cashName .= ':store:' . implode('|', $this->where_filter['store']);
+      $cashName .= ':store:' . $this->where_filter['store'];
     }
 
     $requestData['cashCodeFilter'] = $cashName;
@@ -355,8 +381,11 @@ class AjaxController extends SdController
       if ($this->category_id == 0) return;
 
       $pre_data = $this->data_list[$this->category_id];
-    } else {
+    } elseif($this->mode == 'store') {
+      $pre_data = $this->modeData;
+    }else{
 
+      ddd($this);
     }
 
     if (!empty($pre_data['vendor_list'])) {

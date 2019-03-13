@@ -175,7 +175,11 @@ class ProductCacheController extends Controller
         $storesResult = [];
         $query = Product::find()
             ->from(Product::tableName() . ' p')
-            ->select(['store_id'])
+            ->select(['store_id','s.route'])
+            ->leftJoin(Stores::tableName() . ' s', 's.uid = p.store_id')
+            ->where([
+                's.is_active' => [0, 1]
+            ])
             ->groupBy('store_id')
             ->asArray();
         if (!empty($this->areasWhere)) {
@@ -185,10 +189,11 @@ class ProductCacheController extends Controller
         $stores = $query->all();
         foreach ($stores as $store) {
           $properties = $this->productsProperties(['store_id' => $store['store_id']]);
-          $storesResult[$store['store_id']] = [
+          $storesResult[$store['route']] = [
+              'id' => $store['store_id'],
               'price_min' => $properties['prices']['min'],
               'price_max' => $properties['prices']['max'],
-              //'count' => $properties['prices']['count'],
+              'count' => $properties['prices']['count'],
               'vendor_list' => $properties['vendors']
           ];
         }
