@@ -72,6 +72,22 @@ class AjaxController extends SdController
     ) {
       $this->url = substr($this->url, mb_strlen($prefix) + 1);
       //тут обработчик вендора делаем
+      $this->mode = 'vendor';
+      $vendorsUsed = $this->cache->get('products_vendors');
+
+      $url = explode('/', $this->url);
+
+      if (count($url) == 1 && isset($vendorsUsed[$url[0]])) {
+        $vendorsUsed = $vendorsUsed[$url[0]];
+
+        $this->where_filter['vendor'] = $vendorsUsed['id'];
+        $this->priceStartDB = $vendorsUsed['price_min'];
+        $this->priceEndDB = $vendorsUsed['price_max'];
+
+        $this->modeData = $vendorsUsed;
+      }else{
+        throw new \yii\web\NotFoundHttpException();
+      }
     } else {
 
       //Если  запрос прилетел не из магазина то ошибка
@@ -88,11 +104,11 @@ class AjaxController extends SdController
       $url = explode('/', $this->url);
       //проверка на магазин
       $storesUsed = $this->cache->get('products_stores');
-      if (count($url)==1 && isset($storesUsed[$url[0]])) {
-        $this->mode='store';
+      if (count($url) == 1 && isset($storesUsed[$url[0]])) {
+        $this->mode = 'store';
         $storesUsed = $storesUsed[$url[0]];
 
-        $this->where_filter['store']=$storesUsed['id'];
+        $this->where_filter['store'] = $storesUsed['id'];
         $this->priceStartDB = $storesUsed['price_min'];
         $this->priceEndDB = $storesUsed['price_max'];
 
@@ -100,37 +116,33 @@ class AjaxController extends SdController
       }
     }
 
-    if(!$this->mode) {
-      //Проверка спец адресов
-      if (in_array($this->url, [
-          'query',
-          'month',
-          'profit',
-      ])) {
-        $this->mode = $this->url;
-      } else {
-        //Если в адресе что то есть то проверяем его на путь
-        if (!empty($this->url)) {
-          $paths = $this->data_tree;
-          //проверяем пошгово путь. если есть ошибка то выдаем 404
-          for ($i = 0; $i < count($url); $i++) {
-            if (empty($paths) || !isset($paths[$url[$i]])) {
-              throw new \yii\web\NotFoundHttpException();
-            }
-            $this->category_id = $paths[$url[$i]]['id'];
-            $paths = $paths[$url[$i]]['children'];
+    if (!$this->mode) {
+      if(!isset($url)){
+        throw new \yii\web\NotFoundHttpException();
+      }
+
+      //Если в адресе что то есть то проверяем его на путь
+      if (!empty($this->url)) {
+        $paths = $this->data_tree;
+        //проверяем пошгово путь. если есть ошибка то выдаем 404
+        for ($i = 0; $i < count($url); $i++) {
+          if (empty($paths) || !isset($paths[$url[$i]])) {
+            throw new \yii\web\NotFoundHttpException();
           }
-        }
-
-        /*$this->where = [
-            'category_id'=>$this->data_list[$this->category_id]
-        ];*/
-
-        if ($this->category_id) {
-          $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
-          $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+          $this->category_id = $paths[$url[$i]]['id'];
+          $paths = $paths[$url[$i]]['children'];
         }
       }
+
+      /*$this->where = [
+          'category_id'=>$this->data_list[$this->category_id]
+      ];*/
+
+      if ($this->category_id) {
+        $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
+        $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+      }
+
     }
 
     //ddd($this->data_list[$this->category_id]);
@@ -204,7 +216,7 @@ class AjaxController extends SdController
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
 
-    if(empty($page))$page=1;
+    if (empty($page)) $page = 1;
     if (
         !empty($limit) && !$validator->validate($limit) ||
         !empty($page) && !$validator->validate($page) ||
@@ -245,7 +257,7 @@ class AjaxController extends SdController
         'limit' => $limit,
         'sort' => $sort,
         'page' => $page,
-        'isAjax'=>false,
+        'isAjax' => false,
     ];
 
 
@@ -280,20 +292,20 @@ class AjaxController extends SdController
       $filter[] = ['>=', 'price', $priceStart];
       $cashName .= ':price_min:' . $priceStart;
       $paginateParams['price-start'] = $priceStart;
-      $requestData['price_start_user']=$priceStart;
+      $requestData['price_start_user'] = $priceStart;
     }
     if ($priceEnd && $priceEnd < $this->priceEndDB) {
       $filter[] = ['<=', 'price', $priceEnd];
       $cashName .= ':price_max:' . $priceEnd;
       $paginateParams['price-end'] = $priceEnd;
-      $requestData['price_end_user']=$priceEnd;
+      $requestData['price_end_user'] = $priceEnd;
     }
 
 
     if (empty($where['vendor_id'])) {
-      $requestVendor = $this->request('vendor',true);
+      $requestVendor = $this->request('vendor', true);
       if ($requestVendor) {
-        $requestData['vendor_get']=$requestVendor;
+        $requestData['vendor_get'] = $requestVendor;
         $paginateParams['vendor'] = $requestVendor;
         $cashName .= ':vendors:' . implode(',', $requestVendor);
         $where['v.route'] = $requestVendor;
@@ -301,13 +313,13 @@ class AjaxController extends SdController
     }
 
     if (empty($where['store_id'])) {
-      $requestStore = $this->request('stores',true);
+      $requestStore = $this->request('stores', true);
 
       if ($requestStore) {
         $paginateParams['stores'] = $requestStore;
         $cashName .= ':stores:' . implode(',', $requestStore);
         $where['s.route'] = $requestStore;
-        $requestData['store_get']=$requestStore;
+        $requestData['store_get'] = $requestStore;
       }
     }
 
@@ -369,10 +381,10 @@ class AjaxController extends SdController
     $requestData = $this->getProductsDB();
 
     $filter = [
-        'store_get'=>isset($requestData['store_get'])?$requestData['store_get']:[],
-        'vendor_get'=>isset($requestData['vendor_get'])?$requestData['vendor_get']:[],
-        'price_start_user'=>isset($requestData['price_start_user'])?$requestData['price_start_user']:'',
-        'price_end_user'=>isset($requestData['price_end_user'])?$requestData['price_end_user']:'',
+        'store_get' => isset($requestData['store_get']) ? $requestData['store_get'] : [],
+        'vendor_get' => isset($requestData['vendor_get']) ? $requestData['vendor_get'] : [],
+        'price_start_user' => isset($requestData['price_start_user']) ? $requestData['price_start_user'] : '',
+        'price_end_user' => isset($requestData['price_end_user']) ? $requestData['price_end_user'] : '',
     ];
 
     $pre_data = [];
@@ -381,9 +393,9 @@ class AjaxController extends SdController
       if ($this->category_id == 0) return;
 
       $pre_data = $this->data_list[$this->category_id];
-    } elseif($this->mode == 'store') {
+    } elseif (in_array($this->mode,['store','vendor'])) {
       $pre_data = $this->modeData;
-    }else{
+    } else {
 
       ddd($this);
     }
@@ -437,26 +449,27 @@ class AjaxController extends SdController
     return $this->renderAjax('filter', $data);
   }
 
-  private function request($name, $isArray = false){
+  private function request($name, $isArray = false)
+  {
     $request = Yii::$app->request;
     $data = !empty($request->post($name)) ? $request->post($name) :
         (!empty($request->get($name)) ? $request->get($name) : false);
 
-    if(!$isArray){
-      return is_array($data)?$data[0]:$data;
+    if (!$isArray) {
+      return is_array($data) ? $data[0] : $data;
     }
 
-    if(empty($data)){
+    if (empty($data)) {
       return [];
     }
 
-    if(!is_array($data)){
-      $data=[$data];
+    if (!is_array($data)) {
+      $data = [$data];
     }
 
-    if(is_array($data[0])){
-      foreach ($data as &$item){
-        $item=$item[0];
+    if (is_array($data[0])) {
+      foreach ($data as &$item) {
+        $item = $item[0];
       }
       return $data;
     }

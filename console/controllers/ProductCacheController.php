@@ -7,6 +7,7 @@ use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductsCategory;
 use frontend\modules\product\models\ProductsToCategory;
 use frontend\modules\stores\models\Stores;
+use frontend\modules\vendor\models\Vendor;
 use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -224,7 +225,8 @@ class ProductCacheController extends Controller
         $vendorsResult = [];
         $query = Product::find()
             ->from(Product::tableName() . ' p')
-            ->select(['vendor_id'])
+            ->select(['vendor_id','v.route'])
+            ->leftJoin(Vendor::tableName().' v','v.id = p.vendor_id')
             ->groupBy('vendor_id')
             ->asArray();
         if (!empty($this->areasWhere)) {
@@ -234,7 +236,8 @@ class ProductCacheController extends Controller
         $vendors = $query->all();
         foreach ($vendors as $vendor) {
           $properties = $this->productsProperties(['vendor_id' => $vendor['vendor_id']]);
-          $vendorsResult[$vendor['vendor_id']] = [
+          $vendorsResult[$vendor['route']] = [
+              'id' => $vendor['vendor_id'],
               'price_min' => $properties['prices']['min'],
               'price_max' => $properties['prices']['max'],
               'count' => $properties['prices']['count'],
