@@ -3,7 +3,6 @@ var shopRender = (function () {
 
   var is_main;
   var params = {};
-  var first_render = true;
   var root_url;
 
   function init(_is_main,_root_url){
@@ -24,13 +23,22 @@ var shopRender = (function () {
         return;
       }
 
-      history.pushState(null, null, this.href);
+      gotoUrl(this.href,1);
       e.preventDefault();
-
-      renderPage();
     });
 
-    renderPage();
+    renderPage(0);
+  }
+
+  function gotoUrl(href,renderPriority,params){
+    if(params && params.length>1){
+      if(params[0]!='?'){
+        params='?'+params;
+      }
+      href += params;
+    }
+    history.pushState(null, null, href);
+    renderPage(renderPriority);
   }
 
   function parseURLParams(url) {
@@ -53,13 +61,22 @@ var shopRender = (function () {
     return parms;
   }
 
-  function renderPage(){
+  function renderPage(renderPriority){
+    if(!renderPriority)renderPriority=0;
+    /*
+      чем ниже renderPriority тем больше отрисовывем.
+      отрисовывем все пукты что больше renderPriority
+      1) меню
+      2) фильтр
+      3) контент
+     */
     console.log('Start render');
     params = parseURLParams(location.search);
+    if(!params) params = {};
     params.url = getUrl();
 
 
-    //если не стартовая то:
+    //если не стартовая то внезависимо от приоритета
     if(!is_main){
       //убираем блоки идущие после основного блока рендера
       $('#content').closest('.page-wrap-flex').nextAll().remove();
@@ -69,8 +86,7 @@ var shopRender = (function () {
     }
 
     //часть действий зависят от того первый раз страница отрисовавается или уже повторно
-    if(first_render){
-      first_render=false;
+    if(renderPriority<1){
       //грузим меню
       loadHtmlBlock('menu',is_main?0:80,'left_menu',menu_active);
     }else{
@@ -80,7 +96,10 @@ var shopRender = (function () {
     }
 
     //загрузка блока под меню
-    loadHtmlBlock('filter',100,'left_filter');
+    // - грузим фильтр
+    if(renderPriority<2){
+      loadHtmlBlock('filter',100,'left_filter',product_filter);
+    }
 
     is_main = false;
   }
@@ -163,6 +182,130 @@ var shopRender = (function () {
   function getUrl(){
     return location.pathname;
   };
+
+  function product_filter() {
+
+    var slider = $("#filter-slider-price");
+    var textStart = $('#slider-price-start');
+    var textFinish = $('#slider-price-end');
+
+    var startRange = parseInt($(textStart).data('range'), 10),
+      finishRange = parseInt($(textFinish).data('range'), 10),
+      startUser = parseInt($(textStart).data('user'), 10)|startRange,
+      finishUser = parseInt($(textFinish).data('user'), 10)|finishRange;
+    //console.log(startRange, finishRange, startUser, finishUser);
+
+    slider.slider({
+      range: true,
+      min: startRange,
+      max: finishRange,
+      values: [startUser,
+        finishUser],
+      slide: function (event, ui) {
+        // console.log(ui.values[ 0 ] + " - " + ui.values[ 1 ]);
+        $(textStart).val(ui.values[0]);
+        $(textFinish).val(ui.values[1]);
+      }
+    });
+
+
+    function priceStartChange(e) {
+      var that = $(this),
+        strValue = that.val(),
+        intValue = parseInt(strValue) || 0,//если неправильно, то 0
+        startRange = parseInt(that.data('range')),
+        finishRange = parseInt(textFinish.val());
+
+      if (intValue < startRange) { //если меньше диапазона, то по нижнему пределу
+        intValue = startRange;
+      }
+      if (intValue > finishRange) { //если выше диапазона, то  верхниму пределу
+        intValue = finishRange;
+      }
+      slider.slider('values', 0, intValue); //новое значение слайдера
+      that.val(intValue);  //повтрояем его для самого поля
+    }
+
+    function priceFinishChange(e) {
+      var that = $(this),
+        startRange = parseInt(textStart.val()),
+        strValue = that.val(),
+        finishRange = parseInt(that.data('range')),
+        intValue = parseInt(strValue) || finishRange;//если неправильно, то максимум
+
+      if (intValue < startRange) { //если меньше диапазона, то по нижнему пределу
+        intValue = startRange;
+      }
+      if (intValue > finishRange) { //если выше диапазона, то  верхниму пределу
+        intValue = finishRange;
+      }
+      slider.slider('values', 1, intValue); //новое значение слайдера
+      that.val(intValue);  //повтрояем его для самого поля
+
+    }
+
+    textStart.on('change', priceStartChange);//при изменениии полей ввода цены
+    textFinish.on('change', priceFinishChange);//при изменениии полей ввода цены
+
+    $('input.catalog_product_filter-checkbox_item-checkbox').on('change', function(){
+      if ($(this).prop('checked')) {
+        $(this).parent().addClass('checked');
+      } else {
+        $(this).parent().removeClass('checked');
+      }
+    });
+
+    //фильтр производителей - фильтрация элементов
+    $('.catalog_product_filter-input-wrap input').keyup(function () {
+      var val = $(this).val().length > 2 ? $(this).val().toUpperCase() : false;
+      var openCount = 0;
+      var list = $(this).closest('.catalog_product_filter-items-item-checkbox');
+      if (!val) {
+        $(list).removeClass('accordion_hide');
+      }
+      $('.catalog_product_filter-checkbox_item').each(function (index, item) {
+        var name = $(item).find('label').text();
+        if (!val) {
+          $(item).removeClass('hide');
+        } else {
+          name = name.substring(0, val.length).toUpperCase();
+          if (name == val) {
+            $(item).removeClass('hide');
+            openCount++;
+          } else {
+            $(item).addClass('hide');
+          }
+        }
+      });
+      if (val && openCount <= 10) {
+        $(list).addClass('accordion_hide');
+      }
+    });
+
+    $('#left_filter form').on('submit',function(e){
+      e.preventDefault();
+      var $this=$(this);
+      var data = $this.serialize();
+
+      if(params.sort){
+        if(data.length>0){
+          data+="&";
+        }
+        data+="sort="+params.sort;
+      }
+
+      if(params.limit){
+        if(data.length>0){
+          data+="&";
+        }
+        data+="limit="+params.limit;
+      }
+
+      gotoUrl(getUrl(),2,data);
+      //console.log(params);
+      //renderPage(1);
+    })
+  }
 
   return {
     'init':init,

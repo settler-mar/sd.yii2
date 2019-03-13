@@ -2,7 +2,7 @@ function sd_accordeon() {
 
     var accordionControl = $('.accordion .accordion-control');
 
-    accordionControl.on('click', function (e) {
+    $(document).on('click', '.accordion .accordion-control',function (e) {
         e.preventDefault();
         $this = $(this);
         $accordion = $this.closest('.accordion');
@@ -112,36 +112,6 @@ function sd_accordeon() {
         }, false);
 
     })();
-
-//фильтр производителей - фильтрация элементов
-    $('#catalog_product_filter-input').keyup(function () {
-
-        var val = $(this).val().length > 2 ? $(this).val().toUpperCase() : false;
-        var openCount = 0;
-        var list = $(this).closest('.catalog_product_filter-items-item-checkbox');
-        if (!val) {
-            $(list).removeClass('accordion_hide');
-        }
-        $('.catalog_product_filter-checkbox_item').each(function (index, item) {
-            var name = $(item).find('label').text();
-            if (!val) {
-                $(item).removeClass('hide');
-            } else {
-                name = name.substring(0, val.length).toUpperCase();
-                if (name == val) {
-                    $(item).removeClass('hide');
-                    openCount++;
-                } else {
-                    $(item).addClass('hide');
-                }
-            }
-        });
-        if (val && openCount <= 10) {
-            $(list).addClass('accordion_hide');
-        }
-
-    });
-
 }
 sd_accordeon();
 

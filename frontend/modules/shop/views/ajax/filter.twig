@@ -25,8 +25,6 @@
 
                   <label for="slider-price-start"
                          class="slider-price_label label-start">{{ t('shop', 'filter_price_from') }}</label>
-                  <input type="hidden" name="price-start-min" value="{{ filter.price_start }}">
-                  <input type="hidden" name="price-end-max" value="{{ filter.price_end }}">
                   <input type="text" id="slider-price-start" name="price-start"
                          placeholder="{{ t('shop', 'filter_price_from-placeholder') }}"
                          data-range="{{ filter.price_start }}" data-user="{{ filter.price_start_user }}"
