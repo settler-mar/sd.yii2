@@ -572,7 +572,7 @@
       margin-bottom: 20px;
       margin-top: 10px;
       position: relative;
-      z-index: 999;
+      z-index: 99;
 
       @include media($laptop_min) {
         flex-direction: row;

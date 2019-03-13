@@ -68,6 +68,7 @@ class Pagination
       'page' => $page,
       'pageSize' => $options['limit'],
     ]);
+    //ddd($page,$this->pagination->pageCount );
     if ($page > 0 && $page > $this->pagination->pageCount - 1) {
       throw new yii\web\NotFoundHttpException();
     }

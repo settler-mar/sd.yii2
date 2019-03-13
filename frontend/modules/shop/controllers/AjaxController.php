@@ -54,7 +54,7 @@ class AjaxController extends SdController
 
     $this->url = $request->post('url');
     //$this->url = '/ru/shop/zaschitnye-plenki/zaschitnye-plenki-dlya-planshetov';
-    $this->path = $this->url;
+
     $this->url = trim($this->url, '/');
 
     //Чистим адрес от префикса региона/языка если надо
@@ -62,6 +62,7 @@ class AjaxController extends SdController
     if (substr($this->url, 0, mb_strlen($prefix) + 1) == $prefix . '/') {
       $this->url = substr($this->url, mb_strlen($prefix) + 1);
     }
+    $this->path = $this->url;
 
     //Если  запрос прилетел не из магазина то ошибка
     $prefix = 'shop';
@@ -168,17 +169,18 @@ class AjaxController extends SdController
     $request = Yii::$app->request;
 
     $sortvars = Product::sortvars();
-    $page = $request->get('page');
-    $limit = $request->get('limit');
-    $sort_request = $request->get('sort');
-    $priceStart = $request->get('price-start');
-    $priceEnd = $request->get('price-end');
-
+    $page = $this->request('page');
+    $limit = null;//$this->request('limit');
+    $sort_request = $this->request('sort');
+    $priceStart = $this->request('price-start');
+    $priceEnd = $this->request('price-end');
 
     $validator = new \yii\validators\NumberValidator();
     $validatorIn = new \yii\validators\RangeValidator(['range' => array_keys($sortvars)]);
 
-    if (!empty($limit) && !$validator->validate($limit) ||
+    if(empty($page))$page=1;
+    if (
+        !empty($limit) && !$validator->validate($limit) ||
         !empty($page) && !$validator->validate($page) ||
         !empty($sort_request) && !$validatorIn->validate($sort_request) ||
         !empty($priceStart) && !$validator->validate($priceStart) ||
@@ -186,6 +188,7 @@ class AjaxController extends SdController
     ) {
       throw new \yii\web\NotFoundHttpException;
     };
+    //ddd($page, $limit,$sort_request,$priceStart,$priceEnd);
 
     if (!empty($sort_request)) {
       $sortDb = isset($sortvars[$sort_request]['name']) ? $sortvars[$sort_request]['name'] : $sort_request;
@@ -209,13 +212,14 @@ class AjaxController extends SdController
     $cashName =
         ':page:' . $page .
         ':limit:' . $limit .
-        ':order:' . $sortDb . '_' . $order .
+        ':order:' . $sort_request . '_' . $order .
         ':catalog:' . $this->category_id;
 
     $paginateParams = [
         'limit' => $limit,
         'sort' => $sort,
         'page' => $page,
+        'isAjax'=>false,
     ];
 
 
@@ -245,6 +249,7 @@ class AjaxController extends SdController
     $requestData['cashCodeFilter'] = $cashName;
 
     $filter = ['and'];
+
     if ($priceStart && $priceStart > $this->priceStartDB) {
       $filter[] = ['>=', 'price', $priceStart];
       $cashName .= ':price_min:' . $priceStart;
@@ -258,10 +263,9 @@ class AjaxController extends SdController
       $requestData['price_end_user']=$priceEnd;
     }
 
+
     if (empty($where['vendor_id'])) {
-      $requestVendor =
-          !empty($request->post('vendor')) ? $request->post('vendor') :
-              (!empty($request->get('vendor')) ? $request->get('vendor') : false);
+      $requestVendor = $this->request('vendor',true);
       if ($requestVendor) {
         $requestData['vendor_get']=$requestVendor;
         $paginateParams['vendor'] = $requestVendor;
@@ -271,9 +275,8 @@ class AjaxController extends SdController
     }
 
     if (empty($where['store_id'])) {
-      $requestStore =
-          !empty($request->post('stores')) ? $request->post('stores') :
-              (!empty($request->get('stores')) ? $request->get('stores') : false);
+      $requestStore = $this->request('stores',true);
+
       if ($requestStore) {
         $paginateParams['stores'] = $requestStore;
         $cashName .= ':stores:' . implode(',', $requestStore);
@@ -304,9 +307,10 @@ class AjaxController extends SdController
         [
             'limit' => $requestData['limit'],
             'page' => $requestData['page'],
-            'asArray' => true
+            'asArray' => true,
         ]
     );
+
 
     $data = [
         'products' => $pagination->data(),
@@ -322,6 +326,7 @@ class AjaxController extends SdController
             $requestData['paginate_params']
         )
     ];
+
     $data["show_products"] = count($data['products']);
 
     if ($pagination->pages() > 1) {
@@ -340,6 +345,8 @@ class AjaxController extends SdController
     $filter = [
         'store_get'=>isset($requestData['store_get'])?$requestData['store_get']:[],
         'vendor_get'=>isset($requestData['vendor_get'])?$requestData['vendor_get']:[],
+        'price_start_user'=>isset($requestData['price_start_user'])?$requestData['price_start_user']:'',
+        'price_end_user'=>isset($requestData['price_end_user'])?$requestData['price_end_user']:'',
     ];
 
     $pre_data = [];
@@ -399,5 +406,32 @@ class AjaxController extends SdController
         'filter' => $filter,
     ];
     return $this->renderAjax('filter', $data);
+  }
+
+  private function request($name, $isArray = false){
+    $request = Yii::$app->request;
+    $data = !empty($request->post($name)) ? $request->post($name) :
+        (!empty($request->get($name)) ? $request->get($name) : false);
+
+    if(!$isArray){
+      return is_array($data)?$data[0]:$data;
+    }
+
+    if(empty($data)){
+      return [];
+    }
+
+    if(!is_array($data)){
+      $data=[$data];
+    }
+
+    if(is_array($data[0])){
+      foreach ($data as &$item){
+        $item=$item[0];
+      }
+      return $data;
+    }
+
+    return $data;
   }
 }
