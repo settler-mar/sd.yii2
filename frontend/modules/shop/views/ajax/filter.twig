@@ -6,13 +6,6 @@
         <div class="catalog_product_filter-items">
           {% if filter.query %}
             <input type="hidden" name="query" value="{{ filter.query }}">
-            <input type="hidden" name="limit" value="{{ limit }}">
-          {% endif %}
-          {% if filter.month %}
-            <input type="hidden" name="month" value="1">
-          {% endif %}
-          {% if filter.profit %}
-            <input type="hidden" name="profit" value="1">
           {% endif %}
 
           {% if filter.price_start!=filter.price_end %}

@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use common\components\Help;
 use frontend\modules\product\models\CatalogStores;
 use frontend\modules\product\models\Product;
 use frontend\modules\product\models\ProductsCategory;
@@ -64,7 +65,7 @@ class ProductCacheController extends Controller
     $regions = $this->getRegions();
     foreach ($regions as $regionKey => $region) {
       $cacheName = $cacheProducts . (!empty($regionKey)?'_region_' . $regionKey:'');
-      $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
+      $this->areasWhere = empty($region['areas']) ? false : Help::makeAreasWhere($region['areas']);
       try {
         if(true) {
           $categories=[];
@@ -101,9 +102,9 @@ class ProductCacheController extends Controller
 
             $doc_ids=!empty($category['children_ids']) ? $category['children_ids'] : [];
             $doc_ids[]=$category['id'];
-            $categoryProps = $this->productsProperties([
+            $categoryProps = Product::productsProperties([
                 'category' => $doc_ids
-            ]);
+            ],$this->areasWhere);
             $newCategory['price_min'] = $categoryProps['prices']['min'];
             $newCategory['price_max'] = $categoryProps['prices']['max'];
             $newCategory['count'] = $categoryProps['prices']['count'];
@@ -134,7 +135,7 @@ class ProductCacheController extends Controller
     foreach ($regions as $regionKey => $region) {
       $cacheName = $cacheProducts . (!empty($regionKey)?'_region_' . $regionKey:'');
 
-      $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
+      $this->areasWhere = empty($region['areas']) ? false : Help::makeAreasWhere($region['areas']);
 
       try {
         $categories = ProductsCategory::tree([
@@ -170,7 +171,7 @@ class ProductCacheController extends Controller
     foreach ($regions as $regionKey => $region) {
       $cacheName = $cacheStores . (!empty($regionKey)?'_region_' . $regionKey:'');
 
-      $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
+      $this->areasWhere = empty($region['areas']) ? false : Help::makeAreasWhere($region['areas']);
 
       try {
         $storesResult = [];
@@ -189,7 +190,7 @@ class ProductCacheController extends Controller
         }
         $stores = $query->all();
         foreach ($stores as $store) {
-          $properties = $this->productsProperties(['store_id' => $store['store_id']]);
+          $properties = Product::productsProperties(['store_id' => $store['store_id']],$this->areasWhere);
           $storesResult[$store['route']] = [
               'id' => $store['store_id'],
               'price_min' => $properties['prices']['min'],
@@ -219,7 +220,7 @@ class ProductCacheController extends Controller
     foreach ($regions as $regionKey => $region) {
       $cacheName = $cacheStores . (empty($regionKey)?'_region_' . $regionKey:'');
 
-      $this->areasWhere = empty($region['areas']) ? false : $this->makeAreasWhere($region['areas']);
+      $this->areasWhere = empty($region['areas']) ? false : Help::makeAreasWhere($region['areas']);
 
       try {
         $vendorsResult = [];
@@ -235,7 +236,7 @@ class ProductCacheController extends Controller
         }
         $vendors = $query->all();
         foreach ($vendors as $vendor) {
-          $properties = $this->productsProperties(['vendor_id' => $vendor['vendor_id']]);
+          $properties = Product::productsProperties(['vendor_id' => $vendor['vendor_id']],$this->areasWhere);
           $vendorsResult[$vendor['route']] = [
               'id' => $vendor['vendor_id'],
               'price_min' => $properties['prices']['min'],
@@ -291,62 +292,6 @@ class ProductCacheController extends Controller
     return $region;
   }
 
-  /**
-   * @param $categories
-   * @return array
-   */
-  protected function productsProperties($params = [])
-  {
-    $query = Product::find()
-        ->from(Product::tableName() . ' p')
-        ->asArray();
-
-    if (!empty($params['category'])) {
-      $query->leftJoin(ProductsToCategory::tableName() . ' pc', 'p.id = pc.product_id')
-          ->andWhere(['pc.category_id' => $params['category']]);
-    }
-    if (!empty($params['store_id'])) {
-      $query->andWhere(['p.store_id' => $params['store_id']]);
-    }
-    if (!empty($params['vendor_id'])) {
-      $query->andWhere(['p.vendor_id' => $params['vendor_id']]);
-    }
-    if (!empty($this->areasWhere)) {
-      $query->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = p.catalog_id')
-          ->andWhere($this->areasWhere);
-    }
-    $queryCount = clone $query;
-    $queryVendor = clone $query;
-    $resultCount = $queryCount->select(['max(price) as max', 'min(price) as min','count(p.id) as count'])->all();
-    $resultStore = $query->select(['store_id'])->groupBy('store_id')->all();
-    $resultVendor = $queryVendor->select(['vendor_id'])->groupBy('vendor_id')->all();
-    return [
-        'prices' => $resultCount[0],
-        'stores' => array_column($resultStore, 'store_id'),
-        'vendors' => array_diff(array_column($resultVendor, 'vendor_id'), [null]),
-    ];
-  }
-
-  /**
-   * условие запроса по регионам
-   * @param $areas
-   * @return array|bool
-   */
-  protected function makeAreasWhere($areas)
-  {
-    if (empty($areas)) {
-      return false;
-    }
-    $areasWhere = [];
-    foreach ($areas as $area) {
-      $areasWhere[] = 'JSON_CONTAINS(cs.regions,\'"' . $area . '"\',"$")';
-    }
-    return array_merge([
-        'or',
-        ['=', 'JSON_LENGTH(`cs`.`regions`)', 0],
-        ['is', '`regions`', null],
-    ], $areasWhere);
-  }
 
     /** дерево категорий (или список при $params['flat'] => true)
      * @param null $params

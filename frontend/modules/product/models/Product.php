@@ -1165,4 +1165,38 @@ class Product extends \yii\db\ActiveRecord
 
   }
 
+
+  public static function productsProperties($params = [],$areasWhere = false,$product = false,$alies = 'p')
+  {
+    if(!$product)$product = self::find();
+
+    $query = $product
+        ->from(self::tableName() . ' '.$alies)
+        ->asArray();
+
+    if (!empty($params['category'])) {
+      $query->leftJoin(ProductsToCategory::tableName() . ' pc', $alies.'.id = pc.product_id')
+          ->andWhere(['pc.category_id' => $params['category']]);
+    }
+    if (!empty($params['store_id'])) {
+      $query->andWhere([$alies.'.store_id' => $params['store_id']]);
+    }
+    if (!empty($params['vendor_id'])) {
+      $query->andWhere([$alies.'.vendor_id' => $params['vendor_id']]);
+    }
+    if (!empty($areasWhere)) {
+      $query->leftJoin(CatalogStores::tableName() . ' cs', 'cs.id = '.$alies.'.catalog_id')
+          ->andWhere($areasWhere);
+    }
+    $queryCount = clone $query;
+    $queryVendor = clone $query;
+    $resultCount = $queryCount->select(['max(price) as max', 'min(price) as min','count('.$alies.'.id) as count'])->all();
+    $resultStore = $query->select(['store_id'])->groupBy('store_id')->all();
+    $resultVendor = $queryVendor->select(['vendor_id'])->groupBy('vendor_id')->all();
+    return [
+        'prices' => $resultCount[0],
+        'stores' => array_column($resultStore, 'store_id'),
+        'vendors' => array_diff(array_column($resultVendor, 'vendor_id'), [null]),
+    ];
+  }
 }

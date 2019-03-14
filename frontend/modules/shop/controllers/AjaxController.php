@@ -2,12 +2,14 @@
 
 namespace frontend\modules\shop\controllers;
 
+use common\components\Help;
 use frontend\components\Pagination;
 use frontend\components\SdController;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\product\models\Product;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\vendor\models\Vendor;
+use Symfony\Component\Console\Helper\Helper;
 use Yii;
 
 class AjaxController extends SdController
@@ -85,10 +87,23 @@ class AjaxController extends SdController
         $this->priceEndDB = $vendorsUsed['price_max'];
 
         $this->modeData = $vendorsUsed;
-      }else{
+      } else {
         throw new \yii\web\NotFoundHttpException();
       }
-    } else {
+    } else if (
+      $this->url =='search/product'
+    ){
+      //тут обработчик поиска делаем
+      $this->mode = 'search';
+
+      $query = strip_tags($this->request('query'));
+      $sql = 'SELECT * FROM products WHERE match(\'' . $query . '\') LIMIT ' . 100000;
+      $ids = array_column(Yii::$app->sphinx->createCommand($sql)->queryAll(), 'id');
+      $this->where_filter['id'] = $ids;
+      $this->where_filter['query'] = $query;
+
+      $this->modeData = $ids;
+    }else{
 
       //Если  запрос прилетел не из магазина то ошибка
       $prefix = 'shop';
@@ -262,10 +277,7 @@ class AjaxController extends SdController
 
 
     //готовим данные запроса
-    $querydb = Product::items()
-        ->orderBy([
-            $sortDb => $order
-        ]);
+    $querydb = Product::items();
 
     if (!$this->mode && $this->category_id) {
       $category = $this->data_list[$this->category_id]['children_ids'];
@@ -283,11 +295,35 @@ class AjaxController extends SdController
       $where['store_id'] = $this->where_filter['store'];
       $cashName .= ':store:' . $this->where_filter['store'];
     }
+    if (!empty($this->where_filter['query']) && isset($this->where_filter['id'])) {
+      $where['prod.id'] = $this->where_filter['id'];
+      $cashName .= ':query:' . $this->where_filter['query'];
+      $paginateParams['query'] = $this->where_filter['query'];
+    }
 
     $requestData['cashCodeFilter'] = $cashName;
 
-    $filter = ['and'];
+    if($this->mode=='search'){
+      $cash = Yii::$app->cache;
+      $query = clone $querydb;
+      $query->andWhere(
+          $where
+      );
 
+      $this->modeData = $cash->getOrSet('product_search_',function () use ($query){
+        return Product::productsProperties(
+            $this->where_filter,
+            Help::makeAreasWhere(),
+            $query,
+            'prod'
+        );
+      });
+      $this->priceStartDB = $this->modeData['prices']['min'];
+      $this->priceEndDB = $this->modeData['prices']['max'];
+    }
+
+    //далее параметры из фильтра
+    $filter = ['and'];
     if ($priceStart && $priceStart > $this->priceStartDB) {
       $filter[] = ['>=', 'price', $priceStart];
       $cashName .= ':price_min:' . $priceStart;
@@ -300,7 +336,6 @@ class AjaxController extends SdController
       $paginateParams['price-end'] = $priceEnd;
       $requestData['price_end_user'] = $priceEnd;
     }
-
 
     if (empty($where['vendor_id'])) {
       $requestVendor = $this->request('vendor', true);
@@ -327,6 +362,8 @@ class AjaxController extends SdController
         'and',
         $where,
         $filter
+    ])->orderBy([
+        $sortDb => $order
     ]);
 
     $requestData['cashCode'] = $cashName;
@@ -389,15 +426,23 @@ class AjaxController extends SdController
 
     $pre_data = [];
 
+    if($this->mode=="search"){
+      $filter['query']=$this->where_filter['query'];
+    }
+
     if ($this->mode == false) {
       if ($this->category_id == 0) return;
 
       $pre_data = $this->data_list[$this->category_id];
     } elseif (in_array($this->mode,['store','vendor'])) {
       $pre_data = $this->modeData;
-    } else {
-
-      ddd($this);
+    } elseif ($this->mode=='search') {
+      $pre_data=[
+          'vendor_list' => $this->modeData['vendors'],
+          'stores_list' => $this->modeData['stores'],
+          'price_min' => $this->modeData['prices']['min'],
+          'price_max' => $this->modeData['prices']['max'],
+      ];
     }
 
     if (!empty($pre_data['vendor_list'])) {
