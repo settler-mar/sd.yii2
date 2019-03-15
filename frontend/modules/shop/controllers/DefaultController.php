@@ -20,7 +20,6 @@ class DefaultController extends SdController
 {
   public $category = null;
   private $product = null;
-  private $store = null;
 
 
   //private $requestData = [];
@@ -42,6 +41,19 @@ class DefaultController extends SdController
       exit;
     }
 
+    if($id_=='product'){
+      $request = \Yii::$app->request;
+      $path = explode('/', $request->pathInfo);
+      if (count($path) != 3 || $path[1] != 'product' || !preg_match('/^\d+$/', $path[2])) {
+        throw new \yii\web\NotFoundHttpException();
+      }
+      $product = Product::findOne($path[2]);
+      if (!$product) {
+        throw new yii\web\NotFoundHttpException();
+      }
+      $this->product = $product;
+    }
+
     return parent::createAction($id_);
   }
 
@@ -54,6 +66,7 @@ class DefaultController extends SdController
         'order' => ['in_top' => SORT_DESC, 'logo' => SORT_DESC],
         'empty' => true,
     ]);
+
     $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
     $data['products_top_count'] = Product::top(['by_visit' => 1, 'count' => 1]);
 
@@ -61,6 +74,7 @@ class DefaultController extends SdController
       $data['posts'] = Posts::getLastPosts();
       $data['posts_count'] = Posts::find()->count();
     }
+
     $data['stores'] = Product::usedStores(['limit' => 15]);
     $data['stores_count'] = Stores::activeCount();
     $data['most_profitable'] = Product::top([
@@ -85,7 +99,8 @@ class DefaultController extends SdController
 
     $data["content_tpl"] = '_index';
 
-    Yii::$app->runAction('shop/ajax/meta');
+    $meta = Yii::$app->runAction('shop/ajax/meta');
+    $this->params = $meta->params;
     //ddd($meta);
 
     return $this->render('base', $data);
@@ -93,7 +108,8 @@ class DefaultController extends SdController
 
   public function actionCategory()
   {
-    Yii::$app->runAction('shop/ajax/meta');
+    $meta = Yii::$app->runAction('shop/ajax/meta');
+    $this->params = $meta->params;
     return $this->render('base');
   }
 
@@ -101,28 +117,22 @@ class DefaultController extends SdController
   {
     Yii::$app->params['url_mask'] = 'shop/product/*';
     $product = $this->product;
-    $path = '/shop';
-    $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
-    $this->breadcrumbs_last_item_disable = false;
-    $category = isset($product->categories[0]) ? $product->categories[0] : false;//
-    $category->childCategoriesId();
-    $categoryChildsIds = array_merge([$category->id], $category->childCategoriesId ? $category->childCategoriesId : []);
-    $categoryRoute = '/shop';
-    $parentTree = $category->parentTree();
-//ddd($parentTree);
-    if ($category && $parentTree) {
-      //$this->params['breadcrumbs'] = [];
-      //$category->full_path=array_reverse($category->full_path);
-      foreach ($parentTree as $parent) {
-        //break;
-        $path .= '/' . $parent['route'];
-        $categoryRoute = $path;
-        array_push($this->params['breadcrumbs'], [
-            'label' => $parent['name'],
-            'url' => Help::href($path),
-        ]);
-      }
+    Yii::$app->params['category_id']=$this->product->getCategoryId();
+
+    $meta = Yii::$app->runAction('shop/ajax/meta');
+    $this->params = $meta->params;
+    $category=$meta->modeData;
+    $categoryChildsIds=[];
+    $categoryRoute = Help::href('/shop');
+    if(!empty($category)){
+      $categoryChildsIds=$category['children_ids'];
+      $categoryChildsIds[]=$category['id'];
+
+      $categoryRoute = end($this->params['breadcrumbs'])['url'];
     }
+
+    //$categoryChildsIds = $meta->
+    //ddd($meta,$product,Yii::$app);
 
     //продукты того же производителя
     $brandsProducts = $product->vendor_id ? Product::top([

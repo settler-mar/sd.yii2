@@ -54,7 +54,8 @@ class DefaultController extends SdController
       throw new \yii\web\NotFoundHttpException;
     }
 
-    Yii::$app->runAction('shop/ajax/meta');
+    $meta = Yii::$app->runAction('shop/ajax/meta');
+    $this->params = $meta->params;
     return $this->render('@frontend/modules/shop/views/default/base');
   }
 

@@ -11,6 +11,7 @@ use frontend\modules\product\models\Product;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\vendor\models\Vendor;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Response;
 
 class AjaxController extends SdController
@@ -31,7 +32,7 @@ class AjaxController extends SdController
   private $where_filter = [];
 
   private $mode = false;
-  private $modeData = false;
+  public $modeData = false;
   private $priceStartDB;
   private $priceEndDB;
 
@@ -61,7 +62,6 @@ class AjaxController extends SdController
 
     $this->data_tree = $this->cache->get('products_category_route_region_' . $this->region);
     $this->data_list = $this->cache->get('products_category_region_' . $this->region);
-
 
     //$this->url = '/ru/shop/zaschitnye-plenki/zaschitnye-plenki-dlya-planshetov';
 
@@ -122,23 +122,31 @@ class AjaxController extends SdController
         throw new \yii\web\NotFoundHttpException();
       }
 
-      if($this->url=='profit'){
+      if ($this->url == 'profit') {
         $this->mode = 'profit';
-
-
-      }else {
+      } elseif ($this->url == 'month') {
+        $this->mode = 'month';
+      } else {
         $url = explode('/', $this->url);
-        //проверка на магазин
-        $storesUsed = $this->cache->get('products_stores');
-        if (count($url) == 1 && isset($storesUsed[$url[0]])) {
-          $this->mode = 'store';
-          $storesUsed = $storesUsed[$url[0]];
 
-          $this->where_filter['store'] = $storesUsed['id'];
-          $this->priceStartDB = $storesUsed['price_min'];
-          $this->priceEndDB = $storesUsed['price_max'];
+        if ($url[0] == 'product' && count($url) == 2) {
+          $this->mode = 'product';
+          $this->category_id = Yii::$app->params['category_id'];
+          $this->modeData = empty($this->data_list[$this->category_id])?
+              false:$this->data_list[$this->category_id];
+        } else {
+          //проверка на магазин
+          $storesUsed = $this->cache->get('products_stores');
+          if (count($url) == 1 && isset($storesUsed[$url[0]])) {
+            $this->mode = 'store';
+            $storesUsed = $storesUsed[$url[0]];
 
-          $this->modeData = $storesUsed;
+            $this->where_filter['store'] = $storesUsed['id'];
+            $this->priceStartDB = $storesUsed['price_min'];
+            $this->priceEndDB = $storesUsed['price_max'];
+
+            $this->modeData = $storesUsed;
+          }
         }
       }
     }
@@ -169,7 +177,7 @@ class AjaxController extends SdController
 
     }
 
-    if(!empty($this->modeData) && !empty($this->modeData['name'])) {
+    if (!empty($this->modeData) && !empty($this->modeData['name'])) {
       $this->modeData['name'] = $this->lang && !empty($this->modeData['names'][$this->lang]) ?
           $this->modeData['names'][$this->lang] : $this->modeData['name'];
     }
@@ -197,33 +205,33 @@ class AjaxController extends SdController
         continue;
       }
 
-      $store = $data_list[$item['id']];
+      $cat = $data_list[$item['id']];
       //если в категории нет товаров или она не активна то пропускаем ее
-      if (!$store['active'] || $store['count'] == 0) {
+      if (!$cat['active'] || $cat['count'] == 0) {
         continue;
       }
 
-      $store['count_all'] = $store['count'];
-      unset($store['children_ids']);
-      unset($store['price_min']);
-      unset($store['price_max']);
-      unset($store['vendor_list']);
-      unset($store['stores_list']);
-      unset($store['children']);
-      unset($store['parent']);
-      unset($store['active']);
-      unset($store['store_id']);
-      unset($store['count']);
+      $cat['count_all'] = $cat['count'];
+      unset($cat['children_ids']);
+      unset($cat['price_min']);
+      unset($cat['price_max']);
+      unset($cat['vendor_list']);
+      unset($cat['stores_list']);
+      unset($cat['children']);
+      unset($cat['parent']);
+      unset($cat['active']);
+      unset($cat['store_id']);
+      unset($cat['count']);
 
-      $store['name'] = $this->lang && !empty($item['names'][$this->lang]) ?
-          $store['names'][$this->lang] : $store['name'];
+      $cat['name'] = $this->lang && !empty($item['names'][$this->lang]) ?
+          $cat['names'][$this->lang] : $cat['name'];
 
-      unset($store['names']);
+      unset($cat['names']);
 
       if (!empty($item['children'])) {
-        $store['children'] = $this->buildTree($item['children'], $data_list);
+        $cat['children'] = $this->buildTree($item['children'], $data_list);
       }
-      $out[] = $store;
+      $out[] = $cat;
     }
 
     return $out;
@@ -317,7 +325,7 @@ class AjaxController extends SdController
           $where
       );
 
-      $this->modeData = $cash->getOrSet('product_search_', function () use ($query) {
+      $this->modeData = $cash->getOrSet('product_search_' . $this->where_filter['query'], function () use ($query) {
         return Product::productsProperties(
             $this->where_filter,
             Help::makeAreasWhere(),
@@ -330,8 +338,46 @@ class AjaxController extends SdController
     }
 
     if ($this->mode == 'profit') {
-      $cashName.=':profit:';
-      $filter[]=['>','discount',Yii::$app->params['most_profitable_min_discount']];
+      $cashName .= ':profit:';
+      $filter[] = ['>', 'discount', Yii::$app->params['most_profitable_min_discount']];
+
+      $cash = Yii::$app->cache;
+      $query = clone $querydb;
+      $query
+          ->andWhere($where)
+          ->andWhere($filter);
+      $this->modeData = $cash->getOrSet('product_profit', function () use ($query) {
+        return Product::productsProperties(
+            $this->where_filter,
+            Help::makeAreasWhere(),
+            $query,
+            'prod'
+        );
+      });
+      $this->priceStartDB = $this->modeData['prices']['min'];
+      $this->priceEndDB = $this->modeData['prices']['max'];
+    }
+
+    if ($this->mode == 'month') {
+      $cashName .= ':month:';
+      $month = Product::top(['by_visit' => 1, 'select' => ['prod.id']]);
+      $month = ArrayHelper::getColumn($month, 'id');
+
+      $where['prod.id'] = $month;
+
+      $cash = Yii::$app->cache;
+      $query = clone $querydb;
+      $query->andWhere($where);
+      $this->modeData = $cash->getOrSet('product_month', function () use ($query) {
+        return Product::productsProperties(
+            $this->where_filter,
+            Help::makeAreasWhere(),
+            $query,
+            'prod'
+        );
+      });
+      $this->priceStartDB = $this->modeData['prices']['min'];
+      $this->priceEndDB = $this->modeData['prices']['max'];
     }
 
     $requestData['cashCodeFilter'] = $cashName;
@@ -381,7 +427,7 @@ class AjaxController extends SdController
 
     $requestData['cashCodeMeta'] = $cashName;
 
-    $cashName.=
+    $cashName .=
         ':page:' . $page .
         ':limit:' . $limit .
         ':order:' . $sort_request . '_' . $order;
@@ -448,7 +494,7 @@ class AjaxController extends SdController
       $pre_data = $this->data_list[$this->category_id];
     } elseif (in_array($this->mode, ['store', 'vendor'])) {
       $pre_data = $this->modeData;
-    } elseif ($this->mode == 'search') {
+    } elseif (in_array($this->mode, ['search', 'month', 'profit'])) {
       $pre_data = [
           'vendor_list' => $this->modeData['vendors'],
           'stores_list' => $this->modeData['stores'],
@@ -542,8 +588,31 @@ class AjaxController extends SdController
     }
 
     $requestData = $this->getProductsDB();
-
     $meta = [];
+
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
+    if (!empty($this->category_id) && $this->category_id !== 0) {
+      $category_id = $this->category_id;
+      $breadcrumbs = [];
+      while ($category_id != 0) {
+        if (!isset($this->data_list[$category_id])) break;
+        $cat = $this->data_list[$category_id];
+
+        //если в категории нет товаров или она не активна то пропускаем ее
+        if (!$cat['active'] || $cat['count'] == 0) {
+          continue;
+        }
+
+        $breadcrumbs[] = [
+            'label' => $this->lang && !empty($item['names'][$this->lang]) ?
+                $cat['names'][$this->lang] : $cat['name'],
+            'url' => Help::href('/shop/' . $cat['full_route'])
+        ];
+        $category_id = $cat['parent'];
+      }
+      $breadcrumbs = array_reverse($breadcrumbs);
+      $this->params['breadcrumbs'] = ArrayHelper::merge($this->params['breadcrumbs'], $breadcrumbs);
+    }
 
     //Определяем использовали ли фильтр
     if ($requestData['cashCodeFilter'] != $requestData['cashCodeMeta']) {
@@ -567,12 +636,15 @@ class AjaxController extends SdController
 
       $meta['vendor'] = $this->modeData['name'];
       $meta['total_v'] = $this->modeData['count'];
-    } else {
+    } elseif ($this->mode == 'product') {
+      $meta_code = 'shop/product/*';
+      $meta['total_v']=0;
+    }else{
       $meta_code = 'shop/' . $this->mode;
 
-      $meta['filter']=[];
-      foreach ($this->where_filter as $name=>$item){
-        if(in_array($name,['id']))continue;
+      $meta['filter'] = [];
+      foreach ($this->where_filter as $name => $item) {
+        if (in_array($name, ['id'])) continue;
         $meta['filter'][$name] = $item;
       }
     }
@@ -596,12 +668,29 @@ class AjaxController extends SdController
       );
     }
 
-    //ddd($metaArr, $this, $meta_code, $meta, $this->modeData,$requestData);
+    $breadcrumbs = $this->params['breadcrumbs'];
+    if($breadcrumbs[count($breadcrumbs)-1]['url']==$this->path && !empty($metaArr['h1'])){
+      //$breadcrumbs[count($breadcrumbs)]['label'] = $metaArr['h1'];
+      $breadcrumbs[count($breadcrumbs)-1]=$metaArr['h1'];
+    }
+
+    //ddd($metaArr, $this, $meta_code, $meta, $this->modeData, $requestData, Yii::$app->view, Yii::$app->controller);
 
     if (!$request->isAjax) {
       Yii::$app->view->metaArr = $metaArr;
+      $this->params['breadcrumbs'] = $breadcrumbs;
+      return $this;
     }
-    return $metaArr;
+
+
+    return [
+        'title' => $metaArr['title'],
+        'h1' => $metaArr['h1'],
+        'content' => $metaArr['content'],
+        'additional_content' => $metaArr['additional_content'],
+        'breadcrumbs' => $metaArr['show_breadcrumbs']?
+            $this->renderAjax('@frontend/views/parts/catalog_breadcrumbs.twig'):'',
+    ];
   }
 
   private function getPaginate($requestData)

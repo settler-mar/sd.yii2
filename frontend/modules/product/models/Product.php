@@ -877,7 +877,6 @@ class Product extends \yii\db\ActiveRecord
     $casheName = 'products_top_' . (!empty($params) ? Help::multiImplode('_', $params) : '') . ($language ? '_' . $language : '');
     $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
 
-
     $products = $cache->getOrSet($casheName, function () use ($params, $debug) {
       $count = !empty($params['count']) ? null : (isset($params['limit']) ? $params['limit'] : 5);
       $product = self::items()
@@ -886,6 +885,9 @@ class Product extends \yii\db\ActiveRecord
                   isset($params['order']) ? $params['order'] : SORT_ASC
           ])
           ->limit($count);
+      if(!empty($params['select'])){
+        $product->select($params['select']);
+      }
       if (isset($params['where'])) {
         $product->andWhere($params['where']);
       }

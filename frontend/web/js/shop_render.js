@@ -79,7 +79,7 @@ var shopRender = (function () {
     //если не стартовая то внезависимо от приоритета
     if (!is_main) {
       //убираем блоки идущие после основного блока рендера
-      $('#content').closest('.page-wrap-flex').nextAll().remove();
+      $('#content').closest('.page-wrap-flex').nextAll().not('.ajax_update').remove();
 
       //грузим блок контента
       loadHtmlBlock('content', 0, 'content',after_content_render);
@@ -92,7 +92,9 @@ var shopRender = (function () {
     } else {
       //активируем пункт в меню
       menu_active();
+
       //загрузка мета данных
+      loadMeta();
 
       //скролим вверх
       var top_pos = $('#content').offset().top;
@@ -165,6 +167,36 @@ var shopRender = (function () {
     if (callback) {
       callback();
     }
+  }
+
+  function loadMeta(){
+    $('.breadcumbs_catalog').closest('section').remove();
+    $('#additional_content').html('');
+
+    $.post(root_url + '/ajax/meta',params,function(data){
+      if(data.breadcrumbs && data.breadcrumbs.length>100){
+        $('#content-wrap').prepend(data.breadcrumbs)
+      }
+
+      if(data.h1 && data.h1.length>5){
+        $('#content-wrap h1').html(data.h1)
+      }
+
+      if(data.content && data.content.length>5){
+        $('#content-wrap h1').next().html(data.content)
+      }
+
+      if(data.additional_content && data.additional_content.length>5){
+        $('#additional_content').html(data.additional_content)
+      }
+
+      if(data.title && data.title.length>5){
+        document.title = data.title
+      }
+
+
+      console.log(data);
+    },'json');
   }
 
   function loadHtmlBlock(type, delay, block_id, callback) {

@@ -27,10 +27,17 @@
       </div>
 
       {#справа продукты#}
-      <div class="catalog-stores" id="content">
-        {% if content_tpl=="_index" %}
-          {% include 'parts/products/index_content.twig' %}
-        {% endif %}
+      <div class="catalog-stores">
+        <div id="content" class="ajax_update">
+          {% if content_tpl=="_index" %}
+            {% include 'parts/products/index_content.twig' %}
+          {% endif %}
+        </div>
+        <div class="catalog_category-down-description margin sd_content ajax_update" id="additional_content">
+          {% if additional_content %}
+              {{ additional_content|raw }}
+          {% endif %}
+        </div>
       </div>
     </div>
 
