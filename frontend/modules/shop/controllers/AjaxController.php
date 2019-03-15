@@ -6,11 +6,12 @@ use common\components\Help;
 use frontend\components\Pagination;
 use frontend\components\SdController;
 use frontend\modules\favorites\models\UsersFavorites;
+use frontend\modules\meta\models\Meta;
 use frontend\modules\product\models\Product;
 use frontend\modules\stores\models\Stores;
 use frontend\modules\vendor\models\Vendor;
-use Symfony\Component\Console\Helper\Helper;
 use Yii;
+use yii\web\Response;
 
 class AjaxController extends SdController
 {
@@ -44,8 +45,14 @@ class AjaxController extends SdController
   {
     $request = Yii::$app->request;
 
-    if (!$request->isAjax && !YII_DEBUG) {
+    if (!$request->isAjax && !YII_DEBUG && $id != "meta") {
       throw new \yii\web\NotFoundHttpException();
+    }
+
+    if (!$request->isAjax && $id == "meta") {
+      $this->url = Yii::$app->request->pathInfo;
+    } else {
+      $this->url = $request->post('url');
     }
 
     $this->cache = Yii::$app->cache_shop;
@@ -55,7 +62,7 @@ class AjaxController extends SdController
     $this->data_tree = $this->cache->get('products_category_route_region_' . $this->region);
     $this->data_list = $this->cache->get('products_category_region_' . $this->region);
 
-    $this->url = $request->post('url');
+
     //$this->url = '/ru/shop/zaschitnye-plenki/zaschitnye-plenki-dlya-planshetov';
 
     $this->url = trim($this->url, '/');
@@ -91,8 +98,8 @@ class AjaxController extends SdController
         throw new \yii\web\NotFoundHttpException();
       }
     } else if (
-      $this->url =='search/product'
-    ){
+        $this->url == 'search/product'
+    ) {
       //тут обработчик поиска делаем
       $this->mode = 'search';
 
@@ -103,7 +110,7 @@ class AjaxController extends SdController
       $this->where_filter['query'] = $query;
 
       $this->modeData = $ids;
-    }else{
+    } else {
 
       //Если  запрос прилетел не из магазина то ошибка
       $prefix = 'shop';
@@ -132,7 +139,7 @@ class AjaxController extends SdController
     }
 
     if (!$this->mode) {
-      if(!isset($url)){
+      if (!isset($url)) {
         throw new \yii\web\NotFoundHttpException();
       }
 
@@ -149,18 +156,19 @@ class AjaxController extends SdController
         }
       }
 
-      /*$this->where = [
-          'category_id'=>$this->data_list[$this->category_id]
-      ];*/
-
       if ($this->category_id) {
-        $this->priceStartDB = $this->data_list[$this->category_id]['price_min'];
-        $this->priceEndDB = $this->data_list[$this->category_id]['price_max'];
+        $this->modeData = $this->data_list[$this->category_id];
+        $this->priceStartDB = $this->modeData['price_min'];
+        $this->priceEndDB = $this->modeData['price_max'];
       }
 
     }
 
-    //ddd($this->data_list[$this->category_id]);
+    if(!empty($this->modeData) && !empty($this->modeData['name'])) {
+      $this->modeData['name'] = $this->lang && !empty($this->modeData['names'][$this->lang]) ?
+          $this->modeData['names'][$this->lang] : $this->modeData['name'];
+    }
+
     return parent::createAction($id);
   }
 
@@ -211,7 +219,6 @@ class AjaxController extends SdController
         $store['children'] = $this->buildTree($item['children'], $data_list);
       }
       $out[] = $store;
-
     }
 
     return $out;
@@ -303,14 +310,14 @@ class AjaxController extends SdController
 
     $requestData['cashCodeFilter'] = $cashName;
 
-    if($this->mode=='search'){
+    if ($this->mode == 'search') {
       $cash = Yii::$app->cache;
       $query = clone $querydb;
       $query->andWhere(
           $where
       );
 
-      $this->modeData = $cash->getOrSet('product_search_',function () use ($query){
+      $this->modeData = $cash->getOrSet('product_search_', function () use ($query) {
         return Product::productsProperties(
             $this->where_filter,
             Help::makeAreasWhere(),
@@ -376,16 +383,7 @@ class AjaxController extends SdController
   {
     $requestData = $this->getProductsDB();
 
-    $pagination = new Pagination(
-        $requestData['querydb'],
-        'shop_content_' . $requestData['cashCode'],
-        [
-            'limit' => $requestData['limit'],
-            'page' => $requestData['page'],
-            'asArray' => true,
-        ]
-    );
-
+    $pagination = $this->getPaginate($requestData);
 
     $data = [
         'products' => $pagination->data(),
@@ -426,18 +424,18 @@ class AjaxController extends SdController
 
     $pre_data = [];
 
-    if($this->mode=="search"){
-      $filter['query']=$this->where_filter['query'];
+    if ($this->mode == "search") {
+      $filter['query'] = $this->where_filter['query'];
     }
 
     if ($this->mode == false) {
       if ($this->category_id == 0) return;
 
       $pre_data = $this->data_list[$this->category_id];
-    } elseif (in_array($this->mode,['store','vendor'])) {
+    } elseif (in_array($this->mode, ['store', 'vendor'])) {
       $pre_data = $this->modeData;
-    } elseif ($this->mode=='search') {
-      $pre_data=[
+    } elseif ($this->mode == 'search') {
+      $pre_data = [
           'vendor_list' => $this->modeData['vendors'],
           'stores_list' => $this->modeData['stores'],
           'price_min' => $this->modeData['prices']['min'],
@@ -520,5 +518,88 @@ class AjaxController extends SdController
     }
 
     return $data;
+  }
+
+  public function actionMeta()
+  {
+    $request = Yii::$app->request;
+    if ($request->isAjax) {
+      Yii::$app->response->format = Response::FORMAT_JSON;
+    }
+
+    $requestData = $this->getProductsDB();
+
+    $meta = [];
+
+    //Определяем использовали ли фильтр
+    if ($requestData['cashCodeFilter'] != $requestData['cashCode']) {
+      $meta_code = 'shop/filter';
+    } elseif ($this->mode == false) {
+      if ($this->category_id == 0) {
+        $meta_code = 'shop';
+      } else {
+        $meta_code = 'shop/*';
+
+        $meta['category'] = $this->modeData;
+        $meta['total_v'] = $this->modeData['count'];
+      }
+    } elseif ($this->mode == 'store') {
+      $meta_code = 'shops/store/*';
+
+      $meta['store'] = Stores::byRoute($this->url);
+      $meta['total_v'] = $this->modeData['count'];
+    } elseif ($this->mode == 'vendor') {
+      $meta_code = 'vendor/*';
+
+      $meta['vendor'] = $this->modeData['name'];
+      $meta['total_v'] = $this->modeData['count'];
+    } else {
+      $meta_code = 'shop/' . $this->mode;
+
+      $meta['filter']=[];
+      foreach ($this->where_filter as $name=>$item){
+        if(in_array($name,['id']))continue;
+        $meta['filter'][$name] = $item;
+      }
+    }
+
+    if (!isset($meta['total_v'])) {
+      $paginate = $this->getPaginate($requestData);
+      $meta['total_v'] = $paginate->count();
+    }
+
+    Yii::$app->params['url_mask'] = $meta_code;
+    $metaArr = Meta::findByUrl($meta_code);
+
+    //d($metaArr);
+    foreach ($metaArr as &$item) {
+      if (!is_string($item)) continue;
+      if (mb_stripos($item, '{{') === false) continue;
+
+      $item = Yii::$app->TwigString->render(
+          $item,
+          $meta
+      );
+    }
+
+    //ddd($metaArr, $this, $meta_code, $meta, $this->modeData,$requestData);
+
+    if (!$request->isAjax) {
+      Yii::$app->view->metaArr = $metaArr;
+    }
+    return $metaArr;
+  }
+
+  private function getPaginate($requestData)
+  {
+    return new Pagination(
+        $requestData['querydb'],
+        'shop_content_' . $requestData['cashCode'],
+        [
+            'limit' => $requestData['limit'],
+            'page' => $requestData['page'],
+            'asArray' => true,
+        ]
+    );
   }
 }

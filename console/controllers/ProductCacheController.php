@@ -226,7 +226,7 @@ class ProductCacheController extends Controller
         $vendorsResult = [];
         $query = Product::find()
             ->from(Product::tableName() . ' p')
-            ->select(['vendor_id','v.route'])
+            ->select(['vendor_id','v.route','v.name'])
             ->leftJoin(Vendor::tableName().' v','v.id = p.vendor_id')
             ->groupBy('vendor_id')
             ->asArray();
@@ -239,6 +239,7 @@ class ProductCacheController extends Controller
           $properties = Product::productsProperties(['vendor_id' => $vendor['vendor_id']],$this->areasWhere);
           $vendorsResult[$vendor['route']] = [
               'id' => $vendor['vendor_id'],
+              'name' => $vendor['name'],
               'price_min' => $properties['prices']['min'],
               'price_max' => $properties['prices']['max'],
               'count' => $properties['prices']['count'],

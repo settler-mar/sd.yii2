@@ -2,66 +2,60 @@
 
 namespace frontend\modules\vendor\controllers;
 
-use yii;
-use yii\web\Controller;
-use common\components\Help;
-use frontend\components\Pagination;
 use frontend\components\SdController;
-use frontend\modules\favorites\models\UsersFavorites;
-use frontend\modules\stores\models\Stores;
-use frontend\modules\product\models\Product;
 use frontend\modules\vendor\models\Vendor;
-use frontend\modules\shop\controllers\DefaultController as ShopController;
+use yii;
 
 class DefaultController extends SdController
 {
-    private $category = null;
-    private $product = null;
-    private $store = null;
+  private $category = null;
+  private $product = null;
+  private $store = null;
 
-    private $requestData = [];
-    private $cacheName = '';
-    private $paginatePath = '';
-    private $paginateParams = [];
-    protected $vendor;
+  private $requestData = [];
+  private $cacheName = '';
+  private $paginatePath = '';
+  private $paginateParams = [];
+  protected $vendor;
 
-    public function createAction($id)
-    {
-        $this->params['disable_breadcrumbs_home_link'] = 1;//для виджета крошек
-        $id = (string) $id;
-        if ($id) {
-            if ($id != \Yii::$app->help->makeRoute($id)) {
-                throw new \yii\web\NotFoundHttpException;
-            }
-            $vendor = Vendor::find()
-                ->andWhere(['status'=>Vendor::STATUS_ACTIVE])
-                ->andWhere(['route'=>$id])
-                ->one();
-            if (!$vendor) {
-                throw new \yii\web\NotFoundHttpException;
-            }
-            $this->vendor = $vendor;
-            if (Yii::$app->request->isAjax) {
-                //данные айаксом
-                echo $this->actionData($id);
-                exit;
-            }
-            echo $this->actionIndex($id);
-            exit;
-        }
-        return parent::createAction($id);
+  public function createAction($id)
+  {
+    $this->params['disable_breadcrumbs_home_link'] = 1;//для виджета крошек
+    $id = (string)$id;
+    if ($id) {
+      if ($id != \Yii::$app->help->makeRoute($id)) {
+        throw new \yii\web\NotFoundHttpException;
+      }
+      $vendor = Vendor::find()
+          ->andWhere(['status' => Vendor::STATUS_ACTIVE])
+          ->andWhere(['route' => $id])
+          ->one();
+      if (!$vendor) {
+        throw new \yii\web\NotFoundHttpException;
+      }
+      $this->vendor = $vendor;
+      if (Yii::$app->request->isAjax) {
+        //данные айаксом
+        echo $this->actionData($id);
+        exit;
+      }
+      echo $this->actionIndex($id);
+      exit;
+    }
+    return parent::createAction($id);
+  }
+
+  public function actionIndex()
+  {
+    $request = Yii::$app->request;
+    $vendor = $this->vendor;
+
+    if (empty($vendor->id)) {
+      throw new \yii\web\NotFoundHttpException;
     }
 
-    public function actionIndex()
-    {
-        $request = Yii::$app->request;
-        $vendor = $this->vendor;
-
-        if(empty($vendor->id)){
-          throw new \yii\web\NotFoundHttpException;
-        }
-
-        return $this->render('@frontend/modules/shop/views/default/base');
-    }
+    Yii::$app->runAction('shop/ajax/meta');
+    return $this->render('@frontend/modules/shop/views/default/base');
+  }
 
 }

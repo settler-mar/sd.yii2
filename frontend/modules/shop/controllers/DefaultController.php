@@ -13,7 +13,6 @@ use frontend\modules\reviews\models\Reviews;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
 use frontend\modules\stores\models\Stores;
-use frontend\modules\transitions\models\UsersVisits;
 use frontend\modules\vendor\models\Vendor;
 use yii;
 
@@ -90,9 +89,8 @@ class DefaultController extends SdController
         'empty' => true,
     ]);
     $data['products_top'] = Product::top(['by_visit' => 1, 'limit' => 12]);
-
     $data['products_top_count'] = Product::top(['by_visit' => 1, 'count' => 1]);
-    $data["total_v"] = Product::find()->count();
+
     if (Yii::$app->language == 'ru-RU') {
       $data['posts'] = Posts::getLastPosts();
       $data['posts_count'] = Posts::find()->count();
@@ -120,11 +118,16 @@ class DefaultController extends SdController
     $data["favorites_ids"] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
 
     $data["content_tpl"] = '_index';
+
+    Yii::$app->runAction('shop/ajax/meta');
+    //ddd($meta);
+
     return $this->render('base', $data);
   }
 
   public function actionCategory()
   {
+    Yii::$app->runAction('shop/ajax/meta');
     return $this->render('base');
   }
 
@@ -215,7 +218,6 @@ class DefaultController extends SdController
    * выдача данных товары
    * для получения из ajax
    */
-
   public function actionData()
   {
     //для запросов получить параметры запроса
