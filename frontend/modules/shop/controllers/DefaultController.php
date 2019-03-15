@@ -29,58 +29,24 @@ class DefaultController extends SdController
 
   //private $paginateParams = [];
 
-  public function createAction($id)
+  public function createAction($id_)
   {
-    $this->params['disable_breadcrumbs_home_link'] = 1;//для виджета крошек
-    $request = \Yii::$app->request;
-    Yii::$app->params['url_mask'] = 'shop';
-    $path = explode('/', $request->pathInfo);
-    $this->paginatePath = '/' . $request->pathInfo;
-    if ($request->get('page')) {
-      $path = array_diff($path, ['page-' . $request->get('page')]);
+
+    $id = empty($id_)?'index':$id_;
+    $id = ucwords(str_replace('-',' ',$id));
+    $id = str_replace(' ','',$id);
+    $actionName = 'action'.$id;
+
+    if(!method_exists($this,$actionName)){
+      echo $this->actionCategory();
+      exit;
     }
-    if (count($path) > 1 && $path[0] == 'shop') {
-      $category = ProductsCategory::byRoute(array_slice($path, 1), null, ['active_only' => true]);
-      //нашли категорию
-      if ($category) {
-        $this->category = $category;
-        //Yii::$app->params['url_mask'] = 'shop/*';
-        if ($request->isAjax) {
-          //данные айаксом
-          echo $this->actionData();
-          exit;
-        }
-        echo $this->actionCategory();
-        exit;
-      }
-      $storesUsed = Product::usedStores([
-          'where' => ['s.route' => $path[1], 's.is_active' => [0, 1]],
-      ]);
-      $store = count($storesUsed) ? Stores::byId($storesUsed[0]['uid']) : false;
-      //нашли шоп по пути
-      if ($store) {
-        $this->store = $store;
-        //Yii::$app->params['url_mask'] = 'shop/store/*';
-        echo $this->actionCategory();
-        exit;
-      }
-      if (count($path) == 3 and $path[1] = 'product' and preg_match('/^\d+$/', $path[2])) {
-        $product = Product::findOne($path[2]);
-        if (!$product) {
-          throw new yii\web\NotFoundHttpException();
-        }
-        $this->product = $product;
-        //Yii::$app->params['url_mask'] = 'shop/product/*';
-        echo $this->actionProduct();
-        exit;
-      }
-    }
-    return parent::createAction($id);
+
+    return parent::createAction($id_);
   }
 
   public function actionIndex()
   {
-    Yii::$app->params['url_mask'] = 'shop';
     $data = [];
     $data['slider_products'] = Slider::get(['place' => 'product']);
     $data['category_top'] = ProductsCategory::top([
@@ -213,45 +179,5 @@ class DefaultController extends SdController
         'coupons' => $coupons,
     ]);
   }
-
-  /**
-   * выдача данных товары
-   * для получения из ajax
-   */
-  public function actionData()
-  {
-    //для запросов получить параметры запроса
-    $requestData = self::getRequestData(['category' => $this->category, 'store_id' => $this->store]);
-
-    $pagination = new Pagination(
-        $requestData['query_db'],
-        $requestData['cache_name'],
-        [
-            'limit' => $requestData['request_data']['query'] ? 48 : $requestData['request_data']['limit'],
-            'page' => $requestData['request_data']['page'],
-            'asArray' => true
-        ]
-    );
-    //return json_encode([$requestData['query_db'], $requestData['request_data']]);
-
-    //$storesData['category'] = $requestData['request_data']['category'];
-    $storesData['products'] = $pagination->data();
-    $storesData["total_v"] = $pagination->count();
-    $storesData["total_all_product"] = Product::activeCount();
-    $storesData["page"] = empty($requestData['request_data']['page']) ? 1 : $requestData['request_data']['page'];
-    $storesData["show_products"] = count($storesData['products']);
-    $storesData["offset_products"] = $pagination->offset();
-    $storesData["limit"] = empty($limit) ? Product::$defaultLimit : $limit;
-
-    if ($pagination->pages() > 1) {
-      $storesData["pagination"] = $pagination->getPagination($this->paginatePath, $requestData['paginate_params']);
-      //$this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);
-    }
-
-    $storesData['favorites_ids'] = UsersFavorites::getUserFav(Yii::$app->user->id, true);
-
-    return $this->renderAjax('ajax/category', $storesData);
-  }
-
 
 }

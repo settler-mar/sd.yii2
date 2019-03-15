@@ -111,7 +111,6 @@ class AjaxController extends SdController
 
       $this->modeData = $ids;
     } else {
-
       //Если  запрос прилетел не из магазина то ошибка
       $prefix = 'shop';
       if (
@@ -123,18 +122,24 @@ class AjaxController extends SdController
         throw new \yii\web\NotFoundHttpException();
       }
 
-      $url = explode('/', $this->url);
-      //проверка на магазин
-      $storesUsed = $this->cache->get('products_stores');
-      if (count($url) == 1 && isset($storesUsed[$url[0]])) {
-        $this->mode = 'store';
-        $storesUsed = $storesUsed[$url[0]];
+      if($this->url=='profit'){
+        $this->mode = 'profit';
 
-        $this->where_filter['store'] = $storesUsed['id'];
-        $this->priceStartDB = $storesUsed['price_min'];
-        $this->priceEndDB = $storesUsed['price_max'];
 
-        $this->modeData = $storesUsed;
+      }else {
+        $url = explode('/', $this->url);
+        //проверка на магазин
+        $storesUsed = $this->cache->get('products_stores');
+        if (count($url) == 1 && isset($storesUsed[$url[0]])) {
+          $this->mode = 'store';
+          $storesUsed = $storesUsed[$url[0]];
+
+          $this->where_filter['store'] = $storesUsed['id'];
+          $this->priceStartDB = $storesUsed['price_min'];
+          $this->priceEndDB = $storesUsed['price_max'];
+
+          $this->modeData = $storesUsed;
+        }
       }
     }
 
@@ -228,6 +233,8 @@ class AjaxController extends SdController
   {
     $request = Yii::$app->request;
 
+    $filter = ['and'];
+
     $sortvars = Product::sortvars();
     $page = $this->request('page');
     $limit = null;//$this->request('limit');
@@ -269,11 +276,7 @@ class AjaxController extends SdController
         'sort' => $sort,
     ];
 
-    $cashName =
-        ':page:' . $page .
-        ':limit:' . $limit .
-        ':order:' . $sort_request . '_' . $order .
-        ':catalog:' . $this->category_id;
+    $cashName = ':catalog:' . $this->category_id;
 
     $paginateParams = [
         'limit' => $limit,
@@ -281,7 +284,6 @@ class AjaxController extends SdController
         'page' => $page,
         'isAjax' => false,
     ];
-
 
     //готовим данные запроса
     $querydb = Product::items();
@@ -308,8 +310,6 @@ class AjaxController extends SdController
       $paginateParams['query'] = $this->where_filter['query'];
     }
 
-    $requestData['cashCodeFilter'] = $cashName;
-
     if ($this->mode == 'search') {
       $cash = Yii::$app->cache;
       $query = clone $querydb;
@@ -329,8 +329,14 @@ class AjaxController extends SdController
       $this->priceEndDB = $this->modeData['prices']['max'];
     }
 
+    if ($this->mode == 'profit') {
+      $cashName.=':profit:';
+      $filter[]=['>','discount',Yii::$app->params['most_profitable_min_discount']];
+    }
+
+    $requestData['cashCodeFilter'] = $cashName;
+
     //далее параметры из фильтра
-    $filter = ['and'];
     if ($priceStart && $priceStart > $this->priceStartDB) {
       $filter[] = ['>=', 'price', $priceStart];
       $cashName .= ':price_min:' . $priceStart;
@@ -373,9 +379,17 @@ class AjaxController extends SdController
         $sortDb => $order
     ]);
 
+    $requestData['cashCodeMeta'] = $cashName;
+
+    $cashName.=
+        ':page:' . $page .
+        ':limit:' . $limit .
+        ':order:' . $sort_request . '_' . $order;
+
     $requestData['cashCode'] = $cashName;
     $requestData['querydb'] = $querydb;
     $requestData['paginate_params'] = $paginateParams;
+    //ddd($requestData);
     return $requestData;
   }
 
@@ -532,7 +546,7 @@ class AjaxController extends SdController
     $meta = [];
 
     //Определяем использовали ли фильтр
-    if ($requestData['cashCodeFilter'] != $requestData['cashCode']) {
+    if ($requestData['cashCodeFilter'] != $requestData['cashCodeMeta']) {
       $meta_code = 'shop/filter';
     } elseif ($this->mode == false) {
       if ($this->category_id == 0) {
