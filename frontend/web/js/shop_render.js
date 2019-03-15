@@ -82,7 +82,7 @@ var shopRender = (function () {
       $('#content').closest('.page-wrap-flex').nextAll().not('.ajax_update').remove();
 
       //грузим блок контента
-      loadHtmlBlock('content', 0, 'content',after_content_render);
+      loadHtmlBlock('content', 0, 'content', after_content_render);
     }
 
     //часть действий зависят от того первый раз страница отрисовавается или уже повторно
@@ -99,10 +99,10 @@ var shopRender = (function () {
       //скролим вверх
       var top_pos = $('#content').offset().top;
       var menu_h = $('#header').children();
-      for(var k=0; k<menu_h.length;k++){
-        top_pos-=menu_h.eq(k).outerHeight();
+      for (var k = 0; k < menu_h.length; k++) {
+        top_pos -= menu_h.eq(k).outerHeight();
       }
-      $("html, body").animate({ scrollTop:top_pos }, 600);
+      $("html, body").animate({scrollTop: top_pos}, 600);
     }
 
     //загрузка блока под меню
@@ -169,34 +169,33 @@ var shopRender = (function () {
     }
   }
 
-  function loadMeta(){
+  function loadMeta() {
     $('.breadcumbs_catalog').closest('section').remove();
     $('#additional_content').html('');
 
-    $.post(root_url + '/ajax/meta',params,function(data){
-      if(data.breadcrumbs && data.breadcrumbs.length>100){
+    $.post(root_url + '/ajax/meta', params, function (data) {
+      if (data.breadcrumbs && data.breadcrumbs.length > 100) {
         $('#content-wrap').prepend(data.breadcrumbs)
       }
 
-      if(data.h1 && data.h1.length>5){
+      if (data.h1 && data.h1.length > 5) {
         $('#content-wrap h1').html(data.h1)
       }
 
-      if(data.content && data.content.length>5){
+      if (data.content && data.content.length > 5) {
         $('#content-wrap h1').next().html(data.content)
       }
 
-      if(data.additional_content && data.additional_content.length>5){
+      if (data.additional_content && data.additional_content.length > 5) {
         $('#additional_content').html(data.additional_content)
       }
 
-      if(data.title && data.title.length>5){
+      if (data.title && data.title.length > 5) {
         document.title = data.title
       }
 
-
-      console.log(data);
-    },'json');
+      //console.log(data);
+    }, 'json');
   }
 
   function loadHtmlBlock(type, delay, block_id, callback) {
@@ -207,9 +206,15 @@ var shopRender = (function () {
 
     if (innerData.length > 0) {
       innerData
-        .removeClass('block_show')
-      setTimeout('innerData.addClass(\'block_hide\')', 1, innerData);
-      setTimeout('innerData.remove()', 350, innerData);
+        .removeClass('block_show');
+      function addClassHider(innerData){
+        innerData.addClass('block_hide')
+      }
+      function removeBlock(el){
+        el.remove()
+      }
+      setTimeout(addClassHider, 1, innerData);
+      setTimeout(removeBlock, 350, innerData);
     }
 
     if (!delay) {
@@ -222,8 +227,8 @@ var shopRender = (function () {
   function getUrl() {
     var url = location.pathname;
     url = url.split('/');
-    if(url[url.length-1].substr(0,5)=='page-'){
-      params['page']=url[url.length-1].substr(5);
+    if (url[url.length - 1].substr(0, 5) == 'page-') {
+      params['page'] = url[url.length - 1].substr(5);
       url.pop();
     }
 
@@ -233,7 +238,7 @@ var shopRender = (function () {
   function product_filter() {
 
     var slider = $("#filter-slider-price");
-    if(slider.length) {
+    if (slider.length) {
       var textStart = $('#slider-price-start');
 
       var textFinish = $('#slider-price-end');
