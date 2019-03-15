@@ -129,6 +129,10 @@ class DefaultController extends SdController
       $categoryChildsIds[]=$category['id'];
 
       $categoryRoute = end($this->params['breadcrumbs'])['url'];
+
+      $this->params['breadcrumbs'][]=[
+          'label' => $product->name
+      ];
     }
 
     //$categoryChildsIds = $meta->

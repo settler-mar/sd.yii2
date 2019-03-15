@@ -658,14 +658,16 @@ class AjaxController extends SdController
     $metaArr = Meta::findByUrl($meta_code);
 
     //d($metaArr);
-    foreach ($metaArr as &$item) {
-      if (!is_string($item)) continue;
-      if (mb_stripos($item, '{{') === false) continue;
+    if($this->mode!='product') {
+      foreach ($metaArr as &$item) {
+        if (!is_string($item)) continue;
+        if (mb_stripos($item, '{{') === false) continue;
 
-      $item = Yii::$app->TwigString->render(
-          $item,
-          $meta
-      );
+        $item = Yii::$app->TwigString->render(
+            $item,
+            $meta
+        );
+      }
     }
 
     $breadcrumbs = $this->params['breadcrumbs'];
