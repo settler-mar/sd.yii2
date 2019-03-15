@@ -11,7 +11,7 @@
     </div>
     <div class="align-center">
       <a target="_blank" rel="noopener noreferrer nofollow"
-         href="{{ _href('/search/product?module=product&month=1')|raw }}"
+         href="{{ _href('/shop/month')|raw }}"
          class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': products_top_count})|raw }} →</a>
     </div>
   </section>
@@ -65,7 +65,7 @@
           {% include('parts/products/other_products.twig') %}
           <div class="align-center">
             <a target="_blank" rel="noopener noreferrer nofollow"
-               href="{{ _href('/search/product?profit=1&sort=discount')|raw }}"
+               href="{{ _href('/shop/profit')|raw }}"
                class="btn btn-transform">{{ t('shop', 'view_all_({count})', {'count': most_profitable_count})|raw }}
               →</a>
           </div>
