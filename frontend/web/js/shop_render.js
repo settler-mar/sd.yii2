@@ -128,10 +128,10 @@ var shopRender = (function () {
       .addClass('active')
       .replaceWithTag('span');
 
-    var wrap = active.closest('li');
+    var wrap = active.closest('.menu-group');
     while (wrap.hasClass('menu-group') && !wrap.hasClass('open')) {
       wrap.addClass('open');
-      wrap = wrap.closest('li');
+      wrap = wrap.parent().closest('.menu-group');
     }
     console.log(active);
   }

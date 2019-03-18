@@ -593,14 +593,20 @@ class AjaxController extends SdController
     $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'category_product'), 'url' => Help::href('/shop')];
     if (!empty($this->category_id) && $this->category_id !== 0) {
       $category_id = $this->category_id;
+      $this->category_id=false;
       $breadcrumbs = [];
       while ($category_id != 0) {
         if (!isset($this->data_list[$category_id])) break;
         $cat = $this->data_list[$category_id];
+        $category_id = $cat['parent'];
 
         //если в категории нет товаров или она не активна то пропускаем ее
         if (!$cat['active'] || $cat['count'] == 0) {
           continue;
+        }
+        if(!$this->category_id){
+          $this->category_id=$cat['id'];
+          $this->modeData=$cat;
         }
 
         $breadcrumbs[] = [
@@ -608,7 +614,6 @@ class AjaxController extends SdController
                 $cat['names'][$this->lang] : $cat['name'],
             'url' => Help::href('/shop/' . $cat['full_route'])
         ];
-        $category_id = $cat['parent'];
       }
       $breadcrumbs = array_reverse($breadcrumbs);
       $this->params['breadcrumbs'] = ArrayHelper::merge($this->params['breadcrumbs'], $breadcrumbs);

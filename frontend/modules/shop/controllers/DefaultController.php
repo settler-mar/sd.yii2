@@ -135,6 +135,7 @@ class DefaultController extends SdController
       ];
     }
 
+    //ddd($meta,$product);
     //$categoryChildsIds = $meta->
     //ddd($meta,$product,Yii::$app);
 
@@ -145,15 +146,39 @@ class DefaultController extends SdController
     ]) : [];
 
     //продукты той же категории другие бренды, желательно другие шопы, если шопов мало, то дополняем тем же шопом
-    $categoryProducts = $category ?
-        Product::top([
-            'category_id' => $categoryChildsIds,
-            'limit' => 8,
-          //указываем конкретного вендора какие НЕ ВЫВОДИТЬ, шопы вначале разные, потом для дополнения без учёта шопа
-            'other_brands_of' => ['product_id' => $product->id, 'vendors_id' => [$product->vendor_id], 'stores_id' => []],
-            'with_image' => true,
-            'where' => ['and', ['<>', 'prod.id', $product->id]],
-        ]) : [];
+    if(empty($category)||count($category['vendor_list'])==1){
+      $categoryProducts=[];
+    }else{
+      //общее число выводимых товаров
+      $totalLimit = 8;
+      //Считаем лимит на основе кол-ва брендов в категории
+      $vendors = $category['vendor_list'];
+      $categoryProducts=[];
+      $this_not_find = 1;
+      while ($totalLimit>0 && count($vendors)>0){
+        $limit = $totalLimit/(count($vendors)-$this_not_find);
+        $vendor = array_shift($vendors);
+        if($vendor==$product->vendor_id){
+          $this_not_find = 0;
+          continue;
+        }
+
+        if($limit<1)$limit=1;
+
+        $categoryProducts_t =
+            Product::top([
+                'category_id' => $categoryChildsIds,
+                'limit' => $limit,
+                'where' => [
+                  'prod.vendor_id' => $vendor,
+                ],
+                'with_image' => true,
+            ]);
+        $totalLimit-=count($categoryProducts_t);
+        $categoryProducts=yii\helpers\ArrayHelper::merge($categoryProducts,$categoryProducts_t);
+      }
+    }
+
 
     //похожие - той же категории и того же шопа, разные бренды
     $similarProducts = $product->store_id ?

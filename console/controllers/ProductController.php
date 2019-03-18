@@ -172,7 +172,7 @@ class ProductController extends Controller
 
     $sql = 'SELECT `id`, `image`, `catalog_id`, `image_download_count` FROM `cw_product` WHERE `image_download_count` < ' .
         $imageDownloadMaxCount . ' AND (`image` LIKE \'http://%\' OR `image` LIKE \'https://%\')'.
-        ($catalog > 0 ? ' AND `catalog_id` = ' . $catalog : '').' ORDER BY `catalog_id`';
+        ($catalog > 0 ? ' AND `catalog_id` = ' . $catalog : '').' ORDER BY `catalog_id` desc';
 
     $command = Yii::$app->db->createCommand($sql)->query();
     $process = 0;
@@ -193,6 +193,7 @@ class ProductController extends Controller
       } catch (\Exception $e) {
         echo $e->getMessage() . "\n";
       }
+      //ddd($imageUrl);
       if ($file) {
         try {
           $img = (new Image($file));
@@ -215,7 +216,6 @@ class ProductController extends Controller
             $optimizer->optimize($fullPath .$name);
           }
 
-
           $update['image'] = $path . $name;
           $downloads++;
         } catch (\Exception $e) {
@@ -227,7 +227,7 @@ class ProductController extends Controller
       }
       //Запись
       Yii::$app->db->createCommand()->update('cw_product', $update, ['id' => $product['id']])->execute();
-
+      ddd($update,$product['id'],$imageUrl);
       if (time() > $startTime + $processTime * 60) {
         echo 'Interrupted due to time limit ' . $processTime . " minutes\n";
         break;

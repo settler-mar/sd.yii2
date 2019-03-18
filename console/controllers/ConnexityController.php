@@ -86,7 +86,6 @@ class ConnexityController extends Controller
                     'affiliate_link' => isset($info['url']) ? $info['url'] : null,
                     'hide_on_site' => 1,
                 ];
-
                 $storeResult = Stores::addOrUpdate($newStore);
                 if (!$storeResult['result']) {
                     $errors++;
