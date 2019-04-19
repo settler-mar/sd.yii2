@@ -4,9 +4,11 @@ namespace console\controllers;
 
 use frontend\models\Task;
 use frontend\modules\notification\models\Notifications;
+use frontend\modules\promos\models\Promos;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\payments\models\Payments;
 use frontend\modules\stores\models\Cpa;
+use frontend\modules\users\models\Promo;
 use frontend\modules\users\models\Users;
 use frontend\modules\stores\models\Stores;
 use yii\console\Controller;
@@ -609,7 +611,7 @@ class TaskController extends Controller
       echo "Stores not on SD ".$count."\n";
   }
 
-  /*
+  /**
    * Всем шопам из категории благотворительность установить кешек = 0
    */
   public function actionStoresToCharity()
@@ -660,5 +662,33 @@ class TaskController extends Controller
       }
   }
 
+  /**
+   * Размножить промокоды
+   */
+  public function actionCopyPromo($from,$base_name,$start,$end){
+    $base = Promos::find()
+        ->where(['uid'=>$from])
+        ->asArray()
+        ->one();
+    if(!$base){
+      ddd('Не найден истоник');
+    }
 
+    unset($base['uid']);
+    unset($base['created_at']);
+    $base=['base'=>$base];
+
+    $num_l = strlen($end);
+    for($i=$start;$i<=$end;$i++){
+      $k=(string)$i;
+      while(strlen($k)<$num_l){
+        $k = '0'.$k;
+      }
+
+      $promo = new Promos();
+      $promo->load($base,'base');
+      $promo->name = $base_name.$k;
+      $promo->save();
+    }
+  }
 }
