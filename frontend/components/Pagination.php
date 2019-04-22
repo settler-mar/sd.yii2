@@ -149,7 +149,7 @@ class Pagination
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="'.Yii::t('main','previous_page').'" class="'.$a_class.'"  href="' .
         //Url::toRoute(array_merge($pageName, ['page' => $page - 1])) .
-            Help::href($pageName. ($page>2 ? '/page-' . ($page - 1):'') . ($paramsArr ? '?' . $paramsArr : '')) .
+            Help::href($pageName. str_replace($page>2 ? '/page-' . ($page - 1):'') . ($paramsArr ? '?' . $paramsArr : '')) .
         '">' .
       //'<span class="fa fa fa-caret-left"></span></a></li>' : '';
       Help::svg('caret-left', 'pagination_button pagination_button_left', '@frontend').'</a></li>' : '';
@@ -195,7 +195,8 @@ class Pagination
 
     $pages .= ($total - $page <= $displayCount - 1 || $total <= $displayCount  + 1 ? '' : '...');
 
-    return '<ul class="paginate">' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
+    $out = '<ul class="paginate">' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
+    return str_replace('//','/',$out);
   }
 
 

@@ -16,7 +16,7 @@ class m181229_075012_AddMetadataCatalogFilterResult extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $meta = CatMeta::findOne(['page'=> 'category/*']);
+        /*$meta = CatMeta::findOne(['page'=> 'category/*']);
         if ($meta) {
             $meta->isNewRecord = true;
             $meta->uid = null;
@@ -29,7 +29,7 @@ class m181229_075012_AddMetadataCatalogFilterResult extends Migration
         } else {
             ddd('Metadata category/* not found');
             return false;
-        }
+        }*/
     }
 
     /**

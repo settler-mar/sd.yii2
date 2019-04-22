@@ -665,6 +665,7 @@ class TaskController extends Controller
   /**
    * Размножить промокоды
    */
+  // php yii task/copy-promo 11 NPA0000 3001 5000
   public function actionCopyPromo($from,$base_name,$start,$end){
     $base = Promos::find()
         ->where(['uid'=>$from])
