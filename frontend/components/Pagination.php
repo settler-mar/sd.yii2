@@ -146,7 +146,7 @@ class Pagination
     $a_class=$isAjaxLoad?"ajax_load ":"";
 
     $pageName = explode("/",$pageName);
-    if(in_array($pageName[1],['account','coupons','stores',''])){
+    if(isset($pageName[1]) && in_array($pageName[1],['account','coupons','stores','reviews',''])){
       $pageName_1=$pageName[1];
       $pageName[1]=$pageName[0];
       $pageName[0]=$pageName_1;
