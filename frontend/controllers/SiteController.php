@@ -97,7 +97,7 @@ class SiteController extends SdController
     $totalStores = Stores::activeCount();
 
     //$reg_form = new RegistrationForm();
-    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.com/{{ ref_id }}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
 
@@ -244,10 +244,10 @@ class SiteController extends SdController
     //$page['title']=json_decode($page['title'],true);
     $this->params['breadcrumbs'][] = $page['title'];
 
-    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=" . $user->uid . "\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.com/offline?ref=" . $user->uid . "\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
-    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.ru" . $user->getBarcodeImg() . "\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.com" . $user->getBarcodeImg() . "\" />";
 
     return $this->render('static_page', $page);
 

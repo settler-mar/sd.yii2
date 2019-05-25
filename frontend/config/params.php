@@ -52,7 +52,7 @@ $data['TinyMce'] = [
         'relative_urls' => false,
         'convert_urls' =>  false,
         'remove_script_host' => false,
-        'document_base_url' => "https://secretdiscounter.ru/",
+        'document_base_url' => "https://secretdiscounter.com/",
         'forced_root_block' => false,
         'plugins' => [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'hr', 'anchor', 'pagebreak', 'accordion', 'clear_br', 'blocks',
