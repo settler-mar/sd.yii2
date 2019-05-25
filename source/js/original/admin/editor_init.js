@@ -11,7 +11,7 @@ function initEditor(){
     theme: 'modern',
     relative_urls:false,
     remove_script_host : false,
-    document_base_url : "https://secretdiscounter.ru/",
+    document_base_url : "https://secretdiscounter.com/",
     forced_root_block: false,
     plugins: [
       'advlist autolink lists link image charmap hr anchor pagebreak accordion blocks clear_br',

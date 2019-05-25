@@ -18,7 +18,7 @@ class m180621_073740_AddMetaReg extends Migration
         $this->execute('insert into `cw_metadata` (`page`, `title`, `description`, `keywords`, `h1`, `content`)'.
             ' values ("reg", "Зарегистрироваться - SecretDiscounter",'.
             '"Кэшбэк-сервис SecretDiscounter помогает Вам экономить и возвращать часть денег с каждой покупки в интернет-магазинах России и мира.",'.
-            '"Кэшбэк-сервис, кэшбэк сайт, возврат денег, экономия в интернете, secretdiscounter, secret discounter, секрет дискаунтер, секретдискаунтер, сикрет дискаунтер, сикретдискаунтер, секретдискаунтер.ру, secretdiscounter.ru",'.
+            '"Кэшбэк-сервис, кэшбэк сайт, возврат денег, экономия в интернете, secretdiscounter, secret discounter, секрет дискаунтер, секретдискаунтер, сикрет дискаунтер, сикретдискаунтер, секретдискаунтер.ру, SecretDiscounter.com",'.
             '"Зарегистрироваться с промокодом",'.
             '"<div class=\"reg-content\">
             <div class=\"reg-content reg-content_top margin\">

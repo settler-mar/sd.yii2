@@ -24,7 +24,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl($params);
                 </tr>
                 <tr>
                     <td style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 60px 0px;">
-                        Вы получили это письмо потому, что зарегистрировались в кэшбэк-сервисе secretdiscounter.com.
+                        Вы получили это письмо потому, что зарегистрировались в кэшбэк-сервисе SecretDiscounter.com.
                     </td>
                 </tr>
                 <tr>

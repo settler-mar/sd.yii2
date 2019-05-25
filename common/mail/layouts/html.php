@@ -555,13 +555,13 @@ use yii\helpers\Html;
                                                                         style="text-decoration:none;color:#fff"
                                                                         rel=" noopener noreferrer">(</a><a
                                                                         title="Перейти на страницу с плагинами кэшбэка"
-                                                                        href="https://secretdiscounter.ru/plugin"
+                                                                        href="https://secretdiscounter.com/plugin"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
                                                                         rel=" noopener noreferrer"><span
                                                                             style="text-decoration: underline;">скачать здесь</span></a><a
                                                                         title="Перейти на страницу с плагинами кэшбэка"
-                                                                        href="https://secretdiscounter.ru/plugin"
+                                                                        href="https://secretdiscounter.com/plugin"
                                                                         target="_blank"
                                                                         style="text-decoration:none;color:#fff"
                                                                         rel=" noopener noreferrer">)</a>&nbsp;</p></td>
@@ -668,7 +668,7 @@ use yii\helpers\Html;
                                                             href="https://www.youtube.com/watch?v=RlV3PyIYTqU"
                                                             style="text-decoration:none;color:#fff;display:block;overflow:auto"
                                                             target="_blank" rel=" noopener noreferrer"><img border="0"
-                                                                                                            src="https://secretdiscounter.ru/images/templates/yotube.jpeg"
+                                                                                                            src="https://secretdiscounter.com/images/templates/yotube.jpeg"
                                                                                                             width="270"
                                                                                                             height="auto"
                                                                                                             style="text-decoration:none;border:0;height:auto;line-height:100%;outline:0;max-width:100%;align:left;text-align:left"
@@ -793,7 +793,7 @@ use yii\helpers\Html;
                                                                                     vspace="5" hspace="5"
                                                                                     title="Facebook" width="48"
                                                                                     height="auto"
-                                                                                    src="https://secretdiscounter.ru/images/socialicons/fb.png"></a>
+                                                                                    src="https://secretdiscounter.com/images/socialicons/fb.png"></a>
                                                                     </th>
                                                                     <th class="social_element_mailru_css_attribute_postfix social_element_h_i_mailru_css_attribute_postfix"
                                                                         style="border-color:transparent;font-family:Arial, sans-serif;font-size:13px;line-height:32px;padding:2px 5px;font-weight:400;text-align:left;border-style:none;border-width:0;border:0"
@@ -808,7 +808,7 @@ use yii\helpers\Html;
                                                                                     vspace="5" hspace="5"
                                                                                     title="Одноклассники" width="48"
                                                                                     height="auto"
-                                                                                    src="https://secretdiscounter.ru/images/socialicons/ok.png"></a>
+                                                                                    src="https://secretdiscounter.com/images/socialicons/ok.png"></a>
                                                                     </th>
                                                                     <th class="social_element_mailru_css_attribute_postfix social_element_h_i_mailru_css_attribute_postfix"
                                                                         style="border-color:transparent;font-family:Arial, sans-serif;font-size:13px;line-height:32px;padding:2px 5px;font-weight:400;text-align:left;border-style:none;border-width:0;border:0"
@@ -823,7 +823,7 @@ use yii\helpers\Html;
                                                                                     vspace="5" hspace="5"
                                                                                     title="Google+" width="48"
                                                                                     height="auto"
-                                                                                    src="https://secretdiscounter.ru/images/socialicons/g.png"></a>
+                                                                                    src="https://secretdiscounter.com/images/socialicons/g.png"></a>
                                                                     </th>
                                                                     <th class="social_element_mailru_css_attribute_postfix social_element_h_i_mailru_css_attribute_postfix"
                                                                         style="border-color:transparent;font-family:Arial, sans-serif;font-size:13px;line-height:32px;padding:2px 5px;font-weight:400;text-align:left;border-style:none;border-width:0;border:0"
@@ -838,7 +838,7 @@ use yii\helpers\Html;
                                                                                     vspace="5" hspace="5"
                                                                                     title="Instagram" width="48"
                                                                                     height="auto"
-                                                                                    src="https://secretdiscounter.ru/images/socialicons/instogram.png"></a>
+                                                                                    src="https://secretdiscounter.com/images/socialicons/instogram.png"></a>
                                                                     </th>
                                                                     <th class="social_element_mailru_css_attribute_postfix social_element_h_i_mailru_css_attribute_postfix"
                                                                         style="border-color:transparent;font-family:Arial, sans-serif;font-size:13px;line-height:32px;padding:2px 5px;font-weight:400;text-align:left;border-style:none;border-width:0;border:0"
@@ -853,7 +853,7 @@ use yii\helpers\Html;
                                                                                     vspace="5" hspace="5"
                                                                                     title="YouTube" width="48"
                                                                                     height="auto"
-                                                                                    src="https://secretdiscounter.ru/images/socialicons/y.png"></a>
+                                                                                    src="https://secretdiscounter.com/images/socialicons/y.png"></a>
                                                                     </th>
                                                                 </tr>
                                                                 </tbody>
@@ -934,7 +934,7 @@ use yii\helpers\Html;
                                                                width="100%">5. А еще вы можете возвращать деньги и&nbsp;<span
                                                                         style="text-decoration: underline;color: #ffffff;"><a
                                                                             title="Деньги с покупок в оффлайн-магазинах и ресторанах возвращает только SecretDiscounter!"
-                                                                            href="https://secretdiscounter.ru/offline"
+                                                                            href="https://secretdiscounter.com/offline"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
                                                                             rel=" noopener noreferrer">с покупок в оффлайне</a></span>.
@@ -1008,7 +1008,7 @@ use yii\helpers\Html;
                                                                     width="100%" align="center"><span
                                                                         style="text-decoration: underline;color: #ffcc00;"><a
                                                                             title="Только 10% от всех покупателей знают об этом! Читайте и не переплачивайте!"
-                                                                            href="https://secretdiscounter.ru/help"
+                                                                            href="https://secretdiscounter.com/help"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
                                                                             rel=" noopener noreferrer">Что такое кэшбэк?</a></span>
@@ -1065,7 +1065,7 @@ use yii\helpers\Html;
                                                                     width="100%" align="center"><span
                                                                         style="text-decoration: underline;color: #ffcc00;"><a
                                                                             title="Чтобы ваша покупка засчиталась, следует выполнять определенные правила"
-                                                                            href="https://secretdiscounter.ru/recommendations"
+                                                                            href="https://secretdiscounter.com/recommendations"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:inherit"
                                                                             rel=" noopener noreferrer">Правила совершения покупок</a></span>
@@ -1258,7 +1258,7 @@ use yii\helpers\Html;
                                                                width="100%"><span
                                                                         style="text-decoration: underline;"><span
                                                                             style="color: #ffffff;"><a
-                                                                                href="https://secretdiscounter.ru/account/settings"
+                                                                                href="https://secretdiscounter.com/account/settings"
                                                                                 style="text-decoration:none;color:inherit"
                                                                                 target="_blank"
                                                                                 rel=" noopener noreferrer">Отписаться от рассылки</a></span></span>

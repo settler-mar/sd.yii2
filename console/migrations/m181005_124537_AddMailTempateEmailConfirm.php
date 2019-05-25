@@ -37,10 +37,10 @@ class m181005_124537_AddMailTempateEmailConfirm extends Migration
                             "data"=> [
                                 "html" => [
                                     "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>
-                                        На сайте SecretDiscounter.ru был сделан запрос на подтверждение почты для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 15 минут.
+                                        На сайте secretdiscounter.com был сделан запрос на подтверждение почты для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 15 минут.
                                          </p>",
                                     "en-EN"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #777777; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 0;'>
-                                        На сайте SecretDiscounter.ru был сделан запрос на подтверждение почты для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 15 минут.
+                                        На сайте secretdiscounter.com был сделан запрос на подтверждение почты для аккаунта, связанного с данным email-адресом. Если этот запрос был сделан вами – перейдите по ссылке, указанной ниже. В противном случае просто проигнорируйте это письмо. Ссылка действительна 15 минут.
                                          </p>",
                                 ]
                             ],
@@ -54,8 +54,8 @@ class m181005_124537_AddMailTempateEmailConfirm extends Migration
                                 ],
                                 "font" => "Arial",
                                 "href" => [
-                                    "ru-RU" => "https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }",
-                                    "en-EN" => "https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }"
+                                    "ru-RU" => "https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }",
+                                    "en-EN" => "https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }"
                                 ],
                                 "color" => "#0f181a",
                                 "button_background" => "#f7c714",
@@ -72,30 +72,30 @@ class m181005_124537_AddMailTempateEmailConfirm extends Migration
                             "data"=> [
                                 "html" => [
                                     "ru-RU"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #4d4d4d; font-weight: bold; text-decoration: none; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 40px;'>Если кнопка не сработала, скопируйте и вставьте эту ссылку в адресную строку браузера:
-                                            <a style=\"word-break:break-word;\" href=\"https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }\">https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }</a></p>",
+                                            <a style=\"word-break:break-word;\" href=\"https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }\">https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }</a></p>",
                                     "en-EN"=> "<p style='text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #4d4d4d; font-weight: bold; text-decoration: none; border-collapse: collapse; line-height: 21px; width: 100% !important; padding: 10px 0 40px;'>Если кнопка не сработала, скопируйте и вставьте эту ссылку в адресную строку браузера:
-                                            <a style=\"word-break:break-word;\" href=\"https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }\">https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }</a></p>",
+                                            <a style=\"word-break:break-word;\" href=\"https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }\">https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }</a></p>",
                                 ]
                             ],
                         ],
                     ],
                 "subject" => [
-                    "ru-RU" => "Подтвердите e-mail на  SecretDiscounter.ru",
-                    "en-EN" => "Confirm e-mail on  SecretDiscounter.ru",
+                    "ru-RU" => "Подтвердите e-mail на  secretdiscounter.com",
+                    "en-EN" => "Confirm e-mail on  secretdiscounter.com",
                 ],
                 "text" => [
                     "ru-RU" => "Здраствуйте, { user.name },
 
                         Перейдите по приведенной ниже ссылке, чтобы подтвердить ваш E-mail:
                        
-                        <a href=\"https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }\">Подтвердить E-mail</a>
+                        <a href=\"https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }\">Подтвердить E-mail</a>
 
                         Ссылка действительна 15 минут.",
                     "en-EN" => "Hello, { user.name },
 
                         Перейдите по приведенной ниже ссылке, чтобы подтвердить ваш E-mail:
                        
-                        <a href=\"https://secretdiscounter.ru/verifyemail?token={ user.email_verify_token }&email={ user.email }\">Подтвердить E-mail</a>
+                        <a href=\"https://secretdiscounter.com/verifyemail?token={ user.email_verify_token }&email={ user.email }\">Подтвердить E-mail</a>
 
                         Ссылка действительна 15 минут.",
                 ]
