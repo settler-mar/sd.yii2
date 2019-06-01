@@ -40,7 +40,7 @@
         '</div>' +
         '<div class="notify_box-buttons">' +
         '<a href="' + that.attr('href') + '" target="_blank" class="btn notification-close">'+lg("use_promocode")+'</a>' +
-        '<a href="#'+lang["href_prefix"]+'registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
+        '<a href="#'+lang.href_prefix+'/registration" class="btn btn-transform modals_open">'+lg("register")+'</a>' +
         '</div>'
       };
       notification.alert(data);
