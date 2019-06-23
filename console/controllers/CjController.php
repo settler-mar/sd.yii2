@@ -145,7 +145,7 @@ class CjController extends Controller
     $this->records++;
     $pay_status = [
       //пока со всем этим непонятно
-        'new' => 2,
+        'new' => 0,
         'extended' => 2,
         'closed' => 2,
         'locked' => 1,
@@ -175,6 +175,13 @@ class CjController extends Controller
       return;
     }
 
+    $orderCommission = abs($commission['pubCommissionAmountUsd']);
+    /*if ($store->route == 'booking-com' && !(float)$orderCommission) {
+      //для букинг пока так
+      $orderCommission = $commission['sale-amount'] * 0.04;
+      $status = 0;
+    }*/
+
     if(empty($commission['shopperId']))return;
     $user = $this->getUser($commission['shopperId']);
     if (!$user) {
@@ -182,12 +189,12 @@ class CjController extends Controller
       return;
     }
     $status = isset($pay_status[$commission['actionStatus']]) ? $pay_status[$commission['actionStatus']] : 0;
-    $orderCommission = abs($commission['pubCommissionAmountUsd']);
-    /*if ($store->route == 'booking-com' && !(float)$orderCommission) {
-      //для букинг пока так
-      $orderCommission = $commission['sale-amount'] * 0.04;
-      $status = 0;
-    }*/
+    if($orderCommission==0){
+      $status = 1;
+    }
+
+
+    $k = Yii::$app->conversion->getCurs($store->currency, 'USD');
     $newPayment = [
         'cpa_id' => $this->cpa->id,
         'affiliate_id' => $commission['advertiserId'],
@@ -195,9 +202,9 @@ class CjController extends Controller
         'action_id' => $commission['commissionId'],
         'status' => $status,
         'ip' => null,
-        'currency' => 'USD',//$store->currency,//Валюта платежа
-        'cart' => abs($commission['saleAmountUsd']),  //Сумма заказа в валюте
-        'payment' => $orderCommission,  //комиссия в валюте магазина
+        'currency' => $store->currency,//Валюта платежа
+        'cart' => abs($commission['saleAmountUsd'])*$k,  //Сумма заказа в валюте
+        'payment' => $orderCommission*$k,  //комиссия в валюте магазина
         'click_date' => date('Y-m-d H:i:s', strtotime($commission['clickDate'])),
         'action_date' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
         'status_updated' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
@@ -205,7 +212,7 @@ class CjController extends Controller
         'order_id' => (String)$commission["orderId"],
         "tariff_id" => null,
     ];
-    //ddd($newPayment);
+
     $paymentStatus = Payments::makeOrUpdate(
         $newPayment,
         $store,
