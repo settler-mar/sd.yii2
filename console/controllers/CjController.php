@@ -188,13 +188,15 @@ class CjController extends Controller
       $this->failsNotUser++;
       return;
     }
+
+    $k = Yii::$app->conversion->getCurs($store->currency, 'USD');
     $status = isset($pay_status[$commission['actionStatus']]) ? $pay_status[$commission['actionStatus']] : 0;
-    if($orderCommission==0){
+    if(round($orderCommission*$k,2)<0.01){
       $status = 1;
     }
 
 
-    $k = Yii::$app->conversion->getCurs($store->currency, 'USD');
+
     $newPayment = [
         'cpa_id' => $this->cpa->id,
         'affiliate_id' => $commission['advertiserId'],
@@ -203,9 +205,9 @@ class CjController extends Controller
         'status' => $status,
         'ip' => null,
         'currency' => $store->currency,//Валюта платежа
-        'cart' => abs($commission['saleAmountUsd'])*$k,  //Сумма заказа в валюте
-        'payment' => $orderCommission*$k,  //комиссия в валюте магазина
-        'click_date' => date('Y-m-d H:i:s', strtotime($commission['clickDate'])),
+        'cart' => round(abs($commission['saleAmountUsd'])*$k,2),  //Сумма заказа в валюте
+        'payment' => round($orderCommission*$k,2),  //комиссия в валюте магазина
+        'click_date' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
         'action_date' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
         'status_updated' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
         'closing_date' => "",
