@@ -53,10 +53,11 @@ class Cj
       //"forAdvertisers: [\"4701066\"],".
       "sincePostingDate:\"".date('Y-m-d',$dateStart)."T23:59:59Z\",".
       "beforePostingDate:\"".date('Y-m-d',$dateEnd)."T23:59:59Z\")".
-      "{count payloadComplete records {actionTrackerName websiteName advertiserName postingDate pubCommissionAmountUsd items { quantity perItemSaleAmountPubCurrency totalCommissionPubCurrency }  }  } }";
+      "{count payloadComplete records {actionTrackerName actionStatus reviewedStatus websiteId advertiserId clickDate postingDate  commissionId websiteName advertiserName postingDate pubCommissionAmountUsd shopperId saleAmountUsd orderId items { quantity perItemSaleAmountPubCurrency totalCommissionPubCurrency }  }  } }";
+    //d($data);
     $data = $this->getRequest("https://commissions.api.cj.com/query", $data,true,false);
 
-    ddd($data);
+    return ($data['data']['publisherCommissions']);
   }
 
 
