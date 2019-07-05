@@ -1,6 +1,6 @@
 {% if not this.user_id %}
     <div class="help_button">
-        <a href="#help" class="sd_help_button ajaxFormOpen" data-modal-class="help-msg">
+        <a href="{{ _href('#help')|raw }}" class="sd_help_button modals_open" data-modal-class="help-msg">
             Как это работает
         </a>
     </div>
