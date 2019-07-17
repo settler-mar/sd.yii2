@@ -891,6 +891,10 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
     return self::find()->where(['uid' => Yii::$app->user->id])->one();
   }
 
+  public function testActivity(){
+    return Yii::$app->security->validatePassword($this->email,$this->password);
+  }
+
   public function getAction()
   {
     return Users::find()

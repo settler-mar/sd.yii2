@@ -22,8 +22,10 @@ class Admitad
 
   public function init($scope)
   {
+    echo "init\n";
     $cash_id = 'admitad_' . $this->config['websiteId'] . '_' . $scope;
     $this->admitad = Yii::$app->cache->getOrSet($cash_id, function () use ($scope) {
+      echo "new\n";
       $api = new Api();
       $this->authorizeData = $api->authorizeClient(
           $this->config['clientId'],
@@ -32,7 +34,7 @@ class Admitad
       )->getArrayResult();
       //ddd($this->authorizeData);
       return new Api($this->authorizeData ['access_token']);
-    });
+    },60*60*24*7);//на 7 дней
 
   }
 
