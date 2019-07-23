@@ -38,6 +38,8 @@ class CjController extends Controller
   private $users=[];
   private $languages;
 
+  public $start_date;
+
   public function init()
   {
     $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
@@ -47,6 +49,13 @@ class CjController extends Controller
     }
   }
 
+  public function options($actionID)
+  {
+    if ($actionID == 'payments') {
+      return ['start_date'];
+    }
+    return [];
+  }
 
   public function actionStores()
   {
@@ -99,7 +108,20 @@ class CjController extends Controller
   public function actionPayments()
   {
     $cj = new Cj();
-    $response = $cj->getPayments();
+
+    if($this->start_date) {
+      $timestamp = (strtotime($this->start_date));
+      if($timestamp>0){
+        d('Get payments from '.date('d m Y', $timestamp));
+        $response = $cj->getPayments($timestamp);
+      }
+    }
+
+
+    if(empty($response)){
+      $response = $cj->getPayments();
+    }
+
     $count = isset($response['count']) ? $response['count'] : 0;
 
 

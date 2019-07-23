@@ -120,6 +120,7 @@ $(function() {
 		}
 
 		$.post('/ru/admin/payments/admitad-test',{'ids':ids,'update':(href.indexOf('update')>0?1:0)},function(data){
+			data = JSON.parse(data);
 			ad=$('.admitad_data');
 			ad.text('данные не найдены');
 			ad.removeClass('loading');
@@ -198,7 +199,7 @@ $(function() {
 				user_data+="</table>"
 				$('.user_data').html(user_data);
 			}
-		},'json').fail(function () {
+		}).fail(function () {
 			ad.removeClass('loading');
 			alert('Ошибка обработки запроса')
 		});

@@ -46,7 +46,7 @@ class Cj
   public function getPayments($dateStart = false, $dateEnd = false)
   {
     $dateEnd = $dateEnd ? $dateEnd : time();
-    $dateStart = $dateStart ? $dateStart : $dateEnd - 3600 * 24 * 30;
+    $dateStart = $dateStart ? $dateStart : $dateEnd - 3600 * 24 * 60;
 
     $data = "{ publisherCommissions(".
       "forPublishers: [\"4701066\"],".
