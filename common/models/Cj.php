@@ -3,8 +3,8 @@
 //https://developers.cj.com/authentication/overview
 namespace common\models;
 
-use yii;
 use rdx\graphqlquery\Query as gql;
+use yii;
 
 class Cj
 {
@@ -48,20 +48,29 @@ class Cj
     $dateEnd = $dateEnd ? $dateEnd : time();
     $dateStart = $dateStart ? $dateStart : $dateEnd - 3600 * 24 * 60;
 
-    $data = "{ publisherCommissions(".
-      "forPublishers: [\"4701066\"],".
-      //"forAdvertisers: [\"4701066\"],".
-      "sincePostingDate:\"".date('Y-m-d',$dateStart)."T23:59:59Z\",".
-      "beforePostingDate:\"".date('Y-m-d',$dateEnd)."T23:59:59Z\")".
-      "{count payloadComplete records {actionTrackerName actionStatus reviewedStatus websiteId advertiserId clickDate postingDate  commissionId websiteName advertiserName postingDate pubCommissionAmountUsd shopperId saleAmountUsd orderId items { quantity perItemSaleAmountPubCurrency totalCommissionPubCurrency }  }  } }";
-    //d($data);
-    $data = $this->getRequest("https://commissions.api.cj.com/query", $data,true,false);
+    $out = [];
+    while ($dateStart < $dateEnd) {
+      $dateEnd_ = $dateStart + 3600 * 24 * 20;
+      if ($dateEnd_ > $dateEnd) $dateEnd_ = $dateEnd;
 
-    return ($data['data']['publisherCommissions']);
+      $data = "{ publisherCommissions(" .
+          "forPublishers: [\"4701066\"]," .
+          //"forAdvertisers: [\"4701066\"],".
+          "sincePostingDate:\"" . date('Y-m-d', $dateStart) . "T23:59:59Z\"," .
+          "beforePostingDate:\"" . date('Y-m-d', $dateEnd_) . "T23:59:59Z\")" .
+          "{count payloadComplete records {actionTrackerName actionStatus reviewedStatus websiteId advertiserId clickDate postingDate  commissionId websiteName advertiserName postingDate pubCommissionAmountUsd shopperId saleAmountUsd orderId items { quantity perItemSaleAmountPubCurrency totalCommissionPubCurrency }  }  } }";
+      //d($data);
+      $data = $this->getRequest("https://commissions.api.cj.com/query", $data, true, false);
+
+      $dateStart = $dateEnd_;
+      $out += $data['data']['publisherCommissions']['records'];
+    }
+    return $out;
   }
 
 
-  private function GraphQLRequest($name,$params){
+  private function GraphQLRequest($name, $params)
+  {
     $query = gql::query($name);
     $query->defineFragment('userStuff', 'User');
     //$query->viewer->fields('...userStuff', 'repos');
@@ -71,17 +80,17 @@ class Cj
     return $query->build();
   }
 
-  private function getRequest($url, $params,$post = false,$isXml = true)
+  private function getRequest($url, $params, $post = false, $isXml = true)
   {
-    if(is_array($params)){
+    if (is_array($params)) {
       $query = http_build_query($params);
-    }else{
+    } else {
       $query = $params;
     }
 
     $url = $url . (!$post && $query ? '?' . $query : '');
 
-    d($url,$query);
+    d($url, $query);
 
     $headers = ["Authorization: " . $this->devKey];
     $ch = curl_init();
@@ -89,17 +98,17 @@ class Cj
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    if($post){
+    if ($post) {
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS,$query);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
     }
 
     $response = curl_exec($ch);
     curl_close($ch);
 
-    if($isXml){
-      $data =  json_encode((array)simplexml_load_string($response));
-    }else{
+    if ($isXml) {
+      $data = json_encode((array)simplexml_load_string($response));
+    } else {
       $data = $response;
     }
 

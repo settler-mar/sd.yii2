@@ -122,17 +122,17 @@ class CjController extends Controller
       $response = $cj->getPayments();
     }
 
-    $count = isset($response['count']) ? $response['count'] : 0;
+    //$count = isset($response['count']) ? $response['count'] : 0;
 
 
     /*if (isset($response['commissions']['commission'])) {
       if ($count == 1) {
         $this->writePayment($response['commissions']['commission']);
       } else {*/
-        if(empty($response['records'])){
+        if(empty($response)){
           ddd($response);
         }else {
-          foreach ($response['records'] as $commission) {
+          foreach ($response as $commission) {
             $this->writePayment($commission);
           }
         }
