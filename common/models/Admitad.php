@@ -22,7 +22,7 @@ class Admitad
 
   public function init($scope)
   {
-    echo "init\n";
+    //echo "init\n";
     $cash_id = 'admitad_' . $this->config['websiteId'] . '_' . $scope;
     $this->admitad = Yii::$app->cache->getOrSet($cash_id, function () use ($scope) {
       echo "new\n";
