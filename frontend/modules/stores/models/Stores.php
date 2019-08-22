@@ -809,17 +809,24 @@ class Stores extends \yii\db\ActiveRecord
     return $path;
   }
 
-  /**
-   * @return $this
-   * список шопов для разных страниц
-   * применять
-   * ->addSelect([..])
-   * ->andWhere([...])
-   * ->orderBy(...)
-   * ->all()
-   */
+    /**
+     * @param array $active
+     * @param bool $region
+     * @param bool $language
+     * @return yii\db\ActiveQuery
+     * список шопов для разных страниц
+     * применять
+     * ->addSelect([..])
+     * ->andWhere([...])
+     * ->orderBy(...)
+     * ->all()
+     */
   public static function items($active = [0, 1])
   {
+    $region = Yii::$app->params['region'];
+    $language = Yii::$app->language;
+    $language = $language  == Yii::$app->params['base_lang'] ? false : $language;
+
     $ratingQuery = (new Query())
       ->select(['cws2.uid', 'avg(cwur.rating) as rating', 'count(cwur.uid) as reviews_count'])
       ->from(self::tableName(). ' cws2')
@@ -827,9 +834,7 @@ class Stores extends \yii\db\ActiveRecord
       ->leftJoin(Users::tableName(). ' cwu', 'cwu.uid = cwur.user_id')
       ->groupBy('cws2.uid')
       ->where(['cwur.is_active' => 1])
-      ->andWhere(['cwu.region' => Yii::$app->params['region']]);
-
-    $language = Yii::$app->language  == Yii::$app->params['base_lang'] ? false : Yii::$app->language;
+      ->andWhere(['cwu.region' => $region]);
 
     $stores =  self::find()
       ->from(self::tableName() . ' cws')
@@ -839,11 +844,11 @@ class Stores extends \yii\db\ActiveRecord
         'cwsr.rating as region_rating'
       ]))
       ->leftJoin(['store_rating' => $ratingQuery], 'cws.uid = store_rating.uid')
-      ->leftJoin(StoreRatings::tableName() . ' cwsr', 'cwsr.store_id = cws.uid and cwsr.region = "'.Yii::$app->params['region'].'"')
+      ->leftJoin(StoreRatings::tableName() . ' cwsr', 'cwsr.store_id = cws.uid and cwsr.region = "'.$region.'"')
       ->where(['cws.is_active' => $active, 'cws.hide_on_site' => 0])
       ->asArray();
     if ($language) {
-        $stores->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . Yii::$app->language . '"');
+        $stores->leftJoin('lg_stores lgs', 'cws.uid = lgs.store_id and lgs.language = "' . $language . '"');
     }
     return $stores;
   }

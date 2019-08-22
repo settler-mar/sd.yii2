@@ -43,7 +43,15 @@ return [
     'components' => [
         'user' => [
             'identityClass' => 'api\models\User',
-            'enableAutoLogin' => false,
+            //'enableAutoLogin' => false,
+
+            'enableAutoLogin' => true,
+            'identityCookie' => [
+                'name' => '_identity-frontend',
+                'httpOnly' => true,
+                'path' => '/',
+                'domain' => strpos(DOMAIN_FRONT, '.0.0.1') ? false : '.' . DOMAIN_FRONT,
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -59,12 +67,25 @@ return [
             'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
+                [ // обработка локализации
+                    'class' => 'api\components\SdUrlLocalisation',
+                ],
+//                [ // обработка сущностей (пока купонов)
+//                    'class' => 'api\components\SdUrlEntity',
+//                ],
                 '<action:stores|payments>' => 'site/<action>',
+                'stores/data' => 'plugin/store',
+                'account/notification' => 'plugin/user',
+                'coupons/<store>' => 'plugin/coupon',
                 'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>'
             ],
         ],
         'session' => [
-            'name' => 'advanced-sd-api',
+            'name' => 'advanced-frontend', //'advanced-sd-api',
+            'cookieParams' => [
+                'domain' => (strpos(DOMAIN_FRONT, '.0.0.1') ? '' : '.') . DOMAIN_FRONT,
+                'httpOnly' => true,
+            ],
         ],
         'request' => [
             'cookieValidationKey' => '655wgregers555jyyrj65',

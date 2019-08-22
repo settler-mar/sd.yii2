@@ -18,6 +18,7 @@ $config = [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'cookieValidationKey' => '655wgregers555jyyrj65',
         ],
         'assetManager' => [
             'bundles' => [
@@ -107,7 +108,7 @@ $config = [
                 'name' => '_identity-frontend',
                 'httpOnly' => true,
                 'path' => '/',
-                'domain' => strpos(DOMAIN_FRONT, '.0.0.1') ? false : DOMAIN_FRONT,
+                'domain' => strpos(DOMAIN_FRONT, '.0.0.1') ? false : '.' . DOMAIN_FRONT,
             ],
             'on afterLogin' => function ($event) {
               frontend\modules\users\models\Users::afterLogin($event->identity->id,$event);

@@ -30,19 +30,9 @@ class AccountController extends Controller
   public function actionIndex()
   {
     $request = Yii::$app->request;
-    if (Yii::$app->user->isGuest && $request->get('g') == 'plugin') {
-        //из плагина запрос от неавторизованного
-        return json_encode([
-            'language' => isset(Yii::$app->params['location']['language']) ?
-                Yii::$app->params['location']['language']:false
-        ]);
-
-    }
-
 
     $page = $request->get('page');
     $type = $request->get('type');
-    $plugin = $request->get('g') == 'plugin';
 
     $validator = new \yii\validators\NumberValidator();
     if (!empty($page) && !$validator->validate($page) ||
@@ -68,7 +58,7 @@ class AccountController extends Controller
 
     $user = \Yii::$app->user->identity;
 
-    if ($is_ajax || $plugin) {
+    if ($is_ajax) {
       $favorites = UsersFavorites::userFavorites();
       $out = [
         'btn' => Yii::t('common', 'look_more'),
@@ -91,7 +81,7 @@ class AccountController extends Controller
 
     foreach ($data['notifications'] as &$notification) {
       $notification['currency']=$user->currency;
-      if ($is_ajax || $plugin) {
+      if ($is_ajax) {
         $date = strtotime($notification['added']);
         $out['notifications'][]=[
             'text' => Yii::$app->messageParcer->notificationText($notification),
@@ -100,13 +90,13 @@ class AccountController extends Controller
             'is_viewed'=>(int)$notification['is_viewed'],
             'type_id' => (int)$notification['type_id']
             ];
-      }else {
+      } else {
         $notification['text'] = Yii::$app->messageParcer->notificationText($notification);
         $notification['title'] = Yii::$app->messageParcer->notificationTitle($notification);
       }
     };
 
-    if ($is_ajax || $plugin) {
+    if ($is_ajax) {
       if(Yii::$app->request->isPost){
         //помечаем выгруженные строки как прочитанные
         Notifications::doRead(\Yii::$app->user->id, array_column($data['notifications'], 'uid'));
