@@ -102,11 +102,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, callback) {
 
         var xhr = new XMLHttpRequest();
         var method = request.method || 'GET';
-        if (method === 'GET') {
-            request.url +='?g=plugin';
-        } else if (method.toUpperCase() === 'POST') {
-            request.data['g'] = 'plugin';
-        }
         xhr.open(method, request.url, true);
         xhr.responseType='json';
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");

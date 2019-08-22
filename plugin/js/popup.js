@@ -69,7 +69,7 @@ var displayUser = function () {
     document.querySelector('.secretdiscounter-pupup__tab-notifications').style.display = 'block';
     //document.querySelector('.secretdiscounter-pupup__tab-shop').style.display = 'block';
     document.querySelector('.secretdiscounter-pupup__login').style.display = 'none';
-    document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl + utils.href(''));
+    document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', frontUrl + utils.href(''));
     document.querySelector('.secretdiscounter-pupup__info').style.display = 'flex';
     var tabNotifications = document.querySelector('.secretdiscounter-pupup__tab-notifications .secretdiscounter-pupup__tab-content');
     tabNotifications.innerHTML = makeNotifications();
@@ -88,7 +88,7 @@ var displayUser = function () {
 
 function resetStyles() {
   document.querySelector('.secretdiscounter-pupup').classList.add('logout');
-  document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', siteUrl + utils.href('#login'));
+  document.querySelector('.secretdiscounter-pupup__logo-link').setAttribute('href', frontUrl + utils.href('#login'));
   document.querySelector('.secretdiscounter-pupup__logo-link').innerHTML = logoImage;
   document.querySelector('.secretdiscounter-pupup__info').style.display = 'none';
   document.querySelector('.secretdiscounter-pupup__login').style.display = 'block';
@@ -114,20 +114,20 @@ function makeFavorites() {
   for (var i = 0; i < usersData.user.favorites_full.length; i++) {
     var storeIsActivate = storeUtil.isActivated(usersData.user.favorites_full[i].route);
     result += utils.replaceTemplate(favoriteHTML, {
-      'storeLogo': siteUrl + 'images/logos/' + usersData.user.favorites_full[i].logo,
+      'storeLogo': frontUrl + 'images/logos/' + usersData.user.favorites_full[i].logo,
       'storeText': utils.makeCashback(
         usersData.user.favorites_full[i].displayed_cashback,
         usersData.user.favorites_full[i].currency,
         usersData.user.favorites_full[i].action_id
       ),
-      'storeUrl': siteUrl + utils.href('goto/store:' + usersData.user.favorites_full[i].uid),
+      'storeUrl': frontUrl + utils.href('goto/store:' + usersData.user.favorites_full[i].uid),
       'storeRoute' : utils.href(usersData.user.favorites_full[i].route),
       'buttonClass' : storeIsActivate ? 'sd_hidden' : '',
       'cashback': lg('cashback'),
       'buttonText': lg('activate_cashback_to_line')
     });
   }
-  result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + '/stores">'+lg('all_stores')+'</a></div>';
+  result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + frontUrl + '/stores">'+lg('all_stores')+'</a></div>';
   return result;
 
 }
@@ -145,7 +145,7 @@ function makeNotifications() {
     });
   }
   if (usersData.btn) {
-    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + siteUrl + utils.href(userUrl) + '">' + usersData.btn + '</a></div>';
+    result += '<div class="secretdiscounter-extension__notification-button"><a class="secretdiscounter-extension__link" href="' + frontUrl + utils.href(userUrl) + '">' + usersData.btn + '</a></div>';
   }
   return result;
 }
@@ -168,13 +168,13 @@ var displayShop = function (shop) {
       }
       document.querySelector('.secretdiscounter-pupup__tab-shop .secretdiscounter-pupup__tab-content').innerHTML =
           utils.replaceTemplate(storeHtml, {
-              'storeLogo': siteUrl + 'images/logos/' + shop.logo,
+              'storeLogo': frontUrl + 'images/logos/' + shop.logo,
               'storeText': utils.makeCashback(
                   shop.displayed_cashback,
                   shop.currency,
                   shop.action_id
               ),
-              'storeUrl': siteUrl + utils.href('goto/store:' + shop.uid),
+              'storeUrl': frontUrl + utils.href('goto/store:' + shop.uid),
               'btnText': lg('activate_cashback'),
               'storeTariffs': shop.conditions ?
                   '<div class="secretdiscounter-extension__buttons-tariffs-header">'+lg('terms_and_conditions')+':</div>' + shop.conditions : '',
@@ -210,8 +210,8 @@ var displayCoupons = function (response) {
         'couponPromocode': response.coupons[i].promocode ?
             response.coupons[i].promocode+'<span title="'+lg('copy_to_clipboard')+'"  class="secretdiscounter-extension__coupon-promocode-text-copy sd_button copy-clipboard" data-clipboard="'+response.coupons[i].promocode+'">'+iconCopy+'</span>' :
             lg('code_not_required'),
-        'couponUseLink': siteUrl + utils.href('goto/coupon:' + response.coupons[i].uid),
-        'couponUrl': siteUrl + utils.href('coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid),
+        'couponUseLink': frontUrl + utils.href('goto/coupon:' + response.coupons[i].uid),
+        'couponUrl': frontUrl + utils.href('coupons/' + response.coupons[i].store_route + '/' + response.coupons[i].uid),
         'storeRoute': utils.href(response.coupons[i].store_route),
         'dateExpireMessage': lg('coupon_date_end'),
         'promocodeText': lg('coupon'),
@@ -237,7 +237,7 @@ var htmlLanguage = function(){
   items = document.getElementsByClassName('language_item-href');
   for (i=0 ; i < items.length ; i++) {
       href = lg(items[i].getAttribute('data-href'));
-      items[i].setAttribute('href', siteUrl + utils.href(href));
+      items[i].setAttribute('href', frontUrl + utils.href(href));
   }
 };
 

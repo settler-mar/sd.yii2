@@ -1,7 +1,6 @@
-//var siteUrl = 'https://secretdiscounter.com/';
-var siteUrl = 'https://api.secretdiscounter.ru/';
+var siteUrl = 'http://api.secretdiscounter.ru/';
 //var siteUrl = 'http://sdapi/';
-var sdUrl = 'https://secretdiscounter.com/';
+var frontUrl = 'https://secretdiscounter.com/';
 var userUrl = 'account/notification';
 var storesUrl = 'stores/data';
 var userFavoriteUrl = 'account/favorites';
@@ -11,4 +10,3 @@ var storePopupCloseInterval = 60;//минут
 var storeActiveStorageName = 'secretdiscounter-extension-store-';// + store_route
 var storePopupClosedStorageName = 'secretdiscounter-extension-popup-closed-store-';// + store_route
 var debug = false;
-//var debug = true;

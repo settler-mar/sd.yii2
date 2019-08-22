@@ -124,7 +124,7 @@ var storeUtil = (function () {
 
   function isActivated(storeRoute){
     var storeActiveDate = Storage.get(storeActiveStorageName+storeRoute);
-    var isActive = storeActiveDate !== null &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
+    var isActive = storeActiveDate !== undefined &&  new Date().getTime() - storeActiveDate < storeActiveInterval * 60 * 1000;
     if (debug) {
         console.log(storeActiveStorageName+storeRoute,  storeActiveDate, isActive, (new Date().getTime() - storeActiveDate)/(60 * 1000));
     }

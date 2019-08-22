@@ -77,6 +77,7 @@ return [
                 'stores/data' => 'plugin/store',
                 'account/notification' => 'plugin/user',
                 'coupons/<store>' => 'plugin/coupon',
+                'POST account/favorites' => 'plugin/favorites',
                 'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>'
             ],
         ],

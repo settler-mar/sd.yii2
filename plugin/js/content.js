@@ -88,7 +88,7 @@ function changeFavorite(e) {
   }, function (responseData) {
     //console.log('changeFavorites success', responseData);
     that.onclick = changeFavorite;
-    if (!responseData.error) {
+    if (responseData && !responseData.error) {
       if (type === 'add') {
         usersData.user.favorites.push(storeId);
       } else {
@@ -199,22 +199,22 @@ function displayShop(item) {
 
     var url = '', pluginSiteUrl = '', favoritesLink = '', storesUrl = '';
     if (usersData && usersData.user) {
-      url = siteUrl + utils.href('goto/store:' + item.uid);
-      storesUrl = siteUrl + utils.href('stores');
-      pluginSiteUrl = siteUrl + utils.href('');
+      url = frontUrl + utils.href('goto/store:' + item.uid);
+      storesUrl = frontUrl + utils.href('stores');
+      pluginSiteUrl = frontUrl + utils.href('');
       favoritesLink = '<a title="'+lg('add_to_favorite')+'" data-id="' + item.uid + '" data-type="add" class="favorite-add" href="'+utils.href('#vaforite_add')+'">' + iconFavoriteClose + '</a>' +
         '<a title="'+lg('remove_from_favorite')+'" data-id="' + item.uid + '" data-type="delete" class="sd_hidden favorite-remove" href="'+utils.href('#vaforite_remove')+'">' + iconFavoriteOpen + '</a>';
     } else {
-      url = siteUrl + utils.href('stores/' + item.store_route + '#login');
-      pluginSiteUrl = siteUrl + utils.href('#login');
-      storesUrl = siteUrl + utils.href('stores#login');
+      url = frontUrl + utils.href('stores/' + item.store_route + '#login');
+      pluginSiteUrl = frontUrl + utils.href('#login');
+      storesUrl = frontUrl + utils.href('stores#login');
     }
     //var message = utils.replaceTemplate(storageDataStores.searchtext, {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
     var message = lg('searchtext {{cashback}}', {'cashback': utils.makeCashback(item.displayed_cashback, item.currency, item.action_id)});
     var storeIsActivate = storeUtil.isActivated(item.store_route);
     //var template = parseFloat(item.displayed_cashback.replace(/[^\d.]+/g,"")) > 0 ? storePluginHtml : storePluginHtmlCharity;
     var shopDiv = utils.replaceTemplate(storePluginHtml, {
-      'storeLogo': siteUrl + 'images/logos/' + item.logo,
+      'storeLogo': frontUrl + 'images/logos/' + item.logo,
       'storeUrl': url,
       'storeText': message,
       'siteUrl': pluginSiteUrl,

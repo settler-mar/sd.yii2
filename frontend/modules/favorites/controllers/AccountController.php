@@ -27,7 +27,7 @@ class AccountController extends Controller
     $request= Yii::$app->request;
     $type = $request->post('type');
 
-    if($request->isAjax || $request->post('g') == 'plugin') {
+    if($request->isAjax) {
       $product_id = (int) $request->post('product_id');
       if(Yii::$app->user->isGuest){
         return json_encode([

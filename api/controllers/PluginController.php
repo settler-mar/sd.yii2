@@ -11,7 +11,7 @@ use frontend\modules\coupons\models\Coupons;
 use frontend\modules\favorites\models\UsersFavorites;
 use frontend\modules\notification\models\Notifications;
 use yii\web\NotFoundHttpException;
-
+use yii\web\ForbiddenHttpException;
 
 
 class PluginController extends Controller
@@ -35,7 +35,7 @@ class PluginController extends Controller
     public function actionStore()
     {
         $cache = \Yii::$app->cache;
-        $cacheName = 'stores_plugin_data_'. Yii::$app->language;
+        $cacheName = 'stores_plugin_data_' . Yii::$app->language;
 
         return $cache->getOrSet($cacheName, function () {
             $fields = ['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency',
@@ -58,13 +58,13 @@ class PluginController extends Controller
             return ['language' => $language];
         }
         $cache = \Yii::$app->cache;
-        $cacheName = 'user_plugin_data_'. $language.'_'.$user->uid;
+        $cacheName = 'user_plugin_data_' . $language . '_' . $user->uid;
 
         return $cache->getOrSet($cacheName, function () use ($user) {
             $favorites = UsersFavorites::userFavorites();
             $out = [
                 'btn' => Yii::t('common', 'look_more'),
-                'notifications'=>[],
+                'notifications' => [],
                 'user' => [
                     'balance' => $user->balance,
                     'name' => $user->name,
@@ -74,7 +74,7 @@ class PluginController extends Controller
                     'birthday' => $user->birthday,
                     'sex' => $user->sex,
                     'favorites_full' => $favorites,
-                    'favorites' =>array_column($favorites, 'uid'),
+                    'favorites' => array_column($favorites, 'uid'),
                     'currency' => $user->currency,
                     'language' => $user->language
                 ],
@@ -86,15 +86,15 @@ class PluginController extends Controller
                 ->asArray()->all();
 
             foreach ($notifications as &$notification) {
-                $notification['currency']=$user->currency;
-                    $date = strtotime($notification['added']);
-                    $out['notifications'][]=[
-                        'text' => Yii::$app->messageParcer->notificationText($notification),
-                        'title' => Yii::$app->messageParcer->notificationTitle($notification),
-                        'data' => date('d-m-Y H:i', $date),
-                        'is_viewed'=>(int)$notification['is_viewed'],
-                        'type_id' => (int)$notification['type_id']
-                    ];
+                $notification['currency'] = $user->currency;
+                $date = strtotime($notification['added']);
+                $out['notifications'][] = [
+                    'text' => Yii::$app->messageParcer->notificationText($notification),
+                    'title' => Yii::$app->messageParcer->notificationTitle($notification),
+                    'data' => date('d-m-Y H:i', $date),
+                    'is_viewed' => (int)$notification['is_viewed'],
+                    'type_id' => (int)$notification['type_id']
+                ];
             };
             return $out;
         });
@@ -103,21 +103,76 @@ class PluginController extends Controller
     public function actionCoupon($store)
     {
         if (!$store) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
         $storeDb = Stores::byRoute($store);
+        if (!$storeDb) {
+            throw new NotFoundHttpException();
+        }
         $language = Yii::$app->language;
-        $cacheName = 'coupons_plugin_data_'. $language;
+        $cacheName = 'coupons_plugin_data_' . $language . '_' . $storeDb->route;
         $cache = Yii::$app->cache;
 
-        return $cache->getOrSet($cacheName, function () {
+        return $cache->getOrSet($cacheName, function () use ($storeDb) {
             $coupons = Coupons::forList(true)
                 ->andWhere(['cws.is_active' => [1]])
                 ->andWhere(['>', 'cwc.date_end', date('Y-m-d H:i:s', time())])
+                ->andWhere(['cws.uid' => $storeDb->uid])
                 ->orderBy(Coupons::$defaultSort . ' DESC')
                 ->all();
-            return ['coupon' => $coupons];
+            return ['coupons' => $coupons];
         });
     }
+
+    public function actionFavorites()
+    {
+        $user = Yii::$app->user->identity;
+        if (!$user) {
+            throw new ForbiddenHttpException();
+        }
+        $request = Yii::$app->request;
+        $type = $request->post('type');
+        $affiliate_id = (int)$request->post('affiliate_id');
+        $store = Stores::findOne(['uid' => $affiliate_id]);
+        if (!$store) {
+            return ['error' => 1];
+        }
+        $fav = UsersFavorites::findOne(['store_id' => $affiliate_id, 'user_id' => $user->uid, 'product_id' => null]);
+
+        if ($type == 'add') {
+            if ($fav) {
+                return json_encode([
+                    'error' => 1
+                ]);
+            } else {
+                $fav = new UsersFavorites();
+                $fav->store_id = $affiliate_id;
+                $fav->product_id = null;
+                $result = $fav->save();
+                return [
+                    'error' => !$result,
+                ];
+            }
+        }
+        if ($type == 'delete') {
+            if (!$fav) {
+                return json_encode([
+                    'error' => 1
+                ]);
+            } else {
+                try {
+                    $fav->delete();
+                    $error = 0;
+                } catch (\Exception $e) {
+                    $error = 1;
+                }
+                return [
+                    'error' => $error,
+                ];
+            }
+        }
+        return ['error' => 1];
+    }
+
 
 }
