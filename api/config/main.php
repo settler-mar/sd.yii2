@@ -70,9 +70,6 @@ return [
                 [ // обработка локализации
                     'class' => 'api\components\SdUrlLocalisation',
                 ],
-//                [ // обработка сущностей (пока купонов)
-//                    'class' => 'api\components\SdUrlEntity',
-//                ],
                 '<action:stores|payments>' => 'site/<action>',
                 'stores/data' => 'plugin/store',
                 'account/notification' => 'plugin/user',
