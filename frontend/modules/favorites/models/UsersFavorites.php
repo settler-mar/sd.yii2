@@ -188,6 +188,8 @@ class UsersFavorites extends \yii\db\ActiveRecord
       Cache::deleteName('account_favorites_count_user_' . $this->user_id);
       Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_online');
       Cache::deleteName('account_favorites_count_user_' . $this->user_id. '_offline');
+      Cache::deleteName('plugin_user_data_' . $this->user_id);
+
       if (isset(Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'])) {
           foreach (Yii::$app->params['regions_list'][Yii::$app->params['region']]['langList'] as $language) {
               $lang = $language == Yii::$app->params['base_lang'] ? '' : $language . '_';

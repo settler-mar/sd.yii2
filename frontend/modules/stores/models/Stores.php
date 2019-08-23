@@ -1022,6 +1022,9 @@ class Stores extends \yii\db\ActiveRecord
         }
         Cache::deleteName('popular_stores_with_promocodes');
         Cache::deleteName('sitemap_xml');
+        //много ключей со всеми языками в конце
+        Cache::deleteAllNames('plugin_stores_data_');
+        Cache::deleteAllNames('plugin_coupons_data_'. $route . '_');
     }
 
     /**

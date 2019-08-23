@@ -71,6 +71,23 @@ class Cache extends \yii\db\ActiveRecord
     self::updateAll(['last_update' => new Expression('NOW()')], ['like', 'name', $name . '%', false]);
   }
 
+    /**
+     * @param $name
+     * удалаяем ключи со всеми возможными языками в конце
+     */
+  public static function deleteAllNames($name)
+  {
+     $languages = [];
+     foreach (Yii::$app->params['regions_list'] as $region) {
+         foreach ($region['langList'] as $language) {
+             $languages[] = $language;
+         }
+     }
+     foreach (array_unique($languages) as $language) {
+         Yii::$app->cache->delete($name . $language);
+     }
+  }
+
   /**
    * полная очистка кеш и экспорт
    */

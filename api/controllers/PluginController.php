@@ -35,7 +35,7 @@ class PluginController extends Controller
     public function actionStore()
     {
         $cache = \Yii::$app->cache;
-        $cacheName = 'stores_plugin_data_' . Yii::$app->language;
+        $cacheName = 'plugin_stores_data_' . Yii::$app->language;
 
         return $cache->getOrSet($cacheName, function () {
             $fields = ['cws.uid', 'cws.url', 'cws.name', 'cws.route as store_route', 'cws.action_id', 'cws.currency',
@@ -58,7 +58,7 @@ class PluginController extends Controller
             return ['language' => $language];
         }
         $cache = \Yii::$app->cache;
-        $cacheName = 'user_plugin_data_' . $language . '_' . $user->uid;
+        $cacheName = 'plugin_user_data_' . $user->uid;
 
         return $cache->getOrSet($cacheName, function () use ($user) {
             $favorites = UsersFavorites::userFavorites();
@@ -110,7 +110,10 @@ class PluginController extends Controller
             throw new NotFoundHttpException();
         }
         $language = Yii::$app->language;
-        $cacheName = 'coupons_plugin_data_' . $language . '_' . $storeDb->route;
+        $cacheName = 'plugin_coupons_data_'. $storeDb->route . '_'. $language;
+        $dependencyName = 'catalog_coupons';
+        $dependency = new yii\caching\DbDependency;
+        $dependency->sql = 'select `last_update` from `cw_cache` where `name` = "' . $dependencyName . '"';
         $cache = Yii::$app->cache;
 
         return $cache->getOrSet($cacheName, function () use ($storeDb) {
@@ -121,7 +124,7 @@ class PluginController extends Controller
                 ->orderBy(Coupons::$defaultSort . ' DESC')
                 ->all();
             return ['coupons' => $coupons];
-        });
+        }, $cache->defaultDuration, $dependency);
     }
 
     public function actionFavorites()

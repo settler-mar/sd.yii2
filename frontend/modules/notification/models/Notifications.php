@@ -200,6 +200,7 @@ class Notifications extends \yii\db\ActiveRecord
   {
       //ключ
       Cache::deleteName('account_notification_unread_count_' . $userId);
+      Cache::deleteName('plugin_user_data_' . $userId);
       //зависимость
       Cache::clearName('account_notifications' . $userId);
   }

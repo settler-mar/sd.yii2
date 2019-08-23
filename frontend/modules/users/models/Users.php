@@ -22,6 +22,7 @@ use common\components\SdImage;
 use common\components\DataValidator;
 use common\components\Help;
 use frontend\modules\template\models\Template;
+use frontend\modules\cache\models\Cache;
 
 /**
  * This is the model class for table "cw_users".
@@ -450,6 +451,7 @@ class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
       }
       $this->birthday = implode('-', $this->birthday);
     }
+      Cache::deleteName('plugin_user_data_' . $this->uid);
   }
 
     /**
