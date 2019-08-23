@@ -1,4 +1,4 @@
-var siteUrl = 'http://api.secretdiscounter.ru/';
+var siteUrl = 'https://api.secretdiscounter.com/';
 //var siteUrl = 'http://sdapi/';
 var frontUrl = 'https://secretdiscounter.com/';
 var userUrl = 'account/notification';
