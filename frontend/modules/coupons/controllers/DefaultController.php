@@ -279,7 +279,7 @@ class DefaultController extends SdController
       'w' => $storeFrom ? $storeFrom : null,
     ];
 
-    $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'coupons';
+    $paginatePath = '/coupons/' . ($actionId ? $actionId  : '');
 
     $contentData['is_root'] = (!$categoryCoupons && !$store && !$this->top && !$this->new);
     $contentData['top'] = $this->top;

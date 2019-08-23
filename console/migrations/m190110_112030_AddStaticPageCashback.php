@@ -16,7 +16,7 @@ class m190110_112030_AddStaticPageCashback extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $meta = new CatMeta();
+        /*$meta = new CatMeta();
         $meta->page = 'cashback';
         $meta->title = 'Кэшбэк';
         $meta->h1 = 'Кэшбэк';
@@ -25,7 +25,7 @@ class m190110_112030_AddStaticPageCashback extends Migration
         $meta->content = '<p>Вы можете не
             только покупать в магазинах вещи из нашего агрегатора, но еще и
             получать кэшбэк, почти со всех магазинов.</p>';
-        $meta->save();
+        $meta->save();*/
     }
 
     /**

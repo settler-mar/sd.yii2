@@ -352,4 +352,31 @@ class Help extends Component
     }
     return $out;
   }
+
+  /**
+   * условие запроса по регионам
+   * @param $areas
+   * @return array|bool
+   */
+  public static function makeAreasWhere($areas = false,$table_col = '`cs`.`regions`')
+  {
+
+    if ($areas === false) {
+      $areas = [Yii::$app->params['regions_list'][Yii::$app->params['region']]];
+      if(empty($areas['areas']))return false;
+      $areas = $areas['areas'];
+    }
+    if (empty($areas)) {
+      return false;
+    }
+    $areasWhere = [];
+    foreach ($areas as $area) {
+      $areasWhere[] = 'JSON_CONTAINS('.$table_col.',\'"' . $area . '"\',"$")';
+    }
+    return array_merge([
+        'or',
+        ['=', 'JSON_LENGTH('.$table_col.')', 0],
+        ['is', ''.$table_col.'', null],
+    ], $areasWhere);
+  }
 }

@@ -6,15 +6,8 @@
         <div class="catalog_product_filter-items">
           {% if filter.query %}
             <input type="hidden" name="query" value="{{ filter.query }}">
-            <input type="hidden" name="limit" value="{{ limit }}">
           {% endif %}
-          {% if filter.month %}
-            <input type="hidden" name="month" value="1">
-          {% endif %}
-          {% if filter.profit %}
-            <input type="hidden" name="profit" value="1">
-          {% endif %}
-          <input type="hidden" name="module" value="product">
+
           {% if filter.price_start!=filter.price_end %}
             {% set show_filter = true %}
             <div class="catalog_product_filter-items-item catalog_product_filter-items-item-price margin-half">
@@ -26,8 +19,6 @@
 
                   <label for="slider-price-start"
                          class="slider-price_label label-start">{{ t('shop', 'filter_price_from') }}</label>
-                  <input type="hidden" name="price-start-min" value="{{ filter.price_start }}">
-                  <input type="hidden" name="price-end-max" value="{{ filter.price_end }}">
                   <input type="text" id="slider-price-start" name="price-start"
                          placeholder="{{ t('shop', 'filter_price_from-placeholder') }}"
                          data-range="{{ filter.price_start }}" data-user="{{ filter.price_start_user }}"
@@ -47,7 +38,7 @@
             </div>
           {% endif %}
 
-          {% if filter.vendors|length >0 %}
+          {% if filter.vendors|length >1 %}
             {% set show_filter = true %}
             <div
                 class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half product-filter {% if filter.vendors|length >10 %}accordion{% endif %} ">
@@ -81,7 +72,7 @@
             </div>
           {% endif %}
 
-          {% if filter.stores|length > 0 %}
+          {% if filter.stores|length > 1 %}
             {% set show_filter = true %}
             <div
                 class="catalog_product_filter-items-item catalog_product_filter-items-item-checkbox  margin-half product-filter {% if filter.stores|length >10 %}accordion{% endif %}">
@@ -92,7 +83,7 @@
                   class="catalog_product_filter-stores  catalog_product_filter-checkbox {% if filter.stores|length >10 %}accordion-content-clickable{% endif %}">
                 {% for store in filter.stores %}
                   <div class="catalog_product_filter-checkbox_item">
-                    <input type="checkbox" id="label-filer-store{{ store.uid }}" name="store_id[]"
+                    <input type="checkbox" id="label-filer-store{{ store.uid }}" name="stores[]"
                            value="{{ store.uid }}"
                         {% if store.uid in filter.store_get %} checked {% endif %} >
                     <label for="label-filer-store{{ store.uid }}">{{ store.name }}</label>

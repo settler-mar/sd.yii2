@@ -125,6 +125,7 @@ class SdUrlRule implements UrlRuleInterface
       $params['expired'] = 1;
       unset ($parameters[count($parameters) - 1]);
     }
+
     //проверяем последний параметр на offline
     if (count($parameters)>0 && $parameters[count($parameters) - 1] == 'offline') {
       $params['offline'] = 1;

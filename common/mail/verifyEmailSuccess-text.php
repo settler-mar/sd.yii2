@@ -13,11 +13,11 @@
 
 
 С наилучшими пожеланиями,
-команда SecretDiscounter.ru
+команда SecretDiscounter.com
 SecretDiscounter экономит ваши деньги!
 
 
-Вы получили это письмо, потому что являетесь подписчиком нашего сайта http://secretdiscounter.ru
-Чтобы отписаться от рассылки, перейдите, пожалуйста, в http://secretdiscounter.ru/account/settings
+Вы получили это письмо, потому что являетесь подписчиком нашего сайта http://secretdiscounter.com
+Чтобы отписаться от рассылки, перейдите, пожалуйста, в http://secretdiscounter.com/account/settings
 
 

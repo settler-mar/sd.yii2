@@ -1,0 +1,43 @@
+Для авторизации как и писал нужно отправить GET запос на https://api.secretdiscounter.com/user/login
+В ответ будет строка вида ad8f0c6444877f54b479ffb3b20be285
+
+Следующий POST запрос должен идти на этот же адрес. Передаются 3 поля
+- user
+- password
+- key
+
+Поле key это md5 сумма от объединенной строки
+user, appKey, password,get_key
+appKey - будет постоянный
+get_key - ключ из первого запроса
+
+Если в поле KEY не пройдет валидация то будет 404-я ошибка
+
+Если ключ совпал будет ответ сервера 200 с результатом авторизации
+0 - не авторизировало
+1 - авторизировало
+2 - пользователь удален
+3 - ошибка авторизации
+
+https://api.secretdiscounter.com/user/data
+тут можно получить данные пользователя
+Формат JSON
+https://prnt.sc/nfoad3
+
+
+https://api.secretdiscounter.com/data/system
+Тут данные о системе лояльности, языках. Позже может еще что то вынесу туда
+
+далее идут ссыки которые по IP юзерав автоматом будет редиректить на регион. Можно писать сразу с учетом региона(смотреть в данных о юзере).
+Так же нуно передать в эти запросы параметр g=plugin
+RequestHeader "Content-type" "application/x-www-form-urlencoded"
+
+GET запросы
+https://secretdiscounter.com/account/notification - уведомления
+https://secretdiscounter.com/stores/data - магазины
+https://secretdiscounter.com/coupons  - купоны
+
+POST запросы
+https://secretdiscounter.com/account/favorites  - избранное
+https://secretdiscounter.com/ru/account/favorites - добавить/удалить из избранного. Получает параметром affiliate_id - id магазина. type=delete или add
+

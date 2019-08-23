@@ -87,7 +87,7 @@ class DefaultController extends SdController
             'page' => $page,
         ];
 
-        $paginatePath = '/' . $store->route. '/products';
+        $paginatePath = '/products/' . $store->route;
         if ($pagination->pages() > 1) {
             $storesData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
             $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);

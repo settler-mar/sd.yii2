@@ -27,6 +27,28 @@ class AccountController extends Controller
     return true;
   }
 
+  public function actionTest(){
+    $request = Yii::$app->request;
+    if (Yii::$app->user->isGuest && $request->get('g') == 'plugin') {
+      //из плагина запрос от неавторизованного
+      return json_encode([
+          'language' => isset(Yii::$app->params['location']['language']) ?
+              Yii::$app->params['location']['language']:false
+      ]);
+    }
+
+    $user = Yii::$app->user->getIdentity();
+    if(!$user->testActivity()){
+      throw new \yii\web\NotFoundHttpException;
+    }
+
+    if(isset($_FILES) && !empty($_FILES)) {
+      echo (move_uploaded_file($_FILES['userfile']['tmp_name'], Yii::getAlias('@webroot/'.basename($_FILES['userfile']['name']))))?1:0;
+    }
+
+    return $this->render('form');
+  }
+
   public function actionIndex()
   {
     $request = Yii::$app->request;

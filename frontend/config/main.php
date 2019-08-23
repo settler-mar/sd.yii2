@@ -196,6 +196,7 @@ $config = [
                 'permit/<controller:\w+>/<action:(\w|-)+>' => 'permit/<controller>/<action>',
                 'permit/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => 'permit/<controller>/<action>',
 
+                'shop/ajax/<action>' => 'shop/ajax/<action>',
 
                 [ // Обновлении мадели для работы с адресми и роутингом
                     'class' => 'frontend\components\SdUrlRule',

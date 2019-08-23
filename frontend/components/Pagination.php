@@ -68,6 +68,7 @@ class Pagination
       'page' => $page,
       'pageSize' => $options['limit'],
     ]);
+    //ddd($page,$this->pagination->pageCount );
     if ($page > 0 && $page > $this->pagination->pageCount - 1) {
       throw new yii\web\NotFoundHttpException();
     }
@@ -144,6 +145,14 @@ class Pagination
 
     $a_class=$isAjaxLoad?"ajax_load ":"";
 
+    $pageName = explode("/",$pageName);
+    if(isset($pageName[1]) && in_array($pageName[1],['account','coupons','stores','reviews',''])){
+      $pageName_1=$pageName[1];
+      $pageName[1]=$pageName[0];
+      $pageName[0]=$pageName_1;
+    }
+    $pageName = implode("/",$pageName);
+
     //предыдущая
     $prevpage = $page != 1 ? '<li class="back"><a data-toggle="tooltip" data-placement="top"' .
       ' data-original-title="'.Yii::t('main','previous_page').'" class="'.$a_class.'"  href="' .
@@ -194,7 +203,10 @@ class Pagination
 
     $pages .= ($total - $page <= $displayCount - 1 || $total <= $displayCount  + 1 ? '' : '...');
 
-    return '<ul class="paginate">' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
+    $out = '<ul class="paginate">' . $prevpage . $first . $pages . $last . $nextpage . '</ul>';
+    $out = str_replace('//','/',$out);
+    $out = str_replace('//','/',$out);
+    return $out;
   }
 
 

@@ -11,14 +11,14 @@
 <ol>
   <li {{ _if(step>0,'class=do_finish') }}>
     {% if step==0 %}
-      <a class="registration ignore-hash" href="#registration" rel="nofollow">Зарегистрироваться</a> / <a class="registration ignore-hash" href="#login" rel="nofollow">авторизоваться</a> на сайте
+      <a class="registration ignore-hash" href="{{ _href('#registration')|raw }}" rel="nofollow">Зарегистрироваться</a> / <a class="registration ignore-hash" href="#login" rel="nofollow">авторизоваться</a> на сайте
     {% else %}
       Зарегистрироваться / авторизоваться на сайте
     {% endif %}
   </li>
   <li {{ _if(step>1,'class=do_finish') }}>
     {% if step==1 %}
-      <a class="ajaxFormOpen ignore-hash" href="#startaction" rel="nofollow">Подтвердить</a> участие в акции
+      <a class="modals_open ignore-hash" href="{{ _href('#startaction')|raw }}" rel="nofollow">Подтвердить</a> участие в акции
     {% else %}
       Подтвердить участие в акции
     {% endif %}

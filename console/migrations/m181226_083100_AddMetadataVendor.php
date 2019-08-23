@@ -16,13 +16,13 @@ class m181226_083100_AddMetadataVendor extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $meta = new CatMeta();
+        /*$meta = new CatMeta();
         $meta->page = 'vendor';
         $meta->title = 'Каталог SecretDiscounter. Производитель {{ vendor }}';
         $meta->h1 = 'Каталог интернет-магазинов с кэшбэком. Товары {{ vendor }} <span>({{total_v}})</span>';
         $meta->description = 'Кэшбэк-сервис SecretDiscounter предоставляет огромный выбор интернет-магазинов, где вы можете сэкономить и вернуть часть потраченных денег назад. Бесплатно регистрируйтесь и не переплачивайте!';
         $meta->keyword = 'интернет-магазины кэшбэк, интернет-магазины экономия, интернет-магазины, возврат денег';
-        $meta->save();
+        $meta->save();*/
     }
 
     /**

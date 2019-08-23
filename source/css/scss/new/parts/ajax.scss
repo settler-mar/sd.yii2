@@ -21,3 +21,51 @@
 
   }
 }
+
+.block_show{
+  animation-name: box_hide;
+  //animation-delay: .10s;
+  animation-duration: .4s;
+  animation-fill-mode: both;
+  animation-direction: reverse;
+}
+
+.loading_process{
+  background: url(/images/preloader.gif) no-repeat 50% 30px;
+
+  >*{
+    opacity: 1;
+    transition: all .3s ease;
+  }
+
+  .block_hide{
+    opacity: 0;
+    //animation-name: box_hide;
+    //animation-delay: .10s;
+    //animation-duration: .4s;
+    //animation-fill-mode: both;
+    //min-height: 1px;
+  }
+}
+
+
+
+@keyframes box_hide {
+  0%{
+    opacity: 1;
+    //height: 100vh;
+    box-shadow: rgba(255, 255, 0, 0.5) 0px 0px 0vmax 0vmin inset;
+  }
+
+  99%{
+    opacity: 0;
+    //height: 100vh;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 50vmax 0vmin inset;
+  }
+
+  100%{
+    opacity: 0;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5vmax 0vmin inset;
+    //height: 0vh;
+  }
+}

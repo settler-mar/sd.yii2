@@ -66,7 +66,6 @@ class DefaultController extends SdController
       //если в конце категории или шопа слово -offline
       $this->offline = substr($id, strlen($id) - strlen('-offline')) == '-offline';
 
-
       $store = Stores::byRoute($id);
       if ($store) {
         //есть магазин
@@ -315,7 +314,8 @@ class DefaultController extends SdController
         'w' => $storeFrom ? $storeFrom : null,
     ];
 
-    $paginatePath = '/' . ($actionId ? $actionId . '/' : '') . 'stores';
+    $paginatePath = '/stores/'. ($actionId ? $actionId  : '');
+    //ddd($pagination,$paginatePath);
     if ($pagination->pages() > 1) {
       $storesData["pagination"] = $pagination->getPagination($paginatePath, $paginateParams);
       $this->makePaginationTags($paginatePath, $pagination->pages(), $page, $paginateParams);

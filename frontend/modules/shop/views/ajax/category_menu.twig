@@ -1,0 +1,24 @@
+{% set lavel = _if(lavel or lavel|length>0,lavel,1) %}
+
+{% if categories|length %}
+  <ul class="shops-category-menu_list">
+    {% for category in categories %}
+      <li class="shops-category-menu_item {% if category.children|length %} menu-group{% endif %}">
+
+        <a class="shops-category-menu_link"
+           href="{{ _href('/shop/'~category.full_route)|raw }}">{{ category.name|raw }} {% if category.count_all %}({{ category.count_all }}){% endif %}
+          {% if category.children|length %}
+            {{ svg('angle-down', 'menu_angle-down', '@frontend')|raw }}
+          {% endif %}
+        </a>
+
+        {% if category.children and category.children|length %}
+          {{ this.render('category_menu',{
+            categories : category.children,
+            lavel: lavel+1,
+          }) |raw }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

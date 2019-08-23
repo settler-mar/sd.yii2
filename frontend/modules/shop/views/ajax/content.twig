@@ -1,0 +1,38 @@
+{#выбор и отображение сортировки#}
+<div class="margin-half page-wrap-flex catalog-stores_sort catalog-stores_sort-products">
+  {% include('parts/sort-links-products.twig') %}
+  <div id="catalog-products-info"  class="catalog-stores_sort-info">
+    {{ t('main','show_{start}-{end}_from_{total}', {'start':  (total_v > 0 ? offset_products + 1 : '0'), 'end': offset_products + show_products, 'total': total_v})|raw }}
+  </div>
+</div>
+
+<div id="catalog-products-content" class="catalog-stores_stores margin">
+  {% if products|length > 0 %}
+    <div class="catalog-stores_list shops margin">
+      {% for product in products %}
+        {#<div class="col-sm-3 col-md-3">#}
+        {% include 'parts/products/product.twig' %}
+        {#</div>#}
+      {% endfor %}
+      <div class="catalog_products_item shop shop-empty"></div>
+      <div class="catalog_products_item shop shop-empty"></div>
+      <div class="catalog_products_item shop shop-empty"></div>
+    </div>
+
+    {% if pagination %}
+      <div class="catalog_pagination products">
+        {{ pagination|raw }}
+      </div>
+    {% endif %}
+
+
+  {% else %}
+    <p class="catalog-stores alert">{{ t('main', 'not_found')|raw }}</p>
+  {% endif %}
+</div>
+
+{% if additional_content %}
+  <div class="catalog_category-down-description margin sd_content">
+    {{ additional_content|raw }}
+  </div>
+{% endif %}

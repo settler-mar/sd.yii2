@@ -17,14 +17,14 @@ class m181229_132418_AddMetaCatHowShopWorks extends Migration
         $this->execute('SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DATES\';');
         $this->execute('SET SQL_MODE=\'ALLOW_INVALID_DATES\';');
 
-        $meta = new CatMeta();
+        /*$meta = new CatMeta();
         $meta->page = 'how-shop-works';
         $meta->title = 'Как это работает';
         $meta->h1 = 'Как это работает';
         $meta->description = 'Кэшбэк-сервис SecretDiscounter предоставляет огромный выбор интернет-магазинов, где вы можете сэкономить и вернуть часть потраченных денег назад. Бесплатно регистрируйтесь и не переплачивайте!';
         $meta->keyword = 'интернет-магазины кэшбэк, интернет-магазины экономия, интернет-магазины, возврат денег';
         $meta->content = 'Как это работает';
-        $meta->save();
+        $meta->save();*/
     }
 
     /**

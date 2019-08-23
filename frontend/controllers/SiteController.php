@@ -2,17 +2,16 @@
 
 namespace frontend\controllers;
 
-use frontend\components\SdController;
 use common\components\Help;
-use common\components\Sitemap;
+use frontend\components\SdController;
 use frontend\modules\b2b_users\models\B2bUsers;
 use frontend\modules\charity\models\Charity;
 use frontend\modules\coupons\models\Coupons;
 use frontend\modules\meta\models\Meta;
 use frontend\modules\notification\models\Notifications;
 use frontend\modules\payments\models\Payments;
-use frontend\modules\products\models\Products;
 use frontend\modules\product\models\Product;
+use frontend\modules\products\models\Products;
 use frontend\modules\reviews\models\Reviews;
 use frontend\modules\sdblog\models\Posts;
 use frontend\modules\slider\models\Slider;
@@ -25,7 +24,6 @@ use frontend\modules\withdraw\models\UsersWithdraw;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 use yii\validators\NumberValidator;
 use yii\validators\StringValidator;
 use yii\web\HttpException;
@@ -91,11 +89,15 @@ class SiteController extends SdController
    */
   public function actionIndex()
   {
+    ///ddd(Yii::$app->params);
+    //Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    //return
+
     $stores = Stores::top12(10);
     $totalStores = Stores::activeCount();
 
     //$reg_form = new RegistrationForm();
-    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/{{ ref_id }}\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.com/{{ ref_id }}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_share_title')}}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_share_description')}}\" />";
 
@@ -242,10 +244,10 @@ class SiteController extends SdController
     //$page['title']=json_decode($page['title'],true);
     $this->params['breadcrumbs'][] = $page['title'];
 
-    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.ru/offline?ref=" . $user->uid . "\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:url\" content=\"https://secretdiscounter.com/offline?ref=" . $user->uid . "\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:title\" content=\"{{ _constant('affiliate_offline_title')}}\" />";
     Yii::$app->view->metaTags[] = "<meta property=\"og:description\" content=\"{{ _constant('affiliate_offline_description')}}\" />";
-    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.ru" . $user->getBarcodeImg() . "\" />";
+    Yii::$app->view->metaTags[] = "<meta property=\"og:image\" content=\"https://secretdiscounter.com" . $user->getBarcodeImg() . "\" />";
 
     return $this->render('static_page', $page);
 
@@ -390,39 +392,39 @@ class SiteController extends SdController
     }
 
     if ($product > 0) {
-        //todo if (Yii::$app->user->isGuest || $product == 0) {
-        $productDb = Product::findOne($product);
+      //todo if (Yii::$app->user->isGuest || $product == 0) {
+      $productDb = Product::findOne($product);
 
-        if (!$productDb) {
-            return $this->redirect(Help::href('/shop'));
-        }
-        $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS_CATALOG;
-        $visit->store_id = $productDb->store_id;
-        $visit->cpa_link_id = $productDb->catalog->cpa_link_id;
-        $visit->product_id = $productDb->id;
+      if (!$productDb) {
+        return $this->redirect(Help::href('/shop'));
+      }
+      $visit->source = UsersVisits::TRANSITION_TYPE_PRODUCTS_CATALOG;
+      $visit->store_id = $productDb->store_id;
+      $visit->cpa_link_id = $productDb->catalog->cpa_link_id;
+      $visit->product_id = $productDb->id;
 
-        $data['link'] = $productDb->cpa->productClickUrl($productDb->url);
-        $data['store'] = $productDb->store;
-        $data['store_route'] = $productDb->store->route;
+      $data['link'] = $productDb->cpa->productClickUrl($productDb->url);
+      $data['store'] = $productDb->store;
+      $data['store_route'] = $productDb->store->route;
     } else {
-        $store = Stores::findOne(['uid' => $store]);
-        if (!$store) {
-            return $this->redirect(Help::href('/stores'));
-        }
+      $store = Stores::findOne(['uid' => $store]);
+      if (!$store) {
+        return $this->redirect(Help::href('/stores'));
+      }
 
-        if ($store->is_active == 0) {
-            return $this->redirect(Help::href('/stores/' . $store->routeUrl));
-        }
+      if ($store->is_active == 0) {
+        return $this->redirect(Help::href('/stores/' . $store->routeUrl));
+      }
 
-        if ($data['link'] == '') {
-            $data['link'] = CpaLink::clickUrl($store);
-        }
+      if ($data['link'] == '') {
+        $data['link'] = CpaLink::clickUrl($store);
+      }
 
-        $data['store'] = $store;
-        $data['store_route'] = $store->route;
+      $data['store'] = $store;
+      $data['store_route'] = $store->route;
 
-        $visit->store_id = $store->uid;
-        $visit->cpa_link_id = $store->active_cpa;
+      $visit->store_id = $store->uid;
+      $visit->cpa_link_id = $store->active_cpa;
     }
 
 

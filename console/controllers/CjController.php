@@ -38,6 +38,8 @@ class CjController extends Controller
   private $users=[];
   private $languages;
 
+  public $start_date;
+
   public function init()
   {
     $this->cpa = Cpa::find()->where(['name' => 'Cj.com'])->one();
@@ -47,6 +49,13 @@ class CjController extends Controller
     }
   }
 
+  public function options($actionID)
+  {
+    if ($actionID == 'payments') {
+      return ['start_date'];
+    }
+    return [];
+  }
 
   public function actionStores()
   {
@@ -99,20 +108,36 @@ class CjController extends Controller
   public function actionPayments()
   {
     $cj = new Cj();
-    $response = $cj->getPayments();
-    $count = isset($response['commissions']['@attributes']['total-matched']) ?
-        $response['commissions']['@attributes']['total-matched'] : false;
 
-
-    if (isset($response['commissions']['commission'])) {
-      if ($count == 1) {
-        $this->writePayment($response['commissions']['commission']);
-      } else {
-        foreach ($response['commissions']['commission'] as $commission) {
-          $this->writePayment($commission);
-        }
+    if($this->start_date) {
+      $timestamp = (strtotime($this->start_date));
+      if($timestamp>0){
+        d('Get payments from '.date('d m Y', $timestamp));
+        $response = $cj->getPayments($timestamp);
       }
     }
+
+
+    if(empty($response)){
+      $response = $cj->getPayments();
+    }
+
+    //$count = isset($response['count']) ? $response['count'] : 0;
+
+
+    /*if (isset($response['commissions']['commission'])) {
+      if ($count == 1) {
+        $this->writePayment($response['commissions']['commission']);
+      } else {*/
+        if(empty($response)){
+          ddd($response);
+        }else {
+          foreach ($response as $commission) {
+            $this->writePayment($commission);
+          }
+        }
+    /*  }
+    }*/
 
     echo 'Payments ' . $this->records . "\n";
     echo 'Inserted ' . $this->inserted . "\n";
@@ -142,67 +167,76 @@ class CjController extends Controller
     $this->records++;
     $pay_status = [
       //пока со всем этим непонятно
-        'new' => 2,
+        'new' => 0,
         'extended' => 2,
         'closed' => 2,
         'locked' => 1,
     ];
     //d($commission);
-    /*      'action-status' => string (3) "new"
-            'action-type' => string (13) "advanced sale"
-            'aid' => string (8) "13378180"
-            'commission-id' => string (10) "2340790158"
-            'country' => string (2) "NO"
-            'event-date' => string (24) "2018-08-23T03:18:57-0700"
-            'locking-date' => string (10) "2018-09-10"
-            'order-id' => string (8) "53575420"
-            'original' => string (4) "true"
-            'original-action-id' => string (10) "2033406552"
-            'posting-date' => string (24) "2018-08-23T04:02:05-0700"
-            'website-id' => string (7) "8021356"
-            'action-tracker-id' => string (6) "377850"
-            'action-tracker-name' => string (21) "Banggood.com Purchase"
-            'cid' => string (7) "4498040"
-            'advertiser-name' => string (29) "Banggood CJ Affiliate Program"
-            'commission-amount' => string (4) "0.06"
-            'order-discount' => string (4) "0.00"
-            'sid' => string (1) "8"
-            'sale-amount' => string (4) "1.90"
-            'is-cross-device' => string (5) "false"*/
-    $store = $this->getStore($commission['cid']);
+    /*
+    'actionTrackerName' => string (32) "Hotel Booking (International RS)"
+    'actionStatus' => string (6) "closed"
+    'reviewedStatus' => string (1) "0"
+    'websiteId' => string (7) "8021356"
+    'advertiserId' => string (7) "4347392"
+    'clickDate' => string (20) "2019-03-12T07:37:01Z"
+    'postingDate' => string (20) "2019-05-28T18:11:52Z"
+    'commissionId' => string (10) "2483578977"
+    'websiteName' => string (17) "Secret Discounter"
+    'advertiserName' => string (28) "booking.com international RS"
+    'pubCommissionAmountUsd' => string (7) "-51.826"
+    'shopperId' => string (5) "95205"
+    'saleAmountUsd' => string (9) "-1295.658"
+    'orderId' => string (10) "1622592702"
+    'items' => array (0)
+
+    */
+    $store = $this->getStore($commission['advertiserId']);
     if (!$store) {
       $this->failsNotStore++;
       return;
     }
-    $user = $this->getUser($commission['sid']);
+
+    $orderCommission = abs($commission['pubCommissionAmountUsd']);
+    /*if ($store->route == 'booking-com' && !(float)$orderCommission) {
+      //для букинг пока так
+      $orderCommission = $commission['sale-amount'] * 0.04;
+      $status = 0;
+    }*/
+
+    if(empty($commission['shopperId']))return;
+    $user = $this->getUser($commission['shopperId']);
     if (!$user) {
       $this->failsNotUser++;
       return;
     }
-    $status = isset($pay_status[$commission['action-status']]) ? $pay_status[$commission['action-status']] : 0;
-    $orderCommission = $commission['commission-amount'];
-    if ($store->route == 'booking-com' && !(float)$orderCommission) {
-      //для букинг пока так
-      $orderCommission = $commission['sale-amount'] * 0.04;
-      $status = 0;
+
+    $k = Yii::$app->conversion->getCurs($store->currency, 'USD');
+    $status = isset($pay_status[$commission['actionStatus']]) ? $pay_status[$commission['actionStatus']] : 0;
+    if(round($orderCommission*$k,2)<0.01){
+      $status = 1;
     }
+
+
+
     $newPayment = [
         'cpa_id' => $this->cpa->id,
-        'affiliate_id' => $commission['cid'],
+        'affiliate_id' => $commission['advertiserId'],
         'subid' => $user->uid,
-        'action_id' => $commission['original-action-id'],
+        'action_id' => $commission['commissionId'],
         'status' => $status,
         'ip' => null,
         'currency' => $store->currency,//Валюта платежа
-        'cart' => $commission['sale-amount'],  //Сумма заказа в валюте
-        'payment' => $orderCommission,  //комиссия в валюте магазина
-        'click_date' => date('Y-m-d H:i:s', strtotime($commission['event-date'])),
-        'action_date' => date('Y-m-d H:i:s', strtotime($commission['posting-date'])),
-        'status_updated' => date('Y-m-d H:i:s', strtotime($commission['posting-date'])),
+        'cart' => round(abs($commission['saleAmountUsd'])*$k,2),  //Сумма заказа в валюте
+        'payment' => round($orderCommission*$k,2),  //комиссия в валюте магазина
+        'click_date' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
+        'action_date' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
+        'status_updated' => date('Y-m-d H:i:s', strtotime($commission['postingDate'])),
         'closing_date' => "",
-        'order_id' => (String)$commission["order-id"],
+        'order_id' => (String)$commission["orderId"],
         "tariff_id" => null,
     ];
+
     $paymentStatus = Payments::makeOrUpdate(
         $newPayment,
         $store,
