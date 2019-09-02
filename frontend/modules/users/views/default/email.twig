@@ -3,6 +3,7 @@
     <p class="sign-up-tagline align-center">{{ t('account', 'enter_email_for_complete_registration')|raw }}</p>
     {% set form = active_form_begin({
     'id' : isAjax?'email-form-ajax':'email-form',
+    'action' : _href(app.request.url),
     'layout' : 'horizontal',
     'fieldConfig':{
     'horizontalCssClasses':{

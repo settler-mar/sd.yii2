@@ -356,7 +356,7 @@ class DefaultController extends Controller
         'social_name' => !empty($request->post('SocialEmail')['social_name']) ? $request->post('SocialEmail')['social_name'] : null,
         'social_id' => !empty($request->post('SocialEmail')['social_id']) ? $request->post('SocialEmail')['social_id'] : null,
       ]);
-      if ($model && $model->load(Yii::$app->request->post()) && $model->save()) {
+      if ($model && $model->load($request->post()) && $model->save()) {
         //создаём юсера
         $user = UsersSocial::makeUser($model);
         if (!empty($user)) {
