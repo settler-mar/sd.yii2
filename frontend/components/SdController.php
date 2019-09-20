@@ -206,7 +206,7 @@ class SdController extends Controller
                 'link' => Help::href($pageName).($paramsString ? '?' . $paramsString : ''),
                 'title' => $sortName['title'],
                 'title_mobile' => $sortName['title_mobile'],
-                'active' => $key == $currentSort ? 1 : 0,
+                'active' => $key == $currentSort || !$currentSort && $key == $defaultSortName ? 1 : 0,
             ];
         }
         return $result;
