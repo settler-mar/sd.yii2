@@ -680,6 +680,7 @@ class Stores extends \yii\db\ActiveRecord
         foreach ($storeRatings as $storeRating) {
             $storeRating->delete();
         }
+        UsersFavorites::deleteAll(['store_id' => $this->uid]);
 
         return parent::beforeDelete();
     }

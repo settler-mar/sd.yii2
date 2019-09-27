@@ -2,6 +2,9 @@
 
 namespace frontend\modules\stores\models;
 
+use frontend\modules\payments\models\Payments;
+use frontend\modules\product\models\CatalogStores;
+use frontend\modules\transitions\models\UsersVisits;
 use Yii;
 
 /**
@@ -140,6 +143,10 @@ class CpaLink extends \yii\db\ActiveRecord
       foreach ($storesActions as $storesAction) {
           $storesAction->delete();
       }
+      CatalogStores::deleteAll(['cpa_link_id' => $this->id]);
+      Payments::deleteAll(['cpa_link_id' => $this->id]);
+      UsersVisits::deleteAll(['cpa_link_id' => $this->id]);
+
       return parent::beforeDelete();
   }
 
