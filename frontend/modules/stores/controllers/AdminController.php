@@ -566,25 +566,19 @@ class AdminController extends Controller
       $store_id = $post['id'];
 
       $cpa_link = CpaLink::find()
-        ->select(['affiliate_id' => 'id', 'cpa_id'])
+        ->select(['id'])
         ->where(['stores_id' => $store_id])
         ->asArray()
         ->all();
+      $cpa_links = array_column($cpa_link, 'id');
 
-      if(count($cpa_link)>0) {
-        $payment = Payments::find();
-        //        ->andFilterWhere(['OR',$cpa_link]);
-
-        foreach ($cpa_link as &$item) {
-          $payment = $payment->orFilterWhere(['AND', $item]);
-          //$item=["AND",'affiliate_id'=>$item['affiliate_id'],'cpa_id'=>$item['cpa_id']];
-        }
-
-        $payment = $payment
+      if (count($cpa_links)>0) {
+        $paymentsCount = Payments::find()
+          ->where(['cpa_link_id' => $cpa_links])
           ->asArray()
-          ->all();
+          ->count();
 
-        if (count($payment) > 0) {
+        if ($paymentsCount > 0) {
           Yii::$app->session->addFlash('err','Нельзя удалить магазин т.к. у него есть платежи');
           if (!$not_return) {
             return false;
@@ -592,18 +586,8 @@ class AdminController extends Controller
           http_response_code(404);
           exit;
         }
-      }
-      $cwsl = CpaLink::find()
-        ->select('id')
-        ->where(['stores_id' => $store_id])
-        ->asArray()
-        ->all();
-      if (count($cwsl) > 0) {
         $type = 'cpa';
-        $post["id"] = [];
-        foreach ($cwsl as $item) {
-          $post["id"][] = $item['id'];
-        }
+        $post['id'] = $cpa_links;
       }
       //Stores::deleteAll(['uid' => $store_id]);
       //deleteAll не вызывает событие afterDelete beforeDelete

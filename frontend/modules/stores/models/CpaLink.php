@@ -143,9 +143,14 @@ class CpaLink extends \yii\db\ActiveRecord
       foreach ($storesActions as $storesAction) {
           $storesAction->delete();
       }
-      CatalogStores::deleteAll(['cpa_link_id' => $this->id]);
-      Payments::deleteAll(['cpa_link_id' => $this->id]);
-      UsersVisits::deleteAll(['cpa_link_id' => $this->id]);
+      $catalogStores = CatalogStores::find()->where(['cpa_link_id' => $this->id])->all();
+      foreach($catalogStores as $catalogStore) {
+          $catalogStore->delete();
+      }
+      $usersVisits = UsersVisits::find()->where(['cpa_link_id' => $this->id])->all();
+      foreach($usersVisits as $usersVisit) {
+          $usersVisit->delete();
+      }
 
       return parent::beforeDelete();
   }
